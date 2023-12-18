@@ -1,0 +1,125 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:set var="menu_idx" value="10"></c:set>
+<%@ include file ="../../include/AdminTop.jsp"%>
+<%@ include file ="../../include/AdminLeft.jsp"%>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+function onlyNumber(obj) {
+    $(obj).keyup(function(){
+         $(this).val($(this).val().replace(/[^0-9]/g,""));
+    }); 
+}
+
+function valueChk() {
+	var frm = document.frm;
+	
+	if(!frm.ExpenseName.value) {
+		alert("항목를 입력해주세요.");
+		frm.ExpenseName.focus();
+		return false
+	}
+	if(!frm.SortOrder.value) {
+		alert("정렬순서를 입력해주세요.");
+		frm.SortOrder.focus();
+		return false
+	}
+	if(!frm.DefPrice.value) {
+		alert("기초금액을 입력해주세요.");
+		frm.DefPrice.focus();
+		return false
+	}
+	
+	if(confirm("수정하시겠습니까?")) {
+		frm.submit();
+		alert("수정완료");
+	} else {
+		return false;
+	}
+}
+
+function fn_egov_delete_article(form) {
+	if (confirm("삭제하시겠습니까?")) {
+		// Delete하기 위한 키값을 셋팅
+		form.submit();
+	}
+}
+
+</script>
+
+<h2 class="mb-4">기타매출항목 관리</h2>
+<div class="row">
+	<div class="col-xl-9">
+		<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/ExpenseUpdOK.do" class="row g-3 mb-5">
+			<input type="hidden" name="SiteCode" value="${expense.siteCode }">
+			<input type="hidden" name="ExpenseID" value="${expense.expenseID }">
+			<div class="col-md-6 gy-6">
+				<div class="form-floating">
+					<select class="form-select" id="ExpenseGroupID" name="ExpenseGroupID">
+						<c:forEach items="${list}" var="list">
+							<option value="${list.expenseGroupID }" <c:if test ="${expense.expenseGroupName eq list.expenseGroupName}">selected="selected"</c:if>>${list.expenseGroupName }</option>
+						</c:forEach>
+					</select>
+					<label for="SiteName">분류</label>
+				</div>
+			</div>
+			<div class="col-md-6 gy-6">
+				<div class="form-floating">
+					<input class="form-control" id="ExpenseName" name="ExpenseName" type="text" placeholder="항목" value="${expense.expenseName }"/>
+					<label for="ExpenseName">항목</label>
+				</div>
+			</div>
+			<div class="col-md-6 gy-6">
+				<div class="form-floating">
+					<input class="form-control" id="SortOrder" name="SortOrder" type="text" placeholder="정렬순서" value="${expense.sortOrder }" onkeydown="onlyNumber(this)"/>
+					<label for="SortOrder">정렬순서</label>
+				</div>
+			</div>
+			<div class="col-md-6 gy-6">
+				<div class="form-floating">
+					<select class="form-select" id="ExpenseType" name="ExpenseType">
+						<option value="I" <c:if test="${expense.expenseType eq 'I' }">selected</c:if>>수입</option>
+						<option value="O" <c:if test="${expense.expenseType eq 'O' }">selected</c:if>>지출</option>
+					</select>
+					<label for="ExpenseType">수/지 구분</label>
+				</div>
+			</div>
+			<div class="col-md-6 gy-6">
+				<div class="input-group mb-3">
+					<div class="input-group-text ">
+						<input class="form-check-input " type="checkbox" id="Nvat" name="Nvat" value="Y" <c:if test="${expense.nvat eq 'Y' }">checked</c:if> aria-label="Checkbox for following text input" />
+						<label class="mb-0 ms-2 form-check-label" for="Nvat">부가세포함</label>
+					</div>
+					<div class="form-floating">
+						<input class="form-control" type="text" aria-label="Text input with checkbox" id="DefPrice" name="DefPrice" value="${expense.defPrice }"/>
+						<label for="DefPrice">기초금액</label>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="col-12 gy-6">
+			<div class="row g-3 justify-content-end">
+				<div class="col-auto">
+					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/Expense.do" title="목록">목록</a><!-- 목록 -->
+				</div>
+				<div class="col-auto">
+					<input type="button" class="btn btn-info px-5"  value="수정" id="modify" onclick="valueChk();"/>
+				</div>
+				<div class="col-auto">
+					<form action="${pageContext.request.contextPath}/deleteExp.do" name="formDelete" method="post">
+						<input type="submit" class="btn btn-warning" style="float: right; margin: 0 0 0 3px;" value="삭제" id="delete" onclick="fn_egov_delete_article(this.form); return false;"> <!-- 삭제 -->
+						<input type="hidden" name="SiteCode" value="${expense.siteCode }">
+						<input type="hidden" name="ExpenseID" value="${expense.expenseID }">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

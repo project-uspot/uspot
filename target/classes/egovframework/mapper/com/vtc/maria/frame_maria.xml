@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="frame">
+	<select id="selectSiteCode" parameterType="egovframework.veterans.com.cmm.service.vo.Sitecode" resultType="egovframework.veterans.com.cmm.service.vo.Sitecode">
+		select * from tblSite
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+	</select>
+	
+	<update id="updateSiteCode" parameterType="egovframework.veterans.com.cmm.service.vo.Sitecode">
+		update tblsite set
+			SiteID		     = #{SiteID}
+			, SiteName       = #{SiteName}
+			, SiteBNo        = #{SiteBNo}
+			, Pname 	     = #{Pname}
+			, UpTae 	     = #{UpTae}
+			, JongMok	     = #{JongMok}
+			, ZipCode        = #{ZipCode}
+			, Address        = #{Address}
+			, SubAddress     = #{SubAddress}
+			, Phone1	     = #{Phone1}
+			, Phone2 	 	 = #{Phone2}
+			, Fax 		 	 = #{Fax}
+			, Email			 = #{Email}
+			, DamDangJa  	 = #{DamDangJa}
+			, DamDangJaPhone = #{DamDangJaPhone}
+			, Note			 = #{Note}
+			, UpdDate  = sysdate()
+		where
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+	</update>
+	<insert id="insertSiteCode" parameterType="egovframework.veterans.com.cmm.service.vo.Sitecode">
+		INSERT INTO uspot_test.tblsite
+			(SiteCode, SiteID, SiteName, SiteBNo, PName, UpTae, JongMok, ZipCode, Address, SubAddress, Phone1, Phone2, Fax, Email, DamDangJa, DamDangJaPhone, Note, AcceptNo, Logout_Time, NoUseLogoutTime, IsUseYN, vaccine_Pass_Cnt, IsDelete, AddDate, AddUserpkid, UpdDate, UpdUserpkid)
+		VALUES
+			(#{SiteCode}, #{SiteID}, #{SiteName}, #{SiteBNo}, #{Pname}, #{UpTae}, #{JongMok}, #{ZipCode}, #{Address}, #{SubAddress}, #{Phone1}, #{Phone2}, #{Fax}, #{Email}, #{DamDangJa}, #{Note}, #{AcceptNo}, #{LogOutTime}, #{NoUseLogOutItme}, 0, #{IsUseYN}, #{VaccinePassCnt}, 'N', sysdate(), #{AddUserpkid}, sysdate(), #{UpdUserpkid});
+	</insert>
+	<select id="listSiteName" resultType="egovframework.veterans.com.cmm.service.vo.Sitecode">
+		select SiteCode, SiteName from tblsite 
+		where 
+			IsDelete = 'N'
+	</select>
+	<update id="deleteSiteCode" parameterType="egovframework.veterans.com.cmm.service.vo.Sitecode">
+		update tblsite set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+	</update>
+	
+	
+ 	<select id="selectPGMGroupInfo" parameterType="egovframework.veterans.com.cmm.service.vo.PGMGroup" resultType="egovframework.veterans.com.cmm.service.vo.PGMGroup">
+		select * from tblPgmGroup 
+		where 
+			IsDelete = 'N'
+		and SiteCode = {SiteCode}
+		and PGMGroupID = #{PGMGroupID}
+	</select>
+	
+	<select id="selectPGMInfo" parameterType="egovframework.veterans.com.cmm.service.vo.PGM" resultType="egovframework.veterans.com.cmm.service.vo.PGM">
+		select * from tblpgm 
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and pkid = #{pkid}
+	</select>	
+	
+	<select id="listTblCode" parameterType="egovframework.veterans.com.cmm.service.vo.tblCode" resultType="egovframework.veterans.com.cmm.service.vo.tblCode">
+		select * from tblcode
+		where 
+			SiteCode  = #{SiteCode}
+		and CodeGroupID = #{CodeGroupID}
+		and IsDelete = 'N'
+	</select>
+</mapper>

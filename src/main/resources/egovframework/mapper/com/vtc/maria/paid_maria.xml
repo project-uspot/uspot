@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="paid">
+	
+	<select id="selectDCType" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select 
+			SiteCode, dcid, dcname, case dcType when 'D' then '%' else '금액' end as 'dcType'
+			, Price, Rate, SortOrder, AddDCYN, ReDCNoYN , ReDCNoChkDayCnt, ApplyFamily , ApplyFamilyCnt 
+			, case PissCD 
+				when 'ReductionBscLivYnService' then '이용요금감면(기초생활수급자)'
+				when 'NaManMeritFamInfoService' then '이용요금감면(국가유공자)'
+				when 'ReductionDisabledYnService' then '이용요금감면(장애인)' end as 'PissCD'
+		from tblDC
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<select id="getDCDetail" parameterType="egovframework.veterans.com.cmm.service.vo.DC" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select 
+			SiteCode, dcid, dcname, dcType , Price, Rate, SortOrder, AddDCYN
+			, ReDCNoYN , ReDCNoChkDayCnt, ApplyFamily , ApplyFamilyCnt , PissCD
+		from tblDC
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and DCID = #{dcid}
+	</select>
+	<update id="updateDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		update tbldc set
+			dcid = #{dcid}
+			, DCName = #{dcName}
+			, DCType = #{dcType}
+			, Rate = #{Rate}
+			, Price = #{Price} 
+			, ApplyFamily = #{ApplyFamily}
+			, ApplyFamilyCnt = #{ApplyFamilyCnt}  
+			, PissCD = #{PissCD}
+			, ReDCNoYN = #{ReDCNoYN}
+			, ReDCNoChkDayCnt = #{ReDCNoChkDayCnt}
+			, UpdDate = sysdate() 
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and dcid = #{dcid}
+	</update>
+	<insert id="insertDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		INSERT INTO uspot_test.tbldc
+			(DCID, SiteCode, DCName, Rate, DCDaesangID, ApplyFamily, ApplyFamilyCnt, AddDCYN, WebYN, IsUse, PissCD, ReDCNoYN, ReDCNoChkDayCnt, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, DCType, Price)
+		VALUES
+			(#{dcid}, #{SiteCode}, #{dcName}, #{Rate}, #{dcDaesangID}, #{ApplyFamily}, #{ApplyFamilyCnt},#{AddDCYN}, #{WebYN}, #{IsUse}, #{PissCD}, #{ReDCNoYN}, #{ReDCNoChkDayCnt}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0, #{dcType}, #{Price});
+				
+	</insert>
+	
+	<update id="deleteDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		update tbldc set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	dcid = #{dcid}
+	</update>
+	
+	
+	
+	<select id="selectExpenseGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		select * from tblExpenseGroup
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<select id="getExpenseGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		select * 
+		from tblexpensegroup
+		where
+			SiteCode = #{SiteCode}
+		and ExpenseGroupID = #{ExpenseGroupID}
+		and IsDelete = 'N'
+	</select>
+	<update id="updateExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		update tblexpensegroup set
+			ExpenseGroupName = #{ExpenseGroupName}
+			,SortOrder = #{SortOrder}
+			, UpdDate  = sysdate()
+		where
+			SiteCode = #{SiteCode}
+		and ExpenseGroupID = #{ExpenseGroupID}
+	</update>
+	<insert id="insertExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		INSERT INTO uspot_test.tblexpensegroup
+			(SiteCode, ExpenseGroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES
+			(#{SiteCode}, #{ExpenseGroupName}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0);
+	</insert>
+	<update id="deleteExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		update tblexpensegroup set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	ExpenseGroupID = #{ExpenseGroupID}
+	</update>
+	
+	
+	
+	<select id="selectExpense" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+		select 
+			a.SiteCode , ExpenseID, ExpenseGroupName, ExpenseName, case ExpenseType when 'I' then '수입' else '지출' end as 'ExpenseType'
+			, case NVAT when 'Y' then '포함' else '미포함' end as 'Nvat', DefPrice, a.SortOrder
+		from tblExpense a
+		left join tblExpenseGroup b on a.SiteCode = b.SiteCode and a.ExpenseGroupID = b.ExpenseGroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+	</select> 
+	<select id="getExpenseDetail" parameterType="egovframework.veterans.com.cmm.service.vo.Expense" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+		select 
+			a.SiteCode , ExpenseID, b.ExpenseGroupName, a.ExpenseName, ExpenseType 
+			, Nvat , DefPrice, a.SortOrder
+		from tblExpense a
+		left join tblExpenseGroup b on a.SiteCode = b.SiteCode and a.ExpenseGroupID = b.ExpenseGroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and a.ExpenseID = #{ExpenseID}
+	</select>
+	<update id="updateExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		update tblexpense set
+			ExpenseGroupID = #{ExpenseGroupID}
+			, ExpenseName = #{ExpenseName}
+			, ExpenseType = #{ExpenseType}
+			, DefPrice = #{DefPrice}
+			, NVAT = #{Nvat}
+			, SortOrder = #{SortOrder}
+			, UpdDate = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and ExpenseID = #{ExpenseID}
+	</update>
+	<insert id="insertExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		INSERT INTO uspot_test.tblexpense
+			(SiteCode, ExpenseGroupID, ExpenseName, ExpenseType, DefPrice, NVAT, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES
+			(#{SiteCode}, #{ExpenseGroupID}, #{ExpenseName}, #{ExpenseType}, #{DefPrice}, #{Nvat}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0);
+	</insert>
+	<update id="deleteExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		update tblexpensegroup set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	ExpenseID = #{ExpenseID}
+	</update>
+	<select id="memberexpensesale" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberexpensesale">
+		select tblexpensegroup.ExpenseGroupName,tblexpense.ExpenseName,'InOut',SaleDate,Price,DefPrice,
+		(DefPrice - Price) AS minabPrice
+		from tblexpensesale
+		left join tblexpense on tblexpensesale.ExpenseID = tblExpense.ExpenseID
+		left join tblexpensegroup on tblexpense.ExpenseGroupID = tblexpensegroup.ExpenseGroupID
+		where 
+			MemberID = #{MemberID}
+		and tblexpensesale.IsDelete = 'N'
+	</select>
+</mapper>

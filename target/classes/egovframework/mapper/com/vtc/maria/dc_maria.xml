@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dc">
+	<select id="dclist" parameterType="egovframework.veterans.com.cmm.service.vo.DC" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select * from tbldc
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<select id="dclistBypissId" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select * from tbldc
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and PissCD is not null
+		and PissCD != ''
+	</select>
+</mapper>

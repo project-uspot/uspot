@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<select id="selectUserGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.UserGroup">
+		select * from tblusergroup 
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N' 
+	</select>
+	
+	<select id="getUserGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.UserGroup" resultType="egovframework.veterans.com.cmm.service.vo.UserGroup">
+		select * from tblusergroup 
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and UserGroupID = #{UserGroupID}
+	</select>
+	
+	<update id="updateUserGroup" parameterType="egovframework.veterans.com.cmm.service.vo.UserGroup">
+		update tblusergroup set
+			UserGroupName = #{UserGroupName}
+			, SortOrder = #{SortOrder}
+			, UseDBAccess = #{UseDBAccess}
+			, dbid = #{dbid}
+			, dbPassword = #{dbPassword} 
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N' 
+		and UserGroupID = #{UserGroupID}
+	</update>
+	
+	
+	<insert id="insertUserGroup" parameterType="egovframework.veterans.com.cmm.service.vo.UserGroup">
+		INSERT INTO tblusergroup
+			(SiteCode, UserGroupName, SortOrder, UseDBAccess, DBID, DBPassword, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES
+			(#{SiteCode}, #{UserGroupName}, #{SortOrder}, #{UseDBAccess}, #{dbid}, #{dbPassword}, 'N', sysdate(), 0, sysdate(), 0)
+	</insert>
+	<update id="deleteUserGroup" parameterType="egovframework.veterans.com.cmm.service.vo.UserGroup">
+		update tblusergroup set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and UserGroupID = #{UserGroupID}
+	</update>
+	
+	<select id="listPGMGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.PGMGroup">
+		select *  from tblpgmgroup
+		where 
+			<!-- SiteCode = #{SiteCode} -->
+		 IsDelete = 'N'
+		order by SortOrder
+	</select>
+	<select id="listPGM" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.PGM">
+		select * from tblpgm t
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		<!-- and PGMGroupID = #{pgmGroupID} --> 
+		order by SortOrder 
+	</select>
+	<select id="listAuthUserGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select * from tblauthusergroup a 
+		left join tblpgm b on a.PGMPKID = b.PKID  
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N' 
+	</select>
+		<select id="listAuthUserGroupN" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select * from tblauthusergroup a 
+		left join tblpgm b on a.PGMPKID = b.PKID  
+		left join tblPGMGroup c on b.PGMGroupID =  c.PGMGroupID
+		where
+			a.UserGroupID = #{UserGroupID}
+		and	a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N' 
+		order by c.SortOrder,b.SortOrder
+	</select>
+	
+	<select id="listUsers" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select 
+			a.SiteCode, SiteName, UserPKID, SawonNo, SawonName , UserID
+			, case Gender when 0 then '여자' else '남자' end as 'Gender'
+			, case Type when 0 then '일반' when 1 then '강사' else '수납자' end as 'Type'
+			, HomePhone, CellPhone , case State when 0 then '재직' when 1 then '휴직' else '퇴직' end as 'State', c.GroupName
+			, case BuseoID when 1 then '운영팀' when 2 then '관리팀' end as 'BuseoID'
+			, case JikwiID when 5 then '사원' when 4 then '주임' when 3 then '대리' when 2 then '파트장' when 1 then '팀장' end as 'JikwiID'
+			, PassWord_Error_cnt, loginIP, loginDate, logoutDate, a.note
+		from tblUser a
+		left join tblSite b on a.SiteCode = b.SiteCode
+		left join tblItem_01 c on a.SiteCode = c.SiteCode and a.ItemGroupID = c.GroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+	</select>
+	
+	<select id="getUserDetail" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select 
+			a.SiteCode, SiteName, SawonNo, SawonName, UserID, UserPWD , d.UserGroupName , c.GroupName, a.Email, a.HomePhone, a.CellPhone  
+			, a.ZipCode, a.Address, a.SubAddress, a.Note, a.CHistory, a.PHistory, InDate, OutDate, a.JobStart
+			, gender, AuthType , BuseoID , JikwiID , State , BirthDay , BirthType , JikMooID
+		from tblUser a
+		left join tblSite b on a.SiteCode = b.SiteCode
+		left join tblItem_01 c on a.SiteCode = c.SiteCode and a.ItemGroupID = c.GroupID
+		left join tblusergroup d on a.SiteCode  = d.SiteCode and a.UserGroupID = d.UserGroupID 
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and SawonNo = #{SawonNo}
+		<!-- select 
+			a.UserPKID, a.SiteCode, SiteName, SawonNo, SawonName, UserID, UserPWD , d.UserGroupName , c.GroupName, a.Email, a.HomePhone, a.CellPhone  
+			, a.ZipCode, a.Address, a.SubAddress, a.Note, a.CHistory, a.PHistory, InDate, OutDate, a.JobStart
+			, case gender when 1 then '남자' else '여자' end as 'gender'
+			, case AuthType when 0 then '일반' when 1 then '강사' else '수납자' end as 'AuthType'
+			, case BuseoID when 5 then '운영팀' when 3 then '관리팀' end as 'BuseoID'
+			, case JikwiID when 36 then '사원' when 35 then '주임' when 34 then '대리' when 6 then '파트장' when 4 then '팀장' end as 'JikwiID'
+			, case State when 0 then '재직' else '퇴직' end as 'State'
+		from tblUser a
+		left join tblSite b on a.SiteCode = b.SiteCode
+		left join tblItem_01 c on a.SiteCode = c.SiteCode and a.ItemGroupID = c.GroupID
+		left join tblusergroup d on a.SiteCode  = d.SiteCode and a.UserGroupID = d.UserGroupID 
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and SawonNo = #{SawonNo} -->
+	</select>
+	
+	<update id="updateUser" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		update tblUser set 
+			UserID = #{UserID}
+			, UserPWD  = #{UserPWD}
+			, SawonName = #{SawonName}
+			, Gender = #{Gender}
+			, AuthType = #{AuthType}
+			, BirthDay = #{BirthDay}
+			, BirthType = #{BirthType}
+			, JikMooID = #{JikMooID}
+			, BuseoID = #{BuseoID}
+			, JikwiID = #{JikwiID}
+			, ItemGroupID = #{ItemGroupID}
+			, Email = #{Email}
+			, HomePhone = #{HomePhone}
+			, CellPhone = #{CellPhone}
+			, InDate = #{InDate}
+			, OutDate = #{OutDate}
+			, OutDate = #{OutDate}
+			, ZipCode = #{ZipCode}
+			, Address = #{Address}
+			, SubAddress = #{SubAddress}
+			, State = #{State}
+			, Note = #{Note}
+			, CHistory = #{Chistory}
+			, PHistory = #{Phistory}
+			<!-- , UserGroupID  = #{UserGroupID} -->
+			, JobStart = #{JobStart}
+			, LoginIP = #{LoginIP}
+			, LogoutDate = #{LogoutDate}
+			, UpdDate = sysdate() 
+			, UpdUserPKID = #{UpdUserPKID}
+		where
+			SiteCode = #{SiteCode}
+		and SawonNo = #{SawonNo} 
+	</update>
+	<insert id="insertUser" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		INSERT INTO uspot_test.tbluser
+			(SiteCode, SawonNo, SawonName, UserID, UserPWD, Gender, AuthType, SSN, BirthDay, BirthType, JikMooID, BuseoID, JikwiID, ItemGroupID, Email, HomePhone, CellPhone, InDate, State, OutDate, ZipCode, Address, SubAddress, Note, CHistory, PHistory, Upjang, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, JobStart)
+		values
+			(#{SiteCode}, #{SawonNo}, #{SawonName},#{UserID}, #{UserPWD}, #{Gender},#{AuthType}, #{ssn}, #{BirthDay},#{BirthType}, #{JikMooID}, #{BuseoID}, #{JikwiID}, #{ItemGroupID}, #{Email}, #{HomePhone}, #{CellPhone}, #{InDate}, #{State}, #{OutDate}, #{ZipCode}, #{Address}, #{SubAddress}, #{Note}, #{Chistory}, #{Phistory}, #{Upjang}, 'N', sysdate(), 0, sysdate(), 0, NULL)
+	</insert>
+	<select id="seleceUserID_Chk" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select UserID , SawonNo  from tbluser 
+		where 
+			UserID = #{UserID}
+		and IsDelete = 'N' 
+	</select>
+	<select id="seleceSawonNo_Chk" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select UserID , SawonNo  from tbluser 
+		where 
+			SawonNo = #{SawonNo}
+		and IsDelete = 'N' 
+	</select>
+	<insert id="insertUserPhoto" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		INSERT INTO uspot_test.tbluserphoto
+			(SiteCode, UserPKID, Photo)
+		VALUES
+			(#{SiteCode}, #{UserPKID}, #{Photo})
+	</insert>
+	<update id="deleteUser" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		update tbluser set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	SawonNo = #{SawonNo}
+	</update>
+	
+	
+	
+	<select id="userAuthorityGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select 
+			a.SiteCode, UserPKID,  SiteName, SawonNo, SawonName , UserID, d.UserGroupName 
+			, case gender when 0 then '여자' else '남자' end as 'gender'
+			, case AuthType when 0 then '일반' when 1 then '강사' else '수납자' end as 'AuthType'
+			, case BuseoID when 1 then '운영팀' when 2 then '관리팀' end as 'BuseoID'
+			, case JikwiID when 5 then '사원' when 4 then '주임' when 3 then '대리' when 2 then '파트장' when 1 then '팀장' end as 'JikwiID'
+			, c.GroupName , case State when 0 then '재직' when 1 then '휴직' else '퇴직' end as 'State'
+			, case JikMooID when 0 then '정규직' when 1 then '계약직' when 3 then '아르바이트' end as 'JikMooID'
+		from tblUser a
+		left join tblSite b on a.SiteCode = b.SiteCode
+		left join tblItem_01 c on a.SiteCode = c.SiteCode and a.ItemGroupID = c.GroupID
+		left join tblusergroup d on a.SiteCode  = d.SiteCode and a.UserGroupID = d.UserGroupID 
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+	</select>
+	
+	<select id="getUserAuthDetail" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select * from tbluser 
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and SawonNo = #{SawonNo}
+	</select>
+	
+	<update id="updateUserAuth" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		update tbluser set 
+			UserGroupID = #{UserGroupID}
+		where 	
+			SawonNo = #{SawonNo}
+	</update>
+	
+	<select id="userlogincheck" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select * from tbluser
+		where IsDelete = 'N'
+			and UserID = #{UserID}
+	</select>
+	<update id="passwordchange" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
+		update tbluser set
+			UserPWD = #{UserPWD}
+		where 
+			UserID = #{UserID}
+	</update>
+	<select id="tblauthgroupwheredelete" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select b.PGMID,b.PGMName from tblauthusergroup a 
+		left join tblpgm b on a.PGMPKID = b.PKID  
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'Y' 
+	</select>
+	<update id="changeYN" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		update tblauthusergroup set
+		<if test='Sel != null'>
+			Sel = #{Sel}
+		</if>
+		<if test='Ins != null'>
+			Ins = #{Ins}
+		</if>
+		<if test='Upd != null'>
+			Upd = #{Upd}
+		</if>
+		<if test='Del != null'>
+			Del = #{Del}
+		</if>
+		<if test='Excel != null'>
+			Excel = #{Excel}
+		</if>
+		<if test='Prt != null'>
+			Prt = #{Prt}
+		</if>
+		where pkid = #{pkid}
+	</update>
+	<select id="authusergrouplistN" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select * from tblauthusergroup a 
+		left join tblpgm b on  a.PGMPKID = b.PKID
+		left join tblpgmgroup c on b.PGMGroupID = c.PGMGroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'Y'
+		and UserGroupID = #{UserGroupID}
+		and b.PGMGroupID = #{PGMGroupID}
+	</select>
+	<update id="authorization" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		update tblauthusergroup set
+		IsDelete = 'N'
+		where 
+			PKID = #{pkid}
+	</update>
+	<update id="revauthority" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		update tblauthusergroup set
+		IsDelete = 'Y'
+		where 
+			PKID = #{pkid}
+	</update>
+	<update id="allchange" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+	<if test='IsDelete.equals("N")'>
+	update tblauthusergroup set
+	Sel = 'Y',
+	Ins = 'Y',
+	Upd = 'Y',
+	Del = 'Y',
+	Excel = 'Y',
+	Prt = 'Y'
+	where 
+		SiteCode = #{SiteCode}
+	and UserGroupID = #{UserGroupID}
+	and IsDelete  = 'N'
+	</if>
+	<if test='IsDelete.equals("Y")'>
+	update tblauthusergroup set
+	Sel = 'N',
+	Ins = 'N',
+	Upd = 'N',
+	Del = 'N',
+	Excel = 'N',
+	Prt = 'N'
+	where 
+		SiteCode = #{SiteCode}
+	and UserGroupID = #{UserGroupID}
+	and IsDelete  = 'N'	
+	</if>
+	</update>
+	<select id="userlistBytype" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
+		select * from tblUser
+		where
+    	SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and Type = #{Type}
+	</select>
+	<select id="tblauthusergroupbyusergroup" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select * from tblAuthUserGroup
+		where
+		    SiteCode = #{SiteCode}
+		and UserGroupID = #{UserGroupID}
+		and IsDelete = 'N'
+	</select>
+</mapper>

@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="item">
+
+	<select id="listItemCode" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
+		select * 
+			from tblitem_01 
+		where 	
+			SiteCode = #{SiteCode}
+		<if test='IsDelete == "N"'>
+			and IsDelete = 'N'
+		</if>
+		<if test='IsDelete == "Y"'>
+			and IsDelete = 'Y'
+		</if>
+		order by GroupID
+	</select>
+	<insert id="item01Insert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
+		INSERT INTO tblitem_01
+			(GroupID, SiteCode, GroupName, GroupCategoryCD, JSType, JungsiType, Jungsi, 
+			Jungsi1, Jungsi2, Jungsi3, FromDate, ToDate, SortOrder, IsDelete, AddDate, AddUserPKID,
+			UpdDate, UpdUserPKID, RFromDate, RToDate, Season, webyn, JungSi1STime, JungSi1ETime, JungSi2STime, JungSi2ETime, 
+			JungSi3_MonthGbn, JungSiType_1_Stop, JungSi1Inlive, AgainMonth, JungsiAddType, JungsiAddFromDate, JungsiAddToDate,
+			 PayDelayDay, PayDelayTime, Jungsi1PayFromDate, Jungsi1PayToDate, JungSi1PaySTime, JungSi1PayETime, JungSiAddSTime,
+			  JungSiAddETime, park_time, JungSiLotteryDate, JungSiLotteryFromDate, JungSiLotteryToDate, JungSiLotteryPayFromDate,
+			   JungSiLotteryPayToDate, JungSiLotteryAddFromDate, JungSiLotteryAddToDate, ItemRejectCnt, MonthSelNo)
+		VALUES
+			(#{GroupID}, #{SiteCode}, #{GroupName}, #{GroupCategoryCD}, #{jsType}, #{JungSiType}, #{JungSi},
+			 #{JungSi1}, #{JungSi2}, #{JungSi3}, #{FromDate}, #{ToDate}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID},
+			 #{UpdDate}, #{UpdUserPKID}, #{rFromDate}, #{rToDate}, #{Season}, #{WebYN}, #{JungSi1STime}, #{JungSi1ETime}, #{JungSi2STime}, #{JungSi2ETime}, 
+			 #{JungSi3MonthGbn}, #{JungSiType1Stop}, #{JungSi1Inlive}, #{AgainMonth}, #{JungSiAddType}, #{JungSiAddFromDate}, #{JungSiAddToDate}, 
+			 #{PayDelayDay}, #{PayDelayTime}, #{JungSi1PayFromDate}, #{JungSi1PayToDate}, #{JungSi1PaySTime}, #{JungSi1PayETime}, #{JungSiAddSTime}, 
+			 #{JungSiAddETime}, #{ParkTime}, #{JungSiLotteryDate}, #{JungSiLotteryFromDate}, #{JungSiLotteryToDate}, #{JungSiLotteryPayFromDate}, 
+			 #{JungSiLotteryPayToDate}, #{JungSiLotteryAddFromDate}, #{JungSiLotteryAddToDate}, #{ItemRejectCnt}, #{MonthSelNo} );
+	</insert>
+	<select id="getSortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			tblitem_01 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<select id="getGroupID" resultType="int">
+		select max(GroupID) 
+		from 
+			tblitem_01 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<select id="getItem01" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
+		select * from tblItem_01
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and GroupID = #{GroupID}
+	</select>
+	<update id="updateItem01" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
+		update tblitem_01 set 
+			GroupName = #{GroupName}
+			, JSType = #{jsType}
+			, Jungsi1 = #{JungSi1}
+			, Jungsi2  = #{JungSi2}
+			, Jungsi3 = #{JungSi3}
+			, FromDate  = #{FromDate}
+			, ToDate  = #{ToDate}
+			, UpdDate = sysdate()
+			, UpdUserPKID = #{UpdUserPKID}
+			, webyn = #{WebYN}
+			, JungSi1STime = #{JungSi1STime}
+			, JungSi1ETime = #{JungSi1ETime}
+			, JungSi2STime = #{JungSi2STime}
+			, JungSi2ETime = #{JungSi2ETime}
+			, JungSi3_MonthGbn = #{JungSi3MonthGbn}
+			, JungSiType_1_Stop = #{JungSiType1Stop}
+			, JungSi1Inlive = #{JungSi1Inlive}
+			, AgainMonth = #{AgainMonth}
+			, PayDelayDay = #{PayDelayDay}
+			, JungSiLotteryDate = #{JungSiLotteryDate}
+			, JungSiLotteryFromDate = #{JungSiLotteryFromDate}
+			, JungSiLotteryToDate = #{JungSiLotteryToDate}
+			, JungSiLotteryPayFromDate = #{JungSiLotteryPayFromDate}
+			, JungSiLotteryPayToDate = #{JungSiLotteryPayToDate}
+			, JungSiLotteryAddFromDate = #{JungSiLotteryAddFromDate}
+			, JungSiLotteryAddToDate = #{JungSiLotteryAddToDate}
+			, ItemRejectCnt = #{ItemRejectCnt}
+			, MonthSelNo = #{MonthSelNo}
+		where 	
+			SiteCode =#{SiteCode}
+		and IsDelete = 'N'
+		and GroupID = #{GroupID}
+	</update>
+	
+	
+	<select id="listItem02" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+		select *, b.GroupName, a.SubGroupName, InTime, InEndTime, a.SortOrder from tblItem_02 a
+		left join tblItem_01 b on a.SiteCode = b.SiteCode and a.GroupID = b.GroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		order by a.SortOrder
+	</select>
+	<select id="getitem02SortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			tblitem_02 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<insert id="item02Insert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+		INSERT INTO tblitem_02
+			(SiteCode, SubGroupName, GroupID, InTime, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, InEndTime)
+		values
+			(#{SiteCode}, #{SubGroupName}, #{GroupID}, #{InTime}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, NULL, 0, #{InEndTime});
+	</insert>
+	
+	<select id="liseItem03" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+		select * from tblitem_03
+		where 	
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<insert id="item03Insert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+		INSERT INTO tblitem_03
+			(SiteCode, LevelName, DefCode, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		values
+			(#{SiteCode}, #{LevelName}, #{DefCode}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, NULL, 0);		
+	</insert>
+	<select id="getitem03SortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			tblitem_03
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<select id="getitem03DefCode" resultType="int">
+		select max(DefCode) 
+		from 
+			tblitem_03
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	 <select id="listSelectItemY" resultType="egovframework.veterans.com.cmm.service.vo.selectitem" parameterType="egovframework.veterans.com.cmm.service.vo.selectitem"> 
+		select * from selectitem a 
+		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID  
+		where 
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete  = 'N'
+		<!-- <if test="IsUse == 1">
+		and IsUse = 'Y'
+		</if>
+		<if test="IsUse == 2">
+		and IsUse = 'N'
+		</if>
+		<if test="IsUse == 3">
+		and IsDelete = 'Y'
+		</if> -->
+		<if test="Type == 1">
+		and Type = 'G'
+		</if>
+		<if test="Type == 2">
+		and Type = 'S'
+		</if>
+	</select> 
+	<select id="listSelectItemN" parameterType="egovframework.veterans.com.cmm.service.vo.selectitem" resultType="egovframework.veterans.com.cmm.service.vo.selectitem"> 
+		select * from selectitem a 
+		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID  
+		where 
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete  = 'N'
+		and IsUse = 'N'
+		<if test="Type == 1">
+		and Type = 'G'
+		</if>
+		<if test="Type == 2">
+		and Type = 'S'
+		</if>
+	</select>
+	<select id="listSelectItemIsDelte" parameterType="egovframework.veterans.com.cmm.service.vo.selectitem" resultType="egovframework.veterans.com.cmm.service.vo.selectitem"> 
+		select * from selectitem a 
+		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID  
+		where 
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete  = 'Y'
+		<if test="Type == 1">
+		and Type = 'G'
+		</if>
+		<if test="Type == 2">
+		and Type = 'S'
+		</if>
+	</select>
+	
+	<select id="itemCode_Chk" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem" resultType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		select ItemCode from tblitem 
+		where
+			SiteCode  = #{SiteCode}
+		and ItemCode = #{ItemCode}
+	</select>
+	<insert id="itemInsert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		INSERT INTO tblitem
+			(SiteCode, ItemCode, Type, GroupID, SubGroupID, LevelID, DaeSangID, FromTime, ToTime,
+			 ClassCnt, WeekYN, MonIn, TuesIn, WednesIn, ThursIn, FriIn, SaturIn, SunIn, Holy, HolyIn,
+			  OffMax, OnMax, DamDangUserPKID, Salary_Type, Company_Per, Sawon_Per, Upjang, chkPeriod, FromDate, ToDate,
+			  YakChing, DefPrice, Price1, Price2, Price3, Price4, Price5, NVAT, InCnt, IsUse, Intro, Detail, Note, Picture,
+			   WebYN, ItemMonth, Admission, DcNoChk, IF_Flag, IF_DateTime, ParkingTime, ageStart, ageEnd, WebEnd, ToEndDate, 
+			   IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, Mon, Tues, Wednes, Thurs, Fri, Satur, Sun, DCDS, UseLocker, 
+			   RegMonth, AgeYearGbn, DcNo3MonthChk, RecommendGbn, RecommendGbn_Sort, OldAgeDCNoGbn, LotteryGbn, inliveRegster, Bigo)
+		VALUES
+			(#{SiteCode}, #{ItemCode}, #{Type}, #{GroupID}, #{SubGroupID}, #{LevelID}, #{DaeSangID}, #{FromTime}, #{ToTime},
+			 #{ClassCnt}, #{WeekYN}, #{MonIn}, #{TuesIn}, #{WednesIn}, #{ThursIn}, #{FriIn}, #{SaturIn}, #{SunIn}, #{Holy}, #{HolyIn},
+			  #{OffMax}, #{OnMax}, #{DamDangUserPKID}, #{SalaryType}, #{CompanyPer}, #{SawonPer}, #{Upjang}, #{chkPeriod}, #{FromDate}, #{ToDate}, 
+			  #{YakChing}, #{DefPrice}, #{Price1}, #{Price2}, #{Price3}, #{Price4}, 0, #{nvat}, #{InCnt}, #{IsUse}, #{Intro}, #{Detail}, #{Note}, #{Picture}, 
+			  #{WebYN}, #{ItemMonth}, #{Admission}, #{DcNoChk}, #{IfFlag}, #{IfDateTime}, #{ParkingTime}, #{ageStart}, #{ageEnd}, #{WebEnd}, #{ToEndDate}, 
+			  'N', sysdate(), #{AddUserPKID}, NULL, 0, #{Mon}, #{Tues}, #{Wednes}, #{Thurs}, #{Fri}, #{Satur}, #{Sun}, #{DCDS}, 'Y', 
+			  #{RegMonth}, #{AgeYearGbn}, #{DcNo3MonthChk}, #{RecommendGbn}, #{RecommendGbnSort}, #{OldAgeDCNoGbn}, #{LotteryGbn}, #{inliveRegster}, #{Bigo})
+	</insert>
+	<select id="getItemCode" resultType="int">
+		select max(ItemCode) 
+		from 
+			tblitem
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<update id="itemUpdate" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		UPDATE tblitem SET 
+			SiteCode = #{SiteCode},
+			ItemCode = #{ItemCode},
+			Type = #{Type},
+			GroupID = #{GroupID},
+			SubGroupID = #{SubGroupID},
+			LevelID = #{LevelID},
+			DaeSangID = #{DaeSangID},
+			FromTime = #{FromTime}, 
+			ToTime = #{ToTime}, 
+			ClassCnt = #{ClassCnt}, 
+			MonIn = #{MonIn},
+			TuesIn = #{TuesIn}, 
+			WednesIn = #{WednesIn},
+			ThursIn = #{ThursIn}, 
+			FriIn = #{FriIn}, 
+			SaturIn = #{SaturIn},
+			SunIn = #{SunIn}, 
+			Holy = #{Holy},
+			HolyIn = #{HolyIn}, 
+			OffMax = #{OffMax},
+			OnMax = #{OnMax},
+			DamDangUserPKID = #{DamDangUserPKID},
+			Salary_Type = #{SalaryType},
+			Company_Per = #{CompanyPer}, 
+			Sawon_Per = #{SawonPer},
+			chkPeriod = #{chkPeriod},
+			FromDate = #{FromDate},
+			ToDate = #{ToDate}, 
+			YakChing = #{YakChing}, 
+			DefPrice = #{DefPrice}, 
+			Price1 = #{Price1},
+			Price2 = #{Price2}, 
+			Price3 = #{Price3}, 
+			Price4 = #{Price4},
+			Price5 = #{Price5}, 
+			NVAT = #{nvat}, 
+			InCnt = #{InCnt}, 
+			IsUse = #{IsUse}, 
+			Intro = #{Intro}, 
+			Detail = #{Detail}, 
+			Note = #{Note}, 
+			Picture = #{Picture}, 
+			WebYN = #{WebYN}, 
+			ItemMonth = #{ItemMonth}, 
+			DcNoChk = #{DcNoChk}, 
+			ParkingTime = #{ParkingTime}, 
+			ageStart = #{ageStart}, 
+			ageEnd = #{ageEnd},
+			WebEnd = #{WebEnd}, 
+			IsDelete = #{IsDelete}, 
+			UpdDate = sysdate(), 
+			UpdUserPKID = #{UpdUserPKID}, 
+			Mon = #{Mon},	
+			Tues = #{Tues},
+			Wednes = #{Wednes}, 
+			Thurs = #{Thurs}, 
+			Fri = #{Fri}, 
+			Satur = #{Satur}, 
+			Sun = #{Sun},
+			RegMonth = #{RegMonth},
+			AgeYearGbn = #{AgeYearGbn}, 
+			DcNo3MonthChk = #{DcNo3MonthChk},
+			RecommendGbn = #{RecommendGbn}, 
+			OldAgeDCNoGbn = #{OldAgeDCNoGbn}, 
+			LotteryGbn = #{LotteryGbn}, 
+			inliveRegster = #{inliveRegster},
+			Bigo = #{Bigo}
+		WHERE 
+			ItemID = #{ItemID} 
+		AND SiteCode = #{SiteCode}
+	</update>
+
+	<select id="getTblItem" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem" resultType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		select * from tblitem a
+		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID 
+		where 
+			a.SiteCode = #{SiteCode}
+		and ItemCode = #{ItemCode}
+	</select>
+	<select id="item01list" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
+		select * from tblItem_01 
+		where
+		    SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		order by SortOrder
+	</select>
+	<select id="item02list" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+		select * from tblItem_02
+		where
+		    GroupID = #{GroupID}
+		and IsDelete = 'N'
+		order by SortOrder
+	</select>
+	<select id="item03list" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+		select * from tblItem_03
+		where
+		    SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		order by SortOrder
+	</select>
+	<select id="applicationlist" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.applicationlist">
+		SELECT A.SiteName,
+		 CASE
+	        WHEN A.isrereg = 0 THEN '등록'
+	        WHEN A.isrereg = 1 THEN '재등록'
+        ELSE ''
+   		END AS isrereg
+		,
+		CASE
+	        WHEN A.State = 'A' THEN '현재원'
+	        WHEN A.State = 'B' THEN '만기'
+	        WHEN A.State = 'C' THEN '휴회중'
+	        WHEN A.State = 'D' THEN '휴회'
+	        WHEN A.State = 'E' THEN '환불대기'
+	        WHEN A.State = 'F0' THEN '환불'
+	        WHEN A.State = 'G' THEN '현재원'
+	        WHEN A.State = 'H' THEN '반변경'
+	        WHEN A.State = 'Y' THEN '휴회복귀'
+	        ELSE ''
+    	END AS STATE
+		, A.SALENO, A.Group_Saleno, A.CUSTCODE, B.Name AS Cust_Name, B.Gender AS Cust_Gender, B.TYPENAME,'' AS cust_photo,
+		       A.SALEDATE, A.rFROMDATE AS FROMDATE, A.rTODATE AS TODATE, A.REGMONTH, A.REALPRICE,
+		       C.CATEGORYNAME, C.JUNGNAME, C.DAYNAME, C.FROMTIME, C.LEVELNAME, d.UserPKID, d.SawonName,
+		       C.GSortOrder AS typecode, C.SGSortOrder AS namecode, 0 AS daycode, c.FromTime, C.Lsortorder AS levelcode, d.SawonNo AS userid, D.SawonName AS username,
+		       B.HOMEPHONE, B.CELLPHONE,
+		       B.ZipCode AS cust_zipcode, B.Address AS cust_address, B.SubAddress, A.Note, B.AGE, A.AddDate
+		FROM (
+		    SELECT (SELECT SiteName FROM tblSite WHERE SiteCode = T.SiteCode) AS SiteName,
+		           T.ISREREG AS 구분, T.STATE, T.SALENO, t.Group_Saleno, T.ItemPKID, T.CUSTCODE, T.SALEDATE, T.rFROMDATE, T.rTODATE,
+		           T.regmonth, T.RealPrice, T.isrereg, T.UserPKID, T.Note, T.SiteCode, T.AddDate
+		    FROM FMSC_S01 T
+		    WHERE (
+		        (T.SiteCode = #{fmsc_s01.SiteCode}) 
+		    and (T.IsChangeItem = 0)
+		    and (T.IsDelete = 'N')
+		    <if test="learnstartday.equals('true')">
+		    and ( LEFT(T.RFromDate, 10)BETWEEN #{fmsc_s01.FromDate} AND #{fmsc_s01.ToDate})
+		    </if>
+		    <if test="jubsuday.equals('true')">
+		    and ( LEFT(T.SALEDATE, 10)BETWEEN #{fmsc_s01.FromDate} AND #{fmsc_s01.ToDate})
+		    </if>
+		    <if test="fmsc_s01.IsReReg != null and fmsc_s01.IsReReg != ''">
+		    and t.IsReReg = #{fmsc_s01.IsReReg}
+		    </if>
+		    and T.CurState >= 1
+		    )
+		) A
+		LEFT OUTER JOIN SelectMember B ON A.CUSTCODE = B.MemberID
+		LEFT OUTER JOIN SELECTITEMBYItemCode C ON A.SiteCode = C.SiteCode AND A.ItemPKID = C.ItemID AND c.isdelete = 'N'
+		LEFT OUTER JOIN tblUser D ON A.SiteCode = D.SiteCode AND A.UserPKID = D.UserPKID
+		where
+		C.IsDelete = 'N'
+		<if test="GroupIDs != null and !GroupIDs.isEmpty()">
+    	and C.GroupID in 
+    	<foreach collection="GroupIDs" item="GroupID" open="(" separator="," close=")">
+        #{GroupID}
+    	</foreach>
+		</if>
+		<if test="SubGroupIDs != null and !SubGroupIDs.isEmpty()">
+    	and C.SubGroupID in 
+    	<foreach collection="SubGroupIDs" item="SubGroupID" open="(" separator="," close=")">
+        #{SubGroupID}
+    	</foreach>
+		</if>
+		<if test="DayNames != null and !DayNames.isEmpty()">
+    	and C.DayName in 
+    	<foreach collection="DayNames" item="DayName" open="(" separator="," close=")">
+        #{DayName}
+    	</foreach>
+		</if>
+		<if test="FromTimes != null and !FromTimes.isEmpty()">
+    	and left(C.FromTime,2) in 
+    	<foreach collection="FromTimes" item="FromTime" open="(" separator="," close=")">
+        #{FromTime}
+    	</foreach>
+		</if>
+		<if test="LevelIDs != null and !LevelIDs.isEmpty()">
+    	and C.LevelID in 
+    	<foreach collection="LevelIDs" item="LevelID" open="(" separator="," close=")">
+        #{LevelID}
+    	</foreach>
+		</if>
+		<if test="UserPKIDs != null and !UserPKIDs.isEmpty()">
+    	and D.UserPKID in 
+    	<foreach collection="UserPKIDs" item="UserPKID" open="(" separator="," close=")">
+        #{UserPKID}
+    	</foreach>
+		</if>
+		<if test="membercategory.equals('회원번호')">
+			and B.MemberID like CONCAT('%', #{membertext}, '%')
+		</if>
+		<if test="membercategory.equals('회원성명')">
+			and B.Name like CONCAT('%', #{membertext}, '%')
+		</if>
+		ORDER BY C.SiteCode, C.GSortOrder, C.SGSortOrder, C.FROMTIME, C.LSortOrder, A.SALEDATE, A.구분, A.AddDate desc
+	</select>
+	<select id="daylist" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.selectitembyitemcode">
+		select  ItemCode,DayName from SelectItemByItemCode
+		where
+		    SiteCode = #{SiteCode}
+		group by DayName
+		order by DayName
+	</select>
+	
+	<select id="maturitylist" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.maturitylist">
+		SELECT A.SiteName,
+		CASE
+	        WHEN A.isrereg = 0 THEN '등록'
+	        WHEN A.isrereg = 1 THEN '재등록'
+	        ELSE ''
+	    END AS isrereg
+	, A.ItemPKID, A.CUSTCODE, B.Name as Cust_Name, B.Gender As Cust_Gender, B.TYPENAME,'' as cust_photo, 
+	 LEFT(A.SALEDATE,10) AS SaleDate, '' AS ChangeStateDate, A.FROMDATE, A.TODATE, A.REGMONTH, 
+	 C.CATEGORYNAME, C.JUNGNAME, C.DAYNAME, C.FROMTIME, C.LEVELNAME, d.UserPKID, d.SawonName
+	 , C.GSortOrder as typecode, C.SGSortOrder as namecode, c.FromTime, C.Lsortorder as levelcode, d.SawonNo as userid, D.SawonName as username
+	 , B.HOMEPHONE as HOMEPHONE, B.CELLPHONE as CELLPHONE
+	 , B.EmgPhone,4 as EmgPhone 
+	 , B.ZipCode, B.Address, B.SubAddress as SubAddress, A.Note,
+	 CASE
+	        WHEN A.State = 'A' THEN '현재원'
+	        WHEN A.State = 'B' THEN '만기'
+	        WHEN A.State = 'C' THEN '휴회중'
+	        WHEN A.State = 'D' THEN '휴회'
+	        WHEN A.State = 'E' THEN '환불대기'
+	        WHEN A.State = 'F0' THEN '환불'
+	        WHEN A.State = 'G' THEN '현재원'
+	        WHEN A.State = 'H' THEN '반변경'
+	        WHEN A.State = 'Y' THEN '휴회복귀'
+	        ELSE ''
+	    END AS STATE
+	 FROM (
+	 SELECT (Select SiteName From tblSite Where SiteCode = K.SiteCode) as SiteName,
+	 K.ISREREG, K.STATE, K.SALENO, K.ItemPKID, K.CUSTCODE, K.SALEDATE,
+	 K.FROMDATE, K.TODATE, K.REGMONTH, K.UserPKID, K.Note, K.SiteCode
+	 FROM FMSC_S01 K 
+	WHERE K.SiteCode = #{fmsc_s01.SiteCode} AND K.ToDate BETWEEN #{fmsc_s01.FromDate} AND #{fmsc_s01.ToDate} AND K.CURSTATE = 1 and K.isdelete = 'N' 
+	 AND K.SALENO NOT IN(SELECT SALENO FROM FMSC_S04 WHERE SiteCode = #{fmsc_s01.SiteCode}) 
+	 AND K.SALENO NOT IN(SELECT SALENO FROM tblChangeItem WHERE SiteCode = #{fmsc_s01.SiteCode}) 
+	 AND K.SALENO NOT IN(SELECT YD_SALENO FROM FS_YANGDO WHERE SiteCode = #{fmsc_s01.SiteCode}) 
+	 AND K.SALENO NOT IN(SELECT YS_SALENO FROM FS_YANGDO WHERE SiteCode = #{fmsc_s01.SiteCode}) 
+	 AND K.SALENO NOT IN(SELECT SALENO FROM FMSC_S03 WHERE SiteCode =#{fmsc_s01.SiteCode}) 
+	 UNION ALL 
+	 SELECT (Select SiteName From tblSite Where SiteCode = K.SiteCode) as SiteName, 
+	 K.IsReReg,  K.State, K.SaleNo, K.ItemPKID, K.CUSTCODE, K.SaleDate, 
+	 K.ChangeDate, K.ToDate, K.RegMonth, K.UserPKID, K.Note, K.SiteCode 
+	 FROM IW_ChangeItemAdd K
+	WHERE K.SiteCode =#{fmsc_s01.SiteCode} AND K.ToDate BETWEEN #{fmsc_s01.FromDate} AND #{fmsc_s01.ToDate}
+	 UNION ALL 
+	 SELECT (Select SiteName From tblSite Where SiteCode = K.SiteCode) as SiteName, 
+	 K.IsReReg, K.State, K.SaleNo, K.ItemPKID, K.CUSTCODE, K.SaleDate, 
+	 K.ReFromDate, K.ReToDate, K.RegMonth, K.UserPKID, K.Note, K.SiteCode 
+	 FROM IW_DELAYLIST K
+	WHERE K.SiteCode = #{fmsc_s01.SiteCode} AND K.RETODATE BETWEEN #{fmsc_s01.FromDate} AND #{fmsc_s01.ToDate}
+	) A LEFT OUTER JOIN SelectMember B  ON A.CUSTCODE = B.MemberID 
+	 LEFT OUTER JOIN SELECTITEMBYItemCode C ON A.SiteCode = C.SiteCode AND A.ItemPKID = C.ItemID 
+	 LEFT OUTER JOIN tblUser D ON A.SiteCode = D.SiteCode AND A.UserPKID = D.UserPKID 
+	 ORDER BY C.GSortOrder, C.SGSortOrder, C.FROMTIME, C.LSortOrder, A.ToDATE, B.NAME
+	</select>
+	
+	<select id="findItem" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.selectitem">
+		SELECT * FROM SELECTITEM
+		WHERE 
+			SiteCode = #{SiteCode}
+		AND (#{findcategory} = '0' AND GroupName LIKE CONCAT('%', #{findvalue}, '%'))
+		OR (#{findcategory} = '1' AND SubGroupName LIKE CONCAT('%', #{findvalue}, '%'))
+		OR (#{findcategory} = '2' AND LevelName LIKE CONCAT('%', #{findvalue}, '%'))
+		OR (#{findcategory} = '3' AND YakChing LIKE CONCAT('%', #{findvalue}, '%'))
+	</select>
+</mapper>
