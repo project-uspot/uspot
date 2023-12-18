@@ -91,7 +91,7 @@
                     editButton.text('취소');
 
                     // Save 버튼의 disabled 속성 제거하고 텍스트 변경
-                    saveButton.removeAttr('disabled').text('저장');
+                    saveButton.removeAttr('disabled').text('저장(F4)');
 
                     siteField.removeAttr('disabled');
 
@@ -136,10 +136,10 @@
                     nameField.val(originalName);
                     h3Element.text(originalName); // 초기 텍스트로 변경
                     h3Element.show(); // 텍스트 표시
-                    editButton.text('수정');
+                    editButton.text('수정(F3)');
 
                     // Save 버튼의 disabled 속성 추가하고 텍스트 변경
-                    saveButton.attr('disabled', 'disabled').text('저장');
+                    saveButton.attr('disabled', 'disabled').text('저장(F4)');
                     siteField.attr('disabled', 'disabled').val(originalSite);
                     birthDayField.attr('readonly', 'readonly').val(originalbirthDay);
                     ageField.attr('readonly', 'readonly').val(originalage);
@@ -216,7 +216,7 @@
                     <div class="col-sm-6 col-md-2">
                         <div class="input-group">
                             <div class="input-group-text" id="basic-addon2">회원조회</div>
-                            <input class="form-control" id="memberfind" type="text" placeholder="검색어" aria-describedby="basic-addon2" />
+                            <input class="form-control" id="memberfind" type="text" placeholder="검색어" aria-describedby="basic-addon2" onkeydown="handleKeyPress(event)"/>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-1" style="margin-top: -1px;">
@@ -230,6 +230,12 @@
                         <button class="btn btn-outline-info me-1 mb-1" type="button" id="findbutton">조회</button>
                     </div>
                     <script type="text/javascript">
+                    function handleKeyPress(event) {
+                    	  if (event.key === "Enter") {
+                    	    $('#findbutton').trigger('click');
+                    	  }
+                    	}
+                    
                         $('#findbutton').click(function() {
                             findvalue = document.getElementById('memberfind').value;
                             findcategory = document.getElementById('memberfindcategory').value;
@@ -285,7 +291,7 @@
                         });
                     </script>
                     <div class="col-auto">
-                        <div class="row g-3" style="margin-left: 369px;">
+                        <div class="row g-3" style="margin-left: 249px;">
                             <div class="col-auto">
                                 <%-- <div class="btn-group  btn-group-sm mt-0 ml-1" role="group" aria-label="First group" style="left: -70px;">
 									<button class="btn btn-secondary" type="button" onclick="location.href='membermove?movetype=minus&move=end'"><span data-feather="chevrons-left"></span></button>
@@ -293,11 +299,11 @@
 					    			<button class="btn btn-secondary" type="button" onclick="location.href='membermove?MemberID='+${tblmember.memberID}+'&movetype=plus'"><span data-feather="chevron-right"></span></button>
 					    			<button class="btn btn-secondary" type="button" onclick="location.href='membermove?movetype=plus&move=end'"><span data-feather="chevrons-right"></span></button>
 				  				</div> --%>
-                                <button class="btn btn-info" type="button" onclick="location.href='memberinsert'">신규</button>
-                                <button class="btn btn-warning me-1 mb-1" type="button" id="updatebutton">수정</button>
-                                <button class="btn btn-success me-1 mb-1" type="submit" disabled="disabled">저장</button>
-                                <button class="btn btn-danger me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="fa-solid fa-trash-can me-2"></span>탈회</button>
-                                <button class="btn btn-secondary me-1 mb-1" type="button" onclick="membercard()"><span class="fa-solid far fa-address-card me-2"></span>카드발급</button>
+                                <button class="btn btn-info" type="button" onclick="location.href='memberinsert'">신규(F2)</button>
+                                <button class="btn btn-warning me-1 mb-1" type="button" id="updatebutton">수정(F3)</button>
+                                <button class="btn btn-success me-1 mb-1" type="submit" disabled="disabled" id="savebutton">저장(F4)</button>
+                                <button class="btn btn-danger me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="deletebutton"><span class="fa-solid fa-trash-can me-2"></span>탈회(F6)</button>
+                                <button class="btn btn-secondary me-1 mb-1" type="button" onclick="membercard()"><span class="fa-solid far fa-address-card me-2"></span>카드발급(F7)</button>
                             </div>
                             <script type="text/javascript">
                                 function membercard() {
@@ -319,7 +325,7 @@
                                 <div class="card-body d-flex flex-column justify-content-between pb-3">
                                     <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
                                         <div class="col-12 col-sm-auto mb-sm-2">
-                                            <div class="avatar avatar-5xl">
+                                            <div class="avatar avatar-5xl ms-3">
                                                 <img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/team/15.webp" />
                                             </div>
                                         </div>
@@ -332,69 +338,77 @@
                                                 <label class="form-check-label text-9000" for="fragileCheck">대관팀</label>
                                             </p>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 mb-2" style="padding-left: 170px; margin-top: -70px; width: 350px;">
-                                        <div class="form-floating">
-                                            <c:choose>
-                                                <c:when test="${tblmember.siteCode eq '10001'}">
-                                                    <select class="form-select text-primary" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:when test="${tblmember.siteCode eq '10002'}">
-                                                    <select class="form-select text-danger" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:when test="${tblmember.siteCode eq '10003'}">
-                                                    <select class="form-select text-success" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:when test="${tblmember.siteCode eq '10004'}">
-                                                    <select class="form-select text-info" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:when test="${tblmember.siteCode eq '10005'}">
-                                                    <select class="form-select text-warning" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:when test="${tblmember.siteCode eq '10006'}">
-                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <!--  <select class="form-select" id="SiteCode" name="SiteCode" disabled="disabled">  -->
-                                            <option value="${tblmember.siteCode}" selected="selected">
-                                                <c:forEach var="site" items="${sitelist}">
-                                                    <c:if test="${tblmember.siteCode == site.siteCode}">
-                                                        ${site.siteName}
-                                                    </c:if>
-                                                </c:forEach>
-                                            </option>
-                                            <c:forEach var="sitevalue" items="${sitelist}">
-                                                <c:choose>
-                                                    <c:when test="${sitevalue.siteCode eq '10001'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-primary">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:when test="${sitevalue.siteCode eq '10002'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-danger">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:when test="${sitevalue.siteCode eq '10003'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-success">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:when test="${sitevalue.siteCode eq '10004'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-info">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:when test="${sitevalue.siteCode eq '10005'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-warning">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:when test="${sitevalue.siteCode eq '10006'}">
-                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                            </select>
-                                            <label for="state">주 이용시설</label>
-                                        </div>
-                                    </div>
+                                        <div class="row">
+                                        	<div class="col-auto">
+		                                        <div class="btn-group btn-group-sm mt-2" role="group" aria-label="...">
+												  <button class="btn btn-secondary" type="button">촬영</button>
+												  <button class="btn btn-secondary" type="button">불러오기</button>
+												  <button class="btn btn-secondary" type="button">삭제</button>
+												</div>
+										    </div>
+										    <div class="col-auto">
+										    	<div class="form-floating" style="margin-top: -50px; margin-left: -36px;">
+		                                            <c:choose>
+		                                                <c:when test="${tblmember.siteCode eq '10001'}">
+		                                                    <select class="form-select text-primary" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:when test="${tblmember.siteCode eq '10002'}">
+		                                                    <select class="form-select text-danger" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:when test="${tblmember.siteCode eq '10003'}">
+		                                                    <select class="form-select text-success" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:when test="${tblmember.siteCode eq '10004'}">
+		                                                    <select class="form-select text-info" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:when test="${tblmember.siteCode eq '10005'}">
+		                                                    <select class="form-select text-warning" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:when test="${tblmember.siteCode eq '10006'}">
+		                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:when>
+		                                                <c:otherwise>
+		                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
+		                                                </c:otherwise>
+		                                            </c:choose>
+                                           						<option value="${tblmember.siteCode}" selected="selected">
+					                                                <c:forEach var="site" items="${sitelist}">
+					                                                    <c:if test="${tblmember.siteCode == site.siteCode}">
+					                                                        ${site.siteName}
+					                                                    </c:if>
+					                                                </c:forEach>
+                                            					</option>
+                                            					<c:forEach var="sitevalue" items="${sitelist}">
+					                                                <c:choose>
+					                                                    <c:when test="${sitevalue.siteCode eq '10001'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-primary">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:when test="${sitevalue.siteCode eq '10002'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-danger">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:when test="${sitevalue.siteCode eq '10003'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-success">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:when test="${sitevalue.siteCode eq '10004'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-info">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:when test="${sitevalue.siteCode eq '10005'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-warning">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:when test="${sitevalue.siteCode eq '10006'}">
+					                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
+					                                                    </c:when>
+					                                                    <c:otherwise>
+					                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
+					                                                    </c:otherwise>
+					                                                </c:choose>
+					                                            </c:forEach>
+                                            				</select>
+                                            				<label for="state">주 이용시설</label>
+                                        					</div>
+										    			</div>
+									    			</div>
+                                     			</div>
                                     <div class="d-flex flex-between-center border-top border-dashed border-300 pt-4">
                                         <div class="col-sm-6 col-md-4">
                                             <h6 class="text-primary">생년월일</h6>
@@ -620,13 +634,13 @@
         <div class="col-12 col-xxl-8">
             <div class="card h-100">
                 <div class="card-body pb-3">
-                    <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>신규등록</button>
-                    <button class="btn btn-soft-secondary" type="button"><span data-feather="file-text"></span>재등록</button>
-                    <button class="btn btn-soft-success" type="button"><span data-feather="repeat"></span>반변경</button>
-                    <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>환불</button>
-                    <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>휴회</button>
-                    <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>사물함 임대</button>
-                    <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>기타매출등록</button>
+                    <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
+                    <button class="btn btn-soft-secondary" type="button"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
+                    <button class="btn btn-soft-success" type="button"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
+                    <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
+                    <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
+                    <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(F10)</button>
+                    <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록</button>
                     <script type="text/javascript">
                     var myPopup;
 
@@ -647,6 +661,32 @@
                     function openpop(url,windowFeatures) {
                     	window.open(url, "_blank", windowFeatures);
 					}
+                    document.addEventListener('keydown', function(event) {
+                    	if (event.keyCode === 113) {
+                    		//f2
+                    		location.href='memberinsert';
+                        }
+                    	if (event.keyCode === 114) {
+                    		//f3
+                    		$('#updatebutton').trigger('click');
+                        }
+                    	if (event.keyCode === 115) {
+                    		//f4
+                    		$('#savebutton').trigger('click');
+                        }
+                    	if (event.keyCode === 117) {
+                    		//f6
+                    		$('#deletebutton').trigger('click');
+                        }
+                    	if (event.keyCode === 118) {
+                    		//f7
+                    		membercard();
+                        }
+                        if (event.keyCode === 119) {
+                        	//f8
+                            miteminsertF(${tblmember.memberID});
+                        }
+                    });
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">수강 및 사물함 정보</a></li>

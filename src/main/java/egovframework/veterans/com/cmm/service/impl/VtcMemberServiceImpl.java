@@ -142,4 +142,9 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public List<Map<String, Object>> selectItemsByFilter(TblItem_02 tblItem_02) throws Exception {
 		return vtcMemberDAO.selectItemsByFilter(tblItem_02);
 	}
+
+	@Override
+	public Map<String, Object> mitemfindbyid(TblItem_02 tblItem_02) throws Exception {
+		return vtcMemberDAO.mitemfindbyid(tblItem_02);
+	}
 }

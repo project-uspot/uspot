@@ -111,6 +111,12 @@
 
                             ageInput.value = age;
                         });
+                        
+                        document.addEventListener('keydown', function(event) {
+					          if (event.key === 'Escape') {
+					        	  history.back(-1);
+					          }
+						    });
                         </script>
                         <div class="col-sm-6 col-md-3">
                           <h6 class="text-primary">성별</h6>

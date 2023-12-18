@@ -407,11 +407,20 @@ from fmsc_s01
 			PKID = #{PKID}
 	</update>
 	<select id="selectItemsByFilter" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="map">
-	  <![CDATA[
-	    CALL up_SelectItemByFilter_New(
+	    <![CDATA[CALL up_SelectItemByFilter_New(
 	        #{siteCode},
-	        CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N'' AND tblItem_02.SubGroupName LIKE CONCAT(''%'', '#{SubGroupName}', ''%'') ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC')
-	    )
-	  ]]>
+	        CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N'' AND ]]>
+	        <choose>
+	        	<when test="SubGroupName != null">
+	        		<![CDATA[tblItem_02.SubGroupName LIKE CONCAT(''%'', '#{SubGroupName}', ''%'')]]>
+	        	</when>
+	        	<when test="GroupName != null"> 
+	        		<![CDATA[tblitem.ItemCode LIKE CONCAT(''%'', '#{GroupName}', ''%'')]]>
+	        	</when>
+	        	<when test="AddDate != null"> 
+	        		<![CDATA[tblItem.ItemID = '#{AddDate}']]>
+	        	</when>
+	        </choose> 
+	        <![CDATA[ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
 	</select>
 </mapper>

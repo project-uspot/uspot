@@ -26,6 +26,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
@@ -647,16 +648,6 @@ public class VtcMemberController {
 				dcname = dc2.getDcName();
 			}
 		}
-
-		TblItem_02 tblItem_02 = new TblItem_02();
-		
-		tblItem_02.setSiteCode(users.getSiteCode());
-		tblItem_02.setSubGroupName("수영");
-		
-		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
-		
-		System.out.println(selectItemsByFilter);
-		
 		model.addAttribute("member",member);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
@@ -664,5 +655,45 @@ public class VtcMemberController {
 		return "member/registration/miteminsertF";
 	}
 	
+	@GetMapping("/mitemfindlist")
+	public String mitemfindlist(TblItem_02 tblItem_02,Model model,
+				@RequestParam(name = "findstring")String findstring) throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tblItem_02.setSiteCode(users.getSiteCode());
+		
+		try {
+			int itemid = Integer.parseInt(findstring);
+			
+			tblItem_02.setGroupName(String.valueOf(itemid));
+			
+		} catch (NumberFormatException e) {
+			
+			tblItem_02.setSubGroupName(findstring);
+		}
+		
+		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
+		
+		System.out.println(selectItemsByFilter);
+		
+		model.addAttribute("lists",selectItemsByFilter);
+		
+		return "member/registration/mitemfindlist";
+	}
 	
+	@PostMapping("/mitemfindbyid")
+	@ResponseBody
+	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tblItem_02.setSiteCode(users.getSiteCode());
+		
+		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
+		
+		return list;
+		
+		
+	}
 }

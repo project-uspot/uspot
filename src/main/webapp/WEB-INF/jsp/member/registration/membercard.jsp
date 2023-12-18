@@ -51,6 +51,12 @@
           previousRow = this; // 이전 행 업데이트
         });
       });
+    
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          window.close();
+        }
+	    });
     </script>
 </head>
 <body>

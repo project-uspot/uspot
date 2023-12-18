@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>수강정보 등록 및 변경</title>
+    <title>강습반 찾기</title>
     <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
@@ -58,17 +58,11 @@
             <div class="col-12 col-xxl-8">
                 <div class="mb-6">
                     <div class="row g-3">
-                        <h3 class="mb-3 w-25 pt-2">수강정보 등록 및 변경</h3>
-                        <div class="col-auto">
-                            <button class="btn btn-success" type="button">저장</button>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-danger" type="button">삭제</button>
-                        </div>
+                        <h3 class="mb-3 w-25 pt-2">강습반 찾기</h3>
                     </div>
 					<div class="row">
 						<div class="col-auto mt-1">
-                            <p>강습반</p>
+                            <p>찾을 강습반</p>
 						</div>
 	                    <div class="col-sm-6 col-md-2">
 	                    	<div class="input-group">
@@ -76,71 +70,66 @@
 							  <span class="input-group-text" id="basic-addon2" onclick="finditem()" style="cursor: pointer;">찾기</span>
 							</div>
 							<script type="text/javascript">
-							
 							function handleKeyPress(event) {
-							  if (event.key === "Enter") {
-							    finditem();
-							  }
-							}
-							document.addEventListener('keydown', function(event) {
-					          if (event.key === 'Escape') {
-					            window.close();
-					          }
-						    });
-							
+		                    	  if (event.key === "Enter") {
+		                    	    $('#basic-addon2').trigger('click');
+		                    	  }
+		                    }
 							function finditem() {
 								var findstring = document.getElementById('findstring').value;
 								if(findstring == '' || findstring == null){
 									alert('검색어를 입력해주세요.');
 									return false;
 								}
-								var url = "mitemfindlist?findstring=" + findstring;
-                                var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
-                                window.open(url, "_blank", windowFeatures);
+								window.location.href = "mitemfindlist?findstring=" + findstring;
 							}
 							</script>
 	                    </div>
 	                    <div class="col-auto mt-1">
-                            <p style="background-color: lightblue;">[${member.memberID}]${member.name}(${member.genderText})${member.typeText} / ${mleveltext} / ${dcname}</p>
+                            <p>(강습반코드 또는 강습반명을 입력합니다.)</p>
 						</div>
                     </div>
-                    <div class="border-top border-bottom border-200" id="customerOrdersTable" data-list='{"valueNames":["code","category","item","name","day","time","level","member","teacher","date","price","dc","sort","dccode","dcpercent","max","enter","remain"],"page":6,"pagination":true}'>
+                    <p>[강습반을 선택한 후 엔터키를 누르거나 더블클릭하면 자동으로 등록됩니다.]</p>
+                    <div class="border-top border-bottom border-200" id="customerOrdersTable" data-list='{"valueNames":["code","category","name","level","start","finish","day","member","teacher","offline","online","max","nickname","remain"]}'>
                         <div class="table-responsive scrollbar">
                             <table class="table table-sm fs--1 mb-0 table-hover">
                                 <thead>
                                     <tr>
                                         <th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="code">코드</th>
-                                        <th class="sort align-middle text-end pe-7" scope="col" data-sort="category">구분</th>
-                                        <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="item">종목</th>
-                                        <th class="sort align-middle white-space-nowrap text-start pe-3" scope="col" data-sort="name">강습반명</th>
-                                        <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="day">요일</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="time">시간</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="level">단계</th>
+                                        <th class="sort align-middle text-end pe-7" scope="col" data-sort="category">종목</th>
+                                        <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="name">강좌명</th>
+                                        <th class="sort align-middle white-space-nowrap text-start pe-3" scope="col" data-sort="level">단계</th>
+                                        <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="start">시작</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="finish">종료</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="day">요일</th>
                                         <th class="sort align-middle text-end pe-0" scope="col" data-sort="member">대상</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="teacher">강사</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">수강기간</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="price">회비</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="dc">할인</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="sort">소계</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="dccode">할인코드</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="dcpercent">할인율</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="teacher">담당강사</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="offline">오프라인</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="online">온라인</th>
                                         <th class="sort align-middle text-end pe-0" scope="col" data-sort="max">정원</th>
-                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="enter">등록</th>
+                                        <th class="sort align-middle text-end pe-0" scope="col" data-sort="nickname">약칭</th>
                                         <th class="sort align-middle text-end pe-0" scope="col" data-sort="remain">잔여</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
-	                                <tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(this)">
-	                                    <td class="memberID align-middle text-end fw-semi-bold pe-7 text-1000">dd</td>
-	                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">dd</td>
-	                                    <td class="gender align-middle white-space-nowrap text-start fw-bold text-700">dd</td>
-	                                    <td class="type align-middle white-space-nowrap text-900 fs--1 text-start">dd</td>
-	                                    <td class="birthday align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">dd</td>
-	                                    <td class="cellphone align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">dd</td>
-	                                    <td class="MLevel align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">dd</td>
-	                                    <td class="carNo align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">dd</td>
-	                                    <td class="siteCode align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">dd</td>
-	                                </tr>
+                                	<c:forEach items="${lists}" var="list">
+	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID})">
+		                                    <td class="code align-middle text-end fw-semi-bold pe-7 text-1000">${list.ItemCode}</td>
+		                                    <td class="category align-middle white-space-nowrap text-start fw-bold text-700">${list.CategoryName}</td>
+		                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">${list.JungName}</td>
+		                                    <td class="level align-middle white-space-nowrap text-900 fs--1 text-start">${list.LevelName}</td>
+		                                    <td class="start align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.FromTime}</td>
+		                                    <td class="finish align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.ToTime}</td>
+		                                    <td class="day align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DayName}</td>
+		                                    <td class="member align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DaesangName}</td>
+		                                    <td class="teacher align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.SawonName}</td>
+		                                    <td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
+		                                    <td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
+		                                    <td class="max align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax}</td>
+		                                    <td class="nickname align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.YakChing}</td>
+		                                    <td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
+	                                	</tr>
+	                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -151,24 +140,10 @@
     </div>
 </body>
 <script type="text/javascript">
-function test(ItemID) {
-	alert('안녕하세요'+ItemID);
-	
-	$.ajax({
-        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
-        dataType : 'json',
-        data: { 
-        	AddDate: ItemID
-        },
-        success: function(data) {	
-			alert(data);
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	});
+function tronclick(ItemID) {
+	opener.parent.test(ItemID);
+	opener.focus();
+	window.close();
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
