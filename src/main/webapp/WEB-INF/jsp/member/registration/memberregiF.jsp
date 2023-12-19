@@ -646,7 +646,7 @@
 
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=500";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=800";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {

@@ -693,7 +693,5 @@ public class VtcMemberController {
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
 		
 		return list;
-		
-		
 	}
 }
