@@ -45,10 +45,10 @@
                     <div class="row g-3">
                         <h3 class="mb-3 w-25 pt-2">수강정보 등록 및 변경</h3>
                         <div class="col-auto">
-                            <button class="btn btn-success" type="button">저장</button>
+                            <button class="btn btn-success" type="button">저장(S)</button>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-danger" type="button">삭제</button>
+                            <button class="btn btn-danger" type="button">삭제(D)</button>
                         </div>
                     </div>
 					<div class="row">
@@ -121,17 +121,17 @@
         </div>
     </div>
     <div class="row">
-	    <div class="card w-60 h-50">
+	    <div class="card w-60" style="height: 250px;">
 	    	<div class="card-body">
-		        <div class="row">
+		        <div class="row mt-n3">
 		        	<div class="col-auto">
-						<div class="input-group mb-3">
+						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">매출일자</span>
 							<input class="form-control" type="date" aria-describedby="basic-addon1" />
 						</div>
 					</div>
 					<div class="col-auto ms-n4">
-						<div class="input-group mb-3">
+						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text me-3" id="basic-addon1">영수증인쇄</span>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
 								<input class="form-check-input" id="inlineRadio1" type="radio" name="inlineRadioOptions" value="option1" aria-describedby="basic-addon1"/>
@@ -150,19 +150,19 @@
 				</div>
 				<div class="row">
 		        	<div class="col-auto">
-						<div class="input-group mb-3">
+						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">강습료</span>
 							<input class="form-control" type="date" aria-describedby="basic-addon1" />
 						</div>
 					</div>
 					<div class="col-auto">
-						<div class="input-group mb-3 ms-1">
+						<div class="input-group input-group-sm mb-3 ms-1">
 							<span class="input-group-text" id="basic-addon1">등록개월</span>
 							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 60px;"/>
 						</div>
 					</div>
 					<div class="col-md-5 ms-n2" style="width: 332px;">
-						<div class="input-group mb-3">
+						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">할인유형</span>
 							<select class="form-select" aria-label="Default select example" aria-describedby="basic-addon1">
 							  <option value="1">원단위 반올림 / 내림</option>
@@ -174,7 +174,7 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">강습기간</span>
 							<input class="form-control" type="date" aria-describedby="basic-addon1" />
 						</div>
@@ -183,12 +183,12 @@
 						~
 					</div>
 					<div class="col-auto ms-n1">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 input-group-sm">
 							<input class="form-control" type="date"/>
 						</div>
 					</div>
 					<div class="col-auto">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
 							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 65px;"/>
 						</div>
@@ -197,20 +197,20 @@
 						%
 					</div>
 					<div class="col-auto ms-n2">
-						<div class="input-group mb-3 w-auto">
+						<div class="input-group mb-3 w-auto input-group-sm">
 							<input class="form-control" type="text" style="width: 99px;"/>
 						</div>
 					</div>
 				</div>
 		        <div class="row">
 		        	<div class="col-md-7">
-		        		<div class="input-group mb-3">
+		        		<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">비고</span>
 							<input class="form-control" type="text" aria-describedby="basic-addon1" />
 						</div>
 		        	</div>
 		        	<div class="col-md-5" style="width: 312px;">
-		        		<div class="input-group mb-3 ms-n3">
+		        		<div class="input-group mb-3 ms-n3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">합계</span>
 							<input class="form-control" type="text" aria-describedby="basic-addon1" />
 						</div>
@@ -218,7 +218,7 @@
 		        </div>
 		        <div class="row">
 		        	<div class="col-md-7">
-		        		<div class="input-group mb-3">
+		        		<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">잔여개월</span>
 							<input class="form-control" type="text" aria-describedby="basic-addon1" />
 						</div>
@@ -232,10 +232,10 @@
 		        </div>
 	  		</div>
 	    </div>
-	    <div class="card w-31 ms-1" style="width: 509px;">
+	    <div class="card w-31 ms-1" style="width: 509px; height: 350px;">
 	    	<div class="card-body">
-				<div class="col-md-5 " style="width: 332px;">
-					<div class="input-group mb-3">
+				<div class="col-md-5 mt-n3" style="width: 332px;">
+					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text" id="basic-addon1">합계절사구분</span>
 						<select class="form-select" aria-label="Default select example" aria-describedby="basic-addon1">
 						  <option value="1">원단위 반올림 / 내림</option>
@@ -246,20 +246,20 @@
 				</div>
 				<div class="col-auto mb-3">
 					<div class="card border border-primary">
-				    	<div class="card-body">
+				    	<div class="card-body my-n3">
 				      		<div class="col-auto">
                         		<div class="row">
                            			<div class="col-auto">
 										<h4 class="card-title">결제내역</h4>
 										<div class="row">
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총매출금액</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 134px;"/>
 												</div>
 											</div>
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">정원</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 57px;"/>
 												</div>
@@ -267,27 +267,27 @@
 										</div>
 										<div class="row">
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총결제금액</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 134px;"/>
 												</div>
 											</div>
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">등록</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 57px;"/>
 												</div>
 											</div>
 										</div>
-										<div class="row">
+										<div class="row mb-n3">
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총미납금액</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 134px;"/>
 												</div>
 											</div>
 											<div class="col-auto">
-												<div class="input-group mb-3">
+												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">잔여</span>
 													<input class="form-control" type="text" aria-describedby="basic-addon1" style="width: 57px;"/>
 												</div>
@@ -301,14 +301,14 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text">총일수</span>
 							<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0"/>
 							<span class="input-group-text">일</span>
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text">사용일수</span>
 							<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0"/>
 							<span class="input-group-text">일</span>
@@ -316,15 +316,15 @@
 					</div>
 				</div>
 				<div class="col-auto">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">강습료</span>
 						<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0" style="text-align: right;"/>
 					</div>
 				</div>
 		    </div>
 		</div>
-	    <div class="card w-60 mt-n15">
-	    	<div class="card-body">
+	    <div class="card w-60 mt-n12 h-50">
+	    	<div class="card-body my-n3">
 	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 210px;"
                     data-list='{"valueNames":["date","category","price","mapsa","cardtype","assignN","cardN","POS","signpad","OID","PayKinid"],"page":6,"pagination":true}'>
                 	<div class="table-responsive scrollbar">
@@ -366,46 +366,30 @@
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 ms-1" style="width: 509px;">
-	    	<div class="card-body">
+	    <div class="card w-35 ms-1" style="width: 509px; height: 132px;">
+	    	<div class="card-body my-n3">
 	    		<div class="col-auto">
-					<div class="input-group mb-3">
+					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">받은금액</span>
 						<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0"/>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">현금</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">현금영수증<br>(간편결제)</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">현금(제로페이)</button>
-					</div>
+				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
+  					<button class="btn btn-phoenix-primary" type="button">현금</button>
+  					<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					<button class="btn btn-phoenix-success" type="button">현금(제로페이)</button>
+					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
 				</div>
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">신용카드</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">계좌잆금</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">영수증재발행</button>
-					</div>
+				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
+  					<button class="btn btn-soft-primary" type="button">신용카드</button>
+  					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+  					<button class="btn btn-soft-success" type="button">영수증재발행</button>
+  					<button class="btn btn-soft-danger" type="button">결제취소</button>
+  					<button class="btn btn-soft-info" type="button">행삭제</button>
 				</div>
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">결제취소</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">행삭제</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-outline-secondary" type="button">현금영수증발행</button>
-					</div>
+				<div class="btn-group btn-group-sm" role="group" aria-label="...">
+  					
+  					
 				</div>
 	    	</div>
 	    </div>
@@ -445,7 +429,14 @@
 	        	var tableBody = $('#customer-order-table-body'); // Get the table body element
                 var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(this)"></tr>');
                 newRow.append('<td class="code align-middle white-space-nowrap text-center fw-bold">' + list.ItemCode + '</td>');
-                newRow.append('<td class="category align-middle white-space-nowrap text-center">' + list.Type + '</td>');
+                var type = '';
+                if(list.Type == 'G'){
+                	type = '일반'
+                }
+                else if(list.Type == 'S'){
+                	type = '특강'
+                }
+                newRow.append('<td class="category align-middle white-space-nowrap text-center">' + type + '</td>');
                 newRow.append('<td class="item align-middle white-space-nowrap text-start fw-bold text-700">' + list.CategoryName + '</td>');
                 newRow.append('<td class="name align-middle white-space-nowrap text-900 fs--1 text-start">' + list.JungName + '</td>');
                 newRow.append('<td class="day align-middle white-space-nowrap text-center">' + list.DayName + '</td>');

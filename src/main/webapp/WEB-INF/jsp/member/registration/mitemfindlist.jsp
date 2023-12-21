@@ -123,11 +123,11 @@
 		                                    <td class="day align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DayName}</td>
 		                                    <td class="member align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DaesangName}</td>
 		                                    <td class="teacher align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.SawonName}</td>
-		                                    <td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
-		                                    <td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
+		                                    <td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.RegCnt}</td>
+		                                    <td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.RegCnt2}</td>
 		                                    <td class="max align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax}</td>
 		                                    <td class="nickname align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.YakChing}</td>
-		                                    <td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end"></td>
+		                                    <td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax-(list.RegCnt+list.RegCnt2)}</td>
 	                                	</tr>
 	                                </c:forEach>
                                 </tbody>

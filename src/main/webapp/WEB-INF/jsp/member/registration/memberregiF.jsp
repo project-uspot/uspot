@@ -326,7 +326,7 @@
                                     <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
                                         <div class="col-12 col-sm-auto mb-sm-2">
                                             <div class="avatar avatar-5xl ms-3">
-                                                <img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/team/15.webp" />
+                                                <img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/imagesample.jpg" />
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-auto flex-1">
@@ -646,7 +646,7 @@
 
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=800";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
