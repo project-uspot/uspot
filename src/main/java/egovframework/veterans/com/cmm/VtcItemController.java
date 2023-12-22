@@ -1160,6 +1160,7 @@ public class VtcItemController{
 	   return "item/itemcode/item02update";
    }
    
+   
    @PostMapping(value="/updateItem02.do")
    public String updateItem02OK(TblItem_02 item_02, ModelMap model, HttpServletRequest request) throws Exception {
 	   Users users = (Users) session.getAttribute("loginuserinfo");
