@@ -1155,7 +1155,6 @@ public class VtcItemController{
 	   
 	   model.addAttribute("list", listItem01);
 	   model.addAttribute("item02", item_02);
-	   
 	   return "item/itemcode/item02update";
    }
    
