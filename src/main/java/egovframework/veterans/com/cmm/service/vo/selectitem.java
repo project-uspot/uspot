@@ -1,8 +1,6 @@
 package egovframework.veterans.com.cmm.service.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class selectitem {

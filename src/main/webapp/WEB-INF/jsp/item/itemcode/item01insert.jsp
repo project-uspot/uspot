@@ -13,9 +13,7 @@
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
 	rel="stylesheet">
 </head>
-<script type="text/javascript">
-datetimepicker.flatpickr({    local: 'ko'});	
-</script>
+
 <body>
 	<div class="modal-header bg-primary">
 		<h5 class="modal-title text-white" id="insertModalLabel">강습종목 등록</h5>
@@ -42,10 +40,10 @@ datetimepicker.flatpickr({    local: 'ko'});
 								<input type="radio" class="jsType form-check-input" name="jsType" id="jsType2" maxlength="1" value="1">
 								<label class="form-check-label" for="jsType2">수시접수</label>
 							</div>
-							<div class="form-check form-check-inline ">
+							<!-- <div class="form-check form-check-inline ">
 								<input type="radio" class="jsType form-check-input" name="jsType" id="jsType3" maxlength="1" value="2">
 								<label class="form-check-label" for="jsType3">접수기간지정</label>
-							</div>
+							</div> -->
 						</div>
 						<div class="form-check form-check-inline col-1 gy-7 ">
 							<input type="checkbox" class="dcType form-check-input " name="dcType" id="dcType2" maxlength="1" value="U">
@@ -134,7 +132,7 @@ datetimepicker.flatpickr({    local: 'ko'});
    							<input class="form-control datetimepicker" id="JungSi3End" name="JungSi3End" type="text" placeholder="y-m-d" required="required" data-options='{"disableMobile":true,"allowInput":true}' />
 						</div>
 						<div></div>
-						<div class="form-check form-check-inline col-1 gy-7 ">
+						<!-- <div class="form-check form-check-inline col-1 gy-7 ">
 							<input type="radio" class="dcType form-check-input " name="dcType" id="dcType2" maxlength="1" value="U">
 							<label class="form-check-label" for="dcType2">기간지정:</label>
 						</div>
@@ -145,7 +143,7 @@ datetimepicker.flatpickr({    local: 'ko'});
 						<div class="col-md-4 gy-4 ">
 							<label class="form-label" for="ToDate">End Date</label>
    							<input class="form-control datetimepicker" id="ToDate" name="ToDate" type="text" placeholder="y-m-d" required="required" data-options='{"disableMobile":true,"allowInput":true}' />
-						</div>
+						</div> -->
 						<div></div>
 						<div class="col-sm-4 gy-4">
 							<div class="form-floating">

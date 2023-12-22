@@ -69,11 +69,17 @@ private final HttpSession session;
 		
 		TblItem_01 item_01 = new TblItem_01();
 		item_01.setSiteCode(users.getSiteCode());
-		item_01.setIsDelete("N");
+		
+		TblItem_02 item_02 = new TblItem_02();
+		item_02.setSiteCode(users.getSiteCode());
+		
+		TblItem_03 item_03 = new TblItem_03();
+		item_03.setSiteCode(users.getSiteCode());
+				
 		
 		List<TblItem_01> listItem01 = VtcItemService.listItemCode(item_01);
-		List<TblItem_02> listItem02 = VtcItemService.listItem02(users.getSiteCode());
-		List<TblItem_03> listItem03 = VtcItemService.liseItem03(users.getSiteCode());
+		List<TblItem_02> listItem02 = VtcItemService.listItem02(item_02);
+		List<TblItem_03> listItem03 = VtcItemService.liseItem03(item_03);
 		
 		itemList.put("item01", listItem01);
 		itemList.put("item02", listItem02);

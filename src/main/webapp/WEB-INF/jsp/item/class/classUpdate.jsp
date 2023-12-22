@@ -21,11 +21,10 @@
 <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/new_lib/js/theme/flatpickr.js"></script> --%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    
-
-
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
 
 <!-- ===============================================-->
@@ -42,10 +41,13 @@
 <link href="${pageContext.request.contextPath}/new_lib/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
 <link href="${pageContext.request.contextPath}/new_lib/scss/theme/_navbar-vertical.scss" rel="stylesheet" />
 <link href="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
-<link href="${pageContext.request.contextPath}/new_lib/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.css" integrity="sha512-EM9iXXndA8L72Sgf6i5hYHnfcGNchX5oDY6E/GNvb6CXyEXxyzXeSiXHK9UEpQw+cKD8C4ZU/Qn4HI0z8JPENg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<%-- <link href="${pageContext.request.contextPath}/new_lib/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" /> --%>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.css" integrity="sha512-EM9iXXndA8L72Sgf6i5hYHnfcGNchX5oDY6E/GNvb6CXyEXxyzXeSiXHK9UEpQw+cKD8C4ZU/Qn4HI0z8JPENg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 </head>
 <body>
@@ -168,7 +170,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="m" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.monIn }" id="Mon" name="MonIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.monIn }" id="Mon" name="MonIn" type="text" disabled placeholder="hour : minute"  />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -178,7 +180,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input" id="tu" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control flatpickr" aria-label="Text input with checkbox" value="${item.tuesIn }" id="Tues" name="TuesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.tuesIn }" id="Tues" name="TuesIn" type="text" disabled placeholder="hour : minute" />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -188,7 +190,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input" id="w" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control flatpickr" aria-label="Text input with checkbox" value="${item.wednesIn }" id="Wednes" name="WednesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' readonly="readonly"/>
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.wednesIn }" id="Wednes" name="WednesIn" type="text" disabled placeholder="hour : minute" />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -198,7 +200,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="th" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.thursIn }" id="Thurs" name="ThursIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.thursIn }" id="Thurs" name="ThursIn" type="text" disabled placeholder="hour : minute"  />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -208,7 +210,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="f" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.friIn }" id="Fri" name="FriIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.friIn }" id="Fri" name="FriIn" type="text" disabled placeholder="hour : minute"  />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -218,7 +220,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="sa" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.saturIn }" id="Satur" name="SaturIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.saturIn }" id="Satur" name="SaturIn" type="text" disabled placeholder="hour : minute"  />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -228,7 +230,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="su" type="checkbox" disabled value="Y"  aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.sunIn }" id="Sun" name="SunIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.sunIn }" id="Sun" name="SunIn" type="text" disabled placeholder="hour : minute"  />
 														</div>
 													</div>
 													<div class="col-sm-6 col-md-6 mb-2">
@@ -238,8 +240,7 @@
 															<div class="input-group-text">
 																<input class="form-check-input"  id="h" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 															</div>
-															<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.holyIn }" id="Holy" name="HolyIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
-														</div>
+															<input class="form-control timepicker" aria-label="Text input with checkbox" value="${item.holyIn }" id="Holy" name="HolyIn" type="text" disabled placeholder="hour : minute"  />														</div>
 													</div>
 												</div>
 											</div> 
@@ -308,9 +309,9 @@
 												<div class="input-group-text">
 													<input class="form-check-input" type="checkbox"  id="da" disabled value="Y" aria-label="Checkbox for following text input" />
 												</div>
-												<input class="form-control datetimepicker" id="FromDate" name="FromDate" value="${item.fromDate }" disabled type="text" placeholder="y-m-d" required="required" data-options='{"disableMobile":true,"allowInput":true}' />
+												<input class="form-control" id="FromDate" name="FromDate" value="${item.fromDate }" disabled type="date" placeholder="y-m-d" required="required" />
 												~
-												<input class="form-control datetimepicker" id="ToDate" name="ToDate" value="${item.toDate }" disabled type="text" placeholder="y-m-d" required="required" data-options='{"disableMobile":true,"allowInput":true}' />
+												<input class="form-control" id="ToDate" name="ToDate" value="${item.toDate }" disabled type="date" placeholder="y-m-d" required="required" />
 											</div>
 										</div>
 										<div class="col-sm-6 col-md-10 mb-2">
@@ -598,6 +599,18 @@
 		</div>
 	</div>
 	<script>
+	$('.timepicker').timepicker({
+	    timeFormat: 'HH:mm p',
+	    interval: 05,
+	    minTime: '00',
+	    maxTime: '23:55',
+	    startTime: '00:00',
+	    dynamic: false,
+	    dropdown: true,
+	    scrollbar: true
+	});
+	
+	
 		/* 강습 시작,종료시간 */ 
 		// 체크박스 및 입력 필드 상태를 관리하는 함수
 		function manageTimeFields() {

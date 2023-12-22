@@ -138,7 +138,7 @@ public class VtcItemController{
       model.addAttribute("DefCode", DefCode);
       
       
-      model.addAttribute("list", list   );
+      model.addAttribute("list", list);
       return "item/itemcode/itemcode";
    }
    
@@ -332,123 +332,7 @@ public class VtcItemController{
       return "redirect:itemcode.do";
    }
    
-   @RequestMapping(value="updateItem01.do")
-   public String updateItem01(ModelMap model, HttpServletRequest request, TblItem_01 item_01) throws Exception {
-	   
-      Users users = (Users) session.getAttribute("loginuserinfo");
-      if(users ==null) {
-    	  model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
-    	  model.addAttribute("script", "back");
-
-    	  return "common/msg";
-      }
-      
-      int GroupID = Integer.parseInt(request.getParameter("GroupID"));
-      System.out.println("GroupID : " + GroupID);
-      String SiteCode = users.getSiteCode();
-      String GroupName = request.getParameter("GroupName");
-      System.out.println("request.getParameter(\"jsType\") : " + request.getParameter("jsType"));
-      System.out.println("====================================");
-      String jsType = request.getParameter("jsType");
-      System.out.println("jsType : " + jsType);
-      String JungSiLotteryFromDate = request.getParameter("JungSiLotteryFromDate");
-      String JungSiLotteryToDate = request.getParameter("JungSiLotteryToDate");
-      String JungSiLotteryDate = request.getParameter("JungSiLotteryDate");
-      String JungSiLotteryPayFromDate = request.getParameter("JungSiLotteryPayFromDate");
-      String JungSiLotteryPayToDate = request.getParameter("JungSiLotteryPayToDate");
-      String JungSiLotteryAddFromDate = request.getParameter("JungSiLotteryAddFromDate");
-      String JungSiLotteryAddToDate = request.getParameter("JungSiLotteryAddToDate");
-      String JungSi1Inlive = request.getParameter("JungSi1Inlive");
-      
-      String JungSi1Start = request.getParameter("JungSi1Start");
-      String JungSi1S = JungSi1Start.substring(0, 10);
-      String JungSi1TimeS = JungSi1Start.substring(JungSi1Start.length()-5, JungSi1Start.length());
-      
-      String JungSi1End = request.getParameter("JungSi1End");
-      String JungSi1E = JungSi1End.substring(0, 10);
-      String JungSi1TimeE = JungSi1Start.substring(JungSi1End.length()-5, JungSi1End.length());
-      
-      String JungSi1 = JungSi1S + "~" + JungSi1E;
-      
-      String JungSi2Start = request.getParameter("JungSi2Start");
-      String JungS21S = JungSi2Start.substring(0, 10);
-      String JungSi2TimeS = JungSi2Start.substring(JungSi2Start.length()-5, JungSi2Start.length());
-      
-      String JungSi2End = request.getParameter("JungSi2End");
-      String JungS21E = JungSi2End.substring(0, 10);
-      String JungSi2TimeE = JungSi2End.substring(JungSi2End.length()-5, JungSi2End.length());
-      
-      String JungSi2 = JungS21S + "~" + JungS21E;
-      
-      String JungSi3Start = request.getParameter("JungSi3Start");
-      String JungSi3End = request.getParameter("JungSi3End");
-      
-      String JungSi3 = JungSi3Start + "~" + JungSi3End;
-      
-      System.out.println("request.getParameter(\"WebYN\") : " + request.getParameter("WebYN"));
-      System.out.println("request.getParameter(\"MonthSelNo\") : " + request.getParameter("MonthSelNo"));
-      String FromDate = request.getParameter("FromDate");
-      String ToDate = request.getParameter("ToDate");
-      int AgainMonth = Integer.parseInt(request.getParameter("AgainMonth"));
-      String ItemRejectCnt = request.getParameter("ItemRejectCnt"); 
-      int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-      String PayDelayTime = request.getParameter("PayDelayTime");
-      String MonthSelNo = request.getParameter("MonthSelNo");
-      if(MonthSelNo.equals("Y")) {
-         MonthSelNo = "Y";
-      }else {
-         MonthSelNo = "N";
-      }
-      String WebYN = request.getParameter("WebYN");
-      if(WebYN.equals("Y")) {
-         WebYN = "Y";
-      }else {
-         WebYN = "N";
-      }
-      int UpdUserPKID = users.getUserPKID();
-      
-      item_01.setGroupID(GroupID);
-      item_01.setSiteCode(SiteCode);
-      item_01.setGroupName(GroupName);
-      item_01.setJsType(jsType);
-      item_01.setJungSiLotteryFromDate(JungSiLotteryFromDate);
-      item_01.setJungSiLotteryToDate(JungSiLotteryToDate);
-      item_01.setJungSiLotteryDate(JungSiLotteryDate);
-      item_01.setJungSiLotteryPayFromDate(JungSiLotteryPayFromDate);
-      item_01.setJungSiLotteryPayToDate(JungSiLotteryPayToDate);
-      item_01.setJungSiLotteryAddFromDate(JungSiLotteryAddFromDate);
-      item_01.setJungSiLotteryAddToDate(JungSiLotteryAddToDate);
-      item_01.setJungSi1Inlive(JungSi1Inlive);
-      item_01.setJungSi1(JungSi1);
-      item_01.setJungSi1STime(JungSi1TimeS);
-      item_01.setJungSi1ETime(JungSi1TimeE);
-      item_01.setJungSi2(JungSi2);
-      item_01.setJungSi2STime(JungSi2TimeS);
-      item_01.setJungSi2ETime(JungSi2TimeE);
-      item_01.setJungSi3(JungSi3);
-      item_01.setFromDate(FromDate);
-      item_01.setToDate(ToDate);
-      item_01.setAgainMonth(AgainMonth);
-      item_01.setItemRejectCnt(ItemRejectCnt);
-      item_01.setPayDelayTime(PayDelayTime);
-      item_01.setMonthSelNo(MonthSelNo);
-      item_01.setWebYN(WebYN);
-      item_01.setSortOrder(SortOrder);
-      item_01.setUpdUserPKID(UpdUserPKID);
-      
-      vtcItemService.updateItem01(item_01);
-      return "redirect:itemcode.do";
-   }
-   @RequestMapping(value="updateItem02.do")
-   public String updateItem02(ModelMap model, HttpServletRequest request) throws Exception {
-      Users users = (Users) session.getAttribute("loginuserinfo");
-      return "";
-   }
-   @RequestMapping(value="updateItem03.do")
-   public String updateItem03(ModelMap model, HttpServletRequest request) throws Exception {
-      Users users = (Users) session.getAttribute("loginuserinfo");
-      return "";
-   }
+  
    
    
    @RequestMapping(value="classinfo.do")
@@ -462,8 +346,14 @@ public class VtcItemController{
          return "redirect:login.do";
 	   }
 	   
-	   TblItem_01 item_01 = new TblItem_01();
-	   item_01.setSiteCode(users.getSiteCode());
+	   	TblItem_01 item_01 = new TblItem_01();
+	   	item_01.setSiteCode(users.getSiteCode());
+	   
+	   	TblItem_02 item_02 = new TblItem_02();
+	   	item_02.setSiteCode(users.getSiteCode());
+		
+		TblItem_03 item_03 = new TblItem_03();
+		item_03.setSiteCode(users.getSiteCode());
 	   
 	   code.setSiteCode(users.getSiteCode());
 	   code.setCodeGroupID("5");
@@ -476,8 +366,8 @@ public class VtcItemController{
 	   
 	   
 	   List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
-	   List<TblItem_02> listItem02 = vtcItemService.listItem02(users.getSiteCode());
-	   List<TblItem_03> listItem03 = vtcItemService.liseItem03(users.getSiteCode());
+	   List<TblItem_02> listItem02 = vtcItemService.listItem02(item_02);
+	   List<TblItem_03> listItem03 = vtcItemService.liseItem03(item_03);
 	   List<tblCode> listtblCode = VtcServise.listTblCode(code);
 	   List<Users> listUsers = UserService.listUsers(users.getSiteCode());
 	   int getItemCode = vtcItemService.getItemCode(users.getSiteCode());
@@ -678,6 +568,8 @@ public class VtcItemController{
 		   return "redirect:login.do";
 	   }
 	   
+	   System.out.println( "ItemCode : " +  ItemCode);
+	   
 	   
 	   TblItem tblItem = new TblItem();
 	   tblItem.setSiteCode(users.getSiteCode());
@@ -685,6 +577,12 @@ public class VtcItemController{
 	   
 	   TblItem_01 item_01 = new TblItem_01();
 	   item_01.setSiteCode(users.getSiteCode());
+	   
+	   TblItem_02 item_02 = new TblItem_02();
+		item_02.setSiteCode(users.getSiteCode());
+		
+		TblItem_03 item_03 = new TblItem_03();
+		item_03.setSiteCode(users.getSiteCode());
 	   
 	   code.setSiteCode(users.getSiteCode());
 	   code.setCodeGroupID("5");
@@ -696,8 +594,8 @@ public class VtcItemController{
 	   
 	   TblItem getItem = vtcItemService.getTblItem(tblItem);
 	   List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
-	   List<TblItem_02> listItem02 = vtcItemService.listItem02(users.getSiteCode());
-	   List<TblItem_03> listItem03 = vtcItemService.liseItem03(users.getSiteCode());
+	   List<TblItem_02> listItem02 = vtcItemService.listItem02(item_02);
+	   List<TblItem_03> listItem03 = vtcItemService.liseItem03(item_03);
 	   List<tblCode> listtblCode = VtcServise.listTblCode(code);
 	   List<Users> listUsers = UserService.listUsers(users.getSiteCode());
 	   
@@ -963,6 +861,12 @@ public class VtcItemController{
 		
 		TblItem_01 item_01 = new TblItem_01();
 		item_01.setSiteCode(users.getSiteCode());
+		
+		TblItem_02 item_02 = new TblItem_02();
+		item_02.setSiteCode(users.getSiteCode());
+		
+		TblItem_03 item_03 = new TblItem_03();
+		item_03.setSiteCode(users.getSiteCode());
    
 		code.setSiteCode(users.getSiteCode());
 		code.setCodeGroupID("5");
@@ -975,8 +879,8 @@ public class VtcItemController{
    
 		List<selectitem> listSelectItem = vtcItemService.listSelectItemY(selectitem);
 		List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
-		List<TblItem_02> listItem02 = vtcItemService.listItem02(users.getSiteCode());
-		List<TblItem_03> listItem03 = vtcItemService.liseItem03(users.getSiteCode());
+		List<TblItem_02> listItem02 = vtcItemService.listItem02(item_02);
+		List<TblItem_03> listItem03 = vtcItemService.liseItem03(item_03);
 		List<tblCode> listtblCode = VtcServise.listTblCode(code);
 		List<Users> listUsers = UserService.listUsers(users.getSiteCode());
 		int getItemCode = vtcItemService.getItemCode(users.getSiteCode());
@@ -995,12 +899,21 @@ public class VtcItemController{
    @PostMapping("/selectItemFind")
    @ResponseBody
    public Map<String, Object> findItemLitst(ModelMap model, selectitem selectitem, tblCode code,
+		   @RequestParam(name="IsUse")String IsUse,
+		   @RequestParam(name="Type")String Type,
 		   @RequestParam(name="findvalue")String findvalue,
 		   @RequestParam(name="findcategory")String findcategory) throws Exception {
 	   Users users=(Users) session.getAttribute("loginuserinfo");
 	   
+	   System.out.println("IsUse : " + IsUse);
+	   System.out.println("Type : " + Type);
+	   System.out.println("findvalue : " + findvalue);
+	   System.out.println("findcategory : " + findcategory);
+	   
 	   Map<String, Object> find = new HashMap<>();
 	   find.put("SiteCode", users.getSiteCode());
+	   find.put("IsUse", IsUse);
+	   find.put("Type", Type);
 	   find.put("findvalue", findvalue);
 	   find.put("findcategory", findcategory);
 	   
@@ -1017,4 +930,263 @@ public class VtcItemController{
 	   return map;
    }
    
+   @GetMapping(value="/updateItem01.do")
+   public String updateTblItem01(@RequestParam("groupID") int groupID, ModelMap model, HttpServletRequest request,
+		   TblItem_01 TblItem_01) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   
+	   System.out.println("groupID : " + groupID);
+	   
+	   TblItem_01.setSiteCode(users.getSiteCode());
+	   TblItem_01.setGroupID(groupID);
+	   
+	   TblItem_01 = vtcItemService.getItem01(TblItem_01);
+	   
+	   System.out.println("TblItem_01 : " + TblItem_01);
+	   
+	   model.addAttribute("item01", TblItem_01);
+	   
+	   return "item/itemcode/item01update";
+   }
+   
+   @PostMapping(value="/updateItem01.do")
+   public String updateTblItem01OK(ModelMap model, TblItem_01 item_01, HttpServletRequest request) throws Exception {
+	   
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   
+	   try {
+		   item_01.setSiteCode(users.getSiteCode());
+		   String JungSiType1StopChk = request.getParameter("JungSiType1StopChk");
+		   String JungSiType1Stop = "";
+		   if(JungSiType1StopChk == null) {
+			   JungSiType1Stop = "N";
+		   } else {
+			   JungSiType1Stop = JungSiType1StopChk;
+		   }
+		   String JungSi3MonthGbnChk = request.getParameter("JungSi3MonthGbnChk");
+		   String JungSi3MonthGbn = "";
+		   if(JungSi3MonthGbnChk == null) {
+			   JungSi3MonthGbn = "N";
+		   } else {
+			   JungSi3MonthGbn = JungSi3MonthGbnChk;
+		   }
+		   
+		   /* 추첨접수 시작날짜 */
+		   String LotteryFromDate = request.getParameter("LotteryFromDate");
+		   if(LotteryFromDate == null) {
+			   LotteryFromDate = "";
+		   }
+		   String LotteryFromTime = request.getParameter("LotteryFromTime");
+		   if(LotteryFromTime == null) {
+			   LotteryFromTime = "";
+		   }
+		   String JungSiLotteryFromDate = LotteryFromDate + " " + LotteryFromTime;
+		   /* 추첨접수 종료날짜 */
+		   String LotteryToDate = request.getParameter("LotteryToDate");
+		   if(LotteryToDate == null) {
+			   LotteryToDate = "";
+		   }
+		   String LotteryToTime = request.getParameter("LotteryToTime");
+		   if(LotteryToTime == null ) {
+			   LotteryToTime = "";
+		   }
+		   String JungSiLotteryToDate = LotteryToDate + " " + LotteryToTime;
+		   /* 추첨결제 시작날짜 */
+		   String LotteryPayFromDate = request.getParameter("LotteryPayFromDate");
+		   if(LotteryPayFromDate ==  null) {
+			   LotteryPayFromDate = "";
+		   }
+		   String LotteryPayFromTime = request.getParameter("LotteryPayFromTime");
+		   if(LotteryPayFromTime == null) {
+			   LotteryPayFromTime = "";
+		   }
+		   String JungSiLotteryPayFromDate = LotteryPayFromDate + " " + LotteryPayFromTime;
+		   /* 추첨결제 종료날짜 */
+		   String LotteryPayToDate = request.getParameter("LotteryPayToDate");
+		   if(LotteryPayToDate == null) {
+			   LotteryPayToDate = "";
+		   }
+		   String LotteryPayToTime = request.getParameter("LotteryPayToTime");
+		   if(LotteryPayToTime == null) {
+			   LotteryPayToTime = "";
+		   }
+		   String JungSiLotteryPayToDate = LotteryPayToDate + " " + LotteryPayToTime;
+		   /* 추첨선착순 시작날짜 */
+		   String LotteryAddFromDate = request.getParameter("LotteryAddFromDate");
+		   if(LotteryAddFromDate == null) {
+			   LotteryAddFromDate = "";
+		   }
+		   String LotteryAddFromTime = request.getParameter("LotteryAddFromTime");
+		   if(LotteryAddFromTime == null) {
+			   LotteryAddFromTime = "";
+		   }
+		   String JungSiLotteryAddFromDate = LotteryAddFromDate + " " + LotteryAddFromTime;
+		   /* 추첨선착순 종료날짜 */
+		   String LotteryAddToDate = request.getParameter("LotteryAddToDate");
+		   if(LotteryAddToDate == null) {
+			   LotteryAddToDate = "";
+		   }
+		   String LotteryAddToTime = request.getParameter("LotteryToTime");
+		   if(LotteryAddToTime == null) {
+			   LotteryAddToTime = "";
+		   }
+		   String JungSiLotteryAddToDate = LotteryAddToDate + " " + LotteryAddToTime;
+		   
+		   /* 신규 접수 */
+		   String JungSi1Start = request.getParameter("JungSi1Start");
+		   if(JungSi1Start == null) {
+			   JungSi1Start	= "";
+		   }
+		   String JungSi1End = request.getParameter("JungSi1End");
+		   if(JungSi1End == null) {
+			   JungSi1End = "";
+		   }
+		   String JungSi1 = JungSi1Start + "~" + JungSi1End;
+		   /* 재등록 */
+		   String JungSi2Start = request.getParameter("JungSi2Start");
+		   if(JungSi2Start == null) {
+			   JungSi2Start = "";
+		   }
+		   String JungSi2End = request.getParameter("JungSi2End");
+		   if(JungSi2End == null) {
+			   JungSi2End = "";
+		   }
+		   String JungSi2 = JungSi2Start + "~" + JungSi2End;
+		   /* 강습기간 */
+		   String JungSi3Start = request.getParameter("JungSi3Start");
+		   if(JungSi3Start == null) {
+			   JungSi3Start = "";
+		   }
+		   String JungSi3End = request.getParameter("JungSi3End");
+		   if(JungSi3End == null) {
+			   JungSi3End = "";
+		   }
+		   String JungSi3 = JungSi3Start + "~" + JungSi3End;
+		   
+		   String MonthSelNoChk = request.getParameter("MonthSelNoChk");
+		   String MonthSelNo = "";
+		   if(MonthSelNoChk == null) {
+			   MonthSelNo = "N";
+		   } else {
+			   MonthSelNo = MonthSelNoChk;
+		   }
+		   String WebYNChk = request.getParameter("WebYNChk");
+		   String WebYN = "";
+		   if(WebYNChk == null) {
+			   WebYN = "N";
+		   } else {
+			   WebYN = WebYNChk;
+		   }
+		   String IsDeleteChk = request.getParameter("IsDeleteChk");
+		   String IsDelete = "";
+		   if(IsDeleteChk == null) {
+			   IsDelete = "N";
+		   } else {
+			   IsDelete = IsDeleteChk;
+		   }
+		   item_01.setJungSiType1Stop(JungSiType1Stop);
+		   item_01.setJungSi3MonthGbn(JungSi3MonthGbn);
+		   item_01.setJungSiLotteryFromDate(JungSiLotteryFromDate);
+		   item_01.setJungSiLotteryToDate(JungSiLotteryToDate);
+		   item_01.setJungSiLotteryPayFromDate(JungSiLotteryPayFromDate);
+		   item_01.setJungSiLotteryPayToDate(JungSiLotteryPayToDate);
+		   item_01.setJungSiLotteryAddFromDate(JungSiLotteryAddFromDate);
+		   item_01.setJungSiLotteryAddToDate(JungSiLotteryAddToDate);
+		   item_01.setJungSi1(JungSi1);
+		   item_01.setJungSi2(JungSi2);
+		   item_01.setJungSi3(JungSi3);
+		   item_01.setMonthSelNo(MonthSelNo);
+		   item_01.setWebYN(WebYN);
+		   item_01.setIsDelete(IsDelete);
+		   
+		   System.out.println("upd-item_01 : " + item_01);
+		   
+		   vtcItemService.updateItem01(item_01);
+		   
+		   model.addAttribute("msg", "변경되었습니다.");
+		   model.addAttribute("script", "reload");
+			
+		   return "common/msg";
+		   
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "다시 사용하여주세요");
+			model.addAttribute("script", "back");
+			return "common/msg";
+		}
+   }
+   
+   @GetMapping(value="/updateItem02.do")
+   public String updateItem02(@RequestParam("subGroupID") int subGroupID, ModelMap model, HttpServletRequest request, 
+		   TblItem_02 item_02, tblCode code,selectitem selectitem) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   
+	   System.out.println("SubGroupID : " + subGroupID);
+	   
+	   TblItem_01 item_01 = new TblItem_01();
+	   item_01.setSiteCode(users.getSiteCode());
+	   
+	   
+	   List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
+	   
+	   item_02.setSiteCode(users.getSiteCode());
+	   item_02.setSubGroupID(subGroupID);
+	   
+	   item_02 = vtcItemService.getItem02(item_02);
+	   
+	   System.out.println("item_02 : " + item_02);
+	   
+	   
+	   
+	   model.addAttribute("list", listItem01);
+	   model.addAttribute("item02", item_02);
+	   return "item/itemcode/item02update";
+   }
+   
+   
+   @PostMapping(value="/updateItem02.do")
+   public String updateItem02OK(TblItem_02 item_02, ModelMap model, HttpServletRequest request) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   
+	   try {
+		   String TimeChk = request.getParameter("TimeChk");
+		   int InTime = Integer.parseInt(request.getParameter("InTime"));
+		   int InEndTime = Integer.parseInt(request.getParameter("InEndTime"));
+		   
+		   if(TimeChk != "Y") {
+			   InTime = 0;
+			   InEndTime = 0;
+		   }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	   return "";
+   }
+   
+   
+   @RequestMapping(value="updateItem03.do")
+   public String updateItem03(ModelMap model, HttpServletRequest request) throws Exception {
+      Users users = (Users) session.getAttribute("loginuserinfo");
+      return "";
+   }
 }
