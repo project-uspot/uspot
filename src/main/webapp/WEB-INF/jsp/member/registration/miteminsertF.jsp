@@ -427,6 +427,7 @@
 	        },
 	        success: function(list) {
 	        	var tableBody = $('#customer-order-table-body'); // Get the table body element
+	        	tableBody.empty();
                 var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(this)"></tr>');
                 newRow.append('<td class="code align-middle white-space-nowrap text-center fw-bold">' + list.ItemCode + '</td>');
                 var type = '';

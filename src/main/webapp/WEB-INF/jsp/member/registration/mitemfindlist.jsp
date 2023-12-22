@@ -66,6 +66,7 @@
 						</div>
 	                    <div class="col-sm-6 col-md-2">
 	                    	<div class="input-group">
+	                    	  <input type="hidden" value="${findvalue}" id="findvalue">
 							  <input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)"/>
 							  <span class="input-group-text" id="basic-addon2" onclick="finditem()" style="cursor: pointer;">찾기</span>
 							</div>
@@ -89,7 +90,63 @@
                             <p>(강습반코드 또는 강습반명을 입력합니다.)</p>
 						</div>
                     </div>
-                    <p>[강습반을 선택한 후 엔터키를 누르거나 더블클릭하면 자동으로 등록됩니다.]</p>
+                    <div class="row">
+                    	<div class="col-auto">
+                    		<p>[강습반을 선택한 후 엔터키를 누르거나 더블클릭하면 자동으로 등록됩니다.]</p>
+                    	</div>
+                    	<div class="col-auto mt-n2 ms-15">
+                    		<div class="input-group">
+  								<span class="input-group-text">강습기준일</span>
+								<input class="form-control" type="date" id="dateInput"/>
+							</div>
+                    	</div>
+                    </div>
+                    <script type="text/javascript">
+                    const dateInput = document.getElementById('dateInput');
+
+                    dateInput.addEventListener('change', function() {
+                    	var findvalue = document.getElementById('findvalue').value;
+                        const selectedDate = dateInput.value;
+                        
+                        $.ajax({
+                	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+                	        url: "mitemlistChange", // 실제 엔드포인트로 교체해야 합니다
+                	        dataType : 'json',
+                	        data: { 
+                	        	SubGroupName: findvalue,
+                	        	UpdDate : selectedDate
+                	        },
+                	        success: function(list) {
+                	            var tableBody = $('#customer-order-table-body');
+                	            tableBody.empty();
+                	            // Iterate through the list using jQuery.each() method
+                	            $.each(list, function(index, listItem) {
+                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ')"></tr>');
+                	                newRow.append('<td class="code align-middle white-space-nowrap text-end fw-semi-bold pe-7 text-1000">' + listItem.ItemCode + '</td>');
+                	                newRow.append('<td class="category align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.CategoryName + '</td>');
+                	                newRow.append('<td class="name align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.JungName + '</td>');
+                	                newRow.append('<td class="level align-middle white-space-nowrap text-900 fs--1 text-start">' + listItem.LevelName + '</td>');
+                	                newRow.append('<td class="start align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.FromTime + '</td>');
+                	                newRow.append('<td class="finish align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.ToTime + '</td>');
+                	                newRow.append('<td class="day align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.DayName + '</td>');
+                	                newRow.append('<td class="member align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.DaesangName + '</td>');
+                	                newRow.append('<td class="teacher align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.SawonName + '</td>');
+                	                newRow.append('<td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.RegCnt + '</td>');
+                	                newRow.append('<td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.RegCnt2 + '</td>');
+                	                newRow.append('<td class="max align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + (listItem.OffMax + listItem.OnMax) + '</td>');
+                	                newRow.append('<td class="nickname align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.YakChing + '</td>');
+                	                newRow.append('<td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + (listItem.OffMax + listItem.OnMax - (listItem.RegCnt + listItem.RegCnt2)) + '</td>');
+
+                	                tableBody.append(newRow);
+                	            });
+                	        },
+                	        error: function(xhr, status, error) {
+                	       	 console.log("Status: " + status);
+                	         console.log("Error: " + error);
+                	        }
+                		});
+                    });
+                    </script>
                     <div class="border-top border-bottom border-200" id="customerOrdersTable" data-list='{"valueNames":["code","category","name","level","start","finish","day","member","teacher","offline","online","max","nickname","remain"]}'>
                         <div class="table-responsive scrollbar">
                             <table class="table table-sm fs--1 mb-0 table-hover">
