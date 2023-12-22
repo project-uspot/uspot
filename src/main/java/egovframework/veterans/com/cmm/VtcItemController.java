@@ -1167,6 +1167,7 @@ public class VtcItemController{
 	   if(users == null){
 		   model.addAttribute("msg", "로그인을 다시 해주세요.");
 	       model.addAttribute("script", "back");
+	       
 		   return "redirect:login.do";
 	   }
 	   
