@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,6 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
-import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
@@ -509,7 +510,6 @@ public class VtcMemberController {
 		if (a == 2) {
 			model.addAttribute("script", "back");
 			model.addAttribute("msg", "끝번호 입니다");
-
 			return "common/msg";
 		}
 
@@ -657,7 +657,8 @@ public class VtcMemberController {
 	
 	@GetMapping("/mitemfindlist")
 	public String mitemfindlist(TblItem_02 tblItem_02,Model model,
-				@RequestParam(name = "findstring")String findstring) throws Exception{
+				@RequestParam(name = "findstring")String findstring,
+				@RequestParam(name = "finddate",required = false)String finddate) throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -673,11 +674,23 @@ public class VtcMemberController {
 			tblItem_02.setSubGroupName(findstring);
 		}
 		
+		LocalDate currentDate = LocalDate.now();
+
+        // 날짜를 원하는 형식으로 포맷팅하기
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String currentDay = currentDate.format(formatter);
+		
+		if(finddate == null || finddate == "") {
+			tblItem_02.setUpdDate(currentDay);
+		}else {
+			tblItem_02.setUpdDate(finddate);
+		}
+		
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
 		
-		System.out.println(selectItemsByFilter);
-		
 		model.addAttribute("lists",selectItemsByFilter);
+		
+		model.addAttribute("findvalue",findstring);
 		
 		return "member/registration/mitemfindlist";
 	}
@@ -688,12 +701,38 @@ public class VtcMemberController {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
+		LocalDate currentDate = LocalDate.now();
+
+        // 날짜를 원하는 형식으로 포맷팅하기
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String currentDay = currentDate.format(formatter);
+        
+        
+        tblItem_02.setUpdDate(currentDay);
 		tblItem_02.setSiteCode(users.getSiteCode());
 		
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
 		
 		return list;
+	}
+	
+	@PostMapping("/mitemlistChange")
+	@ResponseBody
+	public List<Map<String, Object>> mitemlistChange(TblItem_02 tblItem_02)throws Exception{
 		
+		Users users = (Users) session.getAttribute("loginuserinfo");
 		
+		tblItem_02.setSiteCode(users.getSiteCode());
+		
+		if(tblItem_02.getUpdDate() == null || tblItem_02.getUpdDate() == "") {
+			LocalDate currentDate = LocalDate.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        String currentDay = currentDate.format(formatter);
+	        tblItem_02.setUpdDate(currentDay);
+		}
+		
+		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
+		
+		return selectItemsByFilter;
 	}
 }

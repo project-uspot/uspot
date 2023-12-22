@@ -407,8 +407,9 @@ from fmsc_s01
 			PKID = #{PKID}
 	</update>
 	<select id="selectItemsByFilter" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="map">
-	    <![CDATA[CALL up_SelectItemByFilter_New(
-	        #{siteCode},
+	    <![CDATA[
+	    CALL up_SelectItemByFilter_New(
+	        #{siteCode},#{UpdDate},
 	        CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N'' AND ]]>
 	        <choose>
 	        	<when test="SubGroupName != null">
