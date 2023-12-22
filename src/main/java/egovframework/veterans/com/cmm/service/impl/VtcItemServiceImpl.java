@@ -50,10 +50,9 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 		itemDAO.updateItem01(item_01);
 	}
 	
-	
 	@Override
-	public List<TblItem_02> listItem02(String SiteCode) throws Exception {
-		return itemDAO.listItem02(SiteCode);
+	public List<TblItem_02> listItem02(TblItem_02 item_02) throws Exception {
+		return itemDAO.listItem02(item_02);
 	}
 	@Override
 	public void item02Insert(TblItem_02 item_02) throws Exception {
@@ -64,8 +63,13 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 		return itemDAO.getitem02SortOrder(SiteCode);
 	}
 	@Override
-	public List<TblItem_03> liseItem03(String SiteCode) throws Exception {
-		return itemDAO.liseItem03(SiteCode);
+	public TblItem_02 getItem02(TblItem_02 item_02) throws Exception {
+		return itemDAO.getItem02(item_02);
+	}
+	
+	@Override
+	public List<TblItem_03> liseItem03(TblItem_03 item_03) throws Exception {
+		return itemDAO.liseItem03(item_03);
 	}
 	@Override
 	public void item03Insert(TblItem_03 item_03) throws Exception {

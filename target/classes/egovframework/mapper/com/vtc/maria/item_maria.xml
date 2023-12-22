@@ -56,42 +56,58 @@
 	</select>
 	<update id="updateItem01" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
 		update tblitem_01 set 
-			GroupName = #{GroupName}
-			, JSType = #{jsType}
-			, Jungsi1 = #{JungSi1}
-			, Jungsi2  = #{JungSi2}
-			, Jungsi3 = #{JungSi3}
-			, FromDate  = #{FromDate}
-			, ToDate  = #{ToDate}
-			, UpdDate = sysdate()
-			, UpdUserPKID = #{UpdUserPKID}
-			, webyn = #{WebYN}
-			, JungSi1STime = #{JungSi1STime}
-			, JungSi1ETime = #{JungSi1ETime}
-			, JungSi2STime = #{JungSi2STime}
-			, JungSi2ETime = #{JungSi2ETime}
-			, JungSi3_MonthGbn = #{JungSi3MonthGbn}
-			, JungSiType_1_Stop = #{JungSiType1Stop}
-			, JungSi1Inlive = #{JungSi1Inlive}
-			, AgainMonth = #{AgainMonth}
-			, PayDelayDay = #{PayDelayDay}
-			, JungSiLotteryDate = #{JungSiLotteryDate}
-			, JungSiLotteryFromDate = #{JungSiLotteryFromDate}
-			, JungSiLotteryToDate = #{JungSiLotteryToDate}
-			, JungSiLotteryPayFromDate = #{JungSiLotteryPayFromDate}
-			, JungSiLotteryPayToDate = #{JungSiLotteryPayToDate}
-			, JungSiLotteryAddFromDate = #{JungSiLotteryAddFromDate}
-			, JungSiLotteryAddToDate = #{JungSiLotteryAddToDate}
-			, ItemRejectCnt = #{ItemRejectCnt}
-			, MonthSelNo = #{MonthSelNo}
+			GroupName= #{GroupName},
+			JSType= #{jsType}, 
+			Jungsi= #{JungSi}, 
+			Jungsi1= #{JungSi1}, 
+			Jungsi2= #{JungSi2}, 
+			Jungsi3= #{JungSi3}, 
+			FromDate= #{FromDate}, 
+			ToDate= #{ToDate}, 
+			SortOrder= #{SortOrder}, 
+			IsDelete= #{IsDelete}, 
+			UpdDate=NULL,
+			UpdUserPKID= #{UpdUserPKID},
+			RFromDate= #{rFromDate},
+			RToDate= #{rToDate},
+			Season= #{Season}, 
+			webyn= #{WebYN},
+			JungSi1STime= #{JungSi1STime},
+			JungSi1ETime= #{JungSi1ETime},
+			JungSi2STime= #{JungSi2STime}, 
+			JungSi2ETime= #{JungSi2ETime},
+			JungSi3_MonthGbn= #{JungSi3MonthGbn}, 
+			JungSiType_1_Stop= #{JungSiType1Stop}, 
+			JungSi1Inlive= #{JungSi1Inlive}, 
+			AgainMonth= #{AgainMonth}, 
+			JungsiAddType= #{JungSiAddType}, 
+			JungsiAddFromDate= #{JungSiAddFromDate},
+			JungsiAddToDate= #{JungSiAddToDate},
+			PayDelayDay= #{PayDelayDay}, 
+			PayDelayTime= #{PayDelayTime}, 
+			Jungsi1PayFromDate= #{JungSi1PayFromDate}, 
+			Jungsi1PayToDate= #{JungSi1PayToDate}, 
+			JungSi1PaySTime= #{JungSi1PaySTime}, 
+			JungSi1PayETime= #{JungSi1PayETime}, 
+			JungSiAddSTime= #{JungSiAddSTime},
+			JungSiAddETime= #{JungSiAddETime},
+			park_time= #{ParkTime}, 
+			JungSiLotteryDate= #{JungSiLotteryDate}, 
+			JungSiLotteryFromDate= #{JungSiLotteryFromDate},
+			JungSiLotteryToDate= #{JungSiLotteryToDate}, 
+			JungSiLotteryPayFromDate= #{JungSiLotteryPayFromDate}, 
+			JungSiLotteryPayToDate= #{JungSiLotteryPayToDate}, 
+			JungSiLotteryAddFromDate= #{JungSiLotteryAddFromDate}, 
+			JungSiLotteryAddToDate= #{JungSiLotteryAddToDate}, 
+			ItemRejectCnt= #{ItemRejectCnt}, 
+			MonthSelNo= #{MonthSelNo}
 		where 	
 			SiteCode =#{SiteCode}
-		and IsDelete = 'N'
 		and GroupID = #{GroupID}
 	</update>
 	
 	
-	<select id="listItem02" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+	<select id="listItem02" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
 		select *, b.GroupName, a.SubGroupName, InTime, InEndTime, a.SortOrder from tblItem_02 a
 		left join tblItem_01 b on a.SiteCode = b.SiteCode and a.GroupID = b.GroupID
 		where
@@ -112,8 +128,14 @@
 		values
 			(#{SiteCode}, #{SubGroupName}, #{GroupID}, #{InTime}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, NULL, 0, #{InEndTime});
 	</insert>
+	<select id="getItem02" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+		select * from tblitem_02 
+		where 
+			SiteCode  = #{SiteCode}
+		and SubGroupID = #{SubGroupID}
+	</select>
 	
-	<select id="liseItem03" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+	<select id="liseItem03" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
 		select * from tblitem_03
 		where 	
 			SiteCode = #{SiteCode}
@@ -145,15 +167,6 @@
 		where 
 			a.SiteCode = #{SiteCode}
 		and a.IsDelete  = 'N'
-		<!-- <if test="IsUse == 1">
-		and IsUse = 'Y'
-		</if>
-		<if test="IsUse == 2">
-		and IsUse = 'N'
-		</if>
-		<if test="IsUse == 3">
-		and IsDelete = 'Y'
-		</if> -->
 		<if test="Type == 1">
 		and Type = 'G'
 		</if>
@@ -485,9 +498,25 @@
 		SELECT * FROM SELECTITEM
 		WHERE 
 			SiteCode = #{SiteCode}
+		<if test="IsUse == 1">
+		and IsUse = 'Y'
+		</if>
+		<if test="IsUse == 2">
+		and IsUse = 'N'
+		</if>
+		<if test="IsUse == 3">
+		and IsDelete = 'Y'
+		</if>
+		<if test="Type == 1">
+		and Type = 'G'
+		</if>
+		<if test="Type == 2">
+		and Type = 'S'
+		</if>
 		AND (#{findcategory} = '0' AND GroupName LIKE CONCAT('%', #{findvalue}, '%'))
 		OR (#{findcategory} = '1' AND SubGroupName LIKE CONCAT('%', #{findvalue}, '%'))
 		OR (#{findcategory} = '2' AND LevelName LIKE CONCAT('%', #{findvalue}, '%'))
 		OR (#{findcategory} = '3' AND YakChing LIKE CONCAT('%', #{findvalue}, '%'))
+		
 	</select>
 </mapper>

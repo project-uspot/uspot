@@ -24,22 +24,21 @@
 							<div class="row g-3">
 								<!-- <h6 class="text-700 h-25">강좌</h6> -->
 								<div class="col-sm-3 col-md-2 mb-2">
-									<select class="form-select" id="IsUse" name="IsUse" data-list-filter="data-list-filter" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+									<select class="form-select" id="IsUse" name="IsUse" >
 										<option value="1">사용</option>
 										<option value="2">사용안함</option>
 										<option value="3">삭제</option>
 									</select>
 								</div>
 								<div class="col-sm-3 col-md-2 mb-2">
-									<select class="form-select" id="Type" name="Type" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}' aria-label="Default select example">
+									<select class="form-select" id="Type" name="Type" >
 										<option value="0">전체</option>
 										<option value="1">일반</option>
 										<option value="2">특강</option>
 									</select>
 								</div>
 								<div class="col-sm-3 col-md-2 mb-2">
-									<select class="form-select" id="findcategory" name="findcategory" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'
-										aria-label="Default select example">
+									<select class="form-select" id="findcategory" name="findcategory" >
 										<option value="0" >종목</option>
 										<option value="1">강습반명</option>
 										<option value="2">강사</option>
@@ -55,13 +54,18 @@
 								<div class="col-sm-6 col-md-2 mb-2">
 		            			</div>
 								<div class="col-auto">
-									<button class="btn btn-outline-info" type="button" id="findbutton" >조회</button>
+									<button class="btn btn-outline-info" type="button" id="findbutton" onkeydown="handleKeyPress(event)">조회</button>
 								</div>
 								
 								<script type="text/javascript">
+								function handleKeyPress(event) {
+				                       if (event.key === "Enter") {
+				                         finditem();
+				                       }
+				                     }
 									$('#findbutton').click(function() {
-										/* IsUse = document.getElementById('IsUse').value;
-										Type = document.getElementById('Type').value; */
+										IsUse = document.getElementById('IsUse').value;
+										Type = document.getElementById('Type').value;
 										findvalue = document.getElementById('findvalue').value;
 										findcategory = document.getElementById('findcategory').value;
 										$.ajax({
@@ -69,6 +73,8 @@
 								            url: "selectItemFind", // 실제 엔드포인트로 교체해야 합니다
 								            dataType : 'json',
 								            data: {
+								            	IsUse : IsUse, 
+								            	Type : Type,
 								            	findvalue: findvalue,
 								            	findcategory : findcategory
 								            },
@@ -83,7 +89,7 @@
 													$('#modalButton').click();
 												}
 													list.forEach(function(item) {
-													var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="openpop(' + list.itemCode + ')" style="cursor:pointer;">'													
+													var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="openpop(' + item.itemCode + ')" style="cursor:pointer;">'													
 													var keys= [
 														'itemCode', 'type', 'jsType', 'groupName', 'subGroupName', 'levelName', 'itemMonth', 'weekName', 
 														'fromTime', 'toTime', 'defPrice', 'price1', 'price2', 'price3', 'price4', 'offMax', 'onMax', 'junwon', 
@@ -209,7 +215,7 @@
 						</form> -->
 					</div>
 					<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-						<table class="table table-sm fs--1 mb-1">
+						<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
 							<thead>
 								<tr>
 									<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" data-sort="ItemCode" scope="col">코드</th>

@@ -67,10 +67,10 @@ public class TblItem_01 implements Serializable{
 	/*신규접수 종료시간*/
 	private String JungSi1ETime;
 	
-	/*재접수 시작시간*/
+	/*재등록 시작시간*/
 	private String JungSi2STime;
 
-	/*재접수 종료시간*/
+	/*재등록 종료시간*/
 	private String JungSi2ETime;
 	
 	/*수시접수 시 강습기간 당월처리*/

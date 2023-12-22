@@ -21,11 +21,12 @@ public interface VtcItemService {
 	TblItem_01 getItem01(TblItem_01 item_01) throws Exception;
 	void updateItem01(TblItem_01 item_01) throws Exception;
 	
-	List<TblItem_02> listItem02(String SiteCode) throws Exception;
+	List<TblItem_02> listItem02(TblItem_02 item_02) throws Exception;
 	void item02Insert(TblItem_02 item_02) throws Exception;
 	int getitem02SortOrder(String SiteCode) throws Exception;
+	TblItem_02 getItem02(TblItem_02 item_02) throws Exception;
 	
-	List<TblItem_03> liseItem03(String SiteCode) throws Exception;
+	List<TblItem_03> liseItem03(TblItem_03 item_03) throws Exception;
 	void item03Insert(TblItem_03 item_03) throws Exception;
 	int getitem03SortOrder(String SiteCode) throws Exception;
 	int getitem03DefCode(String SiteCode) throws Exception;
