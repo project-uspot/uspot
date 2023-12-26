@@ -676,12 +676,13 @@ public class VtcMemberController {
 		
 		LocalDate currentDate = LocalDate.now();
 
-        // 날짜를 원하는 형식으로 포맷팅하기
+        LocalDate nextMonthFirstDay = currentDate.getDayOfMonth() == 1 ? currentDate : currentDate.plusMonths(1).withDayOfMonth(1);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String currentDay = currentDate.format(formatter);
+        String formattedDate = nextMonthFirstDay.format(formatter);
 		
 		if(finddate == null || finddate == "") {
-			tblItem_02.setUpdDate(currentDay);
+			tblItem_02.setUpdDate(formattedDate);
 		}else {
 			tblItem_02.setUpdDate(finddate);
 		}
@@ -689,8 +690,10 @@ public class VtcMemberController {
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
 		
 		model.addAttribute("lists",selectItemsByFilter);
-		
+		model.addAttribute("formattedDate",formattedDate);
 		model.addAttribute("findvalue",findstring);
+		
+		
 		
 		return "member/registration/mitemfindlist";
 	}
@@ -701,14 +704,15 @@ public class VtcMemberController {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
-        // 날짜를 원하는 형식으로 포맷팅하기
+        LocalDate nextMonthFirstDay = currentDate.getDayOfMonth() == 1 ? currentDate : currentDate.plusMonths(1).withDayOfMonth(1);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String currentDay = currentDate.format(formatter);
+        String formattedDate = nextMonthFirstDay.format(formatter);
         
         
-        tblItem_02.setUpdDate(currentDay);
+        tblItem_02.setUpdDate(formattedDate);
 		tblItem_02.setSiteCode(users.getSiteCode());
 		
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);

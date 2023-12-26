@@ -16,6 +16,7 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="robots" content="noindex">
     <script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -97,31 +98,32 @@
                     	<div class="col-auto mt-n2 ms-15">
                     		<div class="input-group">
   								<span class="input-group-text">강습기준일</span>
-								<input class="form-control" type="date" id="dateInput"/>
+								<input class="form-control" type="date" id="dateInput" value="${formattedDate}"/>
 							</div>
                     	</div>
                     </div>
                     <script type="text/javascript">
-                    const dateInput = document.getElementById('dateInput');
-
+                    var dateInput = document.getElementById('dateInput');
                     dateInput.addEventListener('change', function() {
-                    	var findvalue = document.getElementById('findvalue').value;
-                        const selectedDate = dateInput.value;
-                        
+                    dateInput.value = dateInput.value;
+                    if(dateInput.value == '' || dateInput.value == null){
+                    	dateInput.value = '${formattedDate}';
+                    }
+                    var findvalue = document.getElementById('findvalue').value;
                         $.ajax({
                 	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
                 	        url: "mitemlistChange", // 실제 엔드포인트로 교체해야 합니다
                 	        dataType : 'json',
                 	        data: { 
                 	        	SubGroupName: findvalue,
-                	        	UpdDate : selectedDate
+                	        	UpdDate : dateInput.value
                 	        },
                 	        success: function(list) {
                 	            var tableBody = $('#customer-order-table-body');
                 	            tableBody.empty();
                 	            // Iterate through the list using jQuery.each() method
                 	            $.each(list, function(index, listItem) {
-                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ')"></tr>');
+                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ')"></tr>');
                 	                newRow.append('<td class="code align-middle white-space-nowrap text-end fw-semi-bold pe-7 text-1000">' + listItem.ItemCode + '</td>');
                 	                newRow.append('<td class="category align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.CategoryName + '</td>');
                 	                newRow.append('<td class="name align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.JungName + '</td>');
@@ -170,7 +172,7 @@
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
                                 	<c:forEach items="${lists}" var="list">
-	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID})">
+	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth})">
 		                                    <td class="code align-middle text-end fw-semi-bold pe-7 text-1000">${list.ItemCode}</td>
 		                                    <td class="category align-middle white-space-nowrap text-start fw-bold text-700">${list.CategoryName}</td>
 		                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">${list.JungName}</td>
@@ -197,10 +199,21 @@
     </div>
 </body>
 <script type="text/javascript">
-function tronclick(ItemID) {
-	opener.parent.test(ItemID);
+function tronclick(ItemID,itemmonth) {
+	const dateInputValue = dateInput.value;
+    const formattedDate = new Date(dateInputValue);
+    formattedDate.setMonth(formattedDate.getMonth() + itemmonth);
+    const formattedDateString = formatDate(formattedDate);
+    opener.parent.test(ItemID, dateInputValue, formattedDateString);
 	opener.focus();
 	window.close();
+}
+
+function formatDate(date) {
+	  const yyyy = date.getFullYear();
+	  const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
+	  const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
+	  return yyyy+'-'+mm+'-'+dd;
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
@@ -220,5 +233,21 @@ function tronclick(ItemID) {
 <script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
-
+<div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verticallyCenteredModalLabel">정 원 초 과</h5>
+        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-700 lh-lg mb-0" id="resultmessage">검색결과가 없습니다.</p>
+      </div>
+      <div class="modal-footer">
+      	<button class="btn btn-primary" type="button">Okay</button>
+        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">나가기</button>
+      </div>
+    </div>
+  </div>
+</div>
 </html>

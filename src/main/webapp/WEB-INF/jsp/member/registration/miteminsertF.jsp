@@ -92,26 +92,6 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
-	                                <tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(this)">
-	                                    <td class="code align-middle white-space-nowrap text-center fw-bold">1001</td>
-	                                    <td class="category align-middle white-space-nowrap text-center">특강</td>
-	                                    <td class="item align-middle white-space-nowrap text-start fw-bold text-700">ㅇㄹㅇㅇㅇ</td>
-	                                    <td class="name align-middle white-space-nowrap text-900 fs--1 text-start">ㅇㄹㅇㄹㅇㄹㅇ</td>
-	                                    <td class="day align-middle white-space-nowrap text-center">ㅇㄹㄹㄹ</td>
-	                                    <td class="time align-middle white-space-nowrap text-start">12:00</td>
-	                                    <td class="level align-middle white-space-nowrap text-start">ㄹㄹㄹㄹㄹ</td>
-	                                    <td class="member align-middle white-space-nowrap text-start">ㅇㅇ</td>
-	                                    <td class="teacher align-middle white-space-nowrap text-start">ㅇㅇㅇㅇㅇㅇ</td>
-	                                    <td class="date py-2 align-middle white-space-nowrap">2121-ㅇㅇ-ㅇㅇ-ㅇㅇㅇㅇ-ㅇㅇ-ㅇㅇ</td>
-	                                    <td class="price py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇㅇ</td>
-	                                    <td class="dc py-2 align-middle white-space-nowrap">ㅇㅇㅇ</td>
-	                                    <td class="sort py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇㅇㅇ</td>
-	                                    <td class="dccode py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇ</td>
-	                                    <td class="dcpercent py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇ</td>
-	                                    <td class="max py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇ</td>
-	                                    <td class="enter py-2 align-middle white-space-nowrap">ㅇㅇㅇㅇ</td>
-	                                    <td class="remain py-2 align-middle white-space-nowrap">dㅇㅇㅇd</td>
-	                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -142,7 +122,7 @@
 								<label class="form-check-label" for="inlineRadio2">1장</label>
 							</div>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="inlineRadio3" type="radio" name="inlineRadioOptions" value="option3" aria-describedby="basic-addon1"/>
+								<input class="form-check-input" id="inlineRadio3" type="radio" name="inlineRadioOptions" value="option3" aria-describedby="basic-addon1" checked="checked"/>
 								<label class="form-check-label" for="inlineRadio3">0장</label>
 							</div>
 						</div>
@@ -417,7 +397,7 @@
      	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
      	window.open(url, "_blank", windowFeatures);
 	}
-	function test(ItemID) {
+	function test(ItemID,selectedDate,nextDate) {
 		$.ajax({
 	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
 	        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
@@ -445,7 +425,7 @@
                 newRow.append('<td class="level align-middle white-space-nowrap text-start">' + list.LevelName + '</td>');
                 newRow.append('<td class="member align-middle white-space-nowrap text-start">' + list.DaesangName + '</td>');
                 newRow.append('<td class="teacher align-middle white-space-nowrap text-start">' + list.SawonName + '</td>');
-                newRow.append('<td class="date py-2 align-middle white-space-nowrap">' + '0000-00-00~0000-00-00'+ '</td>');
+                newRow.append('<td class="date py-2 align-middle white-space-nowrap">' + selectedDate+'~'+nextDate+'('+list.itemmonth+')'+'</td>');
                 newRow.append('<td class="price py-2 align-middle white-space-nowrap">' + list.DefPrice + '</td>');
                 newRow.append('<td class="dc py-2 align-middle white-space-nowrap">' + list.dc + '</td>');
                 newRow.append('<td class="sort py-2 align-middle white-space-nowrap">' + list.sort + '</td>');
