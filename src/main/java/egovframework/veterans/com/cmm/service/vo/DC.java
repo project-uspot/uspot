@@ -24,7 +24,7 @@ public class DC implements Serializable{
 	private String Price;
 	
 	/* 할인율 */
-	private String Rate;
+	private int Rate;
 	
 	private String dcDaesangID;
 	

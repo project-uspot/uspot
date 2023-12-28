@@ -42,7 +42,7 @@
     $(document).ready(function() {
         var previousRow = null;
 
-        $('table tr').on('click', function() {
+        $('#customer-order-table-body tr').on('click', function() {
           if (previousRow !== null) {
             $(previousRow).css('background-color', ''); // 이전 선택 취소
           }

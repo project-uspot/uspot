@@ -188,7 +188,7 @@ public class VtcMemberController {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 
 		tblmember.setUpdUserPKID(users.getUserPKID());
-
+		System.out.println(tblmember);
 		vtcMemberService.deletemember(tblmember);
 
 		return "redirect:membership.do";
@@ -648,9 +648,16 @@ public class VtcMemberController {
 				dcname = dc2.getDcName();
 			}
 		}
+		
+		LocalDate currentDate = LocalDate.now();
+        
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
+		
 		model.addAttribute("member",member);
+		model.addAttribute("yearage",yearage);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
+		model.addAttribute("dclist",dcList);
 		
 		return "member/registration/miteminsertF";
 	}
@@ -703,16 +710,7 @@ public class VtcMemberController {
 	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
-        LocalDate currentDate = LocalDate.now();
-
-        LocalDate nextMonthFirstDay = currentDate.getDayOfMonth() == 1 ? currentDate : currentDate.plusMonths(1).withDayOfMonth(1);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = nextMonthFirstDay.format(formatter);
         
-        
-        tblItem_02.setUpdDate(formattedDate);
 		tblItem_02.setSiteCode(users.getSiteCode());
 		
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
