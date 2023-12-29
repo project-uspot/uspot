@@ -164,7 +164,7 @@
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">할인유형</span>
 							<select class="form-select" id="dcds" aria-label="Default select example" aria-describedby="basic-addon1">
-								<option selected="selected" value="0"></option>
+								<option selected="selected" value="0" id="0"></option>
 								<c:forEach var="dc" items="${dclist}">
 									<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
                                 </c:forEach>
@@ -649,20 +649,39 @@ document.getElementById('saledate').value = new Date().toISOString().substring(0
 	            $(this).find('.dccode').text(selectedID);
 	            // 선택된 값으로 'dcpercent' 클래스를 가진 td에 내용을 넣어줍니다.
 	            $(this).find('.dcpercent').text(selectedpercent);
-	            
+	            sortchange(this);
 	            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
 	        }
 	    });
 	});
     
+    $('#regmonth').on('change', function() {
+        // 선택된 옵션의 값 가져오기
+        var selectedValue = $('#regmonth').val();
+        $('#itemtbody tr').each(function() {
+	    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
+	        if (itemIDValue === clickeditemid) {
+	            // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
+	            const result = parseString($(this).find('.date').text());
+	            
+	          	const revalue = result[0]+'~'+result[1]+'('+selectedValue+')';
+        
+	          	$(this).find('.date').text(revalue);
+	          	sortchange(this);
+	            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
+	        }
+	    });
+    });
+    
     //소계바꾸는 함수
     function sortchange(selectrow){
     	var price = $(selectrow).find('.price').text();
-    	var dcpercent = $(selectrow).find('.dcpercent').text();
-    	if(dcpercent == '0'){
-    		dcpercent = 100;
-    	}
-    	$(selectrow).find('.sort').text(price*dcpercent/100);
+    	var dcpercent = parseInt($(selectrow).find('.dcpercent').text());
+    	const result = parseString($(selectrow).find('.date').text());
+    	var dcprice = price*(dcpercent*0.01);
+    	var afterdcprice = price-dcprice;
+    	$(selectrow).find('.dc').text(dcprice*result[2]);
+    	$(selectrow).find('.sort').text(afterdcprice*result[2]);
     }
     
     //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
