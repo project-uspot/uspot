@@ -185,6 +185,7 @@ from fmsc_s01
 	FROM tblmember 
 	LEFT JOIN tblsite ON tblmember.SiteCode = tblsite.SiteCode
 	WHERE
+		tblmember.IsDelete = 'N' and 
 	    (#{findcategory} = '0' AND MemberID LIKE CONCAT('%', #{findvalue}, '%'))
 	    OR
 	    (#{findcategory} = '1' AND Name LIKE CONCAT('%', #{findvalue}, '%'))
@@ -217,6 +218,7 @@ from fmsc_s01
    		from tblmember
    		where
 		MemberID = #{MemberID}
+		and IsDelete = 'N'
 	</select>
 	<select id="maxmemberid" resultType="String">
 		select max(MemberID)+1 from tblmember where IsDelete = 'N'

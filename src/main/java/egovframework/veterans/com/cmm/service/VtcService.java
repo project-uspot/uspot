@@ -19,4 +19,6 @@ public interface VtcService {
 	PGM selectPGMInfo(PGM pgm) throws Exception;
 	
 	List<tblCode> listTblCode(tblCode code) throws Exception;
+	
+	List<String> listcodename(tblCode tblCode);
 }

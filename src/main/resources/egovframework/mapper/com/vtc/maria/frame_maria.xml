@@ -73,5 +73,15 @@
 			SiteCode  = #{SiteCode}
 		and CodeGroupID = #{CodeGroupID}
 		and IsDelete = 'N'
+		order by sortOrder asc
+	</select>
+	
+	<select id="listcodename" parameterType="egovframework.veterans.com.cmm.service.vo.tblCode" resultType="String">
+		select CodeName from tblcode
+		where 
+			SiteCode  = #{SiteCode}
+		and CodeGroupID = #{CodeGroupID}
+		and IsDelete = 'N'
+		order by sortOrder asc
 	</select>
 </mapper>

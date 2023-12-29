@@ -65,7 +65,7 @@ public class VtcPaidController {
 		String dcName = request.getParameter("dcName");
 		String dcType = request.getParameter("dcType");
 		String Price = request.getParameter("Price");
-		String Rate = request.getParameter("Rate");
+		int Rate = Integer.parseInt(request.getParameter("Rate"));
 		String ApplyFamily = request.getParameter("ApplyFamily");
 		int ApplyFamilyCnt = Integer.parseInt(request.getParameter("ApplyFamilyCnt"));
 		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
@@ -104,7 +104,7 @@ public class VtcPaidController {
 		String dcName = request.getParameter("dcName");
 		String dcType = request.getParameter("dcType");
 		String Price = request.getParameter("Price");
-		String Rate = request.getParameter("Rate");
+		int Rate = Integer.parseInt(request.getParameter("Rate"));
 		String dcDaesangID = request.getParameter("dcDaesangID");
 		String ApplyFamily = request.getParameter("ApplyFamily");
 		int ApplyFamilyCnt = Integer.parseInt(request.getParameter("ApplyFamilyCnt"));
