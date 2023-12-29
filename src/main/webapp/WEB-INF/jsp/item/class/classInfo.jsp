@@ -13,7 +13,7 @@
 	<div class="mb-9 ">
 		<div class="row g-2 mb-4">
 		    <div class="col-auto">
-		      <h2 class="mb-0">강습반 정보관리</h2>
+				<h2 class="mb-0">강습반 정보관리</h2>
 		    </div>
 		</div>
 		<form name="selectForm" id="DocumentForm" action="${pageContext.request.contextPath}/classinfo.do">
@@ -22,7 +22,6 @@
 					<div class="card h-100 col-md-9">
 						<div class="card-body">
 							<div class="row g-3">
-								<!-- <h6 class="text-700 h-25">강좌</h6> -->
 								<div class="col-sm-3 col-md-2 mb-2">
 									<select class="form-select" id="IsUse" name="IsUse" >
 										<option value="1">사용</option>
@@ -47,157 +46,172 @@
 								</div>
 								<div class="col-sm-3 col-md-2 mb-2">
 									<div class="form-floating">
-										<input class="form-control" name="findvalue" id="findvalue" type="text" placeholder="항목" />
+										<input class="form-control" name="findvalue" id="findvalue" type="text" placeholder="항목" onkeydown="handleKeyPress(event)" />
 										<label for="ExpenseName">항목</label>
 									</div>
 								</div>
-								<div class="col-sm-6 col-md-2 mb-2">
+								<div class="col-sm-5 col-md-1 mb-2">
 		            			</div>
 								<div class="col-auto">
-									<button class="btn btn-outline-info" type="button" id="findbutton" onkeydown="handleKeyPress(event)">조회</button>
+									<button class="btn btn-outline-info" type="button" id="findbutton" onclick="finditem()" >조회(F3)</button>
 								</div>
 								
 								<script type="text/javascript">
-								function handleKeyPress(event) {
-				                       if (event.key === "Enter") {
-				                         finditem();
-				                       }
-				                     }
-									$('#findbutton').click(function() {
-										IsUse = document.getElementById('IsUse').value;
-										Type = document.getElementById('Type').value;
-										findvalue = document.getElementById('findvalue').value;
-										findcategory = document.getElementById('findcategory').value;
-										$.ajax({
-											type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-								            url: "selectItemFind", // 실제 엔드포인트로 교체해야 합니다
-								            dataType : 'json',
-								            data: {
-								            	IsUse : IsUse, 
-								            	Type : Type,
-								            	findvalue: findvalue,
-								            	findcategory : findcategory
-								            },
-								            success: function(data) {
-												var list = data.list;
-												var tbody = $('#tbody');
-												tbody.empty();
-												if(list == ''){
-													var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
-													$('#resultmessage').text('검색결과가 없습니다.');
-													$('body').append(buttonHTML);
-													$('#modalButton').click();
-												}
-													list.forEach(function(item) {
-													var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="openpop(' + item.itemCode + ')" style="cursor:pointer;">'													
-													var keys= [
-														'itemCode', 'type', 'jsType', 'groupName', 'subGroupName', 'levelName', 'itemMonth', 'weekName', 
-														'fromTime', 'toTime', 'defPrice', 'price1', 'price2', 'price3', 'price4', 'offMax', 'onMax', 'junwon', 
-														'isUse', 'dcNoChk', 'parkingTime', 'webEnd', 'ageStart', 'ageYearGbn', 'recommendGbn',
-														'oldAgeDCNoGbn', 'lotteryGbn', 'inliveRegster',
-													];
-													keys.forEach(function(key) {
-														var value = item[key] ?? '';
-														if (key === 'type') {
-															// 'type' 키의 값이 'G'이면 '일반', 'S'이면 '특강'으로 변경
-															value = value === 'G' ? '일반' : value === 'S' ? '특강' : value;
-														}
-														if (key === 'jsType') {
-															value = value === '0' ? '정시접수' : value === '1' ? '수시접수' : value === '2' ? '기간접수' : value;
-														}
-														if (key === 'junwon') {
-												            var offMax = parseInt(item['offMax']) || 0;
-												            var onMax = parseInt(item['onMax']) || 0;
-												            value = offMax + onMax; // 'offMax'와 'onMax' 값을 더한 값으로 설정
-														}
-														if (key === 'parkingTime') {
-															switch(value) {
-															case '0':
-																value = '해당없음';
-																break;
-															case '61':
-												                value = '30분';
-												                break;
-												            case '62':
-												                value = '1시간';
-												                break;
-												            case '63':
-												                value = '1시간30분';
-												                break;
-												            case '64':
-												                value = '2시간';
-												                break;
-												            case '65':
-												                value = '2시간30분';
-												                break;
-												            case '66':
-												                value = '3시간';
-												                break;
-												            case '67':
-												                value = '3시간30분';
-												                break;
-												            case '68':
-												                value = '4시간';
-												                break;
-												            case '69':
-												                value = '4시간30분';
-												                break;
-												            case '70':
-												                value = '5시간';
-												                break;
-												            case '71':
-												                value = '5시간30분';
-												                break;
-												            case '72':
-												                value = '6시간';
-												                break;
-												            case '73':
-												                value = '6시간30분';
-												                break;
-												            case '74':
-												                value = '7시간';
-												                break;
-												            case '75':
-												                value = '7시간30분';
-												                break;
-												            case '76':
-												                value = '8시간';
-												                break;
-												            case '77':
-												                value = '8시간30분';
-												                break;
-												            case '78':
-												                value = '9시간';
-												                break;
-												            case '79':
-												                value = '9시간30분';
-												                break;
-												            case '80':
-												                value = '10시간';
-												                break;
+									
+									/* $('#findbutton').click(function() { */
+										function finditem() {
+											IsUse = document.getElementById('IsUse').value;
+											Type = document.getElementById('Type').value;
+											findvalue = document.getElementById('findvalue').value;
+											findcategory = document.getElementById('findcategory').value;
+											$.ajax({
+												type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+									            url: "selectItemFind", // 실제 엔드포인트로 교체해야 합니다
+									            dataType : 'json',
+									            data: {
+									            	IsUse : IsUse, 
+									            	Type : Type,
+									            	findvalue: findvalue,
+									            	findcategory : findcategory
+									            },
+									            success: function(data) {
+													var list = data.list;
+													var tbody = $('#tbody');
+													tbody.empty();
+													if(list == ''){
+														var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+														$('#resultmessage').text('검색결과가 없습니다.');
+														$('body').append(buttonHTML);
+														$('#modalButton').click();
+													}
+														list.forEach(function(item) {
+														var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="openpop(' + item.itemCode + ')" style="cursor:pointer;">'													
+														var keys= [
+															'itemCode', 'type', 'jsType', 'groupName', 'subGroupName', 'levelName', 'itemMonth', 'weekName', 
+															'fromTime', 'toTime', 'defPrice', 'price1', 'price2', 'price3', 'price4', 'offMax', 'onMax', 'junwon', 
+															'isUse', 'dcNoChk', 'parkingTime', 'webEnd', 'ageStart', 'ageYearGbn', 'recommendGbn',
+															'oldAgeDCNoGbn', 'lotteryGbn', 'inliveRegster',
+														];
+														keys.forEach(function(key) {
+															var value = item[key] ?? '';
+															if (key === 'type') {
+																// 'type' 키의 값이 'G'이면 '일반', 'S'이면 '특강'으로 변경
+																value = value === 'G' ? '일반' : value === 'S' ? '특강' : value;
 															}
-														}
-														if (key === 'ageStart') {
-													        value = item['ageStart'] + ' ~ ' + item['ageEnd']; // 'ageStart'와 'ageEnd'를 조합하여 문자열 생성
-													    }
-														row += '<td class="align-middle py-3">' + value + '</td>';
-													});
-													row += '</tr>';
-													tbody.append(row);
-												})
-											},
-											error: function(xhr, status, error) {
-											console.log("Status: " + status);
-											console.log("Error: " + error);
-										}
-									});
-								});
+															if (key === 'jsType') {
+																value = value === '0' ? '정시접수' : value === '1' ? '수시접수' : value === '2' ? '기간접수' : value;
+															}
+															if (key === 'junwon') {
+													            var offMax = parseInt(item['offMax']) || 0;
+													            var onMax = parseInt(item['onMax']) || 0;
+													            value = offMax + onMax; // 'offMax'와 'onMax' 값을 더한 값으로 설정
+															}
+															if (key === 'parkingTime') {
+																switch(value) {
+																case '0':
+																	value = '해당없음';
+																	break;
+																case '61':
+													                value = '30분';
+													                break;
+													            case '62':
+													                value = '1시간';
+													                break;
+													            case '63':
+													                value = '1시간30분';
+													                break;
+													            case '64':
+													                value = '2시간';
+													                break;
+													            case '65':
+													                value = '2시간30분';
+													                break;
+													            case '66':
+													                value = '3시간';
+													                break;
+													            case '67':
+													                value = '3시간30분';
+													                break;
+													            case '68':
+													                value = '4시간';
+													                break;
+													            case '69':
+													                value = '4시간30분';
+													                break;
+													            case '70':
+													                value = '5시간';
+													                break;
+													            case '71':
+													                value = '5시간30분';
+													                break;
+													            case '72':
+													                value = '6시간';
+													                break;
+													            case '73':
+													                value = '6시간30분';
+													                break;
+													            case '74':
+													                value = '7시간';
+													                break;
+													            case '75':
+													                value = '7시간30분';
+													                break;
+													            case '76':
+													                value = '8시간';
+													                break;
+													            case '77':
+													                value = '8시간30분';
+													                break;
+													            case '78':
+													                value = '9시간';
+													                break;
+													            case '79':
+													                value = '9시간30분';
+													                break;
+													            case '80':
+													                value = '10시간';
+													                break;
+																}
+															}
+															if (key === 'ageStart') {
+														        value = item['ageStart'] + ' ~ ' + item['ageEnd']; // 'ageStart'와 'ageEnd'를 조합하여 문자열 생성
+														    }
+															row += '<td class="align-middle py-3">' + value + '</td>';
+														});
+														row += '</tr>';
+														tbody.append(row);
+													})
+												},
+												error: function(xhr, status, error) {
+												console.log("Status: " + status);
+												console.log("Error: " + error);
+												}
+											});
+										};
+										function handleKeyPress(event) {
+											if (event.key === "Enter" || event.key === 'F3') {
+											    finditem();
+											  }
+											}
+										
+								/* }); */
 							</script>
 								<div class="col-auto">
 									<button class="btn btn-primary" type="button"
 										data-bs-toggle="modal" id="modal" data-bs-target="#insertModal"
-										onclick="openModal()">등록</button>
+										onclick="openModal()">등록(F2)</button>
 								</div>
+								<script type="text/javascript">
+									document.addEventListener('keydown', function(event) {
+										if (event.key === 'F2') {
+										// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+											var button = document.getElementById('modal');
+											if (button) {
+												button.click(); // 버튼 클릭
+											}
+										}
+									});
+								</script>
 							</div>
 						</div>
 					</div>
@@ -207,13 +221,12 @@
 				<div id="tableotherlearn" data-list='{"valueNames":["ItemCode","Type","JsType","GroupName","SubGroupName","LevelName","ItemMonth","WeekName", "FromTime","ToTime","DefPrice","Price1",
 				 "Price2", "Price3", "Price4", "offMax", "onMax", "IsUse", "DcNoChk", "ParkingTime", "WebEnd", "AgeStart", "AageYearGbn", "RecommendGbn", "OldAgeDCNoGbn", "LotteryGbn", "InliveRegster"]
 					,"page":10,"pagination":true}'>
-					<div class="search-box my-3 mx-auto">
-						<!-- <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+					<!-- <div class="search-box my-3 mx-auto">
+						<form class="position-relative" data-bs-toggle="search" data-bs-display="static">
 							<input class="form-control search-input search form-control-sm" type="search" placeholder="Search" aria-label="Search" />
 							<span class="fas fa-search search-box-icon"></span>
-					
-						</form> -->
-					</div>
+						</form>
+					</div> -->
 					<div class="table-responsive scrollbar-overlay mx-n1 px-1">
 						<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
 							<thead>
@@ -251,7 +264,7 @@
 							<tbody class="list" id="tbody">
 								<c:forEach items="${list }" var="list">
 									<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="openpop(${list.itemCode})" style="cursor:pointer;">
-										<td class="ItemCode align-middle white-space-nowrap text-900 fs--1 text-start">
+										<td class="ItemCode align-middle white-space-nowrap text-900 fs--1">
 											${list.itemCode }
 										</td>
 										<td class="Type align-middle white-space-nowrap ">
@@ -420,7 +433,7 @@ function openpop(ItemCode) {
 	if(typeof ItemCode !== "undefined"){
 		var url = "updateItem.do?ItemCode="+ItemCode;
 	}
-	var popupWidth = 1100;
+	var popupWidth = 1200;
 	var popupHeight = 600;
 	var popupX = (window.screen.width / 2) - (popupWidth / 2);
 	var popupY= (window.screen.height / 2) - (popupHeight / 2);

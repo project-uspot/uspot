@@ -433,12 +433,12 @@ function valueChk() {
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<select class="form-select" id="AuthType" name="AuthType">
+					<select class="form-select" id="Type" name="Type">
 						<option value="0">일반</option>
 						<option value="1">강사</option>
 						<option value="2">수납자</option>
 					</select>
-					<label for="AuthType">구분 </label>
+					<label for="Type">구분 </label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-4">

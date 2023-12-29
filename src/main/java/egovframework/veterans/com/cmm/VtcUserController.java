@@ -213,7 +213,7 @@ public class VtcUserController{
 		String UserID = request.getParameter("UserID");
 		String UserPWD = request.getParameter("UserPWD");
 		String Gender = request.getParameter("Gender");
-		String AuthType = request.getParameter("AuthType");
+		String Type = request.getParameter("Type");
 		String BirthDay = request.getParameter("BirthDay");
 		String BirthType = request.getParameter("BirthType");
 		String JikMooID = request.getParameter("JikMooID");
@@ -241,7 +241,7 @@ public class VtcUserController{
 		users.setUserID(UserID);
 		users.setUserPWD(UserPWD);
 		users.setGender(Gender);
-		users.setType(AuthType);
+		users.setType(Type);
 		users.setBirthDay(BirthDay);
 		users.setBirthType(BirthType);
 		users.setJikMooID(JikMooID);

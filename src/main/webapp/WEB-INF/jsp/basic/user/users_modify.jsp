@@ -299,12 +299,12 @@ function fn_egov_delete_article(form) {
 		</div>
 		<div class="col-sm-4 gy-4">
 			<div class="form-floating">
-				<select class="form-select" id="AuthType" name="AuthType">
-					<option value="0" <c:if test="${user.authType eq '0' }">selected</c:if>>일반</option>
-					<option value="1" <c:if test="${user.authType eq '1' }">selected</c:if>>강사</option>
-					<option value="2" <c:if test="${user.authType eq '2' }">selected</c:if>>수납자</option>
+				<select class="form-select" id="Type" name="Type">
+					<option value="0" <c:if test="${user.type eq '0' }">selected</c:if>>일반</option>
+					<option value="1" <c:if test="${user.type eq '1' }">selected</c:if>>강사</option>
+					<option value="2" <c:if test="${user.type eq '2' }">selected</c:if>>수납자</option>
 				</select>
-				<label for="AuthType">구분 </label>
+				<label for="Type">구분 </label>
 			</div>
 		</div>
 		<h4 class="mb-4 mt-4 pt-3">기타 내용</h4>

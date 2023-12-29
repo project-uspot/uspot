@@ -1,7 +1,6 @@
 package egovframework.veterans.com.cmm;
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,7 +19,6 @@ import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import lombok.RequiredArgsConstructor;
-
 @Controller
 @SessionAttributes("loginuserinfo")
 @RequiredArgsConstructor

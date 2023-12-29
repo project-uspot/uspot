@@ -796,6 +796,10 @@
 	
 		$(document).ready(function() {
 			$("#submit").click(function() {
+				if($("#check_id_result").val()!="N"){
+					alert("아이디 중복체크를 해주십시오.");
+					return false;
+				}
 				var datas = $("#frm").serialize();
 		        var MonChk = $("#MonChk").is(":checked");
 		        var TuesChk = $("#TuesChk").is(":checked");

@@ -51,6 +51,9 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	public TblItem_02 getItem02(TblItem_02 item_02) {
 		return selectOne("item.getItem02", item_02);
 	}
+	public void updateItem02(TblItem_02 item_02) {
+		update("item.updateItem02", item_02);
+	}
 
 	public List<TblItem_03> liseItem03(TblItem_03 item_03) {
 		return selectList("item.liseItem03", item_03);
@@ -58,13 +61,19 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	public void item03Insert(TblItem_03 item_03) {
 		insert("item.item03Insert", item_03);
 	}
-	
 	public int getitem03DefCode(String siteCode) {
 		return selectOne("item.getitem03DefCode", siteCode);
 	}
 	public int getitem03SortOrder(String siteCode) {
 		return selectOne("item.getitem03SortOrder", siteCode);
 	}
+	public TblItem_03 getItem03(TblItem_03 item_03) {
+		return selectOne("item.getItem03", item_03);
+	}
+	public void updateItem03(TblItem_03 item_03) {
+		update("item.updateItem03", item_03);
+	}
+	
 	public List<selectitem> listSelectItemY(selectitem selectitem) {
 		return selectList("item.listSelectItemY", selectitem);
 	}
@@ -112,5 +121,8 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	public List<selectitem> findItem(Map<String, Object> find) {
 		return selectList("item.findItem", find);
 	}
+	
+	
+	
 	
 }
