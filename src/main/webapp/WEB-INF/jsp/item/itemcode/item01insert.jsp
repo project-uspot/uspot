@@ -213,19 +213,22 @@
 		$(document).ready(function() {
 			$("#submit").click(function() {
 				var datas = $("#frm").serialize();
+				if(comfirm("등록하시겠습니까?")) {
+					$.ajax({
+						type : "post", 
+	                    url : "insertItem01.do",
+	                    data : datas, 
+	                    success : function() {
+	                    	location.href = "itemcode.do";
+	                    },
+	                    error : function(xhr, status, error) {
+	            			console.log("Status: " + status);
+	                        console.log("Error: " + error);
+	            		}
+					});
+					
+				}				
 				
-				$.ajax({
-					type : "post", 
-                    url : "insertItem01.do",
-                    data : datas, 
-                    success : function() {
-                    	location.href = "itemcode.do";
-                    },
-                    error : function(xhr, status, error) {
-            			console.log("Status: " + status);
-                        console.log("Error: " + error);
-            		}
-				})
 			})
 		})
 		

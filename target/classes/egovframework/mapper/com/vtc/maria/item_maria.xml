@@ -51,7 +51,6 @@
 		select * from tblItem_01
 		where
 			SiteCode = #{SiteCode}
-		and IsDelete = 'N'
 		and GroupID = #{GroupID}
 	</select>
 	<update id="updateItem01" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_01">
@@ -66,7 +65,7 @@
 			ToDate= #{ToDate}, 
 			SortOrder= #{SortOrder}, 
 			IsDelete= #{IsDelete}, 
-			UpdDate=NULL,
+			UpdDate=sysdate(),
 			UpdUserPKID= #{UpdUserPKID},
 			RFromDate= #{rFromDate},
 			RToDate= #{rToDate},
@@ -106,13 +105,17 @@
 		and GroupID = #{GroupID}
 	</update>
 	
-	
 	<select id="listItem02" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
 		select *, b.GroupName, a.SubGroupName, InTime, InEndTime, a.SortOrder from tblItem_02 a
 		left join tblItem_01 b on a.SiteCode = b.SiteCode and a.GroupID = b.GroupID
 		where
 			a.SiteCode = #{SiteCode}
-		and a.IsDelete = 'N'
+		<if test='IsDelete == "N"'>
+			and a.IsDelete = 'N'
+		</if>
+		<if test='IsDelete == "Y"'>
+			and a.IsDelete = 'Y'
+		</if>
 		order by a.SortOrder
 	</select>
 	<select id="getitem02SortOrder" resultType="int">
@@ -122,6 +125,7 @@
 		where 
 			SiteCode = #{SiteCode}
 	</select>
+	
 	<insert id="item02Insert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
 		INSERT INTO tblitem_02
 			(SiteCode, SubGroupName, GroupID, InTime, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, InEndTime)
@@ -134,12 +138,31 @@
 			SiteCode  = #{SiteCode}
 		and SubGroupID = #{SubGroupID}
 	</select>
+	<update id="updateItem02" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02">
+		UPDATE tblitem_02 SET 
+			SubGroupName = #{SubGroupName}, 
+			GroupID = #{GroupID}, 
+			InTime = #{InTime}, 
+			SortOrder = #{SortOrder}, 
+			IsDelete = #{IsDelete}, 
+			UpdDate = sysdate(), 
+			UpdUserPKID = #{UpdUserPKID}, 
+			InEndTime = #{InEndTime}
+		where
+			SiteCode = #{SiteCode}
+		and SubGroupID = #{SubGroupID}
+	</update>
 	
 	<select id="liseItem03" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
 		select * from tblitem_03
 		where 	
 			SiteCode = #{SiteCode}
-		and IsDelete = 'N'
+		<if test='IsDelete == "N"'>
+			and IsDelete = 'N'
+		</if>
+		<if test='IsDelete == "Y"'>
+			and IsDelete = 'Y'
+		</if>
 	</select>
 	<insert id="item03Insert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
 		INSERT INTO tblitem_03
@@ -161,6 +184,25 @@
 		where 
 			SiteCode = #{SiteCode}
 	</select>
+	<select id="getItem03" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03" resultType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+		select * from tblitem_03 
+		where 
+			SiteCode  = #{SiteCode}
+		and LevelID  = #{LevelID}
+	</select>
+	<update id="updateItem03" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_03">
+		UPDATE tblitem_03 SET 
+			LevelName = #{LevelName}, 
+			DefCode = #{DefCode},
+			SortOrder = #{SortOrder}, 
+			IsDelete = #{IsDelete}, 
+			UpdDate = sysdate(), 
+			UpdUserPKID = #{UpdUserPKID}
+		where
+			SiteCode = #{SiteCode}
+		AND LevelID = #{LevelID}
+	</update>
+	
 	 <select id="listSelectItemY" resultType="egovframework.veterans.com.cmm.service.vo.selectitem" parameterType="egovframework.veterans.com.cmm.service.vo.selectitem"> 
 		select * from selectitem a 
 		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID  
@@ -227,9 +269,9 @@
 			  #{RegMonth}, #{AgeYearGbn}, #{DcNo3MonthChk}, #{RecommendGbn}, #{RecommendGbnSort}, #{OldAgeDCNoGbn}, #{LotteryGbn}, #{inliveRegster}, #{Bigo})
 	</insert>
 	<select id="getItemCode" resultType="int">
-		select max(ItemCode) 
+		select MAX(CAST(ItemCode AS SIGNED))
 		from 
-			tblitem
+			selectItem
 		where 
 			SiteCode = #{SiteCode}
 	</select>

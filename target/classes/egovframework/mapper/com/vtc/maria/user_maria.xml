@@ -100,7 +100,7 @@
 		select 
 			a.SiteCode, SiteName, SawonNo, SawonName, UserID, UserPWD , d.UserGroupName , c.GroupName, a.Email, a.HomePhone, a.CellPhone  
 			, a.ZipCode, a.Address, a.SubAddress, a.Note, a.CHistory, a.PHistory, InDate, OutDate, a.JobStart
-			, gender, AuthType , BuseoID , JikwiID , State , BirthDay , BirthType , JikMooID
+			, gender, Type , BuseoID , JikwiID , State , BirthDay , BirthType , JikMooID
 		from tblUser a
 		left join tblSite b on a.SiteCode = b.SiteCode
 		left join tblItem_01 c on a.SiteCode = c.SiteCode and a.ItemGroupID = c.GroupID
@@ -133,7 +133,7 @@
 			, UserPWD  = #{UserPWD}
 			, SawonName = #{SawonName}
 			, Gender = #{Gender}
-			, AuthType = #{AuthType}
+			, Type = #{Type}
 			, BirthDay = #{BirthDay}
 			, BirthType = #{BirthType}
 			, JikMooID = #{JikMooID}
@@ -165,9 +165,9 @@
 	</update>
 	<insert id="insertUser" parameterType="egovframework.veterans.com.cmm.service.vo.Users">
 		INSERT INTO uspot_test.tbluser
-			(SiteCode, SawonNo, SawonName, UserID, UserPWD, Gender, AuthType, SSN, BirthDay, BirthType, JikMooID, BuseoID, JikwiID, ItemGroupID, Email, HomePhone, CellPhone, InDate, State, OutDate, ZipCode, Address, SubAddress, Note, CHistory, PHistory, Upjang, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, JobStart)
+			(SiteCode, SawonNo, SawonName, UserID, UserPWD, Gender, Type, SSN, BirthDay, BirthType, JikMooID, BuseoID, JikwiID, ItemGroupID, Email, HomePhone, CellPhone, InDate, State, OutDate, ZipCode, Address, SubAddress, Note, CHistory, PHistory, Upjang, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, JobStart)
 		values
-			(#{SiteCode}, #{SawonNo}, #{SawonName},#{UserID}, #{UserPWD}, #{Gender},#{AuthType}, #{ssn}, #{BirthDay},#{BirthType}, #{JikMooID}, #{BuseoID}, #{JikwiID}, #{ItemGroupID}, #{Email}, #{HomePhone}, #{CellPhone}, #{InDate}, #{State}, #{OutDate}, #{ZipCode}, #{Address}, #{SubAddress}, #{Note}, #{Chistory}, #{Phistory}, #{Upjang}, 'N', sysdate(), 0, sysdate(), 0, NULL)
+			(#{SiteCode}, #{SawonNo}, #{SawonName},#{UserID}, #{UserPWD}, #{Gender},#{Type}, #{ssn}, #{BirthDay},#{BirthType}, #{JikMooID}, #{BuseoID}, #{JikwiID}, #{ItemGroupID}, #{Email}, #{HomePhone}, #{CellPhone}, #{InDate}, #{State}, #{OutDate}, #{ZipCode}, #{Address}, #{SubAddress}, #{Note}, #{Chistory}, #{Phistory}, #{Upjang}, 'N', sysdate(), 0, sysdate(), 0, NULL)
 	</insert>
 	<select id="seleceUserID_Chk" parameterType="egovframework.veterans.com.cmm.service.vo.Users" resultType="egovframework.veterans.com.cmm.service.vo.Users">
 		select UserID , SawonNo  from tbluser 
@@ -202,7 +202,7 @@
 		select 
 			a.SiteCode, UserPKID,  SiteName, SawonNo, SawonName , UserID, d.UserGroupName 
 			, case gender when 0 then '여자' else '남자' end as 'gender'
-			, case AuthType when 0 then '일반' when 1 then '강사' else '수납자' end as 'AuthType'
+			, case Type when 0 then '일반' when 1 then '강사' else '수납자' end as 'Type'
 			, case BuseoID when 1 then '운영팀' when 2 then '관리팀' end as 'BuseoID'
 			, case JikwiID when 5 then '사원' when 4 then '주임' when 3 then '대리' when 2 then '파트장' when 1 then '팀장' end as 'JikwiID'
 			, c.GroupName , case State when 0 then '재직' when 1 then '휴직' else '퇴직' end as 'State'

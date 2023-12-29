@@ -58,26 +58,21 @@ private final HttpSession session;
 	}
 	
 	@GetMapping(value="itemCodeList.do")
-	public @ResponseBody Map<String, Object> itemListCode() throws Exception {
+	public @ResponseBody Map<String, Object> itemListCode(TblItem_01 item_01, TblItem_02 item_02, TblItem_03 item_03) throws Exception {
 		
 		Map<String, Object> itemList = new HashMap<>();
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		Map<String, Object> obMap = new HashMap<>();
-		obMap.put("SiteCode", users.getSiteCode());
-		obMap.put("IsDelete", "N");
 		
-		TblItem_01 item_01 = new TblItem_01();
 		item_01.setSiteCode(users.getSiteCode());
 		
-		TblItem_02 item_02 = new TblItem_02();
 		item_02.setSiteCode(users.getSiteCode());
 		
-		TblItem_03 item_03 = new TblItem_03();
 		item_03.setSiteCode(users.getSiteCode());
 				
 		
 		List<TblItem_01> listItem01 = VtcItemService.listItemCode(item_01);
+		System.out.println("ajax-listItem01 : " + listItem01);
 		List<TblItem_02> listItem02 = VtcItemService.listItem02(item_02);
 		List<TblItem_03> listItem03 = VtcItemService.liseItem03(item_03);
 		
