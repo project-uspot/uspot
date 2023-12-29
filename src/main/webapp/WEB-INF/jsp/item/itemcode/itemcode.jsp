@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <div class="p-0">
-	<div class="mb-9 col-lg-14">
+	<div class="mb-9 ">
 		<div class="row g-2 mb-4">
 			<div class="col-auto">
 				<h2 class="mb-0">강습코드관리</h2>
@@ -34,39 +34,49 @@
 					</div>
 				</div>
 				<div class="col-auto" style="padding-top: 5px;">
-					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록</button>
+					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록(F2)</button>
 				</div>
+				<script type="text/javascript">
+					document.addEventListener('keydown', function(event) {
+						if (event.key === 'F2') {
+						// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+							var button = document.getElementById('modal');
+							if (button) {
+								button.click(); // 버튼 클릭
+							}
+						}
+					});
+				</script>
 			</div>
 		</div>
       
-		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1" >
+		<div class="mx-n4 px-1 mx-lg-n6 bg-white border-top border-bottom border-200 position-relative top-1" >
 			<div id="tableotherlearn" data-list='{"valueNames":["GroupName","jsType","fromDate","jungSi1","jungSi2","jungSi3","jungSi1Inlive","sortOrder", "againMonth","webYN","itemRejectCnt","monthSelNo",
 			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"],"page":5,"pagination":true}'>
-				<div class="table-responsive scrollbar-overlay mx-n1 px-1" style="overflow-x:scroll; ">
+				<div class="table-responsive scrollbar-overlay mx-n1 px-1">
 					<table class="table table-sm fs--1 mb-1 table-hover table-bordered" id="itemTable">
 						<thead class="itemcodelist">
 							<tr>
-							   <!-- <th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >선택</th> -->
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="GroupName" scope="col" >강습종목</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="jsType" scope="col">접수구분</th>
-							   <th colspan="5" class="sort align-middle pe-1 text-center"  scope="col">접수기간</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="sortOrder" scope="col" >정렬순서</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="againMonth" scope="col" >재등록<br>제한개월</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="webYN" scope="col">온라인<br>사용</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="itemRejectCnt" scope="col">등록제한<br>건수</th>
-							   <th rowspan="2" class="sort align-middle pe-1 text-center" data-sort="monthSelNo" scope="col">다개월<br>불가</th>
-							   <th colspan="4" class="sort align-middle pe-1 text-center"  scope="col">추첨접수기간</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="GroupName" scope="col" >강습종목</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jsType" scope="col">접수구분</th>
+							   <th colspan="5" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col">접수기간</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="sortOrder" scope="col" >정렬순서</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="againMonth" scope="col" >재등록<br>제한개월</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="webYN" scope="col">온라인<br>사용</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="itemRejectCnt" scope="col">등록제한<br>건수</th>
+							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="monthSelNo" scope="col">다개월<br>불가</th>
+							   <th colspan="4" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col">추첨접수기간</th>
 							</tr>
 							<tr>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="fromDate" scope="col">기간</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSi1" scope="col">신규</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSi2" scope="col">재등록</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSi3" scope="col">강습기간</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSi1Inlive" scope="col">구민접수</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSiLotteryFromDate" scope="col">접수기간</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSiLotteryDate" scope="col">추첨일</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSiLotteryPayFromDate" scope="col">결제기간</th>
-								<th class="sort board border-github align-middle pe-1 text-center" data-sort="jungSiLotteryAddFromDate" scope="col">선착순</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="fromDate" scope="col">기간</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSi1" scope="col">신규</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSi2" scope="col">재등록</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSi3" scope="col">강습기간</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSi1Inlive" scope="col">구민접수</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSiLotteryFromDate" scope="col">접수기간</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSiLotteryDate" scope="col">추첨일</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSiLotteryPayFromDate" scope="col">결제기간</th>
+								<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jungSiLotteryAddFromDate" scope="col">선착순</th>
 							</tr>
 						</thead>
 						<tbody class="list" id="tbody">
@@ -143,8 +153,8 @@
 					</div>
 				</div>
 			</div>
-		</div> 
-	</div>
+		</div>
+	</div>  
 </div>
 
 
@@ -165,19 +175,6 @@ function openModal() {
 }
 
 
-
-/* function updateModal() {
-   var item = $("#item").val();
-   
-   if(item === '0') {
-      $('#modal-content').load("updateItem01.do");
-   }  else if (item === '1') {
-      $('#modal-content').load("updateItem02.do");
-   } else {
-      $('#modal-content').load("updateItem03.do");
-   } 
-}  */
-
 function openpop(groupID) {
 	var url = "updateItem01.do";
 	if(typeof groupID !== "undefined"){
@@ -195,6 +192,14 @@ function openpop01(subGroupID) {
      window.open(url, "_blank", windowFeatures);
 }
 
+function openpop02(levelID) {
+	var url = "updateItem03.do";
+	if(typeof levelID !== "undefined"){
+		var url = "updateItem03.do?levelID="+levelID;
+	}
+	 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600";
+     window.open(url, "_blank", windowFeatures);
+}
 
 var checkbox = document.getElementById("isdeletecheck");
 var hiddenInput = document.getElementById("IsDelete");
@@ -236,7 +241,6 @@ $("#item,#isdeletecheck").change(function() {
          if(item === '0') {
             var item01 = data.item01
             var head = '<tr>'
-               /* head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >선택</th>'; */
                head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
                head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col">접수구분</th>';
                head += '<th colspan="5" class="sort align-middle pe-1 text-center" scope="col">접수기간</th>';
@@ -398,8 +402,8 @@ $("#item,#isdeletecheck").change(function() {
                head += '</tr>';
                thead.append(head);
             item03.forEach(function(list) {
-               var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" ' + 
-                   'style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal" id="updateTR03">';
+               var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center"  '+
+               'onclick="openpop02(' + list.levelID + ')"  style="cursor:pointer;" id="updateTR02">';
                row += '<td class="groupName align-middle py-3 ">' + list.defCode + '</td>';
                row += '<td class="subGroupName align-middle py-3 " id="LevelName" data-item-id=' + list.LevelID + '>' + list.levelName + '</td>';
                row += '<td class="sortOrder align-middle py-3 ">' + list.sortOrder + '</td>';
@@ -415,121 +419,6 @@ $("#item,#isdeletecheck").change(function() {
     });
     
 });
-
-
-
-
-/* $(document).ready(function(){
-    $('.hover-actions-trigger').click(function(){
-    	
-		var itemId = $(this).find('#GroupName').data('item-id');
-        alert('Clicked row with data-item-id = GroupName: ' + itemId);
-        
-        $.ajax({
-            type: 'POST',
-            url: 'clickValue.do',  
-            dataType : 'json',
-            data: { itemId: itemId },
-            success: function(data) {
-            $('[id="GroupName"]').val(data.groupName);
-            
-            $('[id="GroupID"]').val(data.groupID);
-            
-            if (data.jsType == '0') {
-                $('[id="jsType0"]').prop('checked', true);
-            } else if (data.jsType == '1') {
-                $('[id="jsType1"]').prop('checked', true);
-            } else if (data.jsType == '2') {
-                $('[id="jsType2"]').prop('checked', true);
-            }
-            
-            $('[id="FromDate"]').val(data.fromDate);
-            $('[id="ToDate"]').val(data.toDate);
-            
-            $('[id="SortOrder"]').val(data.sortOrder);
-            $('[id="ItemRejectCnt"] option').each(function () {
-                if ($(this).val() == data.itemRejectCnt) {
-                    $(this).prop('selected', true);
-                } else {
-                    $(this).prop('selected', false);
-                }
-            });
-            $('[id="AgainMonth"] option').each(function () {
-                if ($(this).val() == data.againMonth) {
-                    $(this).prop('selected', true);
-                } else {
-                    $(this).prop('selected', false);
-                }
-            });
-            if(data.webYN == 'Y') {
-               $('[id="WebYN"]').prop('checked', true);
-            } else {
-               $('[id="WebYN"]').prop('checked', false);
-            }
-            if(data.monthSelNo == 'Y') {
-               $('[id="MonthSelNo"]').prop('checked', true);
-            } else {
-               $('[id="MonthSelNo"]').prop('checked', false);
-            }
-            
-            $('[id="PayDelayTime"]').val(data.payDelayTime);
-
-            var JungSi1 = data.jungSi1
-            var JungSi1Date = JungSi1.split("~")
-            $('[id="JungSi1Start"]').val(JungSi1Date[0] + " " + data.jungSi1STime);
-            $('[id="JungSi1End"]').val(JungSi1Date[1] + " " + data.jungSi1ETime);
-            
-            var JungSi2 = data.jungSi2
-            var JungSi2Date = JungSi2.split("~")
-            $('[id="JungSi2Start"]').val(JungSi2Date[0] + " " + data.jungSi1STime);
-            $('[id="JungSi2End"]').val(JungSi2Date[1] + " " + data.jungSi1ETime);
-            
-            var JungSi3 = data.jungSi3
-            var JungSi3Date = JungSi3.split("~")
-            $('[id="JungSi3Start"]').val(JungSi3Date[0]);
-            $('[id="JungSi3End"]').val(JungSi3Date[1]);
-            
-            $('[id="JungSi1Inlive"]').val(data.jungSi1Inlive);
-            
-            $('[id="JungSiLotteryFromDate"]').val(data.jungSiLotteryFromDate);
-            
-            $('[id="JungSiLotteryToDate"]').val(data.jungSiLotteryToDate);
-                
-            $('[id="JungSiLotteryDate"]').val(data.jungSiLotteryDate);
-            
-            $('[id="JungSiLotteryPayFromDate"]').val(data.jungSiLotteryPayFromDate);
-            
-            $('[id="JungSiLotteryPayToDate"]').val(data.jungSiLotteryPayToDate);
-            
-            $('[id="JungSiLotteryAddFromDate"]').val(data.jungSiLotteryAddFromDate);
-            
-            $('[id="JungSiLotteryAddToDate"]').val(data.jungSiLotteryAddToDate);
-            },
-            error: function(error) {
-                console.error('Error:', error);
-            }
-        });
-        
-        $('#item').change(function () {
-        	var items = $("#item").val();
-        	var itemId1 = $(this).find('#SubGroupName').data('item-id');
-        	if(items === '1') {
-	        	$.ajax({
-	                type: 'POST',
-	                url: 'clickValue01.do',  // Replace with the correct URL
-	                dataType : 'json',
-	                data: { itemId1: itemId1 },
-	                success: function(data) {
-	                	
-	                },
-	                error: function(error) {
-	                    console.error('Error:', error);
-	                }
-	            });
-        	}
-    	});
-    });
-}); */
 
 
 </script>
@@ -552,22 +441,6 @@ $("#item,#isdeletecheck").change(function() {
       </div>
    </div>
 </div>
-
-<%-- <div class="modal fade" id="updateModal" tabindex="-1"
-   data-bs-backdrop="static" aria-labelledby="updateModalLabel"
-   aria-hidden="true">
-   <div class="modal-dialog modal-xl modal-dialog-scrollable">
-      <div class="modal-content" id="up01">
-         <jsp:include page="item01update.jsp" />
-      </div>
-      <div class="modal-content" style="display: none;" id="up02">
-         <jsp:include page="item02update.jsp" />
-      </div>
-      <div class="modal-content" style="display: none;" id="up03">
-         <jsp:include page="item03update.jsp" />
-      </div>
-   </div>
-</div> --%>
 
 <script>
 
@@ -605,39 +478,3 @@ $("#item,#isdeletecheck").change(function() {
 
 
 
-<script>
-
-    // select 요소 가져오기
-    var selectElementup= 0;
-    var selectedValueup = 0;
-
-    selectElementup = document.getElementById("item");
-    var div01up = document.getElementById("up01");
-    if (selectedValueup === "0") {
-           div01up.style.display = "block";
-       }
-    var div02up = document.getElementById("up02");
-    var div03up = document.getElementById("up03");
-    
-
-    // select 요소의 값이 변경될 때 실행할 함수 정의
-    selectElementup.addEventListener("change", function () {
-       
-       
-        // 선택된 옵션의 값을 가져와서 alert 창에 표시
-        selectedValueup = selectElementup.value;
-        div01up.style.display = "none";
-        div02up.style.display = "none";
-        div03up.style.display = "none";
-
-
-        if (selectedValueup === "0") {
-           
-            div01up.style.display = "block";
-        } else if (selectedValueup === "1") {
-            div02up.style.display = "block";
-        } else if (selectedValueup === "2") {
-            div03up.style.display = "block";
-        } 
-    });
-</script>

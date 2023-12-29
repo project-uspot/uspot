@@ -105,7 +105,7 @@ public class VtcItemController{
    
    
    @GetMapping("/itemcode.do")
-   public String listItemCode(ModelMap model, HttpServletRequest request, TblItem_01 item_01) throws Exception {
+   public String listItemCode(ModelMap model, TblItem_01 item_01) throws Exception {
       
       Users users =  (Users) session.getAttribute("loginuserinfo");
       if(users ==null) {
@@ -128,6 +128,8 @@ public class VtcItemController{
       int DefCode = vtcItemService.getitem03DefCode(users.getSiteCode());
       List<TblItem_01> list = vtcItemService.listItemCode(item_01);
       
+      System.out.println("list : " + list);
+      
       
       
       model.addAttribute("item01", item_01);
@@ -135,7 +137,7 @@ public class VtcItemController{
       model.addAttribute("SortOrder", SortOrder + 1);
       model.addAttribute("SortOrder02", item02SortOrder+1);
       model.addAttribute("SortOrder03", item03SortOrder+1);
-      model.addAttribute("DefCode", DefCode);
+      model.addAttribute("DefCode", DefCode+1);
       
       
       model.addAttribute("list", list);
@@ -326,10 +328,18 @@ public class VtcItemController{
          item_03.setAddUserPKID(AddUserPKID);
          
          vtcItemService.item03Insert(item_03);
+         
+         model.addAttribute("msg", "등록 되었습니다.");
+         model.addAttribute("script", "reload");
+ 		
+ 		return "common/msg";
       } catch (Exception e) {
-         e.printStackTrace();
+    	  e.printStackTrace();
+    	  model.addAttribute("msg", "다시 사용하여주세요");
+    	  model.addAttribute("script", "back");
+    	  return "common/msg";
       }
-      return "redirect:itemcode.do";
+		/* return "redirect:itemcode.do"; */
    }
    
   
@@ -441,7 +451,6 @@ public class VtcItemController{
 		  String DcNoChk = request.getParameter("DcNoChk");
 		  String OldAgeDCNoGbn = request.getParameter("OldAgeDCNoGbn");
 		  String DcNo3MonthChk = request.getParameter("DcNo3MonthChk");
-		  System.out.println("DcNo3MonthChk : "  + DcNo3MonthChk);
 		  String nvat = request.getParameter("nvat");
 		  String DefPrice = request.getParameter("DefPrice");
 		  String Price1 = request.getParameter("Price1");
@@ -449,7 +458,6 @@ public class VtcItemController{
 		  String Price3 = request.getParameter("Price3");
 		  String Price4 = request.getParameter("Price4");
 		  String IsUse = request.getParameter("IsUse");
-		  System.out.println("IsUse : "  + IsUse);
 		  String IsDelete = request.getParameter("IsDelete");
 		  String WebYN = request.getParameter("WebYN");
 		  String WebEnd = request.getParameter("WebEnd");
@@ -966,6 +974,7 @@ public class VtcItemController{
 	   
 	   try {
 		   item_01.setSiteCode(users.getSiteCode());
+		   item_01.setUpdUserPKID(users.getUserPKID());
 		   String JungSiType1StopChk = request.getParameter("JungSiType1StopChk");
 		   String JungSiType1Stop = "";
 		   if(JungSiType1StopChk == null) {
@@ -1151,8 +1160,6 @@ public class VtcItemController{
 	   
 	   System.out.println("item_02 : " + item_02);
 	   
-	   
-	   
 	   model.addAttribute("list", listItem01);
 	   model.addAttribute("item02", item_02);
 	   return "item/itemcode/item02update";
@@ -1169,24 +1176,103 @@ public class VtcItemController{
 	   }
 	   
 	   try {
+		   item_02.setSiteCode(users.getSiteCode());
+		   item_02.setUpdUserPKID(users.getUserPKID());
 		   String TimeChk = request.getParameter("TimeChk");
-		   int InTime = Integer.parseInt(request.getParameter("InTime"));
-		   int InEndTime = Integer.parseInt(request.getParameter("InEndTime"));
-		   
-		   if(TimeChk != "Y") {
-			   InTime = 0;
+		   int InTimeChk = Integer.parseInt(request.getParameter("InTimeChk"));
+		   int InTime = 0;
+		   int InEndTimeChk = Integer.parseInt(request.getParameter("InEndTimeChk"));
+		   int InEndTime = 0;
+		   if(TimeChk == null) {
+			   InTime  = 0;
 			   InEndTime = 0;
+		   } else {
+			   InTime = InTimeChk;
+			   InEndTime = InEndTimeChk;
 		   }
+		   
+		   String IsDeleteChk = request.getParameter("IsDeleteChk");
+		   String IsDelete = "";
+		   if(IsDeleteChk == null) {
+			   IsDelete = "N";
+		   } else {
+			   IsDelete = IsDeleteChk;
+		   }
+		   item_02.setInTime(InTime);
+		   item_02.setInEndTime(InEndTime);
+		   item_02.setIsDelete(IsDelete);
+		   
+		   vtcItemService.updateItem02(item_02);
+		   
+		   model.addAttribute("msg", "변경되었습니다.");
+		   model.addAttribute("script", "reload");
+			
+		   return "common/msg";
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			model.addAttribute("msg", "다시 사용하여주세요");
+			model.addAttribute("script", "back");
+			return "common/msg";
 		}
-	   return "";
    }
    
+   @GetMapping(value="/updateItem03.do")
+   public String updateItem03(@RequestParam("levelID") int levelID, ModelMap model, HttpServletRequest request, TblItem_03 item_03) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   System.out.println("levelID : " + levelID);
+
+	   item_03.setSiteCode(users.getSiteCode());
+	   item_03.setLevelID(levelID);
+	   
+	   item_03 = vtcItemService.getItem03(item_03);
+	   
+	   System.out.println("item_03  : " + item_03 );
+	   
+	   model.addAttribute("item03", item_03);
+      return "item/itemcode/item03update";
+   }
    
-   @RequestMapping(value="updateItem03.do")
-   public String updateItem03(ModelMap model, HttpServletRequest request) throws Exception {
-      Users users = (Users) session.getAttribute("loginuserinfo");
-      return "";
+   @PostMapping(value="/updateItem03.do")
+   public String updateItem03Ok(TblItem_03 item_03, ModelMap model, HttpServletRequest request) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+	   try {
+		item_03.setSiteCode(users.getSiteCode());
+		item_03.setUpdUserPKID(users.getUserPKID());
+		
+		String IsDeleteChk = request.getParameter("IsDeleteChk");
+		String IsDelete = "";
+		if(IsDeleteChk == null) {
+			IsDelete = "N";
+		} else {
+			IsDelete = IsDeleteChk;
+		}
+		
+		item_03.setIsDelete(IsDelete);
+		
+		System.out.println("upd-item_03 : " + item_03);
+		
+		vtcItemService.updateItem03(item_03);
+		
+		model.addAttribute("msg", "변경되었습니다.");
+		model.addAttribute("script", "reload");
+		
+		return "common/msg";
+		   
+	} catch (Exception e) {
+		e.printStackTrace();
+		model.addAttribute("msg", "다시 사용하여주세요");
+		model.addAttribute("script", "back");
+		return "common/msg";
+	}
    }
 }

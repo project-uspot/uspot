@@ -101,8 +101,8 @@
 								<td class="gender align-middle white-space-nowrap ">
 									<c:out value="${list.gender }"/>
 								</td>
-								<td class="authType align-middle white-space-nowrap ">
-									<c:out value="${list.authType }"/>
+								<td class="Type align-middle white-space-nowrap ">
+									<c:out value="${list.type }"/>
 								</td>
 								<td class="homePhone align-middle white-space-nowrap ">
 									<c:out value="${list.homePhone }"/>
