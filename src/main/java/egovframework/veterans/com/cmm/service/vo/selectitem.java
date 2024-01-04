@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm.service.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -360,6 +362,10 @@ public class selectitem {
 	private String CodeName;
 	
 	private int pkid;
+	
+	// 첨부파일
+	String FileName;
+	MultipartFile uploadfile;
 
 
 }

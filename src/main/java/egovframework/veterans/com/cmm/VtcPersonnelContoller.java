@@ -70,6 +70,7 @@ public class VtcPersonnelContoller {
 			@RequestParam(name="membertext")String membertext) throws Exception{
 		
 		Users users=(Users) session.getAttribute("loginuserinfo");
+		System.out.println("fmsc_s01 : " + fmsc_s01);
 
 		fmsc_s01.setSiteCode(users.getSiteCode());
 		

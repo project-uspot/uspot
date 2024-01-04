@@ -21,7 +21,7 @@
 		</div>
 		<div class="mb-4">
 			<div class="row g-3">
-				<div class="col-auto">
+				<!-- <div class="col-auto">
 					<div class="search-box">
 						<form class="position-relative" data-bs-toggle="search" data-bs-display="static">
 							<input class="form-control search-input search" type="search" placeholder="Search customers" aria-label="Search" />
@@ -29,17 +29,26 @@
 
 						</form>
 					</div>
-				</div>
+				</div> -->
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info px-5" href="${pageContext.request.contextPath}/OrderItemInsert.do" title="등록">등록</a>
+					<a class="btn btn-info px-5" href="${pageContext.request.contextPath}/OrderItemInsert.do" id="insert" title="신규">신규(F2)</a>
+					<script>
+						// 키보드 이벤트 감지
+						document.addEventListener('keydown', function(event) {
+							if (event.key === 'F2') { // F2 키를 눌렀을 때
+								event.preventDefault(); // 기본 동작 방지
+								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+							}
+						});
+					</script>
 				</div>
 			</div>
 		</div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1">
+				<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
 					<colgroup>
 						<col style="width:35px">
 						<col style="width:35px">
