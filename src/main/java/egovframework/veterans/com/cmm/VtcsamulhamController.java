@@ -1,6 +1,8 @@
 package egovframework.veterans.com.cmm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -30,39 +32,10 @@ import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("loginuserinfo")
 public class VtcsamulhamController{
 	
 	private final HttpSession session;
-	
-	private ApplicationContext applicationContext;
-	
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(VtcsamulhamController.class);
-	
-	public void afterPropertiesSet() throws Exception {}
-	
-	
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		
-		LOGGER.info("VtcsamulhamController setApplicationContext method has called!");
-	}
-	
-	@Resource(name="VtcSamulhamService")
-	protected VtcSamulhamService vtcSamulhamService;
-	
-	@Resource(name="VtcService")
-	protected VtcService VtcServise;
-	
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertyService;
-	
-	@Resource(name = "EgovFileMngService")
-	private EgovFileMngService fileMngService;
-	
-	@Resource(name = "EgovFileMngUtil")
-	private EgovFileMngUtil fileUtil;
+	private final VtcSamulhamService vtcSamulhamService;
 	
 	@GetMapping("/samulhaminfo.do")
 	public String samulhaminfo(Model model) throws Exception {
@@ -220,5 +193,21 @@ public class VtcsamulhamController{
 			model.addAttribute("script", "back");
 			return "common/msg";
 		}
+	}
+	
+	@ResponseBody
+	@GetMapping(value="lockercodelistfind.do")
+	public Map<String,Object> lockercodelistfind(tblplocker tblplocker) throws Exception{
+		
+		Map<String,Object> lockerlist = new HashMap<>();
+		
+		Users users =  (Users) session.getAttribute("loginuserinfo");
+		tblplocker.setSiteCode(users.getSiteCode());
+		List<lockercodelist> lockercodelist = vtcSamulhamService.lockercodelist(tblplocker);
+		
+
+		lockerlist.put("size", lockercodelist.size());
+		lockerlist.put("commentList", lockercodelist);
+		return lockerlist;
 	}
 }

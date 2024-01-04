@@ -24,29 +24,11 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("loginuserinfo")
 public class VtcSLOrderController {
 	
 	private final HttpSession session;
+	private final VtcSLOrderService VtcSLService;
 
-	private ApplicationContext applicationContext;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(VtcSLOrderController.class);
-	
-	public void afterPropertiesSet() throws Exception{}
-	
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		
-		LOGGER.info("VtcPaidController setApplicationContext method has called!");
-	}
-	
-	
-	
-	@Resource(name="VtcSLOrderService")
-	protected VtcSLOrderService VtcSLService;
-	
-	
 	@RequestMapping(value="SLOrderGroup.do")
 	public String selectSLOrder(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -69,16 +51,7 @@ public class VtcSLOrderController {
 		return "basic/orders/orderGroup_modity";
 	}
 	@RequestMapping(value="OrderGroupUpdOK.do")
-	public String orderGroupModifyOK(ModelMap model, SLOrderGroup group) throws Exception {
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
-			model.addAttribute("msg", "로그인을 다시 해주세요.");
-			model.addAttribute("script", "back");
-			return "redirect:login.do";
-		}
-		
-		group.setSiteCode(users.getSiteCode());
-		group.setUpdDatePKID(users.getUserPKID());
+	public String orderGroupModifyOK(SLOrderGroup group) throws Exception {
 		VtcSLService.updateOrderGroup(group);
 		return "redirect:SLOrderGroup.do";
 	}

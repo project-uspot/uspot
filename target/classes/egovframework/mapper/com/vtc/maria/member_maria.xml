@@ -426,4 +426,31 @@ from fmsc_s01
 	        </choose> 
 	        <![CDATA[ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
 	</select>
+	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
+    	SELECT LAST_INSERT_ID()
+  	</selectKey>
+		INSERT INTO fmsc_s01
+			(SiteCode, SaleDate, ItemPeriod, CustCode, 
+			FromDate, ToDate, RFromDate, RToDate, 
+			RegMonth, DCID, DiscountRate, DCPrice, 
+			ItemPrice, RealPrice, Misu, Note, 
+			Group_SaleNo, EmpCode, IsReReg, State, 
+			UserPKID, ItemPKID, IsChangeItem, InType, 
+			prevInType, CurState, RegType, ReEndFlag, 
+			Before_SaleNo, IF_Flag, IF_DateTime, IsConfirm, 
+			UseDayCnt, TotDayCnt, IsDelete, AddDate, 
+			AddUserPKID, UpdDate, UpdUserPKID, IsPackage, PaidPrice)
+			values
+			(#{SiteCode},#{SaleDate},#{ItemPeriod},#{CustCode}, 
+			#{FromDate},#{ToDate},#{FromDate},#{ToDate}, 
+			#{RegMonth},#{DCID},#{DiscountRate},#{DCPrice}, 
+			#{ItemPrice},#{RealPrice},#{Misu},#{Note}, 
+			#{GroupSaleNo},#{EmpCode},0,#{State}, 
+			#{UserPKID},#{ItemPKID},0,#{InType}, 
+			#{prevInType},#{CurState},#{RegType},#{ReEndFlag}, 
+			#{BeforeSaleNo},#{IFFlag},#{IFDateTime},#{IsConfirm}, 
+			#{UseDayCnt},#{TotDayCnt},'N',now(), 
+			#{AddUserPKID},now(),#{UpdUserPKID},#{IsPackage},#{PaidPrice})
+	</insert>
 </mapper>

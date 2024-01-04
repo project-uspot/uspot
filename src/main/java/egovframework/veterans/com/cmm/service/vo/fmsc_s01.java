@@ -74,7 +74,7 @@ public class fmsc_s01{
 	private int ItemPKID;
 
 
-	private String IsChangeItem;
+	private int IsChangeItem;
 
 
 	private String InType;
@@ -121,10 +121,11 @@ public class fmsc_s01{
 
 	private String UpdDate;
 
-
 	private int UpdUserPKID;
 
-
+	private int IsPackage;
+	
+	private double PaidPrice;
+	
 	private int tblState;
-
 }

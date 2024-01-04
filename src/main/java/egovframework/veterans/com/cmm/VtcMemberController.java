@@ -737,4 +737,19 @@ public class VtcMemberController {
 		
 		return selectItemsByFilter;
 	}
+	
+	@ResponseBody
+	@PostMapping("/fmsc_01insert")
+	public int  fmsc_01insert(fmsc_s01 fmsc_s01) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01.setSiteCode(users.getSiteCode());
+		fmsc_s01.setUserPKID(users.getUserPKID());
+		fmsc_s01.setAddUserPKID(users.getAddUserPKID());
+		fmsc_s01.setUpdUserPKID(users.getAddUserPKID());
+		
+		//vtcMemberService.fmsc_01insert(fmsc_s01);
+		
+		return fmsc_s01.getSaleNo();
+	}
 }

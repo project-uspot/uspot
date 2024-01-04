@@ -147,4 +147,9 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public Map<String, Object> mitemfindbyid(TblItem_02 tblItem_02) throws Exception {
 		return vtcMemberDAO.mitemfindbyid(tblItem_02);
 	}
+
+	@Override
+	public void fmsc_01insert(fmsc_s01 fmsc_s01) throws Exception {
+		vtcMemberDAO.fmsc_01insert(fmsc_s01);
+	}
 }
