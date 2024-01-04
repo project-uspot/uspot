@@ -46,6 +46,8 @@ function fn_egov_delete_article(form) {
 	if (confirm("삭제하시겠습니까?")) {
 		// Delete하기 위한 키값을 셋팅
 		form.submit();
+	} else {
+		return false;
 	}
 }
 
@@ -54,7 +56,7 @@ function fn_egov_delete_article(form) {
 <h2 class="mb-4">기타매출그룹 관리</h2>
 <div class="row">
 	<div class="col-xl-9">
-		<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/OrderGpInsertOK.do" class="row g-3 mb-6">
+		<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/OrderGroupUpdOK.do" class="row g-3 mb-6">
 			<input type="hidden" name="SiteCode" value="${group.siteCode }">
 			<input type="hidden" name="pkid" value="${group.pkid }">
 			<div class="col-sm-6 col-md-4">
@@ -109,21 +111,38 @@ function fn_egov_delete_article(form) {
 		<div class="col-12 gy-6">
 			<div class="row g-3 justify-content-end">
 				<div class="col-auto">
-					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/SLOrderGroup.do"title="목록">목록</a><!-- 목록 -->
+					<input type="button" class="btn btn-warning px-5" value="수정(F2)" id="modify" onclick="valueChk();"/>
 				</div>
 				<div class="col-auto">
-					<input type="button" class="btn btn-info px-5" value="수정" id="modify" onclick="valueChk();"/>
+					<a class="btn btn-phoenix-primary px-5" id="back" href="${pageContext.request.contextPath}/SLOrderGroup.do"title="목록(F3)">목록(F3)</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
-					<form action="${pageContext.request.contextPath}/deleteSlGp.do" name="formDelete" method="post">
-						<input type="submit" class="btn btn-warning px-5" value="삭제" id="delete" onclick="fn_egov_delete_article(this.form); return false;"> <!-- 삭제 -->
+					<form action="${pageContext.request.contextPath}/deleteSlGp.do" id="delfrm" name="formDelete" method="post">
+						<input type="submit" class="btn btn-danger px-5" value="삭제(F4)" id="delete" onclick="fn_egov_delete_article(this.form);"> <!-- 삭제 -->
 						<input type="hidden" name="SiteCode" value="${group.siteCode }">
 						<input type="hidden" name="pkid" value="${group.pkid }">
 					</form>
 				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
 
-
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk()
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+		if (event.key === 'F4') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			document.getElementById('delete').click();
+		}
+	});
+</script>

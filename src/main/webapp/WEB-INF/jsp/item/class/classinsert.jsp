@@ -22,7 +22,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-12">
-					<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/insertClassInfo.do" class="row g-3 mb-6">
+					<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/insertClassInfo.do" class="row g-3 mb-6" enctype="multipart/form-data">
 						<input type="hidden" id="check_id_result" value=""><!-- 아이디 중복체크 결과 -->
 						<ul class="nav nav-underline" id="myTab" role="tablist">
 							<li class="nav-item"><a class="nav-link active"
@@ -108,12 +108,12 @@
 												</div>
 												<div class="col-sm-6 col-md-4 mb-2">
 													<input class="form-check-input" id="fromChk" type="checkbox" onchange="fromTime()"  />
-													<label class="form-label" for="FromTime">강습 시작시간</label>
+													<label class="form-label" for="fromChk">강습 시작시간</label>
 													<input class="form-control datetimepicker" id="FromTime" name="FromTime" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
 												</div>
 												<div class="col-sm-6 col-md-4 mb-2">
 													<input class="form-check-input" id="flexCheckChecked" type="checkbox" onchange="toTime()" />
-													<label class="form-label" for="ToTime">강습 종료시간</label>
+													<label class="form-label" for="flexCheckChecked">강습 종료시간</label>
 													<input class="form-control datetimepicker" id="ToTime" name="ToTime" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
 												</div>
 												<div class="col-sm-6 col-md-4 mb-2" style="margin-top: 30px;">
@@ -165,7 +165,7 @@
 															</div>
 															<div class="col-sm-6 col-md-6 mb-2">
 																<input class="form-check-input" name="Thurs" id="ThursChk" value="Y" type="checkbox" onchange="ThuChk()" />
-																<label class="form-label" for="Thurs">목요일</label>
+																<label class="form-label" for="ThursChk">목요일</label>
 																<div class="input-group mb-3" style="width: 160px;">
 																	<div class="input-group-text">
 																		<input class="form-check-input"  id="th" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
@@ -175,7 +175,7 @@
 															</div>
 															<div class="col-sm-6 col-md-6 mb-2">
 																<input class="form-check-input" name="Fri" id="FriChk" value="Y" type="checkbox" onchange="FrChk()" />
-																<label class="form-label" for="Thurs">금요일</label>
+																<label class="form-label" for="FriChk">금요일</label>
 																<div class="input-group mb-3" style="width: 160px;">
 																	<div class="input-group-text">
 																		<input class="form-check-input"  id="f" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
@@ -185,7 +185,7 @@
 															</div>
 															<div class="col-sm-6 col-md-6 mb-2">
 																<input class="form-check-input" name="Satur" id="SaturChk" value="Y" type="checkbox" onchange="SaChk()" />
-																<label class="form-label" for="Thurs">토요일</label>
+																<label class="form-label" for="SaturChk">토요일</label>
 																<div class="input-group mb-3" style="width: 160px;">
 																	<div class="input-group-text">
 																		<input class="form-check-input"  id="sa" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
@@ -195,7 +195,7 @@
 															</div>
 															<div class="col-sm-6 col-md-6 mb-2">
 																<input class="form-check-input" name="Sun" id="SunChk" value="Y" type="checkbox" onchange="SuChk()" />
-																<label class="form-label" for="Thurs">일요일</label>
+																<label class="form-label" for="SunChk">일요일</label>
 																<div class="input-group mb-3" style="width: 160px;">
 																	<div class="input-group-text">
 																		<input class="form-check-input"  id="su" type="checkbox" disabled value="Y"  aria-label="Checkbox for following text input" />
@@ -205,7 +205,7 @@
 															</div>
 															<div class="col-sm-6 col-md-6 mb-2">
 																<input class="form-check-input" name="Holy" id="HolyChk" value="Y" type="checkbox" onchange="HoChk()" />
-																<label class="form-label" for="Thurs">공휴일</label>
+																<label class="form-label" for="HolyChk">공휴일</label>
 																<div class="input-group mb-3" style="width: 160px;">
 																	<div class="input-group-text">
 																		<input class="form-check-input"  id="h" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
@@ -502,7 +502,7 @@
 									<h4 class="mb-3">이미지</h4>
 									<div class="dropzone dropzone-multiple p-0 mb-5" id="my-awesome-dropzone" data-dropzone="data-dropzone">
 										<div class="fallback">
-											<input name="file" type="file"  />
+											<input type="file" name="uploadfile" id="uploadfile" />
 										</div>
 										<div class="dz-preview d-flex flex-wrap">
 											<div class="border bg-white rounded-3 d-flex flex-center position-relative me-2 mb-2" ><img class="dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/products/23.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" /><a class="dz-remove text-400" href="#!" data-dz-remove="data-dz-remove"><span data-feather="x"></span></a></div>
@@ -573,6 +573,7 @@
 		<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel</button>
 	</div>
 	<script>
+		
 		$(function(){
 			$("#ItemCode").on("change", function(){
 				$("#check_id_result").val("N");
@@ -792,14 +793,8 @@
 		    }
 		};
 
-		
-	
 		$(document).ready(function() {
 			$("#submit").click(function() {
-				if($("#check_id_result").val()!="N"){
-					alert("아이디 중복체크를 해주십시오.");
-					return false;
-				}
 				var datas = $("#frm").serialize();
 		        var MonChk = $("#MonChk").is(":checked");
 		        var TuesChk = $("#TuesChk").is(":checked");
@@ -808,7 +803,7 @@
 		        var FriChk = $("#FriChk").is(":checked");
 		        var SaturChk = $("#SaturChk").is(":checked");
 		        var SunChk = $("#SunChk").is(":checked");
-		        var HolyChk = $("#HolyChk").is(":checked");
+		        var HolyChk = $("#HolyChk").is(":checked");0
 		        var chkPeriod = $("#chkPeriod").is(":checked");
 		        var DcNoChk = $("#DcNoChk").is(":checked");
 		        var OldAgeDCNoGbn = $("#OldAgeDCNoGbn").is(":checked");
@@ -887,6 +882,8 @@
 		        datas += "&IsDelete=" + IsDelete;
 		        datas += "&AgeYearGbn=" + AgeYearGbn;
 		        datas += "&LotteryGbn=" + LotteryGbn;
+		        
+		        console.log(datas);
 				
 				$.ajax({
 					type : "post", 
@@ -902,8 +899,6 @@
 				})
 			})
 		});
-		
-		
 		function onlyNumber(obj) {
 		    $(obj).keyup(function(){
 		         $(this).val($(this).val().replace(/[^0-9]/g,""));

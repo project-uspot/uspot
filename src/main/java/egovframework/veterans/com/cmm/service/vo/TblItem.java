@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm.service.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -250,6 +252,10 @@ public class TblItem {
 	private String SubGroupName;
 	
 	private String LevelName;
+	
+	// 첨부파일
+	String FileName;
+	MultipartFile uploadfile;
 	
 
 }

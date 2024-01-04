@@ -37,7 +37,10 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 	public void deleteOrderGroup(SLOrderGroup group) throws Exception {
 		slOrderDAO.deleteOrderGroup(group);
 	}
-	
+	@Override
+	public int getGroupSortOrder(String SiteCode) throws Exception {
+		return slOrderDAO.getGroupSortOrder(SiteCode);
+	}
 	
 	@Override
 	public List<SLOrderItem> listSLOderItem(String SiteCode) throws Exception {
@@ -58,6 +61,10 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 	@Override
 	public void deleteOrderItem(SLOrderItem item) throws Exception {
 		slOrderDAO.deleteOrderItem(item);
+	}
+	@Override
+	public int getItemSortOrder(String SiteCode) throws Exception {
+		return slOrderDAO.getItemSortOrder(SiteCode);
 	}
 
 }

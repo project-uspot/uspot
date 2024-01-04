@@ -14,14 +14,17 @@
 		    <div class="col-auto">
 		      <h2 class="mb-0">기간결산</h2>
 		    </div>
+		    <div class="col-auto">
+	               <button class="btn btn-outline-info" type="button" onclick="submit()" >조회</button>
+	            </div>
 		</div>
 		<div class="mb-1">
 			<div class="row g-6">
-				<div class="card h-100 col-md-7">
+				<div class="card col-sm-7">
 					<div class="card-body">
 						<div class="row g-3">
 							<!-- <h6 class="text-700 h-25">강좌</h6> -->
-							<div class="gap-2 col-md-4 ">
+							<div class="gap-2 col-auto ">
 								<div class="input-group input-group mb-4" style="margin-top: 35px;">
 									<h6 class="col-md-3 pt-3">사업장:</h6>
 									<input class="form-control col-md-1" id="sitename" type="text"
@@ -32,43 +35,39 @@
 										data-feather="search"></span></span>
 								</div>
 							</div>
-							<div class="d-grid gap-2 col-md-4">
-								<h6 class="text-700 h-25">만기일자</h6>
+							<div class="gap-2 col-auto mx-4">
+								<h6 class="text-700">조회일자</h6>
 								<div class="p-2">
-									<input class="form-control" id="autoSizingInput" type="date"/>
+									<input class="form-control" id="startday" name="startday" type="date"/>
 								</div>
 								<div class="p-2">
-									<input class="form-control" id="autoSizingInput" type="date"/>
+									<input class="form-control" id="endday" name="endday" type="date"/>
 								</div>
 							</div>
-							<div class="d-grid gap-2 col-md-4">
-								<div class="form-check">
-									<input class="form-check-input" id="refund" type="checkbox" value="" />
-									<label class="form-check-label" for="refund">강습 환불정보 포함</label>
+								<div class="card" style="width: 233px;">
+									<div class="card-header">
+										강습환불 정보
+									</div>
+									<div class="card-body">
+										<div class="d-grid gap-2 col-auto">
+											<div class="form-check">
+												<input class="form-check-input" id="refund" type="checkbox" value="" />
+												<label class="form-check-label" for="refund">강습 환불정보 포함</label>
+											</div>
+											<div class="form-check">
+												<input class="form-check-input" id="card" type="checkbox" value="" />
+												<label class="form-check-label" for="card">신용카드 포함</label>
+											</div>
+											<div class="form-check">
+												<input class="form-check-input" id="cash" type="checkbox" value="" />
+												<label class="form-check-label" for="cash">현금 포함</label>
+											</div>
+										</div>
+									</div>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" id="card" type="checkbox" value="" />
-									<label class="form-check-label" for="card">신용카드 포함</label>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" id="cash" type="checkbox" value="" />
-									<label class="form-check-label" for="cash">현금 포함</label>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-sm-6 col-md-3 mb-2">
-	               <div class="form-check" style="padding-top: 15px;">
-	                  <input class="form-check-input" id="isdeletecheck" type="checkbox" name="isdeletecheck"/>
-	                  <label class="form-check-label text-900 fs-0" for="fragileCheck">삭제데이터보기</label>
-	                  <input type="hidden" name="IsDelete" id="isdelete">
-	               </div>
-	            </div> -->
-	            <div class="col-auto">
-	               <button class="btn btn-outline-info" type="button" >조회</button>
-	               <!-- <button class="btn btn-success" type="button" data-bs-toggle="modal" id="modal" name="modify" data-bs-target="#updateModal" >수정</button> -->
-	            </div>
 			</div>
 		</div>
      	<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1" >
@@ -184,9 +183,64 @@
         if (this.checked) {
             cardCheckbox.disabled = true;
             cashCheckbox.disabled = true;
+            cardCheckbox.checked = false;
+            cashCheckbox.checked = false;
         } else {
             cardCheckbox.disabled = false;
             cashCheckbox.disabled = false;
         }
     });
+    
+    var startDate = document.getElementById('startday');
+    var endDate = document.getElementById('endday');
+    document.getElementById('startday').value = new Date().toISOString().substring(0, 10);
+    document.getElementById('endday').value = new Date().toISOString().substring(0, 10);
+    var refund = document.querySelector('input[name="refund"]');
+    var card = document.querySelector('input[name="card"]');
+    var cash = document.querySelector('input[name="cash"]');
+    
+    function submit() {
+		$.ajax({
+			url: 'settlemnetlist', // 서버 엔드포인트 URL을 여기에 입력하세요
+			method: 'POST', // 또는 GET, PUT 등 원하는 HTTP 메소드 사용
+			data: {
+				startDate: startDate.value,
+				endDate: endDate.value
+			},
+			success: function(data) {
+				var list = data.list;
+				var tbody = $('#tbody');
+				
+				tbody.empty();
+				
+				list.forEach(function(item, index) {
+					var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center">';
+					
+					if (index === 0) {
+	                    row += '<td class="align-middle py-3" rowspan="' + list.length + '">${sitename}</td>';
+	                }
+					
+					var keys = [
+						'categoryName', 'jungName', 'defPrice', 'cashCnt', 'cashNet', 'cashVat', 'cash',
+						'bankCnt', 'bankNet', 'bankVat', 'bank',
+						'creditCnt', 'creditNet', 'creditVat', 'credit',
+						'adultCnt', 'teenCnt', 'childCnt' 
+					];
+					
+					keys.forEach(function(key) {
+						var value = item[key] ?? ''; // 값이 null이면 빈 문자열로 대체
+						row += '<td class="align-middle py-3">' + value + '</td>';
+					});
+					row += '</tr>';
+	                // tbody에 각 로우 추가하기
+	                tbody.append(row); 
+				})
+			},
+			error: function(xhr, status, error) {
+			// 요청이 실패했을 때의 처리
+			console.error('요청이 실패했습니다:', error);
+			}
+		});
+    }
+    
 </script>

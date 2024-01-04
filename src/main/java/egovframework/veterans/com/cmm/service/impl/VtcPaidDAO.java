@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
+import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 
 @Repository("VtcPaidDAO")
 public class VtcPaidDAO extends EgovComAbstractDAO {
@@ -64,6 +66,9 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	}
 	public List<memberexpensesale> memberexpensesale(String MemberID)throws Exception {
 		return selectList("paid.memberexpensesale",MemberID);
+	}
+	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid) {
+		return selectList("paid.settlemnetlist", tblpaid);
 	}
 
 }
