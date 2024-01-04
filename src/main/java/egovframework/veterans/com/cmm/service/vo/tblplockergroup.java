@@ -18,7 +18,7 @@ public class tblplockergroup implements Serializable{
 	
 	private int PLockertype;
 	
-	private double PLockerdeposit;
+	private double PLockerdeposite;
 	
 	private double PLockerprice;
 	

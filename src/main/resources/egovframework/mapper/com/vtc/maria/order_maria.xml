@@ -29,6 +29,7 @@
 			, GroupJungWon = #{GroupJungWon}
 			, ParkingTimeWeek = #{ParkingTimeWeek}
 			, ParkingTimeWeekend = #{ParkingTimeWeekend}
+			, UpdUserPKID = ${UpdUserPKID}
 			, UpdDate = sysdate()
 		where 
 			SiteCode = #{SiteCode}
@@ -36,19 +37,27 @@
 		and pkid = #{pkid}
 	</update>
 	<insert id="insertOrderGroup" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
-		INSERT INTO uspot_test.fs_dsgroup
+		INSERT INTO fs_dsgroup
 			(SiteCode, GroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, GroupJungWon, ParkingTimeWeek, ParkingTimeWeekend)
 		VALUES
-			(#{SiteCode}, #{GroupName},  #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0, #{GroupJungWon}, #{ParkingTimeWeek}, #{ParkingTimeWeekend})
+			(#{SiteCode}, #{GroupName},  #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{GroupJungWon}, #{ParkingTimeWeek}, #{ParkingTimeWeekend})
 	</insert>
 	<update id="deleteOrderGroup" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
 		update fs_dsgroup set
 			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate  = sysdate()
 		where 
 			SiteCode = #{SiteCode}
 		and	pkid = #{pkid}
 	</update>
+	<select id="getGroupSortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			fs_dsgroup 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
 	
 	
 	<select id="listSLOderItem" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
@@ -101,6 +110,7 @@
 			, Sat = #{Sat}
 			, Sun = #{Sun}
 			, SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate = sysdate()
 		where 
 			SiteCode = #{SiteCode}
@@ -108,19 +118,28 @@
 		and pkid = #{pkid}
 	</update>
 	<insert id="insertOrderItem" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
-		INSERT INTO uspot_test.fs_dsitem
+		INSERT INTO fs_dsitem
 			(SiteCode, GroupCode, ItemName, ShortName, FromTime, ToTime, AdultGBN, Gender, Price, VAT, NVAT, Jungwon, Upjang, DCType, IsAutoAssignLocker, KioskYN, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, Mon, Tue, Wed, Thu, Fri, Sat, Sun)
 		VALUES
-			(#{SiteCode}, #{GroupCode}, #{ItemName}, #{ShortName}, #{FromTime}, #{ToTime}, #{AdultGBN}, #{Gender}, #{Price}, #{vat}, #{Nvat}, #{Jungwon}, #{UpJang}, #{dcType}, 'Y', #{KioskYN}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0, #{Mon}, #{Tue}, #{Wed}, #{Thu}, #{Fri}, #{Sat}, #{Sun})
+			(#{SiteCode}, #{GroupCode}, #{ItemName}, #{ShortName}, #{FromTime}, #{ToTime}, #{AdultGBN}, #{Gender}, #{Price}, #{vat}, #{Nvat}, #{Jungwon}, #{UpJang}, #{dcType}, 'Y', #{KioskYN}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{Mon}, #{Tue}, #{Wed}, #{Thu}, #{Fri}, #{Sat}, #{Sun})
 	</insert>
 	<update id="deleteOrderItem" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
 		update fs_dsitem set
 			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate  = sysdate()
 		where 
 			SiteCode = #{SiteCode}
 		and	pkid = #{pkid}
 	</update>
+	
+	<select id="getItemSortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			fs_dsitem 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
 	
 	
 </mapper>

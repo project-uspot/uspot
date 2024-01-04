@@ -433,12 +433,11 @@ function openpop(ItemCode) {
 	if(typeof ItemCode !== "undefined"){
 		var url = "updateItem.do?ItemCode="+ItemCode;
 	}
-	var popupWidth = 1200;
-	var popupHeight = 600;
-	var popupX = (window.screen.width / 2) - (popupWidth / 2);
-	var popupY= (window.screen.height / 2) - (popupHeight / 2);
-	window.open(url, "_blank_","toolbar=no, menubar=no, scrollbars=yes, resizable=no, height=" + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
+	 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=600";
+     window.open(url, "_blank", windowFeatures);
 }
+
+
 
 function goPage() {
 	var frm    = document.selectForm;

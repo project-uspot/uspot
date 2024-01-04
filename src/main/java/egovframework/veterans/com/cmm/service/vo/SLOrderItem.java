@@ -87,7 +87,7 @@ public class SLOrderItem implements Serializable{
 	private String UpdDate;
 	
 	/* 수정자 */
-	private int UpdDatePKID;
+	private int UpdUserPKID;
 	
 	private String GroupName;
 	

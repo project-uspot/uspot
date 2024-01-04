@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -90,5 +91,12 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 
 		return paidDAO.memberexpensesale(MemberID);
 	}
+	@Override
+	public List<egovframework.veterans.com.cmm.service.vo.settlemnetlist> settlemnetlist(Map<String, Object> tblpaid)
+			throws Exception {
+		return paidDAO.settlemnetlist(tblpaid);
+	}
+	
+	
 	
 }

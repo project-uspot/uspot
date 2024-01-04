@@ -55,7 +55,7 @@
 									<c:out value="${list.PLockerlocation}"/>
 								</td>
 								<td class="sortOrder align-middle white-space-nowrap ">
-									<c:out value="${list.PLockerdeposit}"/>
+									<c:out value="${list.PLockerdeposite}"/>
 								</td>
 								<td class="groupJungWon align-middle white-space-nowrap ">
 									<c:out value="${list.PLockerprice}"/>

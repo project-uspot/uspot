@@ -89,9 +89,14 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "insertUserGroup.do")
-	public String insertUserGroup(UserGroup group, HttpServletRequest request) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		System.out.println("SiteCode : " + SiteCode);
+	public String insertUserGroup(UserGroup group, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		   if(users == null){
+			   model.addAttribute("msg", "로그인을 다시 해주세요.");
+		       model.addAttribute("script", "back");
+			   return "redirect:login.do";
+		   }
+		   
 		return "basic/user/userGroup_insert";
 	}
 

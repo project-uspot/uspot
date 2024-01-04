@@ -26,6 +26,9 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	public void deleteOrderGroup(SLOrderGroup group) throws Exception {
 		update("order.deleteOrderGroup", group);
 	}
+	public int getGroupSortOrder(String siteCode) {
+		return selectOne("order.getGroupSortOrder", siteCode);
+	}
 	
 
 	public List<SLOrderItem> listSLOderItem(String SiteCode) throws Exception {
@@ -42,6 +45,9 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	}
 	public void deleteOrderItem(SLOrderItem item) throws Exception {
 		update("order.deleteOrderItem", item);
+	}
+	public int getItemSortOrder(String siteCode) {
+		return selectOne("order.getItemSortOrder", siteCode);
 	}
 	
 

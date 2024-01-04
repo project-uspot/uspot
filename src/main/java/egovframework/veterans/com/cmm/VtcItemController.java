@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcService;
@@ -390,156 +391,155 @@ public class VtcItemController{
 	   model.addAttribute("User", listUsers);
 	   model.addAttribute("ItemCode", getItemCode+1);
 	   
-	   
-	   
 	   return "item/class/classInfo";
    }
    
    @RequestMapping(value="insertClassInfo.do")
    @ResponseBody
-   public String insertClassInfo(ModelMap model, HttpServletRequest request, TblItem tblItem) throws Exception {
+	public String insertClassInfo(ModelMap model, HttpServletRequest request,
+			TblItem tblItem, @RequestParam("uploadfile") MultipartFile file) throws Exception {
 	   Users users = (Users) session.getAttribute("loginuserinfo");
-	   if(users == null){
-		   model.addAttribute("msg", "로그인을 다시 해주세요.");
-	       model.addAttribute("script", "back");
-		   return "redirect:login.do";
-	   }
+	   	if(users == null){
+	   		model.addAttribute("msg", "로그인을 다시 해주세요.");
+	   		model.addAttribute("script", "back");
+	   		return "redirect:login.do";
+	   	}
+	   	System.out.println("insert-tblItem : " + tblItem);
+	   	
+		
+		System.out.println("insert-file : " + file.getName());
+		System.out.println("insert-file : " + file.getSize());
+		System.out.println("insert-file : " + file.getOriginalFilename());
+		
 	   	  
-	   	  System.out.println("tblItem.getOnMax() : " + tblItem.getOnMax());
-	   	  System.out.println("tblItem.getCompanyPer() : " + tblItem.getCompanyPer());
-	   	  System.out.println("tblItem.getSawonPer() : " + tblItem.getSawonPer());
-	   	  System.out.println("getIsUse() : " + tblItem.getIsUse());
-		  String SiteCode = users.getSiteCode();
-		  String ItemCode = request.getParameter("ItemCode");
-		  String Type = request.getParameter("Type");
-		  int GroupID = Integer.parseInt(request.getParameter("GroupID"));
-		  int SubGroupID = Integer.parseInt(request.getParameter("SubGroupID"));
-		  int LevelID = Integer.parseInt(request.getParameter("LevelID"));
-		  int DaeSangID = Integer.parseInt(request.getParameter("DaeSangID"));
-		  String FromTime = request.getParameter("FromTime");
-		  String ToTime = request.getParameter("ToTime");
-		  int ClassCnt = Integer.parseInt(request.getParameter("ClassCnt"));
-		  String Mon = request.getParameter("Mon");
-		  String MonIn = request.getParameter("MonIn");
-		  String Tues = request.getParameter("Tues");
-		  String TuesIn = request.getParameter("TuesIn");
-		  String Wednes = request.getParameter("Wednes");
-		  String WednesIn = request.getParameter("WednesIn");
-		  String Thurs = request.getParameter("Thurs");
-		  String ThursIn = request.getParameter("ThursIn");
-		  String Fri = request.getParameter("Fri");
-		  String FriIn = request.getParameter("FriIn");
-		  String Satur = request.getParameter("Satur");
-		  String SaturIn = request.getParameter("SaturIn");
-		  String Sun = request.getParameter("Sun");
-		  String SunIn = request.getParameter("SunIn");
-		  String Holy = request.getParameter("Holy");
-		  String HolyIn = request.getParameter("HolyIn");
-		  int OffMax = Integer.parseInt(request.getParameter("OffMax"));
-		  /*int OnMax = Integer.parseInt(request.getParameter("OnMax"));*/
-		  
-		  int ItemMonth = Integer.parseInt(request.getParameter("ItemMonth"));
-		  int InCnt = Integer.parseInt(request.getParameter("InCnt"));
-		  int DamDangUserPKID = Integer.parseInt(request.getParameter("DamDangUserPKID"));
-		  String YakChing = request.getParameter("YakChing");
-		  String SalaryType = request.getParameter("SalaryType");
-		  /*int CompanyPer = Integer.parseInt(request.getParameter("CompanyPer"));
-		  int SawonPer = Integer.parseInt(request.getParameter("SawonPer"));*/
-		  String chkPeriod = request.getParameter("chkPeriod");
-		  String FromDate = request.getParameter("FromDate");
-		  String ToDate = request.getParameter("ToDate");
-		  String DcNoChk = request.getParameter("DcNoChk");
-		  String OldAgeDCNoGbn = request.getParameter("OldAgeDCNoGbn");
-		  String DcNo3MonthChk = request.getParameter("DcNo3MonthChk");
-		  String nvat = request.getParameter("nvat");
-		  String DefPrice = request.getParameter("DefPrice");
-		  String Price1 = request.getParameter("Price1");
-		  String Price2 = request.getParameter("Price2");
-		  String Price3 = request.getParameter("Price3");
-		  String Price4 = request.getParameter("Price4");
-		  String IsUse = request.getParameter("IsUse");
-		  String IsDelete = request.getParameter("IsDelete");
-		  String WebYN = request.getParameter("WebYN");
-		  String WebEnd = request.getParameter("WebEnd");
-		  String ParkingTime = request.getParameter("ParkingTime");
-		  int ageStart = Integer.parseInt(request.getParameter("ageStart"));
-		  int ageEnd = Integer.parseInt(request.getParameter("ageEnd"));
-		  String AgeYearGbn = request.getParameter("AgeYearGbn");
-		  String LotteryGbn = request.getParameter("LotteryGbn");
-		  String RecommendGbn = request.getParameter("RecommendGbn");
-		  String inliveRegster = request.getParameter("inliveRegster");
-		  String Intro = request.getParameter("Intro");
-		  String Detail = request.getParameter("Detail");
-		  String Note = request.getParameter("Note");
-		  String Bigo = request.getParameter("Bigo");
-		  
-		  tblItem = new TblItem();
-		  
-		  tblItem.setSiteCode(SiteCode);
-		  tblItem.setItemCode(ItemCode);
-		  tblItem.setType(Type);
-		  tblItem.setGroupID(GroupID);
-		  tblItem.setSubGroupID(SubGroupID);
-		  tblItem.setLevelID(LevelID);
-		  tblItem.setDaeSangID(DaeSangID);
-		  tblItem.setFromTime(FromTime);
-		  tblItem.setToTime(ToTime);
-		  tblItem.setClassCnt(ClassCnt);
-		  tblItem.setMon(Mon);
-		  tblItem.setMonIn(MonIn);
-		  tblItem.setTues(Tues);
-		  tblItem.setTuesIn(TuesIn);
-		  tblItem.setWednes(Wednes);
-		  tblItem.setWednesIn(WednesIn);
-		  tblItem.setThurs(Thurs);
-		  tblItem.setThursIn(ThursIn);
-		  tblItem.setFri(Fri);
-		  tblItem.setFriIn(FriIn);
-		  tblItem.setSatur(Satur);
-		  tblItem.setSaturIn(SaturIn);
-		  tblItem.setSun(Sun);
-		  tblItem.setSunIn(SunIn);
-		  tblItem.setHoly(Holy);
-		  tblItem.setHolyIn(HolyIn);
-		  tblItem.setOffMax(OffMax);
-		  tblItem.setOnMax(tblItem.getOnMax());
-		  tblItem.setItemMonth(ItemMonth);
-		  tblItem.setInCnt(InCnt);
-		  tblItem.setDamDangUserPKID(DamDangUserPKID);
-		  tblItem.setYakChing(YakChing);
-		  tblItem.setSalaryType(SalaryType);
-		  tblItem.setCompanyPer(tblItem.getCompanyPer());
-		  tblItem.setSawonPer(tblItem.getSawonPer());
-		  tblItem.setChkPeriod(chkPeriod);
-		  tblItem.setFromDate(FromDate);
-		  tblItem.setToDate(ToDate);
-		  tblItem.setDcNoChk(DcNoChk);
-		  tblItem.setOldAgeDCNoGbn(OldAgeDCNoGbn);
-		  tblItem.setDcNo3MonthChk(DcNo3MonthChk);
-		  tblItem.setNvat(nvat);
-		  tblItem.setDefPrice(DefPrice);
-		  tblItem.setPrice1(Price1);
-		  tblItem.setPrice2(Price2);
-		  tblItem.setPrice3(Price3);
-		  tblItem.setPrice4(Price4);
-		  tblItem.setIsUse(IsUse);
-		  tblItem.setIsDelete(IsDelete);
-		  tblItem.setWebYN(WebYN);
-		  tblItem.setWebEnd(WebEnd);
-		  tblItem.setParkingTime(ParkingTime);
-		  tblItem.setAgeStart(ageStart);
-		  tblItem.setAgeEnd(ageEnd);
-		  tblItem.setAgeYearGbn(AgeYearGbn);
-		  tblItem.setLotteryGbn(LotteryGbn);
-		  tblItem.setRecommendGbn(RecommendGbn);
-		  tblItem.setInliveRegster(inliveRegster);
-		  tblItem.setIntro(Intro);
-		  tblItem.setDetail(Detail);
-		  tblItem.setNote(Note);
-		  tblItem.setBigo(Bigo);
-		  tblItem.setAddUserPKID(users.getUserPKID());
-		  
-		  vtcItemService.itemInsert(tblItem);
+	   	String SiteCode = users.getSiteCode();
+	   	String ItemCode = request.getParameter("ItemCode");
+		String Type = request.getParameter("Type");
+		int GroupID = Integer.parseInt(request.getParameter("GroupID"));
+		int SubGroupID = Integer.parseInt(request.getParameter("SubGroupID"));
+		int LevelID = Integer.parseInt(request.getParameter("LevelID"));
+		int DaeSangID = Integer.parseInt(request.getParameter("DaeSangID"));
+		String FromTime = request.getParameter("FromTime");
+		String ToTime = request.getParameter("ToTime");
+		int ClassCnt = Integer.parseInt(request.getParameter("ClassCnt"));
+		String Mon = request.getParameter("Mon");
+		String MonIn = request.getParameter("MonIn");
+		String Tues = request.getParameter("Tues");
+		String TuesIn = request.getParameter("TuesIn");
+		String Wednes = request.getParameter("Wednes");
+		String WednesIn = request.getParameter("WednesIn");
+		String Thurs = request.getParameter("Thurs");
+		String ThursIn = request.getParameter("ThursIn");
+		String Fri = request.getParameter("Fri");
+		String FriIn = request.getParameter("FriIn");
+		String Satur = request.getParameter("Satur");
+		String SaturIn = request.getParameter("SaturIn");
+		String Sun = request.getParameter("Sun");
+		String SunIn = request.getParameter("SunIn");
+		String Holy = request.getParameter("Holy");
+		String HolyIn = request.getParameter("HolyIn");
+		int OffMax = Integer.parseInt(request.getParameter("OffMax"));
+		int ItemMonth = Integer.parseInt(request.getParameter("ItemMonth"));
+		int InCnt = Integer.parseInt(request.getParameter("InCnt"));
+		int DamDangUserPKID = Integer.parseInt(request.getParameter("DamDangUserPKID"));
+		String YakChing = request.getParameter("YakChing");
+		String SalaryType = request.getParameter("SalaryType");
+		String chkPeriod = request.getParameter("chkPeriod");
+		String FromDate = request.getParameter("FromDate");
+		String ToDate = request.getParameter("ToDate");
+		String DcNoChk = request.getParameter("DcNoChk");
+		String OldAgeDCNoGbn = request.getParameter("OldAgeDCNoGbn");
+		String DcNo3MonthChk = request.getParameter("DcNo3MonthChk");
+		String nvat = request.getParameter("nvat");
+		String DefPrice = request.getParameter("DefPrice");
+		String Price1 = request.getParameter("Price1");
+		String Price2 = request.getParameter("Price2");
+		String Price3 = request.getParameter("Price3");
+		String Price4 = request.getParameter("Price4");
+		String IsUse = request.getParameter("IsUse");
+		String IsDelete = request.getParameter("IsDelete");
+		String WebYN = request.getParameter("WebYN");
+		String WebEnd = request.getParameter("WebEnd");
+		String ParkingTime = request.getParameter("ParkingTime");
+		int ageStart = Integer.parseInt(request.getParameter("ageStart"));
+		int ageEnd = Integer.parseInt(request.getParameter("ageEnd"));
+		String AgeYearGbn = request.getParameter("AgeYearGbn");
+		String LotteryGbn = request.getParameter("LotteryGbn");
+		String RecommendGbn = request.getParameter("RecommendGbn");
+		String inliveRegster = request.getParameter("inliveRegster");
+		String Intro = request.getParameter("Intro");
+		String Detail = request.getParameter("Detail");
+		String Note = request.getParameter("Note");
+		String Bigo = request.getParameter("Bigo");
+		
+		tblItem = new TblItem();
+		
+		tblItem.setItemCode(ItemCode);
+		tblItem.setType(Type);
+		tblItem.setGroupID(GroupID);
+		tblItem.setSubGroupID(SubGroupID);
+		tblItem.setLevelID(LevelID);
+		tblItem.setDaeSangID(DaeSangID);
+		tblItem.setFromTime(FromTime);
+		tblItem.setToTime(ToTime);
+		tblItem.setClassCnt(ClassCnt);
+		tblItem.setMon(Mon);
+		tblItem.setMonIn(MonIn);
+		tblItem.setTues(Tues);
+		tblItem.setTuesIn(TuesIn);
+		tblItem.setWednes(Wednes);
+		tblItem.setWednesIn(WednesIn);
+		tblItem.setThurs(Thurs);
+		tblItem.setThursIn(ThursIn);
+		tblItem.setFri(Fri);
+		tblItem.setFriIn(FriIn);
+		tblItem.setSatur(Satur);
+		tblItem.setSaturIn(SaturIn);
+		tblItem.setSun(Sun);
+		tblItem.setSunIn(SunIn);
+		tblItem.setHoly(Holy);
+		tblItem.setHolyIn(HolyIn);
+		tblItem.setOffMax(OffMax);
+		tblItem.setOnMax(tblItem.getOnMax());
+		tblItem.setItemMonth(ItemMonth);
+		tblItem.setInCnt(InCnt);
+		tblItem.setDamDangUserPKID(DamDangUserPKID);
+		tblItem.setYakChing(YakChing);
+		tblItem.setSalaryType(SalaryType);
+		tblItem.setCompanyPer(tblItem.getCompanyPer());
+		tblItem.setSawonPer(tblItem.getSawonPer());
+		tblItem.setChkPeriod(chkPeriod);
+		tblItem.setFromDate(FromDate);
+		tblItem.setToDate(ToDate);
+		tblItem.setDcNoChk(DcNoChk);
+		tblItem.setOldAgeDCNoGbn(OldAgeDCNoGbn);
+		tblItem.setDcNo3MonthChk(DcNo3MonthChk);
+		tblItem.setNvat(nvat);
+		tblItem.setDefPrice(DefPrice);
+		tblItem.setPrice1(Price1);
+		tblItem.setPrice2(Price2);
+		tblItem.setPrice3(Price3);
+		tblItem.setPrice4(Price4);
+		tblItem.setIsUse(IsUse);
+		tblItem.setIsDelete(IsDelete);
+		tblItem.setWebYN(WebYN);
+		tblItem.setWebEnd(WebEnd);
+		tblItem.setParkingTime(ParkingTime);
+		tblItem.setAgeStart(ageStart);
+		tblItem.setAgeEnd(ageEnd);
+		tblItem.setAgeYearGbn(AgeYearGbn);
+		tblItem.setLotteryGbn(LotteryGbn);
+		tblItem.setRecommendGbn(RecommendGbn);
+		tblItem.setInliveRegster(inliveRegster);
+		tblItem.setIntro(Intro);
+		tblItem.setDetail(Detail);
+		tblItem.setNote(Note);
+		tblItem.setBigo(Bigo);
+		tblItem.setAddUserPKID(users.getUserPKID());
+  
+		tblItem.setSiteCode(SiteCode);
+  
+		vtcItemService.itemInsert(tblItem);
 	      
 	   return "redirect:classinfo.do";
    }
