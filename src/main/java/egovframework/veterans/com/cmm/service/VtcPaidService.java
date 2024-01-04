@@ -31,4 +31,5 @@ public interface VtcPaidService {
 	List<memberexpensesale> memberexpensesale(String MemberID)throws Exception;
 	
 	List<settlemnetlist> settlemnetlist(Map<String, Object> fmmap) throws Exception;
+	int callSelectReceiptNo(String inputDate)throws Exception;
 }

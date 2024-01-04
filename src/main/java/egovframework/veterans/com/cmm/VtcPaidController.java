@@ -243,7 +243,8 @@ public class VtcPaidController {
 	
 	@ResponseBody
 	@PostMapping("/tblpaidinsert")
-	public void tblpaidinsert(tblpaid tblpaid) {
-		
+	public void tblpaidinsert(tblpaid tblpaid) throws Exception {
+		int ReceiptNo = VtcPaidService.callSelectReceiptNo(tblpaid.getSaleDate());
+		System.out.println(ReceiptNo);
 	}
 }

@@ -409,7 +409,7 @@ document.addEventListener('keydown', function(event) {
    	else if (event.key === 'Escape' && modalcheck) {
    		setTimeout(() => {
    	    	modalcheck = false;
-   	    }, 1000);
+   	    }, 500);
    	}
 });
 	
@@ -857,6 +857,9 @@ function formatDate(date) {
 function save() {
 	if($('#totalprice').val()==''){
 		$('#resultmessage').html('수강 할 강좌를 선택해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
 	    $('#modalButton').click();
 	    modalcheck = true;
 	    return false;

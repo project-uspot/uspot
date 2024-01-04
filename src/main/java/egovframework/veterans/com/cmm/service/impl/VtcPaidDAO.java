@@ -70,5 +70,7 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid) {
 		return selectList("paid.settlemnetlist", tblpaid);
 	}
-
+	public int callSelectReceiptNo(String inputDate)throws Exception{
+		return selectOne("paid.callSelectReceiptNo",inputDate);
+	}
 }

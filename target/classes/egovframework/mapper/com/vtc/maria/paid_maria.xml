@@ -362,4 +362,7 @@
 			order by X.sitename, x.typecode, x.namecode, x.daycode, x.fromtime, x.levelcode
 		]]>
 	</select>
+	<select id="callSelectReceiptNo" statementType="CALLABLE" parameterType="String" resultType="int">
+        {CALL up_SelectReceiptNo(#{inputDate}, #{outputOrderNo})}
+    </select>
 </mapper>

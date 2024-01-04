@@ -13,6 +13,7 @@ import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
+import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 
 @Service("VtcPaidService")
 public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPaidService {
@@ -92,11 +93,12 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 		return paidDAO.memberexpensesale(MemberID);
 	}
 	@Override
-	public List<egovframework.veterans.com.cmm.service.vo.settlemnetlist> settlemnetlist(Map<String, Object> tblpaid)
+	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid)
 			throws Exception {
 		return paidDAO.settlemnetlist(tblpaid);
 	}
-	
-	
-	
+	@Override
+	public int callSelectReceiptNo(String inputDate) throws Exception {
+		return paidDAO.callSelectReceiptNo(inputDate);
+	}	
 }
