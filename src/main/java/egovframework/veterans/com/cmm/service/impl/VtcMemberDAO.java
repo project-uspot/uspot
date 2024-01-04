@@ -108,4 +108,8 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public Map<String, Object> mitemfindbyid(TblItem_02 tblItem_02)throws Exception{
 		return selectOne("member.selectItemsByFilter",tblItem_02);
 	}
+	
+	public void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception{
+		insert("member.fmsc_01insert",fmsc_s01);
+	}
 }

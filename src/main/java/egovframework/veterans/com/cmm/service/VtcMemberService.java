@@ -56,4 +56,6 @@ public interface VtcMemberService {
 	List<Map<String,Object>> selectItemsByFilter(TblItem_02 tblItem_02)throws Exception;
 	
 	Map<String, Object> mitemfindbyid(TblItem_02 tblItem_02)throws Exception;
+	
+	void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception;
 }

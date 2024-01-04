@@ -205,62 +205,7 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "userInsertOK.do")
-	public String userInsertOK(@ModelAttribute("users") Users users, HttpServletRequest request) throws Exception {
-
-		String SiteCode = "10001";
-		String SawonNo = request.getParameter("SawonNo");
-		String SawonName = request.getParameter("SawonName");
-		String UserID = request.getParameter("UserID");
-		String UserPWD = request.getParameter("UserPWD");
-		String Gender = request.getParameter("Gender");
-		String Type = request.getParameter("Type");
-		String BirthDay = request.getParameter("BirthDay");
-		String BirthType = request.getParameter("BirthType");
-		String JikMooID = request.getParameter("JikMooID");
-		String BuseoID = request.getParameter("BuseoID");
-		String JikwiID = request.getParameter("JikwiID");
-		// int ItemGroupID = Integer.parseInt(request.getParameter("ItemGroupID"));
-		String Email = request.getParameter("Email");
-		String HomePhone = request.getParameter("HomePhone");
-		String CellPhone = request.getParameter("CellPhone");
-		String InDate = request.getParameter("InDate");
-		String State = request.getParameter("State");
-		String OutDate = request.getParameter("OutDate");
-		String ZipCode = request.getParameter("ZipCode");
-		String Address = request.getParameter("Address");
-		String SubAddress = request.getParameter("SubAddress");
-		String Note = request.getParameter("Note");
-		String Chistory = request.getParameter("Chistory");
-		String Phistory = request.getParameter("Phistory");
-		String Upjang = request.getParameter("Upjang");
-
-		users = new Users();
-		users.setSiteCode(SiteCode);
-		users.setSawonNo(SawonNo);
-		users.setSawonName(SawonName);
-		users.setUserID(UserID);
-		users.setUserPWD(UserPWD);
-		users.setGender(Gender);
-		users.setType(Type);
-		users.setBirthDay(BirthDay);
-		users.setBirthType(BirthType);
-		users.setJikMooID(JikMooID);
-		users.setBuseoID(BuseoID);
-		users.setJikwiID(JikwiID);
-		// users.setItemGroupID(ItemGroupID);
-		users.setEmail(Email);
-		users.setHomePhone(HomePhone);
-		users.setCellPhone(CellPhone);
-		users.setInDate(InDate);
-		users.setState(State);
-		users.setOutDate(OutDate);
-		users.setZipCode(ZipCode);
-		users.setAddress(Address);
-		users.setSubAddress(SubAddress);
-		users.setNote(Note);
-		users.setChistory(Chistory);
-		users.setPhistory(Phistory);
-		users.setUpjang(Upjang);
+	public String userInsertOK(Users users) throws Exception {
 		VtcUserService.insertUser(users);
 		return "redirect:Users.do";
 	}

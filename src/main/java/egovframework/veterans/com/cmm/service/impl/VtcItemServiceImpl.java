@@ -16,14 +16,14 @@ import egovframework.veterans.com.cmm.service.vo.TblItem_03;
 import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
+import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 
 @Service("VtcItemService")
+@RequiredArgsConstructor
 public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcItemService{
 	
-	@Resource(name="VtcItemDAO")
-	private VtcItemDAO itemDAO;
-
+	private final VtcItemDAO itemDAO;
 	
 	@Override
 	public List<TblItem_01> listItemCode(TblItem_01 item_01) throws Exception {

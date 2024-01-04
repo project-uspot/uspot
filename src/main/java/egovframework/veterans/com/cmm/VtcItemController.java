@@ -38,32 +38,15 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("loginuserinfo")
 public class VtcItemController{
    
    private final HttpSession session;
+ 
+   private final VtcItemService vtcItemService;
    
-   private ApplicationContext applicationContext;
-
-   private static final Logger LOGGER = LoggerFactory.getLogger(VtcItemController.class);
+   private final VtcService VtcServise;
    
-   public void afterPropertiesSet() throws Exception {}
-   
-   
-   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-      this.applicationContext = applicationContext;
-      
-      LOGGER.info("VtcItemController setApplicationContext method has called!");
-   }
-   
-   @Resource(name="VtcItemService")
-   protected VtcItemService vtcItemService;
-   
-   @Resource(name="VtcService")
-   protected VtcService VtcServise;
-   
-   @Resource(name="VtcUserService")
-   protected VtcUserService UserService;
+   private final VtcUserService UserService;
    
    
    @PostMapping("clickValue.do")
@@ -78,28 +61,14 @@ public class VtcItemController{
       item_01.setSiteCode(users.getSiteCode());
       item_01.setGroupID(itemId);
       item_01 = vtcItemService.getItem01(item_01);
-      
-      //map.put("item_01", item_01);
-      
-      System.out.println("item_01 : " + item_01);
 
-      // 여기서는 예시로 클릭된 값을 출력하고 뷰 페이지로 이동
       return item_01;
    }
    @PostMapping("clickValue01.do")
    @ResponseBody
    public TblItem_02 handleClickedValuesitem02(@RequestParam(name = "itemId1") int itemId1, TblItem_02 item_02) throws Exception {
 	   Users users =  (Users) session.getAttribute("loginuserinfo");
-	   // 클라이언트에서 전송된 클릭된 값 사용하여 필요한 작업 수행
-	   System.out.println("클릭된 값들: " + itemId1);
-	   
-	   
 	   Map<String, Object> map = new HashMap<>();
-	   
-	   //map.put("item_01", item_01);
-	   
-	   
-	   // 여기서는 예시로 클릭된 값을 출력하고 뷰 페이지로 이동
 	   return item_02;
    }
    
@@ -1275,4 +1244,30 @@ public class VtcItemController{
 		return "common/msg";
 	}
    }
+   
+   @ResponseBody
+   @GetMapping(value="itemCodeList.do")
+	public Map<String, Object> itemListCode(TblItem_01 item_01, TblItem_02 item_02, TblItem_03 item_03) throws Exception {
+		
+		Map<String, Object> itemList = new HashMap<>();
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		
+		item_01.setSiteCode(users.getSiteCode());
+		
+		item_02.setSiteCode(users.getSiteCode());
+		
+		item_03.setSiteCode(users.getSiteCode());
+				
+		
+		List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
+		List<TblItem_02> listItem02 = vtcItemService.listItem02(item_02);
+		List<TblItem_03> listItem03 = vtcItemService.liseItem03(item_03);
+		
+		itemList.put("item01", listItem01);
+		itemList.put("item02", listItem02);
+		itemList.put("item03", listItem03);
+	
+		return itemList;
+	}
 }

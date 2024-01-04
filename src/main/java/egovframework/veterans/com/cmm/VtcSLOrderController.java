@@ -17,25 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class VtcSLOrderController {
 
-	private ApplicationContext applicationContext;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(VtcSLOrderController.class);
-	
-	public void afterPropertiesSet() throws Exception{}
-	
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		
-		LOGGER.info("VtcPaidController setApplicationContext method has called!");
-	}
-	
-	@Resource(name="VtcSLOrderService")
-	protected VtcSLOrderService VtcSLService;
-	
+	private final VtcSLOrderService VtcSLService;
 	
 	@RequestMapping(value="SLOrderGroup.do")
 	public String selectSLOrder(String SiteCode, ModelMap model) throws Exception {
@@ -56,24 +44,6 @@ public class VtcSLOrderController {
 	}
 	@RequestMapping(value="OrderGroupUpdOK.do")
 	public String orderGroupModifyOK(HttpServletRequest request, SLOrderGroup group) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		int pkid = Integer.parseInt(request.getParameter("pkid"));
-		String GroupName = request.getParameter("GroupName");
-		int GroupJungWon = Integer.parseInt(request.getParameter("GroupJungWon"));
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String ParkingTimeWeek = request.getParameter("ParkingTimeWeek");
-		String ParkingTimeWeekend = request.getParameter("ParkingTimeWeekend");
-		String UpdDate = request.getParameter("UpdDate");
-		
-		group = new SLOrderGroup();
-		group.setSiteCode(SiteCode);
-		group.setPkid(pkid);
-		group.setGroupName(GroupName);
-		group.setGroupJungWon(GroupJungWon);
-		group.setSortOrder(SortOrder);
-		group.setParkingTimeWeek(ParkingTimeWeek);
-		group.setParkingTimeWeekend(ParkingTimeWeekend);
-		group.setUpdDate(UpdDate);
 		VtcSLService.updateOrderGroup(group);
 		return "redirect:SLOrderGroup.do";
 	}

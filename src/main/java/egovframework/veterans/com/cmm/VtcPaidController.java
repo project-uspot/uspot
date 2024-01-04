@@ -2,40 +2,26 @@ package egovframework.veterans.com.cmm;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.http.HttpRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class VtcPaidController {
 
-	private ApplicationContext applicationContext;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(VtcPaidController.class);
-	
-	public void afterPropertiesSet() throws Exception{}
-	
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		
-		LOGGER.info("VtcPaidController setApplicationContext method has called!");
-	}
-	
-	@Resource(name="VtcPaidService")
-	protected VtcPaidService VtcPaidService;
+	private final VtcPaidService VtcPaidService;
 	
 	@RequestMapping(value="DCType.do")
 	public String selectDCType(String SiteCode, ModelMap model) throws Exception {
@@ -137,8 +123,6 @@ public class VtcPaidController {
 		return "redirect:DCType.do";
 	}
 	
-	
-	
 	@RequestMapping(value="ExpenseGroup.do")
 	public String selectExpenseGroup(String SiteCode, ModelMap model) throws Exception {
 		SiteCode = "10001";
@@ -217,28 +201,7 @@ public class VtcPaidController {
 		return "basic/paid/expense_modify";
 	}
 	@RequestMapping(value="ExpenseUpdOK.do")
-	public String expenseModifyOK(HttpServletRequest request, Expense expense) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		int ExpenseGroupID = Integer.parseInt(request.getParameter("ExpenseGroupID"));
-		int ExpenseID = Integer.parseInt(request.getParameter("ExpenseID"));
-		String ExpenseName = request.getParameter("ExpenseName");
-		String ExpenseType = request.getParameter("ExpenseType");
-		String DefPrice = request.getParameter("DefPrice");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String Nvat = request.getParameter("Nvat");
-		String UpdDate = request.getParameter("UpdDate");
-		System.out.println("ExpenseID : " + ExpenseID);
-		
-		expense = new Expense();
-		expense.setSiteCode(SiteCode);
-		expense.setExpenseGroupID(ExpenseGroupID);
-		expense.setExpenseID(ExpenseID);
-		expense.setExpenseName(ExpenseName);
-		expense.setExpenseType(ExpenseType);
-		expense.setDefPrice(DefPrice);
-		expense.setSortOrder(SortOrder);
-		expense.setNvat(Nvat);
-		expense.setUpdDate(UpdDate);
+	public String expenseModifyOK(Expense expense) throws Exception {
 		VtcPaidService.updateExpense(expense);
 		return "redirect:Expense.do";
 	}
@@ -276,6 +239,11 @@ public class VtcPaidController {
 	public String deleteExpense(ModelMap model, Expense expense) throws Exception {
 		VtcPaidService.deleteExpense(expense);
 		return "redirect:Expense.do";
-	}
+	}	
 	
+	@ResponseBody
+	@PostMapping("/tblpaidinsert")
+	public void tblpaidinsert(tblpaid tblpaid) {
+		
+	}
 }

@@ -48,6 +48,7 @@
             linkRTL.setAttribute('disabled', true);
             userLinkRTL.setAttribute('disabled', true);
         }
+        var isSearchFocused = false;
     </script>
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
@@ -68,15 +69,19 @@
 	                    <div class="col-sm-6 col-md-2">
 	                    	<div class="input-group">
 	                    	  <input type="hidden" value="${findvalue}" id="findvalue">
-							  <input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)"/>
+							  <input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)" onfocus="isSearchFocused = true" onblur="isSearchFocused = false"/>
 							  <span class="input-group-text" id="basic-addon2" onclick="finditem()" style="cursor: pointer;">찾기</span>
 							</div>
 							<script type="text/javascript">
 							function handleKeyPress(event) {
-		                    	  if (event.key === "Enter") {
-		                    	    $('#basic-addon2').trigger('click');
-		                    	  }
-		                    }
+						        if (event.key === "Enter") {
+						            if (isSearchFocused) {
+						                $('#basic-addon2').trigger('click'); // Perform search action
+						            } else if (previousRow !== null) {
+						                $(previousRow).trigger('dblclick'); // Simulate double-click on selected row
+						            }
+						        }
+						    }
 							function finditem() {
 								var findstring = document.getElementById('findstring').value;
 								if(findstring == '' || findstring == null){
@@ -123,7 +128,7 @@
                 	            tableBody.empty();
                 	            // Iterate through the list using jQuery.each() method
                 	            $.each(list, function(index, listItem) {
-                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ')"></tr>');
+                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ')" onclick="findtbodyclick(this)"></tr>');
                 	                newRow.append('<td class="code align-middle white-space-nowrap text-end fw-semi-bold pe-7 text-1000">' + listItem.ItemCode + '</td>');
                 	                newRow.append('<td class="category align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.CategoryName + '</td>');
                 	                newRow.append('<td class="name align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.JungName + '</td>');
@@ -141,6 +146,8 @@
 
                 	                tableBody.append(newRow);
                 	            });
+                	            
+                	            $('#customer-order-table-body').children('tr:first').click();
                 	        },
                 	        error: function(xhr, status, error) {
                 	       	 console.log("Status: " + status);
@@ -148,6 +155,15 @@
                 	        }
                 		});
                     });
+             		var previousRow = null;
+					//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
+					function findtbodyclick(clickedRow) {
+						if (previousRow !== null) {
+					    	$(previousRow).css('background-color', '');
+					    }
+						$(clickedRow).css('background-color', 'lightblue');
+					    previousRow = clickedRow;
+					}
                     </script>
                     <div class="border-top border-bottom border-200" id="customerOrdersTable" data-list='{"valueNames":["code","category","name","level","start","finish","day","member","teacher","offline","online","max","nickname","remain"]}'>
                         <div class="table-responsive scrollbar">
@@ -172,7 +188,7 @@
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
                                 	<c:forEach items="${lists}" var="list">
-	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth})">
+	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth})" onclick="findtbodyclick(this)">
 		                                    <td class="code align-middle text-end fw-semi-bold pe-7 text-1000">${list.ItemCode}</td>
 		                                    <td class="category align-middle white-space-nowrap text-start fw-bold text-700">${list.CategoryName}</td>
 		                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">${list.JungName}</td>
@@ -215,6 +231,28 @@ function formatDate(date) {
 	  const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
 	  return yyyy+'-'+mm+'-'+dd;
 }
+$('#customer-order-table-body').children('tr:first').click();
+
+$(document).keydown(function(e) {
+    if (previousRow !== null) {
+        var currentRowIndex = $(previousRow).index();
+        var numRows = $('#customer-order-table-body').children('tr').length;
+
+        if (e.keyCode === 40 && currentRowIndex < numRows - 1) { // Down arrow key
+            $(previousRow).css('background-color', ''); // Reset current row color
+            var nextRow = $('#customer-order-table-body').children('tr').eq(currentRowIndex + 1);
+            findtbodyclick(nextRow);
+        } else if (e.keyCode === 38 && currentRowIndex > 0) { // Up arrow key
+            $(previousRow).css('background-color', ''); // Reset current row color
+            var prevRow = $('#customer-order-table-body').children('tr').eq(currentRowIndex - 1);
+            findtbodyclick(prevRow);
+        } else if (e.keyCode === 13 && !isSearchFocused) { // Enter key
+            if (previousRow) {
+                $(previousRow).trigger('dblclick');
+            }
+        }
+    }
+});
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>

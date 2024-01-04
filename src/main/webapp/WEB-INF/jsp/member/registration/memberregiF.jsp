@@ -342,7 +342,7 @@
                                         	<div class="col-auto">
 		                                        <div class="btn-group btn-group-sm mt-2" role="group" aria-label="...">
 												  <button class="btn btn-secondary" type="button">촬영</button>
-												  <button class="btn btn-secondary" type="button">불러오기</button>
+												  <button class="btn btn-secondary" type="button" onclick="">불러오기</button>
 												  <button class="btn btn-secondary" type="button">삭제</button>
 												</div>
 										    </div>

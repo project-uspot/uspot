@@ -28,8 +28,6 @@ public class VtcSalesController {
 		}
 		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
 		
-		System.out.println("sitecode : " + sitecode);
-		
 		model.addAttribute("sitename",sitecode.getSiteName());
 		
 		return "sales/settlement/settlemnetlist";
