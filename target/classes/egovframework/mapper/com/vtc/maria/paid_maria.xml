@@ -362,4 +362,27 @@
 			order by X.sitename, x.typecode, x.namecode, x.daycode, x.fromtime, x.levelcode
 		]]>
 	</select>
+	<select id="callSelectReceiptNo" statementType="CALLABLE" resultType="int">
+    	{ call up_SelectReceiptNo(#{saleDate, mode=IN, jdbcType=VARCHAR}, #{outputOrderNo, mode=OUT, jdbcType=INTEGER}) }
+	</select>
+	<insert id="tblpaidinsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		INSERT INTO tblpaid
+		(SiteCode, FPKID, ReceiptNo, SaleDate, 
+		RealSaleDate, SaleType, PayType, Price, 
+		AssignType, Maeipsa, CardName, AssignNo, 
+		Pos, SignPad, Halbu, ValidDate, 
+		SaleTime, FCardNo, Msg, PaidGroupSaleNo, 
+		OID, TID, DelDate, DelUsePKID, 
+		DelMsg, PayID, IsDelete, AddDate, 
+		AddUserPKID, UpdDate, UpdUserPKID, CardNo)
+		VALUES(
+		#{SiteCode},#{FPKID},#{ReceiptNo},#{SaleDate}, 
+		#{RealSaleDate}, #{SaleType}, #{PayType}, #{Price}, 
+		#{AssignType}, #{Maeipsa}, #{CardName}, #{AssignNo}, 
+		#{Pos}, #{SignPad}, #{Halbu}, #{ValidDate}, 
+		#{SaleTime}, #{FCardNo}, #{Msg}, #{PaidGroupSaleNo}, 
+		#{OID}, #{TID}, #{DelDate}, #{DelUsePKID}, 
+		#{DelMsg}, #{PayID}, 'N', now(), 
+		#{AddUserPKID},now(),#{UpdUserPKID},#{CardNo})
+	</insert>
 </mapper>

@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
 @Repository("VtcPaidDAO")
 public class VtcPaidDAO extends EgovComAbstractDAO {
@@ -70,5 +71,11 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid) {
 		return selectList("paid.settlemnetlist", tblpaid);
 	}
-
+	public int callSelectReceiptNo(Map<String, Object> map)throws Exception{
+		selectOne("paid.callSelectReceiptNo",map);
+		return (Integer) map.get("outputOrderNo");
+	}
+	public void tblpaidinsert(tblpaid tblpaid)throws Exception{
+		insert("paid.tblpaidinsert",tblpaid);
+	}
 }

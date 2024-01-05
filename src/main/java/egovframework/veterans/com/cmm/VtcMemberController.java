@@ -748,7 +748,7 @@ public class VtcMemberController {
 		fmsc_s01.setAddUserPKID(users.getAddUserPKID());
 		fmsc_s01.setUpdUserPKID(users.getAddUserPKID());
 		
-		//vtcMemberService.fmsc_01insert(fmsc_s01);
+		vtcMemberService.fmsc_01insert(fmsc_s01);
 		
 		return fmsc_s01.getSaleNo();
 	}

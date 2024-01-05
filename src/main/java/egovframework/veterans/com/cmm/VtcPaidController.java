@@ -1,8 +1,11 @@
 package egovframework.veterans.com.cmm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +17,7 @@ import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
+import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class VtcPaidController {
 
 	private final VtcPaidService VtcPaidService;
+	private final HttpSession session;
 	
 	@RequestMapping(value="DCType.do")
 	public String selectDCType(String SiteCode, ModelMap model) throws Exception {
@@ -243,7 +248,19 @@ public class VtcPaidController {
 	
 	@ResponseBody
 	@PostMapping("/tblpaidinsert")
-	public void tblpaidinsert(tblpaid tblpaid) {
+	public void tblpaidinsert(tblpaid tblpaid) throws Exception {
 		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("saleDate", tblpaid.getSaleDate());
+	    map.put("outputOrderNo", 0);
+			
+	    tblpaid.setReceiptNo(String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
+	    tblpaid.setSiteCode(users.getSiteCode());
+	    tblpaid.setAddUserPKID(users.getUserPKID());
+	    tblpaid.setUpdUserPKID(users.getUserPKID());
+	  
+	    VtcPaidService.tblpaidinsert(tblpaid);
+	    
 	}
 }

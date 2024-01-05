@@ -8,6 +8,7 @@ import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
 public interface VtcPaidService {
 
@@ -31,4 +32,6 @@ public interface VtcPaidService {
 	List<memberexpensesale> memberexpensesale(String MemberID)throws Exception;
 	
 	List<settlemnetlist> settlemnetlist(Map<String, Object> fmmap) throws Exception;
+	int callSelectReceiptNo(Map<String, Object> map)throws Exception;
+	void tblpaidinsert(tblpaid tblpaid)throws Exception;
 }

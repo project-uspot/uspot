@@ -409,7 +409,7 @@ document.addEventListener('keydown', function(event) {
    	else if (event.key === 'Escape' && modalcheck) {
    		setTimeout(() => {
    	    	modalcheck = false;
-   	    }, 1000);
+   	    }, 500);
    	}
 });
 	
@@ -496,6 +496,7 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2)) + '</td>');
                 newRow.append('<input type="hidden" value="30" name="totalnum" id="totalnum">');
                 newRow.append('<input type="hidden" value="30" name="usenum" id="usenum">');
+                newRow.append('<input type="hidden" value="'+list.SawonNo+'" name="EmpCode" id="EmpCode">');
                 tableBody.append(newRow);
                 $('#itemtbody').children('tr:last').click();
 	        },
@@ -857,6 +858,9 @@ function formatDate(date) {
 function save() {
 	if($('#totalprice').val()==''){
 		$('#resultmessage').html('수강 할 강좌를 선택해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
 	    $('#modalButton').click();
 	    modalcheck = true;
 	    return false;
@@ -877,7 +881,8 @@ function save() {
 }
 
 function fmsc_01save() {
-	
+	//총 tr갯수
+	var totalRows = $('#itemtbody tr').length;
 	//paidbody 의 행의 index 를 확인하기 위한 수
 	var iteration = 0;
 	//복합인지 아닌지 체크 하기 위한 부분
@@ -912,6 +917,7 @@ function fmsc_01save() {
 	        	ItemPrice : $(this).find('.price').text(),
 	        	RealPrice : $(this).find('.sort').text(),
 	        	Misu : misuprice,
+	        	EmpCode : $(this).find('input[name="EmpCode"]').val(),
 	        	State : 'G',
 	        	ItemPKID : $(this).find('input[name="ItemID"]').val(),
 	        	InType : '등록',
@@ -921,7 +927,6 @@ function fmsc_01save() {
 	        	PaidPrice : 0
 	        },
 	        success: function(data) {	
-				//alert(data);
 	        	var paidprice = $('#paidbody tr').eq(iteration).find('.paidprice').text();
 	        	var paiddate = $('#paidbody tr').eq(iteration).find('.paiddate').text();
 	        	if(paidprice != ''){
@@ -943,6 +948,11 @@ function fmsc_01save() {
 	        	}
 	            // 순차적으로 행을 넣기위한 ++
 	            iteration++;
+	            if (iteration === totalRows) {
+	                // If all Ajax requests have completed successfully, then execute window-related statements
+	                window.opener.location.reload();
+	                window.close();
+	            }
 	        },
 	        error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
@@ -950,8 +960,7 @@ function fmsc_01save() {
 	        }
 		}); 
 	});
-	//window.opener.location.reload();
-	//window.close();
+	
 }  
 
 //itemperiod 를 위한 날짜 포맷 함수
