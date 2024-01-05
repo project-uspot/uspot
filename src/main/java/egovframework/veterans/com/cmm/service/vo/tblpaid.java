@@ -29,7 +29,7 @@ public class tblpaid {
 	private String PayType;
 
 
-	private String Price;
+	private double Price;
 
 
 	private String AssignType;

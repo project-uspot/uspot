@@ -14,6 +14,7 @@ import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
 @Service("VtcPaidService")
 public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPaidService {
@@ -98,7 +99,12 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 		return paidDAO.settlemnetlist(tblpaid);
 	}
 	@Override
-	public int callSelectReceiptNo(String inputDate) throws Exception {
-		return paidDAO.callSelectReceiptNo(inputDate);
-	}	
+	public int callSelectReceiptNo(Map<String, Object> map) throws Exception {
+		return paidDAO.callSelectReceiptNo(map);
+	}
+	@Override
+	public void tblpaidinsert(tblpaid tblpaid) throws Exception {
+		paidDAO.tblpaidinsert(tblpaid);
+	}
+		
 }
