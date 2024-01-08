@@ -58,4 +58,6 @@ public interface VtcMemberService {
 	Map<String, Object> mitemfindbyid(TblItem_02 tblItem_02)throws Exception;
 	
 	void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception;
+	
+	fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception;
 }

@@ -453,4 +453,10 @@ from fmsc_s01
 			#{UseDayCnt},#{TotDayCnt},'N',now(), 
 			#{AddUserPKID},now(),#{UpdUserPKID},#{IsPackage},#{PaidPrice})
 	</insert>
+	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
+		select * from fmsc_s01  
+		where
+			IsDelete  = 'N'
+		and SaleNo = #{SaleNo}
+	</select>
 </mapper>

@@ -38,19 +38,19 @@ public class fmsc_s01{
 	private int DCID;
 
 
-	private double DiscountRate;
+	private int DiscountRate;
 
 
-	private double DCPrice;
+	private int DCPrice;
 
 
-	private double ItemPrice;
+	private int ItemPrice;
 
 
-	private double RealPrice;
+	private int RealPrice;
 
 
-	private double Misu;
+	private int Misu;
 
 
 	private String Note;

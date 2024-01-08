@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/fullcalendar/main.min.css" rel="stylesheet">
+    <%-- <link href="${pageContext.request.contextPath}/new_lib/vendors/fullcalendar/main.min.css" rel="stylesheet"> --%>
     <link href="${pageContext.request.contextPath}/new_lib/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {
@@ -635,7 +635,7 @@
             <div class="card h-100">
                 <div class="card-body pb-3">
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
-                    <button class="btn btn-soft-secondary" type="button"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
+                    <button class="btn btn-soft-secondary" type="button" onclick="mitemselectF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
                     <button class="btn btn-soft-success" type="button"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
                     <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
                     <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
@@ -643,6 +643,9 @@
                     <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록</button>
                     <script type="text/javascript">
                     var myPopup;
+                    
+                    //재등록시 필요한 saleno 저장
+                    var remembersaleno = 0;
 
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
@@ -658,6 +661,22 @@
 	                        }
                       	});
                     }
+                    
+                    function mitemselectF() {
+                        var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+                    }
+                    
                     function openpop(url,windowFeatures) {
                     	window.open(url, "_blank", windowFeatures);
 					}
@@ -686,7 +705,21 @@
                         	//f8
                             miteminsertF(${tblmember.memberID});
                         }
+                        if (event.keyCode === 120) {
+                        	//f9
+                        }
                     });
+                    var previousRow = null;
+					//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
+					function fmsc_s01onclick(saleno,clickedRow) {
+						if (previousRow !== null) {
+					    	$(previousRow).css('background-color', '');
+					    }
+						$(clickedRow).css('background-color', 'lightblue');
+					    previousRow = clickedRow;
+					    
+					    remembersaleno = saleno;
+					}
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">수강 및 사물함 정보</a></li>
@@ -718,9 +751,9 @@
                                                     <th class="sort align-middle white-space-nowrap text-start pe-3" scope="col" data-sort="InType" style="width:20%;">등록구분</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="list" id="customer-order-table-body">
+                                            <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable">
+                                                    <tr class="learntable" onclick="fmsc_s01onclick(${list.saleNo},this)" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원'}">
@@ -750,6 +783,9 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <script type="text/javascript">
+                                    $('#learntbody').children('tr:first').click();
+                                    </script>
                                     <div class="row align-items-center justify-content-between py-2 pe-0 fs--1">
                                         <div class="col-auto d-flex">
                                             <p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p>
@@ -1498,7 +1534,7 @@
                                         <table class="table table-sm fs--1 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="State" style="width:10%;">상태</th>
+                                                	<th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="State" style="width:10%;">상태</th>
                                                     <th class="sort align-middle text-end pe-7" scope="col" data-sort="SaleDate" style="width:20%;">접수일자</th>
                                                     <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="GroupName" style="width:15%;">종목</th>
                                                     <th class="sort align-middle white-space-nowrap text-start pe-3" scope="col" data-sort="SubGroupName" style="width:20%;">강좌명</th>

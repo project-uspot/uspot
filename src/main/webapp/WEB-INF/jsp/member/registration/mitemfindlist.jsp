@@ -128,7 +128,7 @@
                 	            tableBody.empty();
                 	            // Iterate through the list using jQuery.each() method
                 	            $.each(list, function(index, listItem) {
-                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ')" onclick="findtbodyclick(this)"></tr>');
+                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ',' + (listItem.OffMax + listItem.OnMax) + ',' + listItem.RegCnt + ',' + listItem.RegCnt2 + ')" onclick="findtbodyclick(this)"></tr>');
                 	                newRow.append('<td class="code align-middle white-space-nowrap text-end fw-semi-bold pe-7 text-1000">' + listItem.ItemCode + '</td>');
                 	                newRow.append('<td class="category align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.CategoryName + '</td>');
                 	                newRow.append('<td class="name align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.JungName + '</td>');
@@ -188,7 +188,7 @@
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
                                 	<c:forEach items="${lists}" var="list">
-	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth})" onclick="findtbodyclick(this)">
+	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth},${list.OffMax+list.OnMax},${list.RegCnt},${list.RegCnt2})" onclick="findtbodyclick(this)">
 		                                    <td class="code align-middle text-end fw-semi-bold pe-7 text-1000">${list.ItemCode}</td>
 		                                    <td class="category align-middle white-space-nowrap text-start fw-bold text-700">${list.CategoryName}</td>
 		                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">${list.JungName}</td>
@@ -213,9 +213,23 @@
             </div>
         </div>
     </div>
+    
 </body>
 <script type="text/javascript">
-function tronclick(ItemID,itemmonth) {
+function tronclick(ItemID,itemmonth,max,offline,online) {
+	if(max-offline-online < 1){
+		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+		$('body').append(buttonHTML);
+		$('#resultmessage').html('<font style="color: red;">'+ (online+offline+1-max) +'명 초과됨 (정원 '+max+' 명/오프라인 '+offline+' 명/온라인 '+online+'명)</font><br>강제로 등록처리하실려면 [예]버튼을,<br>취소하려면 [아니오]버튼을 클릭하세요.');
+        $('#modalButton').click();
+        $('#successbutton').attr('onclick', 'success("' + ItemID + '", "' + itemmonth + '")');
+	}else{
+		success(ItemID,itemmonth);
+	}
+	
+}
+
+function success(ItemID,itemmonth){
 	const dateInputValue = dateInput.value;
     const formattedDate = new Date(dateInputValue);
     formattedDate.setMonth(formattedDate.getMonth() + itemmonth);
@@ -275,15 +289,15 @@ $(document).keydown(function(e) {
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verticallyCenteredModalLabel">정 원 초 과</h5>
+        <h5 class="modal-title" id="verticallyCenteredModalLabel" >정 원 초 과</h5>
         <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
       </div>
       <div class="modal-body">
-        <p class="text-700 lh-lg mb-0" id="resultmessage">검색결과가 없습니다.</p>
+        <p class="text-700 lh-lg mb-0" id="resultmessage"></p>
       </div>
       <div class="modal-footer">
-      	<button class="btn btn-primary" type="button">Okay</button>
-        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">나가기</button>
+        <button class="btn btn-primary" id="successbutton" type="button">예</button>
+        <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">아니오</button>
       </div>
     </div>
   </div>

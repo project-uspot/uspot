@@ -385,4 +385,10 @@
 		#{DelMsg}, #{PayID}, 'N', now(), 
 		#{AddUserPKID},now(),#{UpdUserPKID},#{CardNo})
 	</insert>
+	<select id="tblpaidbypaidgroupsaleno" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		select * from tblpaid
+		where
+			IsDelete = 'N'
+		and PaidGroupSaleNo = #{PaidGroupSaleNo}
+	</select>
 </mapper>

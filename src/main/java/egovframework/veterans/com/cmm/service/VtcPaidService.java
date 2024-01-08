@@ -34,4 +34,5 @@ public interface VtcPaidService {
 	List<settlemnetlist> settlemnetlist(Map<String, Object> fmmap) throws Exception;
 	int callSelectReceiptNo(Map<String, Object> map)throws Exception;
 	void tblpaidinsert(tblpaid tblpaid)throws Exception;
+	List<tblpaid> tblpaidbypaidgroupsaleno(tblpaid tblpaid)throws Exception;
 }
