@@ -32,6 +32,7 @@ import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -751,5 +752,62 @@ public class VtcMemberController {
 		vtcMemberService.fmsc_01insert(fmsc_s01);
 		
 		return fmsc_s01.getSaleNo();
+	}
+	
+	@GetMapping("/mitemselectF.do")
+	public String mitemselectF(fmsc_s01 fmsc_s01,TblItem_02 tblItem_02,tblpaid tblpaid,Model model,tblCode tblCode,DC dc,tblmember tblmember) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		
+		tblItem_02.setSiteCode(result.getSiteCode());
+		tblItem_02.setUpdDate(result.getFromDate());
+		tblItem_02.setAddDate(String.valueOf(result.getItemPKID()));
+		
+		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
+		
+		tblmember.setMemberID(result.getCustCode());
+		
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		
+		dc.setSiteCode(users.getSiteCode());
+		
+		Map<String, Object>item = vtcMemberService.mitemfindbyid(tblItem_02);
+		List<tblpaid> paidlist = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		
+		String mleveltext = "";
+		String dcname = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		for(DC dc2 : dcList) {
+			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+				dcname = dc2.getDcName();
+			}
+		}
+		
+		LocalDate currentDate = LocalDate.now();
+        
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
+		
+		model.addAttribute("member",member);
+		model.addAttribute("yearage",yearage);
+		model.addAttribute("mleveltext",mleveltext);
+		model.addAttribute("dcname",dcname);
+		model.addAttribute("dclist",dcList);
+		
+		model.addAttribute("item",item);
+		model.addAttribute("fmsc_s01",result);
+		model.addAttribute("paidlist",paidlist);
+		
+		return "member/registration/mitemselectF";
 	}
 }

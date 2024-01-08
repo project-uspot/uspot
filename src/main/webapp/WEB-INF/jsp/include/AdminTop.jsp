@@ -1755,13 +1755,13 @@
         </div>
       </nav>
 	<script src="${pageContext.request.contextPath}/new_lib/vendors/popper/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/list.js/list.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="${pageContext.request.contextPath}/new_lib/vendors/list.js/list.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/feather-icons/feather.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/dayjs/dayjs.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/phoenix.js"></script>

@@ -3,7 +3,6 @@ package egovframework.veterans.com.cmm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -111,5 +110,9 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception{
 		insert("member.fmsc_01insert",fmsc_s01);
+	}
+	
+	public fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception{
+		return selectOne("member.fmsc_s01bysaleno",fmsc_s01);
 	}
 }

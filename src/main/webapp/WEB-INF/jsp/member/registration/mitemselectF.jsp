@@ -103,6 +103,35 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list" id="itemtbody">
+                               		<tr>
+                               			<td class="code align-middle white-space-nowrap text-center fw-bold">${item.ItemCode}</td>
+									    <td class="category align-middle white-space-nowrap text-center">
+									    	<c:choose>
+									    		<c:when test="${item.Type eq 'G'}">
+									    			일반
+									    		</c:when>
+									    		<c:when test="${item.Type eq 'S'}">
+									    			특강
+									    		</c:when>
+									    	</c:choose>
+									    </td>
+									    <td class="item align-middle white-space-nowrap text-start fw-bold text-700">${item.CategoryName}</td>
+									    <td class="name align-middle white-space-nowrap text-900 fs--1 text-start">${item.JungName}</td>
+									    <td class="day align-middle white-space-nowrap text-center">${item.DayName}</td>
+									    <td class="time align-middle white-space-nowrap text-start">${item.FromTime}</td>
+									    <td class="level align-middle white-space-nowrap text-start">${item.LevelName}</td>
+									    <td class="member align-middle white-space-nowrap text-start">${item.DaesangName}</td>
+									    <td class="teacher align-middle white-space-nowrap text-start">${item.SawonName}</td>
+									    <td class="date py-2 align-middle white-space-nowrap">${fmsc_s01.fromDate}~${fmsc_s01.toDate}(${fmsc_s01.regMonth})</td>
+									    <td class="price py-2 align-middle white-space-nowrap">${fmsc_s01.itemPrice}</td>
+									    <td class="dc py-2 align-middle white-space-nowrap">${fmsc_s01.DCPrice}</td>
+									    <td class="sort py-2 align-middle white-space-nowrap">${fmsc_s01.realPrice}</td>
+									    <td class="dccode py-2 align-middle white-space-nowrap">${fmsc_s01.DCID}</td>
+									    <td class="dcpercent py-2 align-middle white-space-nowrap">${fmsc_s01.discountRate}</td>
+									    <td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
+									    <td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2}</td>
+									    <td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)}</td>
+									</tr>
                                 </tbody>
                             </table>
                         </div>
@@ -117,8 +146,8 @@
 		        <div class="row mt-n3">
 		        	<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text" id="basic-addon1">매출일자</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="saledate" name="saledate"/>
+							<span class="input-group-text" id="basic-addon1">접수일자</span>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="saledate" name="saledate" value="${fmsc_s01.saleDate}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n4">
@@ -144,14 +173,31 @@
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">강습료</span>
 							<select class="form-select" aria-label="Default select example" id="price" aria-describedby="basic-addon1" style="width: 152px; text-align: right;">
-								<option selected="selected" value="0">0</option>
+								<c:if test="${item.DefPrice != 0}">
+									<option value="${item.defPrice}">어른${item.DefPrice}</option>
+								</c:if>
+								<c:if test="${item.Price1 != 0}">
+									<option value="${item.Price1}">청소년${item.Price1}</option>
+								</c:if>
+								<c:if test="${item.Price2 != 0}">
+									<option value="${item.Price2}">어린이${item.Price2}</option>
+								</c:if>
+								<c:if test="${item.Price3 != 0}">
+									<option value="${item.Price3}">경로${item.Price3}</option>
+								</c:if>
+								<c:if test="${item.Price4 != 0}">
+									<option value="${item.Price4}">기본금${item.Price4}</option>
+								</c:if>
+								<c:if test="${item.Price5 != null}">
+									<option value="${item.Price5}">어린이${item.Price5}</option>
+								</c:if>
 							</select>
 						</div>
 					</div>
 					<div class="col-auto">
 						<div class="input-group input-group-sm mb-3 ms-1">
 							<span class="input-group-text" id="basic-addon1">등록개월</span>
-							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 60px;" name="regmonth" id="regmonth"/>
+							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 60px;" name="regmonth" id="regmonth" value="${fmsc_s01.regMonth}"/>
 						</div>
 					</div>
 					<div class="col-md-5 ms-n2" style="width: 327px;">
@@ -170,7 +216,7 @@
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">강습기간</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" value="${fmsc_s01.fromDate}"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -178,13 +224,13 @@
 					</div>
 					<div class="col-auto ms-n1">
 						<div class="input-group mb-3 input-group-sm">
-							<input class="form-control" type="date" id="todate" name="todate"/>
+							<input class="form-control" type="date" id="todate" name="todate" value="${fmsc_s01.toDate}"/>
 						</div>
 					</div>
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
-							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;"/>
+							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;" value="${fmsc_s01.discountRate}"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n3">
@@ -192,7 +238,7 @@
 					</div>
 					<div class="col-auto ms-n2">
 						<div class="input-group mb-3 w-auto input-group-sm">
-							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" style="width: 99px;"/>
+							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" style="width: 99px;" value="${fmsc_s01.DCPrice}"/>
 						</div>
 					</div>
 				</div>
@@ -206,7 +252,7 @@
 		        	<div class="col-md-5" style="width: 312px;">
 		        		<div class="input-group mb-3 ms-n3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">합계</span>
-							<input class="form-control" type="number" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="number" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly" value="${fmsc_s01.realPrice}"/>
 						</div>
 		        	</div>
 		        </div>
@@ -354,6 +400,22 @@
 	                            </tr>
                         	</thead>
                         	<tbody class="list" id="paidbody">
+                        		<c:forEach var="paid" items="${paidlist}">
+	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static">
+									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
+									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${paid.price}</td>
+									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
+									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
+									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
+									    <td class="paidassignN align-middle white-space-nowrap text-start">${paid.assignNo}</td>
+									    <td class="paidcardN align-middle white-space-nowrap text-start">${paid.cardNo}</td>
+									    <td class="POS align-middle white-space-nowrap text-start">${paid.pos}</td>
+									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
+									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
+									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									</tr>
+								</c:forEach>
                         	</tbody>
                     	</table>
                     </div>
@@ -393,29 +455,11 @@ $('body').append(buttonHTML);
 //어른 어린이 등을 저장하는 변수 생성
 var codelist;
 
-//엔터시에 검색하는 기능
-document.getElementById('saledate').value = new Date().toISOString().substring(0, 10);;
-function handleKeyPress(event) {
-	if (event.key === "Enter") {
-		finditem();
- 	}
-}
 	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
-		if($('#itemtbody tr').length > 0){
-			$('#resultmessage').html('강습정보가 존재합니다.<br>정말 나가시겠습니까?');
-			$('.modal-footer').empty();
-			var okaybutton = '<button class="btn btn-primary" type="button" onclick="window.close();">확인</button>';
-			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-			$('.modal-footer').append(okaybutton);
-			$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		} else{
-			window.close();
-		}
+    	window.close();
    	}
    	else if (event.key === 'Escape' && modalcheck) {
    		setTimeout(() => {
@@ -424,130 +468,6 @@ document.addEventListener('keydown', function(event) {
    	}
 });
 	
-//검색하고 검색결과를 팝업으로 여는 함수
-function finditem() {
-	var findstring = document.getElementById('findstring').value;
-	if(findstring == '' || findstring == null){
-   		$('#resultmessage').text('검색어를 입력해주세요.');
-   		$('.modal-footer').empty();
-	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-	  	$('.modal-footer').append(cancelbutton);
-        $('#modalButton').click();
-        modalcheck = true;
-		return false;
-	}
-	var url = "mitemfindlist?findstring=" + findstring;
-    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
-    window.open(url, "_blank", windowFeatures);
-}
-	
-// 검색 하고나서 선택된 값을 테이블에 추가하는 함수
-function test(ItemID,selectedDate,nextDate) {
-	
-	//이미 들어간 수강인지 확인하는 함수
-	var alreadycheck =false;
-	$('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (parseInt(itemIDValue) === parseInt(ItemID)) {
-        	alreadycheck = true;
-    		$('#resultmessage').text('이미 등록한 수강입니다.');
-    		$('.modal-footer').empty();
-    	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-    	  	$('.modal-footer').append(cancelbutton);
-            $('#modalButton').click();
-            modalcheck = true;
-            return false;
-            
-        }
-    });
-	
-	if(alreadycheck == true){
-		return false;
-	}else{
-		$.ajax({
-	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
-	        dataType : 'json',
-	        data: { 
-	        	AddDate: ItemID,
-	        	UpdDate: selectedDate
-	        },
-	        success: function(list) {
-	        	var tableBody = $('#itemtbody'); // Get the table body element
-	        	if(document.querySelector('input[name="index"]:checked').value == 1){
-	        		tableBody.empty();
-	        	}
-	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>').on('click', function() {
-	        	    itemtbodyclick(this); // Call the itemtbodyclick function when the row is clicked
-	        	});
-                newRow.append('<td class="code align-middle white-space-nowrap text-center fw-bold">' + list.ItemCode + '<input type="hidden" id="ItemID" name="ItemID" value="'+list.ItemID+'"></td>');
-                var type = '';
-                if(list.Type == 'G'){
-                	type = '일반'
-                }
-                else if(list.Type == 'S'){
-                	type = '특강'
-                }
-                newRow.append('<td class="category align-middle white-space-nowrap text-center">' + type + '</td>');
-                newRow.append('<td class="item align-middle white-space-nowrap text-start fw-bold text-700">' + list.CategoryName + '</td>');
-                newRow.append('<td class="name align-middle white-space-nowrap text-900 fs--1 text-start">' + list.JungName + '</td>');
-                newRow.append('<td class="day align-middle white-space-nowrap text-center">' + list.DayName + '</td>');
-                newRow.append('<td class="time align-middle white-space-nowrap text-start">' + list.FromTime + '</td>');
-                newRow.append('<td class="level align-middle white-space-nowrap text-start">' + list.LevelName + '</td>');
-                newRow.append('<td class="member align-middle white-space-nowrap text-start">' + list.DaesangName + '</td>');
-                newRow.append('<td class="teacher align-middle white-space-nowrap text-start">' + list.SawonName + '</td>');
-                newRow.append('<td class="date py-2 align-middle white-space-nowrap">' + selectedDate+'~'+nextDate+'('+list.itemmonth+')'+'</td>');
-                newRow.append('<td class="price py-2 align-middle white-space-nowrap">' + list.DefPrice + '</td>');
-                newRow.append('<td class="dc py-2 align-middle white-space-nowrap">' + 0 + '</td>');
-                newRow.append('<td class="sort py-2 align-middle white-space-nowrap" id="N">' + list.DefPrice + '</td>');
-                newRow.append('<td class="dccode py-2 align-middle white-space-nowrap">' + 0 + '</td>');
-                newRow.append('<td class="dcpercent py-2 align-middle white-space-nowrap">' + 0 + '</td>');
-                newRow.append('<td class="max py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax) + '</td>');
-                newRow.append('<td class="enter py-2 align-middle white-space-nowrap">' + (list.RegCnt+list.RegCnt2) + '</td>');
-                newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2)) + '</td>');
-                newRow.append('<input type="hidden" value="30" name="totalnum" id="totalnum">');
-                newRow.append('<input type="hidden" value="30" name="usenum" id="usenum">');
-                newRow.append('<input type="hidden" value="'+list.SawonNo+'" name="EmpCode" id="EmpCode">');
-                tableBody.append(newRow);
-                $('#itemtbody').children('tr:last').click();
-	        },
-	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
-	        }
-		});
-	}
-}
-	
-function alldelete(){
-	$('#itemtbody').empty();
-	$('#paidbody').empty();
-	$('#price').empty();
-	$('#price').append('<option selected="selected" value="0">0</option>');
-	$('#regmonth').val('');
-	$('#dcds').val(0);
-	$('#fromdate').val('');
-	$('#todate').val('');
-	$('#dcper').val('');
-	$('#dcpri').val('');
-	$('#dcpri').val('');
-	$('#sortpri').val('');
-	$('#max').val('');
-	$('#enter').val('');
-	$('#remain').val('');
-	$('#totalprice').val('');
-	$('#tpaidprice').val('');
-	$('#tremainprice').val('');
-	$('#learnprice').val('');
-	$('#totalday').val('');
-	$('#useday').val('');
-}
-
-//과거에 선택했던 행
-var previousRow = null;
-
-//과거에 선택했던 행의 itemid
-var clickeditemid;
 
 //행을 클릭했을때 데이터를 밑에 뿌려주는 함수
   function itemtbodyclick(clickedRow) {
@@ -600,7 +520,7 @@ var clickeditemid;
    	        	    if ($('#yearage').text() > 13 && $('#yearage').text() < 19) {
    	        	        option.attr('selected', 'selected');
    	        	     	$(clickedRow).find('.price').text(list.Price1);
-   	        	     	sortchange(clickedRow);
+	        	     	$(clickedRow).find('.sort').text(list.Price1);
    	        	    }
    	        	}
    	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
@@ -615,7 +535,7 @@ var clickeditemid;
    	        	    if ($('#yearage').text() >= 0 && $('#yearage').text() < 14) {
    	        	        option.attr('selected', 'selected');
    	        	     	$(clickedRow).find('.price').text(list.Price2);
-   	        	     	sortchange(clickedRow);
+   	        	     	$(clickedRow).find('.sort').text(list.Price2);
    	        	    }
    	        	}
    	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
@@ -628,7 +548,7 @@ var clickeditemid;
    	        	    if ($('#yearage').text() > 64) {
    	        	        option.attr('selected', 'selected');
    	        	     	$(clickedRow).find('.price').text(list.Price3);
-   	        	     	sortchange(clickedRow);
+	        	     	$(clickedRow).find('.sort').text(list.Price3);
    	        	    }
    	        	}
    	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
@@ -649,8 +569,6 @@ var clickeditemid;
    	        	//만약 강습료를 바꾸면 다른행을 선택했다가 와도 바꾼 강습료로 선택되게하는 기능
    	        	if ($('#price option[value="' + $('#'+clickeditemid+'pricecodechange').val() + '"]').length > 0) {
    	        	    $('#price').val($('#'+clickeditemid+'pricecodechange').val());
-   	        	 	$(clickedRow).find('.price').text($('#price option:selected').attr('id'));
-   	        	 	sortchange(clickedRow);
    	        	}
    	        	
    	        	//바뀐 강습료를 저장하기 위한 인풋 생성
