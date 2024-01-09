@@ -635,7 +635,7 @@
             <div class="card h-100">
                 <div class="card-body pb-3">
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
-                    <button class="btn btn-soft-secondary" type="button" onclick="mitemselectF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
+                    <button class="btn btn-soft-secondary" type="button" onclick="mitemreinsertF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
                     <button class="btn btn-soft-success" type="button"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
                     <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
                     <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
@@ -646,6 +646,7 @@
                     
                     //재등록시 필요한 saleno 저장
                     var remembersaleno = 0;
+                    var rememberrtodate = '';
 
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
@@ -661,6 +662,21 @@
 	                        }
                       	});
                     }
+                    
+                    function mitemreinsertF() {
+                    	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
                     
                     function mitemselectF() {
                         var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
@@ -707,18 +723,19 @@
                         }
                         if (event.keyCode === 120) {
                         	//f9
+                        	mitemreinsertF();
                         }
                     });
                     var previousRow = null;
 					//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
-					function fmsc_s01onclick(saleno,clickedRow) {
+					function fmsc_s01onclick(rtodate,saleno,clickedRow) {
 						if (previousRow !== null) {
 					    	$(previousRow).css('background-color', '');
 					    }
 						$(clickedRow).css('background-color', 'lightblue');
 					    previousRow = clickedRow;
-					    
 					    remembersaleno = saleno;
+					    rememberrtodate = rtodate;
 					}
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
@@ -753,7 +770,7 @@
                                             </thead>
                                             <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable" onclick="fmsc_s01onclick(${list.saleNo},this)" ondblclick="mitemselectF()">
+                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this)" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원'}">

@@ -386,6 +386,9 @@
 	</div>
 </body>
 <script type="text/javascript">
+test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
+$('#dcds').val(${fmsc_s01.DCID});
+
 //숨겨진 모달 버튼
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
@@ -541,6 +544,8 @@ function alldelete(){
 	$('#learnprice').val('');
 	$('#totalday').val('');
 	$('#useday').val('');
+	
+	test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
 }
 
 //과거에 선택했던 행

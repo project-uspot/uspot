@@ -626,7 +626,6 @@ public class VtcMemberController {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
@@ -809,5 +808,78 @@ public class VtcMemberController {
 		model.addAttribute("paidlist",paidlist);
 		
 		return "member/registration/mitemselectF";
+	}
+	
+	@PostMapping("/fmsc_01update")
+	@ResponseBody
+	public void fmsc_01update(fmsc_s01 fmsc_s01)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+		
+		vtcMemberService.fmsc_01update(fmsc_s01);
+	}
+	
+	@GetMapping("/mitemreinsertF")
+	public String mitemreinsertF(fmsc_s01 fmsc_s01,tblmember tblmember,DC dc,Model model,tblCode tblCode,TblItem_02 tblItem_02)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		dc.setSiteCode(users.getSiteCode());
+		
+		
+		
+		String date = fmsc_s01.getRToDate();;
+
+        LocalDate parsedDate = LocalDate.parse(date);
+
+        LocalDate datePlusOneDay = parsedDate.plusDays(1);
+        LocalDate datePlusOneMonth = parsedDate.plusMonths(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String selectedDate = datePlusOneDay.format(formatter);
+        String nextDate = datePlusOneMonth.format(formatter);
+        
+		
+		tblmember.setMemberID(result.getCustCode());
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		
+		String mleveltext = "";
+		String dcname = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		for(DC dc2 : dcList) {
+			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+				dcname = dc2.getDcName();
+			}
+		}
+		
+		LocalDate currentDate = LocalDate.now();
+        
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
+		
+		model.addAttribute("fmsc_s01",result);
+		model.addAttribute("member",member);
+		model.addAttribute("yearage",yearage);
+		model.addAttribute("mleveltext",mleveltext);
+		model.addAttribute("dcname",dcname);
+		model.addAttribute("dclist",dcList);
+		model.addAttribute("selectedDate",selectedDate);
+		model.addAttribute("nextDate",nextDate);
+		
+		return "member/registration/mitemreinsertF";
 	}
 }
