@@ -222,7 +222,7 @@ function tronclick(ItemID,itemmonth,max,offline,online) {
 		$('body').append(buttonHTML);
 		$('#resultmessage').html('<font style="color: red;">'+ (online+offline+1-max) +'명 초과됨 (정원 '+max+' 명/오프라인 '+offline+' 명/온라인 '+online+'명)</font><br>강제로 등록처리하실려면 [예]버튼을,<br>취소하려면 [아니오]버튼을 클릭하세요.');
         $('#modalButton').click();
-        $('#successbutton').attr('onclick', 'success("' + ItemID + '", "' + itemmonth + '")');
+        $('#successbutton').attr('onclick', 'success("' + ItemID + '", ' + itemmonth + ')');
 	}else{
 		success(ItemID,itemmonth);
 	}
@@ -233,6 +233,7 @@ function success(ItemID,itemmonth){
 	const dateInputValue = dateInput.value;
     const formattedDate = new Date(dateInputValue);
     formattedDate.setMonth(formattedDate.getMonth() + itemmonth);
+    formattedDate.setDate(formattedDate.getDate()-1);
     const formattedDateString = formatDate(formattedDate);
     opener.parent.test(ItemID, dateInputValue, formattedDateString);
 	opener.focus();

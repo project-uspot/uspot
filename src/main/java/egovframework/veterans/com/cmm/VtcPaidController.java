@@ -251,6 +251,7 @@ public class VtcPaidController {
 	public void tblpaidinsert(tblpaid tblpaid) throws Exception {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("saleDate", tblpaid.getSaleDate());
 	    map.put("outputOrderNo", 0);

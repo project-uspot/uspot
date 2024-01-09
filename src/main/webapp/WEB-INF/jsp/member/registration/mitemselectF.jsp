@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 
@@ -44,12 +45,6 @@
                 <div>
                     <div class="row g-3">
                         <h3 class="mb-3 w-25 pt-2">수강정보 등록 및 변경</h3>
-                        <div class="col-auto">
-                            <button class="btn btn-success" type="button" onclick="save()">저장(S)</button>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
-                        </div>
                     </div>
 					<div class="row">
 						<div class="col-auto ms-n3">
@@ -75,6 +70,12 @@
                             <p style="background-color: lightblue;">[${member.memberID}]${member.name}(${member.genderText})${member.typeText} / ${mleveltext} / ${dcname}</p>
                             <input type="hidden" name="memberid" id="memberid" value="${member.memberID}">
 						</div>
+						<div class="col-auto position-absolute" style="margin-left:1000px;">
+                            <button class="btn btn-success" type="button" onclick="save()" >저장(S)</button>
+                        </div>
+                        <div class="col-auto position-absolute" style="margin-left:1104px;">
+                            <button class="btn btn-danger" type="button" onclick="window.location.reload();">삭제(D)</button>
+                    	</div>
                     </div>
                     <div class="border-top border-bottom border-200" id="customerOrdersTable" style="width:1200px; height: 150px;overflow-y: scroll;"
                     data-list='{"valueNames":["code","category","item","name","day","time","level","member","teacher","date","price","dc","sort","dccode","dcpercent","max","enter","remain"],"page":6,"pagination":true}'>
@@ -104,7 +105,10 @@
                                 </thead>
                                 <tbody class="list" id="itemtbody">
                                		<tr>
-                               			<td class="code align-middle white-space-nowrap text-center fw-bold">${item.ItemCode}</td>
+                               			<td class="code align-middle white-space-nowrap text-center fw-bold">
+                               			${item.ItemCode}
+                               			<input type="hidden" id="SaleNo" name="SaleNo" value="${fmsc_s01.saleNo}">
+                               			</td>
 									    <td class="category align-middle white-space-nowrap text-center">
 									    	<c:choose>
 									    		<c:when test="${item.Type eq 'G'}">
@@ -168,28 +172,34 @@
 						</div>
 					</div>
 				</div>
+				<fmt:parseNumber var="DefPrice" integerOnly="true" value="${item.DefPrice}"/>
+				<fmt:parseNumber var="Price1" integerOnly="true" value="${item.Price1}"/>
+				<fmt:parseNumber var="Price2" integerOnly="true" value="${item.Price2}"/>
+				<fmt:parseNumber var="Price3" integerOnly="true" value="${item.Price3}"/>
+				<fmt:parseNumber var="Price4" integerOnly="true" value="${item.Price4}"/>
+				<fmt:parseNumber var="Price5" integerOnly="true" value="${item.Price5}"/>
 				<div class="row">
 		        	<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">강습료</span>
 							<select class="form-select" aria-label="Default select example" id="price" aria-describedby="basic-addon1" style="width: 152px; text-align: right;">
-								<c:if test="${item.DefPrice != 0}">
-									<option value="${item.defPrice}">어른${item.DefPrice}</option>
+								<c:if test="${not empty DefPrice}">
+									<option value="${DefPrice}">어른${DefPrice}</option>
 								</c:if>
-								<c:if test="${item.Price1 != 0}">
-									<option value="${item.Price1}">청소년${item.Price1}</option>
+								<c:if test="${not empty Price1}">
+									<option value="${Price1}">청소년${Price1}</option>
 								</c:if>
-								<c:if test="${item.Price2 != 0}">
-									<option value="${item.Price2}">어린이${item.Price2}</option>
+								<c:if test="${not empty Price2}">
+									<option value="${Price2}">어린이${Price2}</option>
 								</c:if>
-								<c:if test="${item.Price3 != 0}">
-									<option value="${item.Price3}">경로${item.Price3}</option>
+								<c:if test="${not empty Price3}">
+									<option value="${Price3}">경로${Price3}</option>
 								</c:if>
-								<c:if test="${item.Price4 != 0}">
-									<option value="${item.Price4}">기본금${item.Price4}</option>
+								<c:if test="${not empty Price4}">
+									<option value="${Price4}">기본금${Price4}</option>
 								</c:if>
-								<c:if test="${item.Price5 != null}">
-									<option value="${item.Price5}">어린이${item.Price5}</option>
+								<c:if test="${not empty Price5}">
+									<option value="${Price5}">${Price5}</option>								
 								</c:if>
 							</select>
 						</div>
@@ -212,6 +222,10 @@
 						</div>
 					</div>
 				</div>
+				<script type="text/javascript">
+				var fmsc_s01DCID = '${fmsc_s01.DCID}';
+				$('#dcds').val(fmsc_s01DCID);
+				</script>
 				<div class="row">
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
@@ -309,13 +323,15 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총매출금액</span>
-													<input class="form-control" type="text" id="totalprice" name="totalprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="totalprice" name="totalprice" 
+													aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.realPrice}"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">정원</span>
-													<input class="form-control" type="text" id="max" name="max" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="max" name="max" 
+													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.OffMax + item.OnMax}"/>
 												</div>
 											</div>
 										</div>
@@ -323,13 +339,15 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총결제금액</span>
-													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice"
+													 aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.realPrice-fmsc_s01.misu}"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">등록</span>
-													<input class="form-control" type="text" id="enter" name="enter" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="enter" name="enter"
+													 aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.RegCnt + item.RegCnt2}"/>
 												</div>
 											</div>
 										</div>
@@ -337,13 +355,15 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총미납금액</span>
-													<input class="form-control" type="text" id="tremainprice" name="tremainprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="tremainprice" name="tremainprice"
+													 aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.misu}"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">잔여</span>
-													<input class="form-control" type="text" id="remain" name="remain" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="remain" name="remain" 
+													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)}"/>
 												</div>
 											</div>
 										</div>
@@ -372,7 +392,8 @@
 				<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">강습료</span>
-						<input class="form-control" type="number" id="learnprice" name="learnprice" aria-label="Amount (to the nearest dollar)" min="0" readonly="readonly" style="text-align: right;"/>
+						<input class="form-control" type="number" id="learnprice" name="learnprice"
+						 aria-label="Amount (to the nearest dollar)" min="0" readonly="readonly" style="text-align: right;" value="${fmsc_s01.itemPrice}"/>
 					</div>
 				</div>
 		    </div>
@@ -404,7 +425,8 @@
 	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static">
 									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
 									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
-									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${paid.price}</td>
+									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${paidprice}</td>
 									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
 									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
 									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
@@ -467,316 +489,127 @@ document.addEventListener('keydown', function(event) {
    	    }, 500);
    	}
 });
-	
-
-//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
-  function itemtbodyclick(clickedRow) {
-      if (previousRow !== null) {
-          $(previousRow).css('background-color', ''); // Unselect the previous row
-      }
-
-      $(clickedRow).css('background-color', 'lightblue'); // Highlight the clicked row
-      previousRow = clickedRow; // Update the previousRow variable with the clicked row
-      var date = $(clickedRow).find('.date').text();
-      const result = parseString(date);
-      document.getElementById('fromdate').value = result[0];
-      document.getElementById('todate').value = result[1];
-      document.getElementById('regmonth').value = result[2];
-      var price = $(clickedRow).find('.price').text();
-      var itemid = $(clickedRow).find('#ItemID').val();
-      clickeditemid = itemid;
-      $.ajax({
-       type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-       url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
-       dataType : 'json',
-       data: { 
-       	AddDate: itemid,
-       	UpdDate: result[0]
-       },
-       success: function(list) {
-       	var priceoptionlist = $('#price');
-       	priceoptionlist.empty();
-       	$.ajax({
-   	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-   	        url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
-   	        dataType : 'json',
-   	        success: function(codelist) {
-   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
-   	        		priceoptionlist.append($('<option>', {
-   	        			id: list.DefPrice,
-   		                value: codelist[0]+list.DefPrice,
-   		                text: codelist[0]+list.DefPrice
-   		            }));
-   	        	}
-   	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
-   	        	    var option = $('<option>', {
-   	        	    	id: list.Price1,
-   	        	        value: codelist[1] + list.Price1,
-   	        	        text: codelist[1] + list.Price1
-   	        	    });
-
-   	        	    priceoptionlist.append(option);
-
-   	        	    if ($('#yearage').text() > 13 && $('#yearage').text() < 19) {
-   	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price1);
-	        	     	$(clickedRow).find('.sort').text(list.Price1);
-   	        	    }
-   	        	}
-   	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
-   	        	    var option = $('<option>', {
-   	        	    	id: list.Price2,
-   	        	        value: codelist[2] + list.Price2,
-   	        	        text: codelist[2] + list.Price2
-   	        	    });
-
-   	        	    priceoptionlist.append(option);
-
-   	        	    if ($('#yearage').text() >= 0 && $('#yearage').text() < 14) {
-   	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price2);
-   	        	     	$(clickedRow).find('.sort').text(list.Price2);
-   	        	    }
-   	        	}
-   	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
-   	        	    var option = $('<option>', {
-   	        	    	id: list.Price3,
-   	        	    	value: codelist[3]+list.Price3,
-   		                text: codelist[3]+list.Price3
-   	        	    });
-   	        	    priceoptionlist.append(option);
-   	        	    if ($('#yearage').text() > 64) {
-   	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price3);
-	        	     	$(clickedRow).find('.sort').text(list.Price3);
-   	        	    }
-   	        	}
-   	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
-   	        		priceoptionlist.append($('<option>', {
-   	        			id: list.Price4,
-   		                value: codelist[4]+list.Price4,
-   		                text: codelist[4]+list.Price4
-   		            }));
-   	        	}
-   	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
-   	        		priceoptionlist.append($('<option>', {
-   	        			id: list.Price5,
-   		                value: codelist[5]+list.Price5,
-   		                text: codelist[5]+list.Price5
-   		            }));
-   	        	}
-   	        	
-   	        	//만약 강습료를 바꾸면 다른행을 선택했다가 와도 바꾼 강습료로 선택되게하는 기능
-   	        	if ($('#price option[value="' + $('#'+clickeditemid+'pricecodechange').val() + '"]').length > 0) {
-   	        	    $('#price').val($('#'+clickeditemid+'pricecodechange').val());
-   	        	}
-   	        	
-   	        	//바뀐 강습료를 저장하기 위한 인풋 생성
-   	        	var newHiddenInput = $('<input>').attr({
-                       type: 'hidden',
-                       id: itemid+'pricecodechange',
-                       name: 'pricecodechange'
-                   });
-   	        	
-   	        	$(clickedRow).append(newHiddenInput);
-   	        	//행 전환시 할인유형 바꾸기
-   	        	$('#dcds').val($(clickedRow).find('.dccode').text());
-   	        	//행 전환시 할인율 바꾸기
-   	        	$('#dcper').val($(clickedRow).find('.dcpercent').text());
-   	        	//행 전환시 할인금액 바꾸기
-   	        	$('#dcpri').val($(clickedRow).find('.dc').text());
-   	        	//행 전환시 합계 바꾸기
-   	        	$('#sortpri').val($(clickedRow).find('.sort').text());
-   	        	//행 전환시 정원 바꾸기
-   	        	$('#max').val($(clickedRow).find('.max').text());
-   	        	//행 전환시 등록 바꾸기
-   	        	$('#enter').val($(clickedRow).find('.enter').text());
-   	        	//행 전환시 잔여 바꾸기
-   	        	$('#remain').val($(clickedRow).find('.remain').text());
-   	        	//행 전환시 강습료 바꾸기
-   	        	$('#learnprice').val($(clickedRow).find('.price').text());
-   	        	//행 전환시 총일수 바꾸기
-   	        	$('#totalday').val($(clickedRow).find('input[name="totalnum"]').val());
-   	       		//행 전환시 사용일수 바꾸기
-   	        	$('#useday').val($(clickedRow).find('input[name="usenum"]').val());
-   	        	//총 금액 설정
-   	        	totalchange();
-   	        },
-   	        error: function(xhr, status, error) {
-   	       	 console.log("Status: " + status);
-   	         console.log("Error: " + error);
-   	        }
-   		});
-       },
-       error: function(xhr, status, error) {
-      	 console.log("Status: " + status);
-        console.log("Error: " + error);
-       }
-	});
-  }
   
-   //강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
-   $('#price').on('change', function() {
-       // 선택된 옵션의 값 가져오기
-       var selectedValue = $('#price').val();
-       var selectedprice = $('#price').find('option:selected').attr('id');
-       $('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (itemIDValue === clickeditemid) {
-            // 해당 행을 찾았을 때 선택된 값으로 'price' 클래스를 가진 td에 내용을 넣어줍니다.
-            $(this).find('.price').text(selectedprice);
-            sortchange(this);
-            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
-        }
-    });
-       $('#learnprice').val(selectedprice);
-       // 숨겨진(hidden) input의 값을 선택된 값으로 변경
-       $('#'+clickeditemid+'pricecodechange').val(selectedValue);
-   });
+//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
+$('#price').on('change', function() {
+    // 선택된 옵션의 값 가져오기
+	var selectedValue = $('#price').val();
+    $('#itemtbody').find('.price').text(selectedValue);
+    $('#learnprice').val(selectedValue);
+    sortchange();
+});
+
+
    
-   //할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수
-   $('#dcds').on('change', function() {
+//할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수
+$('#dcds').on('change', function() {
     var selectedID = $(this).val(); // 선택된 값 가져오기
     var selectedpercent = $(this).find('option:selected').attr('id'); // 선택된 옵션의 id 값을 가져오기
-    // '#itemtbody' 내의 tr 요소들을 순회하며 특정 조건을 검사합니다.
-    $('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (itemIDValue === clickeditemid) {
-            // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-            $(this).find('.dccode').text(selectedID);
-            // 선택된 값으로 'dcpercent' 클래스를 가진 td에 내용을 넣어줍니다.
-            $(this).find('.dcpercent').text(selectedpercent);
-            
-            $('#dcper').val(selectedpercent);
-            sortchange(this);
-            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
-        }
-    });
+    // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
+    $('#itemtbody').find('.dccode').text(selectedID);
+    // 선택된 값으로 'dcpercent' 클래스를 가진 td에 내용을 넣어줍니다.
+    $('#itemtbody').find('.dcpercent').text(selectedpercent);
+    $('#dcper').val(selectedpercent);
+    sortchange();
 });
    
-   $('#regmonth').on('change', function() {
-       // 선택된 옵션의 값 가져오기
-       var selectedValue = $('#regmonth').val();
-       $('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (itemIDValue === clickeditemid) {
-            // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-            const result = parseString($(this).find('.date').text());
-            
-            const formattedDate = new Date(result[0]);
-            var monthsToAdd = parseInt(selectedValue);
-            formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
-            const formattedDateString = formatDate(formattedDate);
-            $('#todate').val(formattedDateString);
-            
-          	const revalue = result[0]+'~'+formattedDateString+'('+selectedValue+')';
-       		
-          	$(this).find('.date').text(revalue);
-          	sortchange(this);
-            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
-        }
-    });
-   });
    
-   $('#fromdate').on('change', function() {
-       // 선택된 옵션의 값 가져오기
-       var selectedValue = $('#fromdate').val();
-       $('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (itemIDValue === clickeditemid) {
-            // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-            const result = parseString($(this).find('.date').text());
-            
-            const formattedDate = new Date(selectedValue);
-            var monthsToAdd = parseInt(result[2], 10);
-            formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
-            const formattedDateString = formatDate(formattedDate);
-            $('#todate').val(formattedDateString);
-            
-          	const revalue = selectedValue+'~'+formattedDateString+'('+result[2]+')';
-          	$(this).find('.date').text(revalue);
-            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
-        }
-    });
-   });
    
-   $('#todate').on('change', function() {
-       // 선택된 옵션의 값 가져오기
-       var selectedValue = $('#todate').val();
-       $('#itemtbody tr').each(function() {
-    	var itemIDValue = $(this).find('input[name="ItemID"]').val();
-        if (itemIDValue === clickeditemid) {
-            // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-            const result = parseString($(this).find('.date').text());
-            
-          	const revalue = result[0]+'~'+selectedValue+'('+result[2]+')';
-          	$(this).find('.date').text(revalue);
-            return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
-        }
-    });
-   });
-   
-   //소계바꾸는 함수
-   function sortchange(selectrow){
-   	var price = $(selectrow).find('.price').text();
-   	var dcpercent = parseInt($(selectrow).find('.dcpercent').text());
-   	const result = parseString($(selectrow).find('.date').text());
-   	var dcprice = price*(dcpercent*0.01);
-   	var afterdcprice = price-dcprice;
-   	$(selectrow).find('.dc').text(dcprice*result[2]);
-   	$(selectrow).find('.sort').text(afterdcprice*result[2]);
-   	$('#dcpri').val(dcprice*result[2]);
-   	$('#sortpri').val(afterdcprice*result[2]);
-   	totalchange();
-   }
-   
-   //결제 내역에 있는 총 금액 변경 함수
-   function totalchange(){
-   	
-   	var totalprice = 0;
-   	var tpaidprice = 0;
-   	var tremainprice = 0;
-   	
-   	$('#itemtbody tr').each(function() {
-   		totalprice += parseInt($(this).find('.sort').text());
-   		
-   		var onetpaidprice = parseInt($(this).find('.sort#Y').text());
-   		if(isNaN(onetpaidprice)){
-   			onetpaidprice = 0;
-   		}
-   		tpaidprice += onetpaidprice;
-   		
-   		var onetremainprice = parseInt($(this).find('.sort#N').text());
-   		if(isNaN(onetremainprice)){
-   			onetremainprice = 0;
-   		}
-   		tremainprice += onetremainprice;
-    });
-   	$('#totalprice').val(totalprice);
-   	if(isNaN(tpaidprice)){
-   		tpaidprice = 0;
-   	}
-   	$('#tpaidprice').val(tpaidprice);
-   	if(isNaN(tremainprice)){
-   		tremainprice = 0;
-   	}
-   	$('#tremainprice').val(tremainprice);
-   }
-   
-   //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
-   function parseString(inputString) {
-   	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
-   	const matches = inputString.match(regex);
+$('#regmonth').on('change', function() {
+    // 선택된 옵션의 값 가져오기
+    var selectedValue = $('#regmonth').val();
 
-   	if (!matches || matches.length !== 4) {
-   		return null; // 입력 형식이 잘못된 경우 처리
-   	}
-   	const startDate = matches[1];
-   	const endDate = matches[2];
-   	const numberOfMonths = parseInt(matches[3], 10);
+   	// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
+   	const result = parseString($('#itemtbody').find('.date').text());
+   
+   	const formattedDate = new Date(result[0]);
+   	var monthsToAdd = parseInt(selectedValue);
+    formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
+    formattedDate.setDate(formattedDate.getDate()-1);
+    const formattedDateString = formatDate(formattedDate);
+    $('#todate').val(formattedDateString);
+   
+ 	const revalue = result[0]+'~'+formattedDateString+'('+selectedValue+')';
 
-   	return [startDate, endDate, numberOfMonths.toString()];
-   }
+ 	$('#itemtbody').find('.date').text(revalue);
+ 	sortchange();
+});
+   
+   
+   
+$('#fromdate').on('change', function() {
+	// 선택된 옵션의 값 가져오기
+	var selectedValue = $('#fromdate').val();
+	
+	// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
+	const result = parseString($('#itemtbody').find('.date').text());
+	   
+	const formattedDate = new Date(selectedValue);
+	var monthsToAdd = parseInt(result[2], 10);
+	formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
+	formattedDate.setDate(formattedDate.getDate()-1);
+	const formattedDateString = formatDate(formattedDate);
+	$('#todate').val(formattedDateString);
+	   
+	const revalue = selectedValue+'~'+formattedDateString+'('+result[2]+')';
+	$('#itemtbody').find('.date').text(revalue);
+});
+   
+   
+   
+$('#todate').on('change', function() {
+    // 선택된 옵션의 값 가져오기
+	var selectedValue = $('#todate').val();
+    // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
+	const result = parseString($('#itemtbody').find('.date').text());
+         
+    const revalue = result[0]+'~'+selectedValue+'('+result[2]+')';
+    $('#itemtbody').find('.date').text(revalue);
+});
+   
+//소계바꾸는 함수
+function sortchange(){
+	var price = $('#itemtbody').find('.price').text();
+	var dcpercent = parseInt($('#itemtbody').find('.dcpercent').text());
+	const regmonth = $('#regmonth').val();
+	var dcprice = price*(dcpercent*0.01);
+	var afterdcprice = price-dcprice;
+	$('#itemtbody').find('.dc').text(dcprice*regmonth);
+	$('#itemtbody').find('.sort').text(afterdcprice*regmonth);
+	$('#dcpri').val(dcprice*regmonth);
+	$('#sortpri').val(afterdcprice*regmonth);
+	totalchange();
+}
+   
+//결제 내역에 있는 총 금액 변경 함수
+function totalchange(){
+	var tpaidprice = 0;
+	
+	$('#paidbody tr').each(function() {
+		tpaidprice += parseInt($(this).find('.paidprice').text());
+ 	});
+	
+	$('#totalprice').val($('#sortpri').val());
+
+	$('#tpaidprice').val(tpaidprice);
+
+	$('#tremainprice').val($('#sortpri').val()-tpaidprice);
+}
+   
+//날짜를 테이블에서 가지고와서 잘라서 보내는 함수
+function parseString(inputString) {
+	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
+	const matches = inputString.match(regex);
+
+	if (!matches || matches.length !== 4) {
+		return null; // 입력 형식이 잘못된 경우 처리
+	}
+	const startDate = matches[1];
+	const endDate = matches[2];
+	const numberOfMonths = parseInt(matches[3], 10);
+
+	return [startDate, endDate, numberOfMonths.toString()];
+}
    
    //date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
 function formatDate(date) {
@@ -787,16 +620,7 @@ function formatDate(date) {
 }
 
 function save() {
-	if($('#totalprice').val()==''){
-		$('#resultmessage').html('수강 할 강좌를 선택해 주세요.');
-		$('.modal-footer').empty();
-		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		$('.modal-footer').append(cancelbutton);
-	    $('#modalButton').click();
-	    modalcheck = true;
-	    return false;
-	}
-	if($('#tremainprice').val() > 0){
+	if($('#tremainprice').val() != 0){
 		$('#resultmessage').html('미납금액이 존재합니다.<br>미납금액정산 없이 저장하시겠습니까?');
 		$('.modal-footer').empty();
 		var okaybutton = '<button class="btn btn-primary" type="button" onclick="fmsc_01save()">확인</button>';
@@ -812,101 +636,79 @@ function save() {
 }
 
 function fmsc_01save() {
-	//총 tr갯수
-	var totalRows = $('#itemtbody tr').length;
-	//paidbody 의 행의 index 를 확인하기 위한 수
 	var iteration = 0;
-	//복합인지 아닌지 체크 하기 위한 부분
-	var numberOfTR = $('#itemtbody tr').length;
-	var IsPackagecheck = 0;
-	if(numberOfTR > 1){
-		IsPackagecheck = 1;
-	}
-	$('#itemtbody tr').each(function() {
-		var misuprice = parseInt($(this).find('.sort#N').text());
-		if(isNaN(misuprice)){
-			misuprice = 0;
-		}
-		const result = parseString($(this).find('.date').text());
-		const yearmonth = extractYearMonth(result[0]);
-		$.ajax({
-	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	        url: "fmsc_01insert", // 실제 엔드포인트로 교체해야 합니다
-	        dataType : 'json',
-	        data: { 
-	        	SaleDate : $('#saledate').val(),
-	        	ItemPeriod : yearmonth,
-	        	CustCode : $('#memberid').val(),
-	        	FromDate : result[0],
-	        	ToDate : result[1],
-	        	RFromDate : result[0],
-	        	RToDate : result[1],
-	        	RegMonth : result[2],
-	        	DCID : $(this).find('.dccode').text(),
-	        	DiscountRate : $(this).find('.dcpercent').text(),
-	        	DCPrice : $(this).find('.dc').text(),
-	        	ItemPrice : $(this).find('.price').text(),
-	        	RealPrice : $(this).find('.sort').text(),
-	        	Misu : misuprice,
-	        	EmpCode : $(this).find('input[name="EmpCode"]').val(),
-	        	State : 'G',
-	        	ItemPKID : $(this).find('input[name="ItemID"]').val(),
-	        	InType : '등록',
-	        	prevInType : '등록',
-	        	CurState : 1,
-	        	IsPackage : IsPackagecheck,
-	        	PaidPrice : 0
-	        },
-	        success: function(data) {	
-	        	var paidprice = $('#paidbody tr').eq(iteration).find('.paidprice').text();
-	        	var paiddate = $('#paidbody tr').eq(iteration).find('.paiddate').text();
-	        	if(paidprice != ''){
-		            $.ajax({
+	//itemperiod 셋팅
+	const result = parseString($('#itemtbody').find('.date').text());
+	const yearmonth = extractYearMonth(result[0]);
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "fmsc_01update", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'text',
+        data: { 
+        	SaleNo : $('#itemtbody').find('input[name="SaleNo"]').val(),
+        	SaleDate : $('#saledate').val(),
+        	ItemPeriod : yearmonth,
+        	FromDate : result[0],
+        	ToDate : result[1],
+        	RFromDate : result[0],
+        	RToDate : result[1],
+        	RegMonth : result[2],
+        	DCID : $('#itemtbody').find('.dccode').text(),
+        	DiscountRate : $('#itemtbody').find('.dcpercent').text(),
+        	DCPrice : $('#itemtbody').find('.dc').text(),
+        	ItemPrice : $('#itemtbody').find('.price').text(),
+        	RealPrice : $('#itemtbody').find('.sort').text(),
+        	Misu : $('#tremainprice').val()
+        },
+        success: function(){
+        	var numberOfTR = $('#paidbody tr#new').length;
+        	if(numberOfTR>0){
+        		$('#paidbody tr#new').each(function() {
+	        		$.ajax({
 		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
 		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-		    	        dataType : 'json',
+		    	        dataType : 'text',
 		    	        data: { 
-		    	        	FPKID: data,
-		    	        	SaleDate : paiddate.substr(0,10),
-		    	        	RealSaleDate : paiddate,
+		    	        	FPKID: $('#itemtbody').find('input[name="SaleNo"]').val(),
+		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+		    	        	RealSaleDate : $(this).find('.paiddate').text(),
 		    	        	SaleType : '등록',
-		    	        	PayType : $('#paidbody tr').eq(iteration).find('.paidcategory').text(),
-		    	        	Price : paidprice,
-		    	        	AssignType : $('#paidbody tr').eq(iteration).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : data
+		    	        	PayType : $(this).find('.paidcategory').text(),
+		    	        	Price : $(this).find('.paidprice').text(),
+		    	        	AssignType : $(this).find('.paidassignType').text(),
+		    	        	PaidGroupSaleNo : $('#itemtbody').find('input[name="SaleNo"]').val()
+		    	        },
+		    	        success: function(data){
+		    	        	iteration++;
+		    	        	if(iteration === numberOfTR){
+		    	        		window.opener.location.reload();
+		    	                window.close();
+		    	        	}
 		    	        }
 		    		});
-	        	}
-	            // 순차적으로 행을 넣기위한 ++
-	            iteration++;
-	            if (iteration === totalRows) {
-	                // If all Ajax requests have completed successfully, then execute window-related statements
-	                window.opener.location.reload();
-	                window.close();
-	            }
-	        },
-	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
-	        }
-		}); 
-	});
-	
+	        	});
+        	}else{
+        		window.opener.location.reload();
+                window.close();
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	}); 
 }  
 
 //itemperiod 를 위한 날짜 포맷 함수
 function extractYearMonth(dateString) {
-  
 	const [year, month] = dateString.split('-');
-  
 	const yearMonth = year + month;
-	
     return yearMonth;
 }
   
 //현금 결제
 function paycash() {
-	if($('#tremainprice').val() < 1 || $('#tremainprice').val() == ''){
+	if($('#tremainprice').val() == 0 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -915,26 +717,22 @@ function paycash() {
 	    modalcheck = true;
 	    return false;
 	}
-	$('#itemtbody tr').find('.sort#N').each(function() {
-		var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
-		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
-		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + parseInt($(this).text()) + '</td>');
-		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
-		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
-		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
-		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
-		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
-		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
-		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
-		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
-		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
+	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#tremainprice').val() + '</td>');
+	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 		
-		// Get the tbody element with ID 'paidbody' and append the new row
-		var tableBody = $('#paidbody');
-		tableBody.append(newRow);
-		$(this).attr('id', 'Y');
-	});
+	var tableBody = $('#paidbody');
+	tableBody.append(newRow);
 	totalchange();
 }
 

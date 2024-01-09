@@ -60,4 +60,6 @@ public interface VtcMemberService {
 	void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception;
 	
 	fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception;
+	
+	void fmsc_01update(fmsc_s01 fmsc_s01)throws Exception;
 }
