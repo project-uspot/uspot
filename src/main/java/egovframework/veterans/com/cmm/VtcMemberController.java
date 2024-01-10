@@ -821,7 +821,7 @@ public class VtcMemberController {
 		vtcMemberService.fmsc_01update(fmsc_s01);
 	}
 	
-	@GetMapping("/mitemreinsertF")
+	@GetMapping("/mitemreinsertF.do")
 	public String mitemreinsertF(fmsc_s01 fmsc_s01,tblmember tblmember,DC dc,Model model,tblCode tblCode,TblItem_02 tblItem_02)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -881,5 +881,15 @@ public class VtcMemberController {
 		model.addAttribute("nextDate",nextDate);
 		
 		return "member/registration/mitemreinsertF";
+	}
+	
+	@GetMapping("/mitemchangeF.do")
+	public String mitemchangeF()throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		
+		
+		return "member/registration/mitemchangeF";
+		
 	}
 }
