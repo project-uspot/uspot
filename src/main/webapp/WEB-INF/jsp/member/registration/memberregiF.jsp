@@ -636,7 +636,7 @@
                 <div class="card-body pb-3">
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
                     <button class="btn btn-soft-secondary" type="button" onclick="mitemreinsertF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
-                    <button class="btn btn-soft-success" type="button"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
+                    <button class="btn btn-soft-success" type="button" onclick="mitemchange()"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
                     <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
                     <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
                     <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(F10)</button>
@@ -692,6 +692,21 @@
 	                        }
                       	});
                     }
+                    
+                    function mitemchange() {
+                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
                     
                     function openpop(url,windowFeatures) {
                     	window.open(url, "_blank", windowFeatures);
