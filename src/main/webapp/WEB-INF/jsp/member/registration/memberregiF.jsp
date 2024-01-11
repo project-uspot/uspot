@@ -647,6 +647,10 @@
                     //재등록시 필요한 saleno 저장
                     var remembersaleno = 0;
                     var rememberrtodate = '';
+                    var remembergroupname = '';
+                    var remembersubname = '';
+                    var rememberweekname = '';
+                    var rememberlevelname = '';
 
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
@@ -694,8 +698,9 @@
                     }
                     
                     function mitemchange() {
-                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                    	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
+                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -743,7 +748,7 @@
                     });
                     var previousRow = null;
 					//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
-					function fmsc_s01onclick(rtodate,saleno,clickedRow) {
+					function fmsc_s01onclick(rtodate,saleno,clickedRow,groupname,subname,weekname,levelname) {
 						if (previousRow !== null) {
 					    	$(previousRow).css('background-color', '');
 					    }
@@ -751,6 +756,10 @@
 					    previousRow = clickedRow;
 					    remembersaleno = saleno;
 					    rememberrtodate = rtodate;
+					    remembergroupname = groupname;
+	                    remembersubname = subname;
+	                    rememberweekname = weekname;
+	                    rememberlevelname = levelname;
 					}
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
@@ -785,7 +794,7 @@
                                             </thead>
                                             <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this)" ondblclick="mitemselectF()">
+                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}')" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원'}">
