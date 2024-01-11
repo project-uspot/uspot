@@ -835,7 +835,6 @@ public class VtcItemController{
 		System.out.println("findlist.get(0) : " + findlist.get(0));
 		
 		
-		
 		TblItem_01 item_01 = new TblItem_01();
 		item_01.setSiteCode(users.getSiteCode());
 		
@@ -850,8 +849,6 @@ public class VtcItemController{
    
 		selectitem.setSiteCode(users.getSiteCode());
 		selectitem.setGroupName(findvalue);
-		/*selectitem.setSubGroupName(findvalue);*/
-		
 		
    
 		List<selectitem> listSelectItem = vtcItemService.listSelectItemY(selectitem);

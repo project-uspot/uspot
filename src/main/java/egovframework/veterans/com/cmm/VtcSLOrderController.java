@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
+import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
 import egovframework.veterans.com.cmm.service.vo.Users;
+import egovframework.veterans.com.cmm.service.vo.tblCode;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -28,6 +30,7 @@ public class VtcSLOrderController {
 	
 	private final HttpSession session;
 	private final VtcSLOrderService VtcSLService;
+	private final VtcService vtcService;
 
 	@RequestMapping(value="SLOrderGroup.do")
 	public String selectSLOrder(ModelMap model) throws Exception {
@@ -114,15 +117,25 @@ public class VtcSLOrderController {
 		return "basic/orders/orderItem";
 	}
 	@RequestMapping(value="OrderItemUpd.do")
-	public String orderItemModify(SLOrderItem item, ModelMap model, HttpServletRequest request) throws Exception {
+	public String orderItemModify(SLOrderItem item, ModelMap model, tblCode code) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		
-		String SiteCode = request.getParameter("SiteCode");
-		List<SLOrderGroup> list = VtcSLService.selectSLOrderGroup(SiteCode);
+		code.setSiteCode(users.getSiteCode());
+		code.setCodeGroupID("1");
+		
+		List<SLOrderGroup> list = VtcSLService.selectSLOrderGroup(users.getSiteCode());
+		List<tblCode> listcode = vtcService.listTblCode(code);
 		
 		item = VtcSLService.getOrderItemDetail(item);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("item", item);
+		model.addAttribute("code", listcode);
 		return "basic/orders/orderItem_modity";
 	}
 	
@@ -144,7 +157,7 @@ public class VtcSLOrderController {
 	}
 	
 	@RequestMapping(value="OrderItemInsert.do")
-	public String OrderItemInsert(ModelMap model) throws Exception {
+	public String OrderItemInsert(ModelMap model, tblCode code) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -152,12 +165,17 @@ public class VtcSLOrderController {
 			return "redirect:login.do";
 		}
 		
+		code.setSiteCode(users.getSiteCode());
+		code.setCodeGroupID("1");
+		
 		int SortOrder = VtcSLService.getItemSortOrder(users.getSiteCode());
 		
 		List<SLOrderGroup> list = VtcSLService.selectSLOrderGroup(users.getSiteCode());
+		List<tblCode> listcode = vtcService.listTblCode(code);
 		
 		model.addAttribute("sortorder", SortOrder + 1);
 		model.addAttribute("list", list);
+		model.addAttribute("code", listcode);
 		return "basic/orders/orderItem_insert";
 	}
 	
@@ -178,6 +196,13 @@ public class VtcSLOrderController {
 	}
 	@RequestMapping(value="deleteDsItem.do")
 	public String deleteOrderItem(ModelMap model, SLOrderItem item) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		item.setUpdUserPKID(users.getUserPKID());
 		VtcSLService.deleteOrderItem(item);
 		return "redirect:SLOrderItem.do";
 	}

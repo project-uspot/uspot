@@ -118,6 +118,8 @@ function fn_egov_delete_article(form) {
 	if (confirm("삭제하시겠습니까?")) {
 		// Delete하기 위한 키값을 셋팅
 		form.submit();
+	} else {
+		return false;
 	}
 }
 
@@ -247,9 +249,10 @@ function fn_egov_delete_article(form) {
 		</div>
 		<div class="col-sm-4 gy-4">
 			<div class="form-floating">
-				<select class="form-select" id="GroupName" name="GroupName">
-					<option value=""></option>
-					<option value=""></option>
+				<select class="form-select" id="ItemGroupID" name="ItemGroupID">
+					<c:forEach items="${item01}" var="item01">
+						<option value="${item01.groupID }" <c:if test="${user.itemGroupID eq item01.groupID}">selected</c:if> >${item01.groupName }</option>
+					</c:forEach>
 				</select>
 				<label for="GroupName">담당강습반 </label>
 			</div>
@@ -386,14 +389,14 @@ function fn_egov_delete_article(form) {
 	<div class="col-12 gy-2">
 		<div class="row g-3 justify-content-end">
 			<div class="col-auto">
-				<a class="btn btn-warning px-5" href="${pageContext.request.contextPath}/Users.do"  title="목록">목록</a><!-- 목록 -->
+				<input type="button" class="btn btn-info px-5"  value="수정(F2)" id="modify" onclick="valueChk();"/>
 			</div>
 			<div class="col-auto">
-				<input type="button" class="btn btn-info px-5"  value="수정" id="modify" onclick="valueChk();"/>
+				<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/Users.do" id="back" title="목록(F3)">목록(F3)</a><!-- 목록 -->
 			</div>
 			<div class="col-auto">
 				<form action="${pageContext.request.contextPath}/delete.do" name="formDelete" method="post">
-					<input type="submit" class="btn btn-danger px-5" value="삭제" id="delete" onclick="fn_egov_delete_article(this.form); return false;"> <!-- 삭제 -->
+					<input type="submit" class="btn btn-danger px-5" value="삭제(F4)" id="delete" onclick="fn_egov_delete_article(this.form);"> <!-- 삭제 -->
 					<input type="hidden" name="SiteCode" value="${user.siteCode }">
 					<input type="hidden" name="SawonNo" value="${user.sawonNo }">
 				</form>
@@ -401,4 +404,20 @@ function fn_egov_delete_article(form) {
 		</div>
 	</div>
 </div>
-
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk()
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+		if (event.key === 'F4') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			document.getElementById('delete').click();
+		}
+	});
+</script>

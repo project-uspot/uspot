@@ -41,6 +41,14 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	public void deleteDC(DC dc) throws Exception {
 		paidDAO.deleteDC(dc);
 	}
+	@Override
+	public int getDcId(String SiteCode) throws Exception {
+		return paidDAO.getDcId(SiteCode);
+	}
+	@Override
+	public int getDCSortOrder(String SiteCode) throws Exception {
+		return paidDAO.getDCSortOrder(SiteCode);
+	}
 	
 	
 	@Override
@@ -62,6 +70,10 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	@Override
 	public void deleteExpenseGroup(ExpenseGroup group) throws Exception {
 		paidDAO.deleteExpenseGroup(group);
+	}
+	@Override
+	public int getExGpSortOrder(String SiteCode) throws Exception {
+		return paidDAO.getExGpSortOrder(SiteCode);
 	}
 	
 	
@@ -85,6 +97,12 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	public void deleteExpense(Expense expense) throws Exception {
 		paidDAO.deleteExpense(expense);
 	}
+	@Override
+	public int getExSortOrder(String SiteCode) throws Exception {
+		return paidDAO.getExSortOrder(SiteCode);
+	}
+	
+	
 	@Override
 	public List<memberexpensesale> memberexpensesale(String MemberID)
 			throws Exception {

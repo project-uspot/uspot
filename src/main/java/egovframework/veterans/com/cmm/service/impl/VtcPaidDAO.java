@@ -30,6 +30,12 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public void deleteDC(DC dc) throws Exception {
 		update("paid.deleteDC", dc);
 	}
+	public int getDcId(String SiteCode) {
+		return selectOne("paid.getDcId", SiteCode);
+	}
+	public int getDCSortOrder(String siteCode) {
+		return selectOne("paid.getDCSortOrder", siteCode);
+	}
 	
 	
 	public List<ExpenseGroup> selectExpenseGroup(String SiteCode) throws Exception {
@@ -46,6 +52,9 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	}
 	public void deleteExpenseGroup(ExpenseGroup group) throws Exception {
 		update("paid.deleteExpenseGroup", group);
+	}
+	public int getExGpSortOrder(String siteCode) {
+		return selectOne("paid.getExGpSortOrder", siteCode);
 	}
 
 	
@@ -64,6 +73,10 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public void deleteExpense(Expense expense) {
 		update("paid.deleteExpense", expense);
 	}
+	public int getExSortOrder(String siteCode) {
+		return selectOne("paid.getExSortOrder", siteCode);
+	}
+	
 	public List<memberexpensesale> memberexpensesale(String MemberID)throws Exception {
 		return selectList("paid.memberexpensesale",MemberID);
 	}

@@ -30,5 +30,5 @@ public class UserGroup implements Serializable {
 	
 	private String UpdDate;
 	
-	private int UpdUsrPKID;
+	private int UpdUserPKID;
 }

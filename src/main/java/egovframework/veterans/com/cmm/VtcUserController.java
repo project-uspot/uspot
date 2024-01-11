@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.PGMGroup;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
+import egovframework.veterans.com.cmm.service.vo.TblItem_01;
 import egovframework.veterans.com.cmm.service.vo.UserGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +38,11 @@ public class VtcUserController{
 	private final VtcUserService VtcUserService;
 
 	private final VtcService VtcServise;
+	
+	private final VtcItemService itemServise;
 
 	@RequestMapping(value = "UserGroup.do")
-	public String selectUserGroup(String SiteCode, ModelMap model) throws Exception {
+	public String selectUserGroup(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
 		if(users ==null) {
@@ -66,24 +68,17 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "UserGroupUpdOK.do")
-	public String userGroupModifyOK(UserGroup group, HttpServletRequest request) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		int UserGroupID = Integer.parseInt(request.getParameter("UserGroupID"));
-		String UserGroupName = request.getParameter("UserGroupName");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String dbid = request.getParameter("dbid");
-		String UseDBAccess = request.getParameter("UseDBAccess");
-		String dbPassword = request.getParameter("dbPassword");
-
-		group = new UserGroup();
-
-		group.setSiteCode(SiteCode);
-		group.setUserGroupID(UserGroupID);
-		group.setUserGroupName(UserGroupName);
-		group.setSortOrder(SortOrder);
-		group.setDbid(dbid);
-		group.setUseDBAccess(UseDBAccess);
-		group.setDbPassword(dbPassword);
+	public String userGroupModifyOK(UserGroup group, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		group.setSiteCode(users.getSiteCode());
+		group.setUpdUserPKID(users.getUserPKID());
+		
 		VtcUserService.updateUserGroup(group);
 		return "redirect:UserGroup.do";
 	}
@@ -91,33 +86,30 @@ public class VtcUserController{
 	@RequestMapping(value = "insertUserGroup.do")
 	public String insertUserGroup(UserGroup group, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		   if(users == null){
-			   model.addAttribute("msg", "로그인을 다시 해주세요.");
-		       model.addAttribute("script", "back");
-			   return "redirect:login.do";
-		   }
-		   
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		int SortOrder = VtcUserService.getGroupSortOrder(users.getSiteCode());
+		
+		model.addAttribute("sortorder", SortOrder + 1);
+		
 		return "basic/user/userGroup_insert";
 	}
 
 	@RequestMapping(value = "insertUserGroupOK.do")
-	public String insertUserGroupOK(UserGroup group, HttpServletRequest request) throws Exception {
-		String SiteCode = "10001";
-		/* int UserGroupID = Integer.parseInt(request.getParameter("UserGroupID")); */
-		String UserGroupName = request.getParameter("UserGroupName");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String UseDBAccess = request.getParameter("UseDBAccess");
-		String dbid = request.getParameter("dbid");
-		String dbPassword = request.getParameter("dbPassword");
-
-		group = new UserGroup();
-		group.setSiteCode(SiteCode);
-		/* group.setUserGroupID(UserGroupID); */
-		group.setUserGroupName(UserGroupName);
-		group.setSortOrder(SortOrder);
-		group.setUseDBAccess(UseDBAccess);
-		group.setDbid(dbid);
-		group.setDbPassword(dbPassword);
+	public String insertUserGroupOK(UserGroup group, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		group.setSiteCode(users.getSiteCode());
+		group.setAddUserPKID(users.getUserPKID());
+		
 
 		VtcUserService.insertUserGroup(group);
 		return "redirect:UserGroup.do";
@@ -125,6 +117,13 @@ public class VtcUserController{
 
 	@RequestMapping(value = "deleteUserGroup.do")
 	public String deleteUserGroup(ModelMap model, UserGroup group) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		group.setUpdUserPKID(users.getUserPKID());
 		VtcUserService.deleteUserGroup(group);
 		return "redirect:UserGroup.do";
 	}
@@ -150,9 +149,14 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "Users.do")
-	public String selectUsers(String SiteCode, ModelMap model) throws Exception {
-		SiteCode = "10001";
-		List<Users> list = VtcUserService.listUsers(SiteCode);
+	public String selectUsers(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<Users> list = VtcUserService.listUsers(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/user/users";
 	}
@@ -160,13 +164,20 @@ public class VtcUserController{
 	@RequestMapping(value = "UsersUpd.do")
 	public String usersModify(Model model, Users users) throws Exception {
 		users = VtcUserService.getUserDetail(users);
+		
+		List<TblItem_01> item01 = itemServise.item01list(users.getSiteCode());
 
 		model.addAttribute("user", users);
+		model.addAttribute("item01", item01);
 		return "basic/user/users_modify";
 	}
 
 	@RequestMapping(value = "UsersUpdOK.do")
 	public String userModifyOK(HttpServletRequest request, Users users) throws Exception {
+		
+		
+		String SiteCode = request.getParameter("SiteCode");
+		users.setSiteCode(SiteCode);
 
 		VtcUserService.updateUser(users);
 
@@ -174,21 +185,37 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "userInsert.do")
-	public String userInsert(Users users, HttpServletRequest request, ModelMap model, String sitecode)
+	public String userInsert( HttpServletRequest request, ModelMap model, String sitecode)
 			throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		List<Sitecode> list = VtcServise.listSiteName();
+		List<TblItem_01> item01 = itemServise.item01list(users.getSiteCode());
+		
 		model.addAttribute("list", list);
+		model.addAttribute("item01", item01);
+		
 		return "basic/user/users_insert";
 	}
 
 	@RequestMapping(value = "SawonNo_check.do", method = RequestMethod.GET)
-	public @ResponseBody String SawonNoCheck(HttpServletRequest request, HttpServletResponse response)
+	public @ResponseBody String SawonNoCheck(HttpServletRequest request, ModelMap model)
 			throws Exception {
-		Users users = new Users();
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		users.getSiteCode();
 		users.setSawonNo(request.getParameter("Sawon_No"));
 
 		users = VtcUserService.seleceSawonNo_Chk(users);
-		System.out.println("users : " + users);
+		
 		if (users != null && !users.getSawonNo().equals("")) {
 			return "false";
 		} else {
@@ -197,8 +224,15 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "userID_check.do", method = RequestMethod.GET)
-	public @ResponseBody String userIDCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Users users = new Users();
+	public @ResponseBody String userIDCheck(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		users.getSiteCode();
 		users.setUserID(request.getParameter("user_id"));
 
 		users = VtcUserService.seleceUserID_Chk(users);
@@ -210,21 +244,58 @@ public class VtcUserController{
 	}
 
 	@RequestMapping(value = "userInsertOK.do")
-	public String userInsertOK(Users users) throws Exception {
+	public String userInsertOK(Users users, HttpServletRequest request) throws Exception {
+		users = (Users) session.getAttribute("loginuserinfo");
+		
+		users.getSiteCode();
+		users.setSawonName(request.getParameter("SawonName"));
+		users.setSawonNo(request.getParameter("SawonNo"));
+		users.setUserID(request.getParameter("UserID"));
+		users.setUserPWD(request.getParameter("UserPWD"));
+		users.setGender(request.getParameter("Gender"));
+		users.setHomePhone(request.getParameter("HomePhone"));
+		users.setCellPhone(request.getParameter("CellPhone"));
+		users.setEmail(request.getParameter("Email"));
+		users.setBirthDay(request.getParameter("BirthDay"));
+		users.setBirthType(request.getParameter("BirthType"));
+		users.setInDate(request.getParameter("InDate"));
+		users.setOutDate(request.getParameter("OutDate"));
+		users.setJobStart(request.getParameter("JobStart"));
+		users.setItemGroupID(Integer.parseInt(request.getParameter("GroupID")));
+		users.setJikMooID(request.getParameter("JikMooID"));
+		users.setJikwiID(request.getParameter("JikwiID"));
+		users.setState(request.getParameter("State"));
+		users.setBuseoID(request.getParameter("BuseoID"));
+		users.setType(request.getParameter("Type"));
+		users.setZipCode(request.getParameter("ZipCode"));
+		users.setAddress(request.getParameter("Address"));
+		users.setSubAddress(request.getParameter("SubAddress"));
+		users.setNote(request.getParameter("Note"));
+		users.setChistory(request.getParameter("Chistory"));
+		users.setPhistory(request.getParameter("Phistory"));
+		
+		
 		VtcUserService.insertUser(users);
 		return "redirect:Users.do";
 	}
 
 	@RequestMapping(value = "delete.do")
 	public String deleteUser(ModelMap model, Users users) throws Exception {
+		users = (Users) session.getAttribute("loginuserinfo");
+		users.getSiteCode();
 		VtcUserService.deleteUser(users);
 		return "redirect:Users.do";
 	}
 
 	@RequestMapping(value = "userAuthorityGroup.do")
-	public String userAuthorityGroup(String SiteCode, ModelMap model) throws Exception {
-		SiteCode = "10001";
-		List<Users> list = VtcUserService.userAuthorityGroup(SiteCode);
+	public String userAuthorityGroup(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<Users> list = VtcUserService.userAuthorityGroup(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/user/userAuthorityGroup";
 	}

@@ -114,7 +114,7 @@ function fn_egov_delete_article(form) {
 					<input type="button" class="btn btn-warning px-5" value="수정(F2)" id="modify" onclick="valueChk();"/>
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-phoenix-primary px-5" id="back" href="${pageContext.request.contextPath}/SLOrderGroup.do"title="목록(F3)">목록(F3)</a><!-- 목록 -->
+					<a class="btn btn-phoenix-primary px-5"  href="${pageContext.request.contextPath}/SLOrderGroup.do" id="back" title="목록(F3)">목록(F3)</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
 					<form action="${pageContext.request.contextPath}/deleteSlGp.do" id="delfrm" name="formDelete" method="post">

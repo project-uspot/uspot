@@ -5,12 +5,6 @@
 <%@ include file="../../include/AdminTop.jsp" %>
 <%@ include file ="../../include/AdminLeft.jsp"%>
 
-<script type="text/javascript">
-
-
-</script>
-
-
 <div class="p-0">
 	<div class="mb-9 ">
 		<div class="row g-2 mb-4">
@@ -19,22 +13,22 @@
 		    </div>
 		</div>
 		<div class="mb-4">
-          <div class="row g-3">
-            <div class="col-auto">
-              <div class="search-box">
-                <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                  <input class="form-control search-input search" type="search" placeholder="Search customers" aria-label="Search" />
-                  <span class="fas fa-search search-box-icon"></span>
-
-                </form>
-              </div>
-            </div>
-            <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
-            </div>
-            <div class="col-auto">
-              <a class="btn btn-info" href="${pageContext.request.contextPath}/userInsert.do" title="등록">등록</a>
-            </div>
-          </div>
+			<div class="row g-3">
+				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
+				</div>
+				<div class="col-auto">
+					<a class="btn btn-info" href="${pageContext.request.contextPath}/userInsert.do" id="insert" title="신규">신규(F2)</a>
+					<script>
+						// 키보드 이벤트 감지
+						document.addEventListener('keydown', function(event) {
+							if (event.key === 'F2') { // F2 키를 눌렀을 때
+								event.preventDefault(); // 기본 동작 방지
+								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+							}
+						});
+					</script>
+				</div>
+			</div>
         </div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1" style="overflow-x:scroll; ">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
@@ -144,9 +138,5 @@
 				</table>
 			</div>
 		</div>
-		<%-- <div class="form-actions">
-			<a class="btn" href="${pageContext.request.contextPath}/main.do" style="float: right; margin: 0 0 0 3px;" title="목록">목록</a><!-- 목록 -->
-			<a class="btn btn-info" href="${pageContext.request.contextPath}/userInsert.do" style="float: right; margin: 0 0 0 3px;" title="등록">등록</a><!-- 등록 --> 
-		</div> --%>
 	</div>
 </div>

@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -48,6 +49,9 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	}
 	public int getItemSortOrder(String siteCode) {
 		return selectOne("order.getItemSortOrder", siteCode);
+	}
+	public List<SLOrderItem> listGroupItem(Map<String, Object> pkid) {
+		return selectList("order.listGroupItem", pkid);
 	}
 	
 

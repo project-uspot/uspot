@@ -95,42 +95,42 @@ function valueChk() {
 	
 	$("#submit").attr("type","button");
 	if(!frm.SawonName.value) {
-		/* alert("사원명을 입력해주세요."); */
-		document.getElementById("text").innerText = "사원명을 입력해주세요.";
+		alert("사원명을 입력해주세요.");
+		/* document.getElementById("text").innerText = "사원명을 입력해주세요."; */
 		frm.SawonName.focus();
 		return false
 	}
 	if(!frm.SawonNo.value) {
-		/* alert("사원번호를 입력해주세요."); */
-		document.getElementById("text").innerText = "사원번호를 입력해주세요.";
+		alert("사원번호를 입력해주세요.");
+		/* document.getElementById("text").innerText = "사원번호를 입력해주세요."; */
 		frm.SawonNo.focus();
 		return false
 	}
 	if($("#check_no_result").val()!="N"){
-		/* alert("사원번호 중복체크를 해주십시오."); */
-		document.getElementById("text").innerText = "사원번호 중복체크를 입력해주세요.";
+		alert("사원번호 중복체크를 해주십시오.");
+		/* document.getElementById("text").innerText = "사원번호 중복체크를 입력해주세요."; */
 		return false;
 	}
 	if( ! idReg.test( $("#UserID").val() ) ){
-		/* alert("아이디 구성을 확인해 주십시오."); */
-		document.getElementById("text").innerText = "아이디 구성을 확인해주세요.";
+		alert("아이디 구성을 확인해 주십시오.");
+		/* document.getElementById("text").innerText = "아이디 구성을 확인해주세요."; */
 		$("#UserID").focus();
 		return false;
 	}
 	if(!frm.UserID.value) {
-		/* alert("아이디를 입력해주세요."); */
-		document.getElementById("text").innerText = "아이디를 입력해주세요.";
+		alert("아이디를 입력해주세요.");
+		/* document.getElementById("text").innerText = "아이디를 입력해주세요."; */
 		frm.UserID.focus();
 		return false
 	}
 	if($("#check_id_result").val()!="N"){
-		/* alert("아이디 중복체크를 해주십시오."); */
-		document.getElementById("text").innerText = "아이디 중복체크를 입력해주세요.";
+		alert("아이디 중복체크를 해주십시오.");
+		/* document.getElementById("text").innerText = "아이디 중복체크를 입력해주세요."; */
 		return false;
 	}
 	if(!frm.UserPWD.value) {
-		/* alert("비밀번호를 입력해주세요."); */
-		document.getElementById("text").innerText = "비밀번호를 입력해주세요.";
+		alert("비밀번호를 입력해주세요.");
+		/* document.getElementById("text").innerText = "비밀번호를 입력해주세요."; */
 		frm.UserPWD.focus();
 		return false
 	}
@@ -140,8 +140,8 @@ function valueChk() {
 		return false
 	}
 	if( ! pwReg.test( $("#UserPWD").val() ) ){
-		/* alert("비밀번호 구성을 확인해 주십시오.\n(영문/숫자/특수문자(!@$%^&* 만 허용)로 이루어진 8자~30자)"); */
-		document.getElementById("text").innerText = "비밀번호 구성을 확인해 주십시오.\n(영문/숫자/특수문자(!@$%^&* 만 허용)로 이루어진 8자~30자)";
+		alert("비밀번호 구성을 확인해 주십시오.\n(영문/숫자/특수문자(!@$%^&* 만 허용)로 이루어진 8자~30자)");
+		/* document.getElementById("text").innerText = "비밀번호 구성을 확인해 주십시오.\n(영문/숫자/특수문자(!@$%^&* 만 허용)로 이루어진 8자~30자)"; */
 		//alert("비밀번호 구성을 확인해 주십시오.\n(영문/숫자 (특수문자가능)로 이루어진 8자~30자)");
 		$("#UserPWD").focus();
 		return false;
@@ -151,15 +151,15 @@ function valueChk() {
 	var ObjUserPassword = document.frm.UserPWD;
 
 	if(ObjUserPassword.value.length < 8) {
-		/* alert("비밀번호는 영문,숫자,특수문자(!@$%^&* 만 허용)를 사용하여 8~30자까지 가능합니다."); */
-		document.getElementById("text").innerText = "비밀번호는 영문,숫자,특수문자(!@$%^&* 만 허용)를 사용하여 8~30자까지 가능합니다.";
+		alert("비밀번호는 영문,숫자,특수문자(!@$%^&* 만 허용)를 사용하여 8~30자까지 가능합니다.");
+		/* document.getElementById("text").innerText = "비밀번호는 영문,숫자,특수문자(!@$%^&* 만 허용)를 사용하여 8~30자까지 가능합니다."; */
 		$("#webPWD").focus();
 		return false;
 	}
 
 	if(!ObjUserPassword.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,*,?,_,~])|([!,@,#,$,%,^,*,?,_,~].*[a-zA-Z0-9])/)) {
-		/* alert("비밀번호는 영문,숫자,특수문자(!@$%^* 만 허용)를 사용하여 8~30자까지 가능합니다.."); */
-		document.getElementById("text").innerText = "비밀번호는 영문,숫자,특수문자(!@$%^* 만 허용)를 사용하여 8~30자까지 가능합니다..";
+		alert("비밀번호는 영문,숫자,특수문자(!@$%^* 만 허용)를 사용하여 8~30자까지 가능합니다..");
+		/* document.getElementById("text").innerText = "비밀번호는 영문,숫자,특수문자(!@$%^* 만 허용)를 사용하여 8~30자까지 가능합니다.."; */
 		return false;
 	}
   
@@ -189,48 +189,54 @@ function valueChk() {
 		}
 	}
 	if(SamePass_0 > 2) {
-		/* alert("비밀번호는 동일문자를 3번 이상 사용할 수 없습니다."); */
-		document.getElementById("text").innerText = "비밀번호는 동일문자를 3번 이상 사용할 수 없습니다.";
+		alert("비밀번호는 동일문자를 3번 이상 사용할 수 없습니다.");
+		/* document.getElementById("text").innerText = "비밀번호는 동일문자를 3번 이상 사용할 수 없습니다."; */
 		return false;
 	}
 
 	if(SamePass_1 > 2 || SamePass_2 > 2 ) {
-		/* alert("비밀번호는 연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다."); */
-		document.getElementById("text").innerText = "비밀번호는 연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.";
+		alert("비밀번호는 연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.");
+		/* document.getElementById("text").innerText = "비밀번호는 연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다."; */
 		return false;
 	}
 	if( $("#UserPWD").val() != $("#member_pw_confirm").val() ){
-		/* alert("비밀번호와 비밀번호 확인 값이 다릅니다."); */
-		document.getElementById("text").innerText = "비밀번호와 비밀번호 확인 값이 다릅니다.";
+		alert("비밀번호와 비밀번호 확인 값이 다릅니다.");
+		/* document.getElementById("text").innerText = "비밀번호와 비밀번호 확인 값이 다릅니다."; */
 		$("#UserPWD").focus();
 		return false;
 	}
 	
 	if(!frm.Email.value) {
-		/* alert("이메일을 입력해주세요."); */
-		document.getElementById("text").innerText = "이메일을 입력해주세요.";
+		alert("이메일을 입력해주세요.");
+		/* document.getElementById("text").innerText = "이메일을 입력해주세요."; */
 		frm.Email.focus();
 		return false
 	}
 	if(!frm.HomePhone.value) {
-		/* alert("일반전화를 입력해주세요."); */
-		document.getElementById("text").innerText = "일반전화를 입력해주세요.";
+		alert("일반전화를 입력해주세요.");
+		/* document.getElementById("text").innerText = "일반전화를 입력해주세요."; */
 		frm.HomePhone.focus();
 		return false
 	}
 	if(!frm.CellPhone.value) {
-		/* alert("휴대폰번호를 입력해주세요."); */
-		document.getElementById("text").innerText = "휴대폰번호를 입력해주세요.";
+		alert("휴대폰번호를 입력해주세요.");
+		/* document.getElementById("text").innerText = "휴대폰번호를 입력해주세요."; */
 		frm.CellPhone.focus();
 		return false
 	}
 	if(!frm.Address.value) {
-		/* alert("주소를 입력해주세요."); */
-		document.getElementById("text").innerText = "주소를 입력해주세요.";
+		alert("주소를 입력해주세요.");
+		/* document.getElementById("text").innerText = "주소를 입력해주세요."; */
 		frm.Address.focus();
 		return false
 	}
-	$("#submit").attr("type","submit");
+	if(confirm("등록하시겠습니까?")) {
+		frm.submit();
+		alert("등록완료");
+	} else {
+		return false;
+	}
+	/* $("#submit").attr("type","submit"); */
 	/* if(getElementById("text").onclick) {
 		frm.submit();
 	} else {
@@ -238,14 +244,6 @@ function valueChk() {
 	} */
 }
 
-</script>
-<script type="text/javascript">
-	var maxFileNum = document.getElementById('atchPosblFileNumber').value;
-	if (maxFileNum == null || maxFileNum == "") {
-		maxFileNum = 3;
-	}
-	var multi_selector = new MultiSelector(document.getElementById('egovComFileList'), maxFileNum);
-	multi_selector.addElement(document.getElementById('egovComFileUploader'));
 </script>
 
 <div class="border-bottom mb-7 mx-n3 px-2 mx-lg-n6 px-lg-6">
@@ -381,9 +379,10 @@ function valueChk() {
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<select class="form-select" id="GroupName" name="GroupName">
-						<option value=""></option>
-						<option value=""></option>
+					<select class="form-select" id="ItemGroupID" name="ItemGroupID">
+						<c:forEach items="${item01}" var="item01">
+							<option value="${item01.groupID }">${item01.groupName }</option>
+						</c:forEach>
 					</select>
 					<label for="GroupName">담당강습반 </label>
 				</div>
@@ -538,11 +537,11 @@ function valueChk() {
 			<div class="col-12 gy-6">
 				<div class="row g-3 justify-content-end">
 					<div class="col-auto">
-						<a class="btn btn-warning px-5" href="${pageContext.request.contextPath}/Users.do"  title="목록">목록</a><!-- 목록 -->
+						<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/Users.do"  id="back" title="취소(F3)">취소(F3)</a><!-- 목록 -->
 					</div>
 					<div class="col-auto">
-						<!-- <input type="button" class="btn btn-info px-5" value="등록" id="modify" onclick="valueChk();"/> -->
-						<input class="btn btn-info px-5" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered"  value="등록" id="insert" onclick="valueChk();">
+						<input type="button" class="btn btn-info px-5" value="등록(F2)" id="insert" onclick="valueChk();"/>
+						<!-- <input class="btn btn-info px-5" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered"  value="등록(F2)" id="insert" onclick="valueChk();">
 						<div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
 							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
@@ -555,27 +554,25 @@ function valueChk() {
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
-			<!-- <input class="btn btn-info px-5" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered"  value="등록" id="insert" onclick="valueChk();">
-			<div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-body" id="text" >
-							<p class="text-700 lh-lg mb-0">등록하시겠습니까?</p>
-						</div>
-						
-						<div class="modal-footer" >
-							<button class="btn btn-primary" id="submit" type="button" data-bs-dismiss="modal" >확인</button>
-							<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">취소</button>
-						</div>
-					</div>
-				</div>
-			</div> -->
 			</div>
 		</form>
 	</div>
 </div>
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk();
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+	});
+</script>
 
 

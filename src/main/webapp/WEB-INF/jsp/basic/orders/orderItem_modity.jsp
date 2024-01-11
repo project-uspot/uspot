@@ -104,10 +104,9 @@ function fn_egov_delete_article(form) {
 				<div class="form-floating">
 					<select class="form-select" id="UpJang" name="UpJang">
 						<option value="0" <c:if test="${item.upJang eq '0' }">selected</c:if>>없음</option>
-						<option value="1" <c:if test="${item.upJang eq '1' }">selected</c:if>>수영장</option>
-						<option value="2" <c:if test="${item.upJang eq '2' }">selected</c:if>>헬스장</option>
-						<option value="3" <c:if test="${item.upJang eq '3' }">selected</c:if>>요가/필라테스</option>
-						<option value="4" <c:if test="${item.upJang eq '4' }">selected</c:if>>강의실</option>
+						<c:forEach items="${code}" var="listcode">
+							<option value="${listcode.pkid }" <c:if test="${item.upJang eq listcode.pkid}">selected</c:if> >${listcode.codeName }</option>
+						</c:forEach>
 					</select>
 					<label for="UpJang">출입업장 </label>
 				</div>

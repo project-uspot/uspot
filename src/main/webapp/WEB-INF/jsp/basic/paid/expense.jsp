@@ -6,10 +6,6 @@
 <%@ include file="../../include/AdminTop.jsp" %>
 <%@ include file ="../../include/AdminLeft.jsp"%>
 
-<script type="text/javascript">
-
-
-</script>
 
 
 <div class="p-0">
@@ -21,19 +17,19 @@
 		</div>
 		<div class="mb-4">
 			<div class="row g-3">
-				<div class="col-auto">
-					<div class="search-box">
-						<form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-							<input class="form-control search-input search" type="search" placeholder="Search customers" aria-label="Search" />
-							<span class="fas fa-search search-box-icon"></span>
-
-						</form>
-					</div>
-				</div>
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info" href="${pageContext.request.contextPath}/ExpenseInsert.do" title="등록">등록</a>
+					<a class="btn btn-info" href="${pageContext.request.contextPath}/ExpenseInsert.do" id="insert" title="신규">신규(F2)</a>
+					<script>
+						// 키보드 이벤트 감지
+						document.addEventListener('keydown', function(event) {
+							if (event.key === 'F2') { // F2 키를 눌렀을 때
+								event.preventDefault(); // 기본 동작 방지
+								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+							}
+						});
+					</script>
 				</div>
 			</div>
 		</div>

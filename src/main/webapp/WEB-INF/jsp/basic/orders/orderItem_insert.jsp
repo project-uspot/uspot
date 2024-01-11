@@ -10,6 +10,9 @@
 <script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
+window.onload = function() {
+	document.getElementById("ItemName").focus();
+};
 function onlyNumber(obj) {
     $(obj).keyup(function(){
          $(this).val($(this).val().replace(/[^0-9]/g,""));
@@ -98,10 +101,9 @@ function valueChk() {
 				<div class="form-floating">
 					<select class="form-select" id="UpJang" name="UpJang">
 						<option value="0">없음</option>
-						<option value="1">수영장</option>
-						<option value="2">헬스장</option>
-						<option value="3">요가/필라테스</option>
-						<option value="4">강의실</option>
+						<c:forEach items="${code}" var="listcode">
+							<option value="${listcode.pkid }"  >${listcode.codeName }</option>
+						</c:forEach>
 					</select>
 					<label for="UpJang">출입업장 </label>
 				</div>

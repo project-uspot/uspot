@@ -1,7 +1,6 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -40,6 +39,10 @@ public class VtcUserServiceImpl extends EgovAbstractServiceImpl implements VtcUs
 	@Override
 	public void deleteUserGroup(UserGroup group) throws Exception {
 		userDAO.deleteUserGroup(group);
+	}
+	@Override
+	public int getGroupSortOrder(String SiteCode) throws Exception {
+		return userDAO.getGroupSortOrder(SiteCode);
 	}
 	
 	@Override
