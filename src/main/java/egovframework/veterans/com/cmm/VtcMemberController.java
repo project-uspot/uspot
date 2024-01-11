@@ -692,15 +692,16 @@ public class VtcMemberController {
 			tblItem_02.setUpdDate(formattedDate);
 		}else {
 			tblItem_02.setUpdDate(finddate);
+			formattedDate = finddate;
 		}
+		
+		
 		
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
 		
 		model.addAttribute("lists",selectItemsByFilter);
 		model.addAttribute("formattedDate",formattedDate);
 		model.addAttribute("findvalue",findstring);
-		
-		
 		
 		return "member/registration/mitemfindlist";
 	}
@@ -884,10 +885,49 @@ public class VtcMemberController {
 	}
 	
 	@GetMapping("/mitemchangeF.do")
-	public String mitemchangeF()throws Exception {
+	public String mitemchangeF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
+								@RequestParam(name = "itemname")String itemname)throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
+		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		dc.setSiteCode(users.getSiteCode());
+		tblmember.setMemberID(result.getCustCode());
+		tblpaid.setPaidGroupSaleNo(result.getSaleNo());
 		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		List<tblpaid> paidlist = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
+		
+		String mleveltext = "";
+		String dcname = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		for(DC dc2 : dcList) {
+			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+				dcname = dc2.getDcName();
+			}
+		}
+
+		LocalDate currentDate = LocalDate.now();
+        
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
+		
+		model.addAttribute("member",member);
+		model.addAttribute("mleveltext",mleveltext);
+		model.addAttribute("dcname",dcname);
+		model.addAttribute("dclist",dcList);
+		model.addAttribute("itemname",itemname);
+		model.addAttribute("fmsc_s01", result);
+		model.addAttribute("paidlist",paidlist);
+		model.addAttribute("yearage",yearage);
 		
 		return "member/registration/mitemchangeF";
 		

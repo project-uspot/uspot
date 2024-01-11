@@ -88,7 +88,7 @@
 									alert('검색어를 입력해주세요.');
 									return false;
 								}
-								window.location.href = "mitemfindlist?findstring=" + findstring;
+								window.location.href = "mitemfindlist?findstring=" + findstring+"&finddate="+'${formattedDate}';
 							}
 							</script>
 	                    </div>
