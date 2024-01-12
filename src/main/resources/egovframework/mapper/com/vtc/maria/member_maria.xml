@@ -53,13 +53,15 @@
 		select SaleNo,
  CASE
         WHEN fmsc_s01.State = 'A' THEN '현재원'
+        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
         WHEN fmsc_s01.State = 'B' THEN '만기'
         WHEN fmsc_s01.State = 'C' THEN '휴회중'
         WHEN fmsc_s01.State = 'D' THEN '휴회'
         WHEN fmsc_s01.State = 'E' THEN '환불대기'
         WHEN fmsc_s01.State = 'F0' THEN '환불'
         WHEN fmsc_s01.State = 'G' THEN '현재원'
-        WHEN fmsc_s01.State = 'H' THEN '반변경'
+        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
+        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
         WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
         ELSE ''
     END AS State
@@ -86,13 +88,15 @@ from fmsc_s01
 		select SaleNo,
 		 CASE
 		        WHEN fmsc_s01.State = 'A' THEN '현재원'
+		        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
 		        WHEN fmsc_s01.State = 'B' THEN '만기'
 		        WHEN fmsc_s01.State = 'C' THEN '휴회중'
 		        WHEN fmsc_s01.State = 'D' THEN '휴회'
 		        WHEN fmsc_s01.State = 'E' THEN '환불대기'
 		        WHEN fmsc_s01.State = 'F0' THEN '환불'
 		        WHEN fmsc_s01.State = 'G' THEN '현재원'
-		        WHEN fmsc_s01.State = 'H' THEN '반변경'
+		        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
 		        WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
 		        ELSE ''
 		    END AS State
@@ -446,7 +450,11 @@ from fmsc_s01
 			#{FromDate},#{ToDate},#{FromDate},#{ToDate}, 
 			#{RegMonth},#{DCID},#{DiscountRate},#{DCPrice}, 
 			#{ItemPrice},#{RealPrice},#{Misu},#{Note}, 
-			#{GroupSaleNo},#{EmpCode},0,#{State}, 
+			#{GroupSaleNo},#{EmpCode},
+			<if test="IsReReg == 1">
+			1	
+			</if>
+			,#{State}, 
 			#{UserPKID},#{ItemPKID},0,#{InType}, 
 			#{prevInType},#{CurState},#{RegType},#{ReEndFlag}, 
 			#{BeforeSaleNo},#{IFFlag},#{IFDateTime},#{IsConfirm}, 
@@ -476,6 +484,17 @@ from fmsc_s01
 		Misu = #{Misu},
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="oldfmsc_s01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		RToDate = #{RToDate},
+		State = 'H-',
+		InType = '반변경',
+		CurState = -1,
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
 		where
 			SaleNo = #{SaleNo}
 	</update>

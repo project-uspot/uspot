@@ -932,4 +932,41 @@ public class VtcMemberController {
 		return "member/registration/mitemchangeF";
 		
 	}
+	
+	@PostMapping("/classchange")
+	@ResponseBody
+	public int classchange(fmsc_s01 fmsc_s01)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01 oldfmS01 = new fmsc_s01();
+		
+        LocalDate fromDate = LocalDate.parse(fmsc_s01.getFromDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+
+        LocalDate currentDate = LocalDate.now();
+
+        if (fromDate.isBefore(currentDate)) {
+            LocalDate resultDate = currentDate.minusDays(1);
+            oldfmS01.setRToDate(resultDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        } else {
+            LocalDate resultDate = fromDate.minusDays(1);
+            oldfmS01.setRToDate(resultDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        }
+		
+		oldfmS01.setSaleNo(fmsc_s01.getSaleNo());
+		oldfmS01.setUpdUserPKID(users.getUserPKID());
+		
+		vtcMemberService.oldfmsc_s01update(fmsc_s01);
+		
+		fmsc_s01.setSiteCode(users.getSiteCode());
+		fmsc_s01.setAddUserPKID(users.getUserPKID());
+		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+		
+		System.out.println(fmsc_s01.getSaleNo());
+		System.out.println(fmsc_s01);
+		vtcMemberService.fmsc_01insert(fmsc_s01);
+		System.out.println(fmsc_s01.getSaleNo());
+		
+		
+		return 1;
+	}
 }
