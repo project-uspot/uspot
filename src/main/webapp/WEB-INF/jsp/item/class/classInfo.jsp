@@ -439,6 +439,8 @@ function openpop(ItemCode) {
 
 
 
+
+
 function goPage() {
 	var frm    = document.selectForm;
 	frm.itemid.value	= '';

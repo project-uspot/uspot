@@ -10,6 +10,9 @@
 <script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
+window.onload = function() {
+	document.getElementById("GroupName").focus();
+};
 function onlyNumber(obj) {
     $(obj).keyup(function(){
          $(this).val($(this).val().replace(/[^0-9]/g,""));
@@ -100,10 +103,10 @@ function valueChk() {
 		<div class="col-12 gy-6">
 			<div class="row g-3 justify-content-end">
 				<div class="col-auto">
-					<a class="btn btn-phoenix-primary px-5" id="back" href="${pageContext.request.contextPath}/SLOrderGroup.do"title="취소(F3)">취소(F3)</a><!-- 목록 -->
+					<a class="btn btn-phoenix-primary px-5"  href="${pageContext.request.contextPath}/SLOrderGroup.do" id="back" title="취소(F3)">취소(F3)</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
-					<input type="button" class="btn btn-info px-5" value="등록(F2)" id="modify" onclick="valueChk();"/>
+					<input type="button" class="btn btn-info px-5" value="등록(F2)" id="insert" onclick="valueChk();"/>
 					<script>
 						// 키보드 이벤트 감지
 						document.addEventListener('keydown', function(event) {

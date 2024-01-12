@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
@@ -20,5 +21,7 @@ public interface VtcSLOrderService {
 	void insertOrderItem(SLOrderItem item) throws Exception;
 	void deleteOrderItem(SLOrderItem item) throws Exception;
 	int getItemSortOrder(String SiteCode) throws Exception;
+	
+	List<SLOrderItem> listGroupItem(Map<String, Object> pkid) throws Exception;
 	
 }

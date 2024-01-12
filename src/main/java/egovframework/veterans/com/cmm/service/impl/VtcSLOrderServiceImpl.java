@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -66,5 +67,10 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 	public int getItemSortOrder(String SiteCode) throws Exception {
 		return slOrderDAO.getItemSortOrder(SiteCode);
 	}
+	@Override
+	public List<SLOrderItem> listGroupItem(Map<String, Object> pkid) throws Exception {
+		return slOrderDAO.listGroupItem(pkid);
+	}
 
+	
 }

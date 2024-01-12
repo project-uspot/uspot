@@ -47,7 +47,7 @@ public class DC implements Serializable{
 	private String UpdDate;
 	
 	/* 수정자 */
-	private int UpdDatePKID;
+	private int UpdUserPKID;
 	
 	/* 추가할인 여부? */
 	private String AddDCYN;

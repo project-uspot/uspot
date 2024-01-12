@@ -32,7 +32,7 @@
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info px-5" id="insert" href="${pageContext.request.contextPath}/OrderGpInsert.do" title="신규">신규(F2)</a>
+					<a class="btn btn-info px-5"  href="${pageContext.request.contextPath}/OrderGpInsert.do" id="insert" title="신규">신규(F2)</a>
 					<script>
 						// 키보드 이벤트 감지
 						document.addEventListener('keydown', function(event) {
@@ -47,7 +47,7 @@
 		</div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
+				<table class="table table-sm fs--1 mb-1 ">
 					<colgroup>
 						<col style="width:20px">
 						<col style="width:20px">

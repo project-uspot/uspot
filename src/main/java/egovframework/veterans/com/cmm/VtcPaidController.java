@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hsqldb.rights.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +25,21 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class VtcPaidController {
+	
+	private final HttpSession session;
 
 	private final VtcPaidService VtcPaidService;
 	private final HttpSession session;
 	
 	@RequestMapping(value="DCType.do")
 	public String selectDCType(String SiteCode, ModelMap model) throws Exception {
-		SiteCode = "10001";
-		List<DC> list = VtcPaidService.selectDCType(SiteCode);
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<DC> list = VtcPaidService.selectDCType(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/DCType";
 	}
@@ -50,88 +58,75 @@ public class VtcPaidController {
 		return "basic/paid/DCType_modify";
 	}
 	@RequestMapping(value="DCTypeUpdOK.do")
-	public String dcTypeModifyOK(HttpServletRequest request, DC dc) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		int dcid = Integer.parseInt(request.getParameter("dcid"));
-		String dcName = request.getParameter("dcName");
-		String dcType = request.getParameter("dcType");
-		String Price = request.getParameter("Price");
-		int Rate = Integer.parseInt(request.getParameter("Rate"));
-		String ApplyFamily = request.getParameter("ApplyFamily");
-		int ApplyFamilyCnt = Integer.parseInt(request.getParameter("ApplyFamilyCnt"));
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String PissCD = request.getParameter("PissCD");
-		String ReDCNoYN = request.getParameter("ReDCNoYN");
-		int ReDCNoChkDayCnt = Integer.parseInt(request.getParameter("ReDCNoChkDayCnt"));
-		String UpdDate = request.getParameter("UpdDate");
-		
-		dc = new DC();
-		dc.setSiteCode(SiteCode);
-		dc.setDcid(dcid);
-		dc.setDcName(dcName);
-		dc.setDcType(dcType);
-		dc.setPrice(Price);
-		dc.setRate(Rate);
-		dc.setApplyFamily(ApplyFamily);
-		dc.setApplyFamilyCnt(ApplyFamilyCnt);
-		dc.setSortOrder(SortOrder);
-		dc.setPissCD(PissCD);
-		dc.setReDCNoYN(ReDCNoYN);
-		dc.setReDCNoChkDayCnt(ReDCNoChkDayCnt);
-		dc.setUpdDate(UpdDate);
+	public String dcTypeModifyOK(DC dc, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		dc.setSiteCode(users.getSiteCode());
+		dc.setUpdUserPKID(users.getUserPKID());
 		VtcPaidService.updateDC(dc);
-		
 		return "redirect:DCType.do";
 	}
 	
 	@RequestMapping(value="insertDcType.do")
-	public String insertDcType(HttpServletRequest request, DC dc) throws Exception {
+	public String insertDcType(DC dc, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		int DCID = VtcPaidService.getDcId(users.getSiteCode());
+		int SortOrder = VtcPaidService.getDCSortOrder(users.getSiteCode());
+		
+		model.addAttribute("dcid", DCID + 1);
+		model.addAttribute("SortOrder", SortOrder + 1);
+		
+		
 		return "basic/paid/DCType_insert";
 	}
 	@RequestMapping(value="insertDcTypeOK.do")
-	public String insertDcTypeOK(HttpServletRequest request, DC dc) throws Exception {
-		String SiteCode = "10001";
-		int dcid = Integer.parseInt(request.getParameter("dcid"));
-		String dcName = request.getParameter("dcName");
-		String dcType = request.getParameter("dcType");
-		String Price = request.getParameter("Price");
-		int Rate = Integer.parseInt(request.getParameter("Rate"));
-		String dcDaesangID = request.getParameter("dcDaesangID");
-		String ApplyFamily = request.getParameter("ApplyFamily");
-		int ApplyFamilyCnt = Integer.parseInt(request.getParameter("ApplyFamilyCnt"));
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
-		String PissCD = request.getParameter("PissCD");
-		String ReDCNoYN = request.getParameter("ReDCNoYN");
-		int ReDCNoChkDayCnt = Integer.parseInt(request.getParameter("ReDCNoChkDayCnt"));
+	public String insertDcTypeOK(HttpServletRequest request, DC dc, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		
-		dc = new DC();
-		dc.setSiteCode(SiteCode);
-		dc.setDcid(dcid);
-		dc.setDcName(dcName);
-		dc.setDcType(dcType);
-		dc.setPrice(Price);
-		dc.setRate(Rate);
-		dc.setDcDaesangID(dcDaesangID);
-		dc.setApplyFamily(ApplyFamily);
-		dc.setApplyFamilyCnt(ApplyFamilyCnt);
-		dc.setSortOrder(SortOrder);
-		dc.setPissCD(PissCD);
-		dc.setReDCNoYN(ReDCNoYN);
-		dc.setReDCNoChkDayCnt(ReDCNoChkDayCnt);
+		dc.setSiteCode(users.getSiteCode());
+		dc.setAddUserPKID(users.getUserPKID());
+		
 		VtcPaidService.insertDC(dc);
 		return "redirect:DCType.do";
 	}
 	
 	@RequestMapping(value="deleteDC.do")
 	public String deleteDC(ModelMap model, DC dc) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		dc.setUpdUserPKID(users.getUserPKID());
 		VtcPaidService.deleteDC(dc);
 		return "redirect:DCType.do";
 	}
 	
 	@RequestMapping(value="ExpenseGroup.do")
-	public String selectExpenseGroup(String SiteCode, ModelMap model) throws Exception {
-		SiteCode = "10001";
-		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(SiteCode);
+	public String selectExpenseGroup(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expenseGroup";
 	}
@@ -144,41 +139,61 @@ public class VtcPaidController {
 	}
 	
 	@RequestMapping(value="ExpenseGroupUdpOK.do")
-	public String expenseGroupModifyOK(ExpenseGroup group, HttpServletRequest request) throws Exception {
-		String SiteCode = request.getParameter("SiteCode");
-		int ExpenseGroupID = Integer.parseInt(request.getParameter("ExpenseGroupID"));
-		String ExpenseGroupName = request.getParameter("ExpenseGroupName");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
+	public String expenseGroupModifyOK(ExpenseGroup group, HttpServletRequest request, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		
-		group = new ExpenseGroup();
-		group.setSiteCode(SiteCode);
-		group.setExpenseGroupID(ExpenseGroupID);
-		group.setExpenseGroupName(ExpenseGroupName);
-		group.setSortOrder(SortOrder);
+		group.setSiteCode(users.getSiteCode());
+		group.setUpdUserPKID(users.getUserPKID());
+		
 		VtcPaidService.updateExpenseGroup(group);
 		return "redirect:ExpenseGroup.do";
 	}
 	
 	@RequestMapping(value="ExpenseGpInsert.do")
-	public String ExpenseGroupInsert(ExpenseGroup group, HttpServletRequest request) throws Exception {
+	public String ExpenseGroupInsert(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		int SortOrder = VtcPaidService.getExGpSortOrder(users.getSiteCode());
+		
+		model.addAttribute("SortOrder", SortOrder + 1);
+		
 		return "basic/paid/expenseGroup_insert";
 	}
 	
 	@RequestMapping(value="ExpenseGpInsertOK.do")
-	public String ExpenseGroupInsertOK(ExpenseGroup group, HttpServletRequest request) throws Exception {
-		String SiteCode = "10001";
-		String ExpenseGroupName = request.getParameter("ExpenseGroupName");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
+	public String ExpenseGroupInsertOK(ExpenseGroup group, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		
-		group = new ExpenseGroup();
-		group.setSiteCode(SiteCode);
-		group.setExpenseGroupName(ExpenseGroupName);
-		group.setSortOrder(SortOrder);
+		group.setSiteCode(users.getSiteCode());
+		group.setAddUserPKID(users.getUserPKID());
+		
 		VtcPaidService.insertExpenseGroup(group);
 		return "redirect:ExpenseGroup.do";
 	}
 	@RequestMapping(value="deleteExpGp.do")
 	public String deleteExpGp(ModelMap model, ExpenseGroup group) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		group.setUpdUserPKID(users.getUserPKID());
 		VtcPaidService.deleteExpenseGroup(group);
 		return "redirect:ExpenseGroup.do";
 	}
@@ -186,9 +201,14 @@ public class VtcPaidController {
 	
 	
 	@RequestMapping(value="Expense.do")
-	public String selectExpense(String SiteCode, ModelMap model) throws Exception {
-		SiteCode = "10001";
-		List<Expense> list = VtcPaidService.selectExpense(SiteCode);
+	public String selectExpense(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<Expense> list = VtcPaidService.selectExpense(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expense";
 	}
@@ -212,36 +232,47 @@ public class VtcPaidController {
 	}
 	
 	@RequestMapping(value="ExpenseInsert.do")
-	public String ExpenseInsert(Expense expense, HttpServletRequest request, ModelMap model, String SiteCode) throws Exception {
-		SiteCode = "10001";
-		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(SiteCode);
+	public String ExpenseInsert(Expense expense, HttpServletRequest request, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
+		int SortOrder = VtcPaidService.getExSortOrder(users.getSiteCode());
+		
 		model.addAttribute("list", list);
+		model.addAttribute("SortOrder", SortOrder + 1);
 		return "basic/paid/expense_insert";
 	}
 	
 	@RequestMapping(value="ExpenseInsertOK.do")
-	public String ExpenseInsertOK(Expense expense, HttpServletRequest request) throws Exception {
-		String SiteCode = "10001";
-		int ExpenseGroupID = Integer.parseInt(request.getParameter("ExpenseGroupID"));
-		String ExpenseName = request.getParameter("ExpenseName");
-		String ExpenseType = request.getParameter("ExpenseType");
-		String DefPrice = request.getParameter("DefPrice");
-		String Nvat = request.getParameter("Nvat");
-		int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
+	public String ExpenseInsertOK(Expense expense, HttpServletRequest request, ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
 		
-		expense = new Expense();
-		expense.setSiteCode(SiteCode);
-		expense.setExpenseGroupID(ExpenseGroupID);
-		expense.setExpenseName(ExpenseName);
-		expense.setExpenseType(ExpenseType);
-		expense.setDefPrice(DefPrice);
-		expense.setNvat(Nvat);
-		expense.setSortOrder(SortOrder);
+		expense.setSiteCode(users.getSiteCode());
+		expense.setAddUserPKID(users.getUserPKID());
+		
 		VtcPaidService.insertExpense(expense);
 		return "redirect:Expense.do";
 	}
 	@RequestMapping(value="deleteExp.do")
 	public String deleteExpense(ModelMap model, Expense expense) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		expense.setSiteCode(users.getSiteCode());
+		expense.setUpdUserPKID(users.getUserPKID());
+		
 		VtcPaidService.deleteExpense(expense);
 		return "redirect:Expense.do";
 	}	

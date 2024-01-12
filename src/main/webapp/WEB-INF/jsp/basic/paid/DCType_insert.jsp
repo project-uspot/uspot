@@ -10,7 +10,9 @@
 <script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
-
+window.onload = function() {
+	document.getElementById("dcName").focus();
+};
 $(document).ready(function() {
 	$("#dcType1").on("change", function() {
 		if ($(this).prop("checked")) {
@@ -114,7 +116,7 @@ function valueChk() {
 			<input type="hidden" name="SiteCode" value="${dc.siteCode }">
 			<div class="col-md-6 gy-6">
 				<div class="form-floating">
-					<input class="form-control" id="dcid" name="dcid" type="text" placeholder="할인코드" />
+					<input class="form-control" id="dcid" name="dcid" type="text" value="${dcid}" placeholder="할인코드" />
 					<label for="dcid">할인코드</label>
 				</div>
 			</div>
@@ -158,7 +160,7 @@ function valueChk() {
 			</div>
 			<div class="col-md-6 gy-6">
 				<div class="form-floating">
-					<input class="form-control" id="SortOrder" name="SortOrder" type="text" placeholder="정렬순서" onkeydown="onlyNumber(this)" />
+					<input class="form-control" id="SortOrder" name="SortOrder" type="text" value="${SortOrder }" placeholder="정렬순서" onkeydown="onlyNumber(this)" />
 					<label for="SortOrder">정렬순서</label>
 				</div>
 			</div>
@@ -186,13 +188,25 @@ function valueChk() {
 		<div class="col-12 gy-6">
 			<div class="row g-3 justify-content-end">
 				<div class="col-auto">
-					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/DCType.do" title="취소">취소</a><!-- 목록 -->
+					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/DCType.do" id="back" title="취소(F3)">취소(F3)</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
-					<input type="button" class="btn btn-info px-5" value="등록" id="insert" onclick="valueChk();"/>
+					<input type="button" class="btn btn-info px-5" value="등록(F2)" id="insert" onclick="valueChk();"/>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk();
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+	});
+</script>

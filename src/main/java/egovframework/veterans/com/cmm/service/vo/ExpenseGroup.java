@@ -33,7 +33,7 @@ public class ExpenseGroup implements Serializable{
 	private String UpdDate;
 	
 	/* 수정자 */
-	private int UpdDatePKIK;
+	private int UpdUserPKID;
 	
 	
 }

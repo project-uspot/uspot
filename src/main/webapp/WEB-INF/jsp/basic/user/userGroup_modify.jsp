@@ -86,39 +86,23 @@ function fn_egov_delete_article(form) {
 						<label for="dbid">아이디</label>
 					</div>
 					<div class="form-floating">
-						<input class="form-control" id="dbPassword" name="dbPassword" type="text" placeholder="비빌번호" value="${list.dbPassword }"  <c:if test="${list.useDBAccess ne 'Y' }">disabled</c:if>/>
+						<input class="form-control" id="dbPassword" name="dbPassword" type="password" placeholder="비빌번호" value="${list.dbPassword }"  <c:if test="${list.useDBAccess ne 'Y' }">disabled</c:if>/>
 						<label for="dbPassword">비빌번호</label>
 					</div>
 				</div>
 			</div>
-			<%-- <div class="col-md-6 gy-6">
-               <div class="form-floating">
-                 <input class="form-control" id="dbid" name="dbid" type="text" value="${list.dbid }" />
-                 <label for="dbid">로그인ID</label>
-               </div>
-               <div class="form-check">
-             	 <input type="checkbox" name="UseDBAccess" id="UseDBAccess" value="Y" <c:if test="${list.useDBAccess eq 'Y' }">checked</c:if>>
-             	 <label class="form-check-label" for="UseDBAccess"> 사용자 권한그룹별로 DB계정 사용함.</label>
-               </div>
-             </div>
-			<div class="col-md-6 gy-6">
-               <div class="form-floating">
-                 <input class="form-control" id="dbPassword" name="dbPassword" type="text" value="${list.dbPassword }" />
-                 <label for="dbPassword">비빌번호</label>
-               </div>
-             </div> --%>
 		</form>
 		<div class="col-12 gy-6">
 			<div class="row g-3 justify-content-end">
 				<div class="col-auto">
-					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/UserGroup.do" title="목록">목록</a><!-- 목록 -->
+					<input type="button" class="btn btn-warning px-5"  value="수정(F2)" id="modify" onclick="valueChk();"/>
 				</div>
 				<div class="col-auto">
-					<input type="button" class="btn btn-info px-5"  value="수정" id="modify" onclick="valueChk();"/>
+					<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/UserGroup.do" id="back" title="목록(F3)">목록(F3)</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
 					<form action="${pageContext.request.contextPath}/deleteUserGroup.do" name="formDelete" method="post">
-						<input type="submit" class="btn btn-warning px-5" value="삭제" id="delete" onclick="fn_egov_delete_article(this.form); return false;"> <!-- 삭제 -->
+						<input type="submit" class="btn btn-danger px-5" value="삭제(F4)" id="delete" onclick="fn_egov_delete_article(this.form); return false;"> <!-- 삭제 -->
 						<input type="hidden" name="SiteCode" value="${list.siteCode }">
 						<input type="hidden" name="UserGroupID" value="${list.userGroupID }">
 					</form>
@@ -128,3 +112,20 @@ function fn_egov_delete_article(form) {
 	</div>
 </div>
 
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk()
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+		if (event.key === 'F4') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			document.getElementById('delete').click();
+		}
+	});
+</script>

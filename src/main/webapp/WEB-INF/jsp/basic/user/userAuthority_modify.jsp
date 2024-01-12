@@ -50,12 +50,25 @@ function valueChk() {
 	<div class="col-5 gy-6">
 		<div class="row g-3 justify-content-end">
 			<div class="col-auto">
-				<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/userAuthorityGroup.do" title="목록">목록</a><!-- 목록 -->
+				<input type="button" class="btn btn-warning px-5" value="수정(F2)" id="modify" onclick="valueChk();"/>
 			</div>
 			<div class="col-auto">
-				<input type="button" class="btn btn-info px-5" value="수정" id="modify" onclick="valueChk();"/>
+				<a class="btn btn-phoenix-primary px-5" href="${pageContext.request.contextPath}/userAuthorityGroup.do" id="back" title="목록(F3)">목록(F3)</a><!-- 목록 -->
 			</div>
 		</div>
 	</div>
 </div>
+<script>
+	// 키보드 이벤트 감지
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			valueChk()
+		}
+		if (event.key === 'F3') { // F2 키를 눌렀을 때
+			event.preventDefault(); // 기본 동작 방지
+			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
+		}
+	});
+</script>
 

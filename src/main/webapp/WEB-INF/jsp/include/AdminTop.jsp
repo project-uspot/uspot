@@ -467,10 +467,45 @@
                       </li>
                       </c:if>
                       <c:if test="${value34 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
-                          <div class="d-flex align-items-center"><span class="nav-link-text">일일입장관리</span>
+                      <li class="nav-item">
+                      	<%-- <a class="nav-link" href="${pageContext.request.contextPath}/OneDayOrder.do" data-bs-toggle="" aria-expanded="false"> --%>
+                      	<a class="nav-link" href="javascript:void(0);" onclick="OneDayOrderPopup()" data-bs-toggle="" aria-expanded="false">
+                          <div class="d-flex align-items-center">
+                          	<span class="nav-link-text">일일입장관리</span>
                           </div>
                         </a>
+                        <script type="text/javascript">
+                       		var myPopup;
+                       		
+	                        function OneDayOrderPopup() {
+	                        	var url = "${pageContext.request.contextPath}/OneDayOrder.do";
+	                            var windowName = "OneDayOrderPopup"; // 팝업 창의 이름
+	                            var windowWidth = 1500; // 팝업 창의 가로 크기
+	                            var windowHeight = 700; // 팝업 창의 세로 크기
+
+	                            // 뷰포트의 가로, 세로 크기 가져오기
+	                            var screenWidth = window.innerWidth;
+	                            var screenHeight = window.innerHeight;
+
+	                            // 팝업 창이 화면 중앙에 위치하도록 계산
+	                            var left = (screenWidth - windowWidth) / 2 + window.screenX;
+	                            var top = (screenHeight - windowHeight) / 2 + window.screenY;
+
+	                            // 팝업 창 열기
+	                            var windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + left + ",top=" + top;
+	                            if (myPopup === undefined || myPopup.closed) {
+	                            	myPopup = window.open(url, "_blank", windowFeatures);
+	                            } else {
+	                            	myPopup.focus();
+	                            }
+	                            document.addEventListener('click', function() {
+	    	                        if (myPopup && !myPopup.closed) {
+	    	                            myPopup.focus();
+	    	                        }
+	                          	});
+		                        
+	                        }
+                        </script>
                       </li>
                       </c:if>
                       <c:if test="${value35 eq true}">

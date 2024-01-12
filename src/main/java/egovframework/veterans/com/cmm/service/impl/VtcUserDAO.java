@@ -1,7 +1,6 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +27,9 @@ public class VtcUserDAO extends EgovComAbstractDAO {
 		insert("user.insertUserGroup", group);
 	}public void deleteUserGroup(UserGroup group) throws Exception {
 		update("user.deleteUserGroup", group);
+	}
+	public int getGroupSortOrder(String siteCode) {
+		return selectOne("user.getGroupSortOrder", siteCode);
 	}
 
 	public List<PGMGroup> listPGMGroup(String siteCode) {
@@ -116,5 +118,6 @@ public class VtcUserDAO extends EgovComAbstractDAO {
 	public List<TblAuthuserGroup> tblauthusergroupbyusergroup(TblAuthuserGroup tblAuthuserGroup)throws Exception{
 		return selectList("user.tblauthusergroupbyusergroup",tblAuthuserGroup);
 	}
+	
 	
 }

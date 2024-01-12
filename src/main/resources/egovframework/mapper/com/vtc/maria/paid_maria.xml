@@ -47,7 +47,7 @@
 		INSERT INTO uspot_test.tbldc
 			(DCID, SiteCode, DCName, Rate, DCDaesangID, ApplyFamily, ApplyFamilyCnt, AddDCYN, WebYN, IsUse, PissCD, ReDCNoYN, ReDCNoChkDayCnt, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, DCType, Price)
 		VALUES
-			(#{dcid}, #{SiteCode}, #{dcName}, #{Rate}, #{dcDaesangID}, #{ApplyFamily}, #{ApplyFamilyCnt},#{AddDCYN}, #{WebYN}, #{IsUse}, #{PissCD}, #{ReDCNoYN}, #{ReDCNoChkDayCnt}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0, #{dcType}, #{Price});
+			(#{dcid}, #{SiteCode}, #{dcName}, #{Rate}, #{dcDaesangID}, #{ApplyFamily}, #{ApplyFamilyCnt},#{AddDCYN}, #{WebYN}, #{IsUse}, #{PissCD}, #{ReDCNoYN}, #{ReDCNoChkDayCnt}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{dcType}, #{Price});
 				
 	</insert>
 	
@@ -59,7 +59,20 @@
 			SiteCode = #{SiteCode}
 		and	dcid = #{dcid}
 	</update>
-	
+	<select id="getDcId" resultType="int">
+		select max(dcid) 
+		from 
+			tbldc 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<select id="getDCSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tbldc 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
 	
 	
 	<select id="selectExpenseGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
@@ -80,27 +93,34 @@
 		update tblexpensegroup set
 			ExpenseGroupName = #{ExpenseGroupName}
 			,SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate  = sysdate()
 		where
 			SiteCode = #{SiteCode}
 		and ExpenseGroupID = #{ExpenseGroupID}
 	</update>
 	<insert id="insertExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
-		INSERT INTO uspot_test.tblexpensegroup
+		INSERT INTO tblexpensegroup
 			(SiteCode, ExpenseGroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
 		VALUES
-			(#{SiteCode}, #{ExpenseGroupName}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0);
+			(#{SiteCode}, #{ExpenseGroupName}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
 	</insert>
 	<update id="deleteExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
 		update tblexpensegroup set
 			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate  = sysdate()
 		where 
 			SiteCode = #{SiteCode}
 		and	ExpenseGroupID = #{ExpenseGroupID}
 	</update>
-	
-	
+	<select id="getExGpSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tblexpensegroup 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
 	
 	<select id="selectExpense" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
 		select 
@@ -131,6 +151,7 @@
 			, DefPrice = #{DefPrice}
 			, NVAT = #{Nvat}
 			, SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate = sysdate()
 		where 
 			SiteCode = #{SiteCode}
@@ -138,19 +159,28 @@
 		and ExpenseID = #{ExpenseID}
 	</update>
 	<insert id="insertExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
-		INSERT INTO uspot_test.tblexpense
+		INSERT INTO tblexpense
 			(SiteCode, ExpenseGroupID, ExpenseName, ExpenseType, DefPrice, NVAT, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
 		VALUES
-			(#{SiteCode}, #{ExpenseGroupID}, #{ExpenseName}, #{ExpenseType}, #{DefPrice}, #{Nvat}, #{SortOrder}, 'N', sysdate(), 0, sysdate(), 0);
+			(#{SiteCode}, #{ExpenseGroupID}, #{ExpenseName}, #{ExpenseType}, #{DefPrice}, #{Nvat}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
 	</insert>
 	<update id="deleteExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
-		update tblexpensegroup set
+		update tblexpense set
 			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
 			, UpdDate  = sysdate()
 		where 
 			SiteCode = #{SiteCode}
 		and	ExpenseID = #{ExpenseID}
 	</update>
+	<select id="getExSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tblexpense
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
 	<select id="memberexpensesale" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberexpensesale">
 		select tblexpensegroup.ExpenseGroupName,tblexpense.ExpenseName,'InOut',SaleDate,Price,DefPrice,
 		(DefPrice - Price) AS minabPrice

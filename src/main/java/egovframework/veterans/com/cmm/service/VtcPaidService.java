@@ -17,12 +17,15 @@ public interface VtcPaidService {
 	void updateDC(DC dc) throws Exception;
 	void insertDC(DC dc) throws Exception;
 	void deleteDC(DC dc) throws Exception;
+	int getDcId(String SiteCode) throws Exception;
+	int getDCSortOrder(String SiteCode) throws Exception;
 	
 	List<ExpenseGroup> selectExpenseGroup(String SiteCode) throws Exception;
 	ExpenseGroup getExpenseGroupDetail(ExpenseGroup group) throws Exception;
 	void updateExpenseGroup(ExpenseGroup group) throws Exception;
 	void insertExpenseGroup(ExpenseGroup group) throws Exception;
 	void deleteExpenseGroup(ExpenseGroup group) throws Exception;
+	int getExGpSortOrder(String SiteCode) throws Exception;
 	
 	List<Expense> selectExpense(String SiteCode) throws Exception;
 	Expense getExpenseDetail(Expense expense) throws Exception;
@@ -30,6 +33,7 @@ public interface VtcPaidService {
 	void insertExpense(Expense expense) throws Exception;
 	void deleteExpense(Expense expense) throws Exception;
 	List<memberexpensesale> memberexpensesale(String MemberID)throws Exception;
+	int getExSortOrder(String SiteCode) throws Exception;
 	
 	List<settlemnetlist> settlemnetlist(Map<String, Object> fmmap) throws Exception;
 	int callSelectReceiptNo(Map<String, Object> map)throws Exception;

@@ -15,6 +15,7 @@ public interface VtcUserService {
 	void updateUserGroup(UserGroup group) throws Exception;
 	void insertUserGroup(UserGroup group) throws Exception;
 	void deleteUserGroup(UserGroup group) throws Exception;
+	int getGroupSortOrder(String SiteCode) throws Exception;
 	
 	List<PGMGroup> listPGMGroup(String SiteCode) throws Exception;
 	List<PGM> listPGM(String SiteCode) throws Exception;

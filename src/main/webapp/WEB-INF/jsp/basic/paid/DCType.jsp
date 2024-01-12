@@ -32,7 +32,16 @@
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info px-5" href="${pageContext.request.contextPath}/insertDcType.do" title="등록">등록</a>
+					<a class="btn btn-info px-5" href="${pageContext.request.contextPath}/insertDcType.do" id="insert" title="신규">신규(F2)</a>
+					<script>
+						// 키보드 이벤트 감지
+						document.addEventListener('keydown', function(event) {
+							if (event.key === 'F2') { // F2 키를 눌렀을 때
+								event.preventDefault(); // 기본 동작 방지
+								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+							}
+						});
+					</script>
 				</div>
 			</div>
 		</div>
