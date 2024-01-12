@@ -162,4 +162,9 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public void fmsc_01update(fmsc_s01 fmsc_s01) throws Exception {
 		vtcMemberDAO.fmsc_01update(fmsc_s01);
 	}
+
+	@Override
+	public void oldfmsc_s01update(fmsc_s01 fmsc_s01) throws Exception {
+		vtcMemberDAO.oldfmsc_s01update(fmsc_s01);
+	}
 }

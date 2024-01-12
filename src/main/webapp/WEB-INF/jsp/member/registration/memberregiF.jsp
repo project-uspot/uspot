@@ -797,7 +797,7 @@
                                                     <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}')" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
-                                                                <c:when test="${list.state eq '현재원'}">
+                                                                <c:when test="${list.state eq '현재원' || list.state eq '반변경(+)' }">
                                                                     <span class="badge badge-phoenix fs--2 badge-phoenix-success">${list.state}<span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span></span>
                                                                 </c:when>
                                                                 <c:when test="${list.state eq '환불'}">
