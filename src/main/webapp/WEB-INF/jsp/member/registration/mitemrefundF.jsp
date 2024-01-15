@@ -468,7 +468,7 @@
 	</div>
 </body>
 <script type="text/javascript">
-//숨겨진 모달 버튼
+//숨겨진 모달 버튼 dd
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
 
