@@ -29,7 +29,6 @@ public class VtcPaidController {
 	private final HttpSession session;
 
 	private final VtcPaidService VtcPaidService;
-	private final HttpSession session;
 	
 	@RequestMapping(value="DCType.do")
 	public String selectDCType(String SiteCode, ModelMap model) throws Exception {

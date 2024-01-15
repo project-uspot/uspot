@@ -450,12 +450,8 @@ from fmsc_s01
 			#{FromDate},#{ToDate},#{FromDate},#{ToDate}, 
 			#{RegMonth},#{DCID},#{DiscountRate},#{DCPrice}, 
 			#{ItemPrice},#{RealPrice},#{Misu},#{Note}, 
-			#{GroupSaleNo},#{EmpCode},
-			<if test="IsReReg == 1">
-			1	
-			</if>
-			,#{State}, 
-			#{UserPKID},#{ItemPKID},0,#{InType}, 
+			#{GroupSaleNo},#{EmpCode},#{IsReReg},#{State}, 
+			#{UserPKID},#{ItemPKID},0,#{InType},
 			#{prevInType},#{CurState},#{RegType},#{ReEndFlag}, 
 			#{BeforeSaleNo},#{IFFlag},#{IFDateTime},#{IsConfirm}, 
 			#{UseDayCnt},#{TotDayCnt},'N',now(), 

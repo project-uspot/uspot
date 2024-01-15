@@ -47,18 +47,18 @@
                     </div>
 					<div class="row">
 						<div class="col-auto ms-n3">
-						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text me-3" id="basic-addon1">강습반</span>
-							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="indexradio1" type="radio" name="index" value="1" aria-describedby="basic-addon1" checked="checked"/>
-								<label class="form-check-label" for="indexradio1">일반</label>
-							</div>
-							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="indexradio2" type="radio" name="index" value="2" aria-describedby="basic-addon1"/>
-								<label class="form-check-label" for="indexradio2">복합</label>
+							<div class="input-group input-group-sm mb-3">
+								<span class="input-group-text me-3" id="basic-addon1">강습반</span>
+								<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
+									<input class="form-check-input" id="indexradio1" type="radio" name="index" value="1" aria-describedby="basic-addon1" checked="checked"/>
+									<label class="form-check-label" for="indexradio1">일반</label>
+								</div>
+								<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
+									<input class="form-check-input" id="indexradio2" type="radio" name="index" value="2" aria-describedby="basic-addon1"/>
+									<label class="form-check-label" for="indexradio2">복합</label>
+								</div>
 							</div>
 						</div>
-					</div>
 	                    <div class="col-sm-6 col-md-2">
 	                    	<div class="input-group">
 							  <input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)"/>
@@ -184,7 +184,7 @@
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
-							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;"/>
+							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;" />
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n3">
@@ -192,7 +192,7 @@
 					</div>
 					<div class="col-auto ms-n2">
 						<div class="input-group mb-3 w-auto input-group-sm">
-							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" style="width: 99px;"/>
+							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" style="width: 99px;text-align: right;"/>
 						</div>
 					</div>
 				</div>
@@ -206,7 +206,7 @@
 		        	<div class="col-md-5" style="width: 312px;">
 		        		<div class="input-group mb-3 ms-n3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">합계</span>
-							<input class="form-control" type="number" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly"/>
 						</div>
 		        	</div>
 		        </div>
@@ -263,7 +263,7 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총매출금액</span>
-													<input class="form-control" type="text" id="totalprice" name="totalprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="totalprice" name="totalprice" aria-describedby="basic-addon1" style="width: 134px; text-align: right;" readonly="readonly"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -277,7 +277,7 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총결제금액</span>
-													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" aria-describedby="basic-addon1" style="width: 134px; text-align: right;" readonly="readonly"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -291,7 +291,7 @@
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총미납금액</span>
-													<input class="form-control" type="text" id="tremainprice" name="tremainprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+													<input class="form-control" type="text" id="tremainprice" name="tremainprice" aria-describedby="basic-addon1" style="width: 134px; text-align: right;" readonly="readonly"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -326,7 +326,7 @@
 				<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">강습료</span>
-						<input class="form-control" type="number" id="learnprice" name="learnprice" aria-label="Amount (to the nearest dollar)" min="0" readonly="readonly" style="text-align: right;"/>
+						<input class="form-control" type="text" id="learnprice" name="learnprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
 		    </div>
@@ -364,8 +364,8 @@
 	    	<div class="card-body my-n3">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
-						<span class="input-group-text">받은금액</span>
-						<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0"/>
+						<span class="input-group-text">받을금액</span>
+						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
 				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
@@ -497,9 +497,9 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<td class="member align-middle white-space-nowrap text-start">' + list.DaesangName + '</td>');
                 newRow.append('<td class="teacher align-middle white-space-nowrap text-start">' + list.SawonName + '</td>');
                 newRow.append('<td class="date py-2 align-middle white-space-nowrap">' + selectedDate+'~'+nextDate+'('+list.itemmonth+')'+'</td>');
-                newRow.append('<td class="price py-2 align-middle white-space-nowrap">' + list.DefPrice + '</td>');
-                newRow.append('<td class="dc py-2 align-middle white-space-nowrap">' + 0 + '</td>');
-                newRow.append('<td class="sort py-2 align-middle white-space-nowrap" id="N">' + list.DefPrice + '</td>');
+                newRow.append('<td class="price py-2 align-middle white-space-nowrap text-end">' + formatNumberWithCommas(list.DefPrice) + '</td>');
+                newRow.append('<td class="dc py-2 align-middle white-space-nowrap text-end">' + 0 + '</td>');
+                newRow.append('<td class="sort py-2 align-middle white-space-nowrap text-end" id="N">' + list.DefPrice + '</td>');
                 newRow.append('<td class="dccode py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="dcpercent py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="max py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax) + '</td>');
@@ -585,21 +585,21 @@ var clickeditemid;
    	        		priceoptionlist.append($('<option>', {
    	        			id: list.DefPrice,
    		                value: codelist[0]+list.DefPrice,
-   		                text: codelist[0]+list.DefPrice
+   		                text: codelist[0]+formatNumberWithCommas(list.DefPrice)
    		            }));
    	        	}
    	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
    	        	    var option = $('<option>', {
    	        	    	id: list.Price1,
    	        	        value: codelist[1] + list.Price1,
-   	        	        text: codelist[1] + list.Price1
+   	        	        text: codelist[1] + formatNumberWithCommas(list.Price1)
    	        	    });
 
    	        	    priceoptionlist.append(option);
 
    	        	    if ($('#yearage').text() > 13 && $('#yearage').text() < 19) {
    	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price1);
+   	        	     	$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price1));
    	        	     	sortchange(clickedRow);
    	        	    }
    	        	}
@@ -607,14 +607,14 @@ var clickeditemid;
    	        	    var option = $('<option>', {
    	        	    	id: list.Price2,
    	        	        value: codelist[2] + list.Price2,
-   	        	        text: codelist[2] + list.Price2
+   	        	        text: codelist[2] + formatNumberWithCommas(list.Price2)
    	        	    });
 
    	        	    priceoptionlist.append(option);
 
    	        	    if ($('#yearage').text() >= 0 && $('#yearage').text() < 14) {
    	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price2);
+   	        	     	$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price2));
    	        	     	sortchange(clickedRow);
    	        	    }
    	        	}
@@ -622,12 +622,12 @@ var clickeditemid;
    	        	    var option = $('<option>', {
    	        	    	id: list.Price3,
    	        	    	value: codelist[3]+list.Price3,
-   		                text: codelist[3]+list.Price3
+   		                text: codelist[3]+formatNumberWithCommas(list.Price3)
    	        	    });
    	        	    priceoptionlist.append(option);
    	        	    if ($('#yearage').text() > 64) {
    	        	        option.attr('selected', 'selected');
-   	        	     	$(clickedRow).find('.price').text(list.Price3);
+   	        	     	$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price3));
    	        	     	sortchange(clickedRow);
    	        	    }
    	        	}
@@ -635,14 +635,14 @@ var clickeditemid;
    	        		priceoptionlist.append($('<option>', {
    	        			id: list.Price4,
    		                value: codelist[4]+list.Price4,
-   		                text: codelist[4]+list.Price4
+   		                text: codelist[4]+formatNumberWithCommas(list.Price4)
    		            }));
    	        	}
    	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
    	        		priceoptionlist.append($('<option>', {
    	        			id: list.Price5,
    		                value: codelist[5]+list.Price5,
-   		                text: codelist[5]+list.Price5
+   		                text: codelist[5]+formatNumberWithCommas(list.Price5)
    		            }));
    	        	}
    	        	
@@ -706,12 +706,12 @@ var clickeditemid;
     	var itemIDValue = $(this).find('input[name="ItemID"]').val();
         if (itemIDValue === clickeditemid) {
             // 해당 행을 찾았을 때 선택된 값으로 'price' 클래스를 가진 td에 내용을 넣어줍니다.
-            $(this).find('.price').text(selectedprice);
+            $(this).find('.price').text(formatNumberWithCommas(selectedprice));
             sortchange(this);
             return false; // 원하는 행을 찾았으므로 each 루프를 종료합니다.
         }
     });
-       $('#learnprice').val(selectedprice);
+       $('#learnprice').val(formatNumberWithCommas(selectedprice));
        // 숨겨진(hidden) input의 값을 선택된 값으로 변경
        $('#'+clickeditemid+'pricecodechange').val(selectedValue);
    });
@@ -802,15 +802,15 @@ var clickeditemid;
    
    //소계바꾸는 함수
    function sortchange(selectrow){
-   	var price = $(selectrow).find('.price').text();
+   	var price = removeCommasFromNumber($(selectrow).find('.price').text());
    	var dcpercent = parseInt($(selectrow).find('.dcpercent').text());
    	const result = parseString($(selectrow).find('.date').text());
    	var dcprice = price*(dcpercent*0.01);
    	var afterdcprice = price-dcprice;
-   	$(selectrow).find('.dc').text(dcprice*result[2]);
-   	$(selectrow).find('.sort').text(afterdcprice*result[2]);
-   	$('#dcpri').val(dcprice*result[2]);
-   	$('#sortpri').val(afterdcprice*result[2]);
+   	$(selectrow).find('.dc').text(formatNumberWithCommas(dcprice*result[2]));
+   	$(selectrow).find('.sort').text(formatNumberWithCommas(afterdcprice*result[2]));
+   	$('#dcpri').val(formatNumberWithCommas(dcprice*result[2]));
+   	$('#sortpri').val(formatNumberWithCommas(afterdcprice*result[2]));
    	totalchange();
    }
    
@@ -822,29 +822,30 @@ var clickeditemid;
    	var tremainprice = 0;
    	
    	$('#itemtbody tr').each(function() {
-   		totalprice += parseInt($(this).find('.sort').text());
+   		totalprice += parseInt(removeCommasFromNumber($(this).find('.sort').text()));
    		
-   		var onetpaidprice = parseInt($(this).find('.sort#Y').text());
+   		var onetpaidprice = parseInt(removeCommasFromNumber($(this).find('.sort#Y').text()));
    		if(isNaN(onetpaidprice)){
    			onetpaidprice = 0;
    		}
    		tpaidprice += onetpaidprice;
    		
-   		var onetremainprice = parseInt($(this).find('.sort#N').text());
+   		var onetremainprice = parseInt(removeCommasFromNumber($(this).find('.sort#N').text()));
    		if(isNaN(onetremainprice)){
    			onetremainprice = 0;
    		}
    		tremainprice += onetremainprice;
     });
-   	$('#totalprice').val(totalprice);
+   	$('#totalprice').val(formatNumberWithCommas(totalprice));
    	if(isNaN(tpaidprice)){
    		tpaidprice = 0;
    	}
-   	$('#tpaidprice').val(tpaidprice);
+   	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
    	if(isNaN(tremainprice)){
    		tremainprice = 0;
    	}
-   	$('#tremainprice').val(tremainprice);
+   	$('#tremainprice').val(formatNumberWithCommas(tremainprice));
+   	$('#payprice').val(formatNumberWithCommas(tremainprice));
    }
    
    //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
@@ -880,7 +881,7 @@ function save() {
 	    modalcheck = true;
 	    return false;
 	}
-	if($('#tremainprice').val() > 0){
+	if(removeCommasFromNumber($('#tremainprice').val()) > 0){
 		$('#resultmessage').html('미납금액이 존재합니다.<br>미납금액정산 없이 저장하시겠습니까?');
 		$('.modal-footer').empty();
 		var okaybutton = '<button class="btn btn-primary" type="button" onclick="fmsc_01save()">확인</button>';
@@ -907,7 +908,7 @@ function fmsc_01save() {
 		IsPackagecheck = 1;
 	}
 	$('#itemtbody tr').each(function() {
-		var misuprice = parseInt($(this).find('.sort#N').text());
+		var misuprice = parseInt(removeCommasFromNumber($(this).find('.sort#N').text()));
 		if(isNaN(misuprice)){
 			misuprice = 0;
 		}
@@ -928,11 +929,12 @@ function fmsc_01save() {
 	        	RegMonth : result[2],
 	        	DCID : $(this).find('.dccode').text(),
 	        	DiscountRate : $(this).find('.dcpercent').text(),
-	        	DCPrice : $(this).find('.dc').text(),
-	        	ItemPrice : $(this).find('.price').text(),
-	        	RealPrice : $(this).find('.sort').text(),
+	        	DCPrice : removeCommasFromNumber($(this).find('.dc').text()),
+	        	ItemPrice : removeCommasFromNumber($(this).find('.price').text()),
+	        	RealPrice : removeCommasFromNumber($(this).find('.sort').text()),
 	        	Misu : misuprice,
 	        	EmpCode : $(this).find('input[name="EmpCode"]').val(),
+	        	IsReReg : '0',
 	        	State : 'G',
 	        	ItemPKID : $(this).find('input[name="ItemID"]').val(),
 	        	InType : '등록',
@@ -942,7 +944,7 @@ function fmsc_01save() {
 	        	PaidPrice : 0
 	        },
 	        success: function(data) {	
-	        	var paidprice = $('#paidbody tr').eq(iteration).find('.paidprice').text();
+	        	var paidprice = removeCommasFromNumber($('#paidbody tr').eq(iteration).find('.paidprice').text());
 	        	var paiddate = $('#paidbody tr').eq(iteration).find('.paiddate').text();
 	        	if(paidprice != ''){
 		            $.ajax({
@@ -990,7 +992,7 @@ function extractYearMonth(dateString) {
   
 //현금 결제
 function paycash() {
-	if($('#tremainprice').val() < 1 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -1003,7 +1005,7 @@ function paycash() {
 		var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
 		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + parseInt($(this).text()) + '</td>');
+		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($(this).text()))) + '</td>');
 		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -1034,6 +1036,45 @@ function getCurrentDateTime() {
 	var seconds = ('0' + today.getSeconds()).slice(-2); 
 	var datestring = year + '-' + month  + '-' + day +' '+ hours + ':' + minutes  + ':' + seconds; 
 	return datestring;
+}
+
+
+//금액에 , 를 붙혀서 return 해주는 함수
+function formatNumberWithCommas(amount) {
+    // Check if the input is a valid number
+    if (isNaN(amount)) {
+        return "Invalid input";
+    }
+
+    // Convert the number to a string
+    let amountStr = amount.toString();
+
+    // Split the string into integer and decimal parts
+    let parts = amountStr.split('.');
+
+    // Add commas to the integer part
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Join the integer and decimal parts back together
+    let formattedAmount = parts.join('.');
+
+    return formattedAmount;
+}
+
+//금액에 붙은 , 를 지워주는 함수
+function removeCommasFromNumber(formattedNumber) {
+    // Remove commas from the string
+    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+
+    // Convert the string to a number
+    let numericValue = parseFloat(numberWithoutCommas);
+
+    // Check if the conversion was successful
+    if (isNaN(numericValue)) {
+        return "Invalid input";
+    }
+
+    return numericValue;
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>

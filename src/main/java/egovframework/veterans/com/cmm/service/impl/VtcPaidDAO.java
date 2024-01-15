@@ -95,4 +95,8 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public List<tblpaid> tblpaidbypaidgroupsaleno(tblpaid tblpaid)throws Exception{
 		return selectList("paid.tblpaidbypaidgroupsaleno",tblpaid);
 	}
+	
+	public void paidchange(tblpaid tblpaid)throws Exception{
+		update("paid.paidchange",tblpaid);
+	}
 }

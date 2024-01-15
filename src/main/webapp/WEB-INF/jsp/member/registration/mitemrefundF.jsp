@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>반변경정보 등록 및 변경</title>
+    <title>환불정보 등록 및 변경</title>
     <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
@@ -44,9 +44,15 @@
             <div class="col-12 col-xxl-8">
                 <div>
                     <div class="row g-3">
-                        <h3 class="mb-3 w-25 pt-2">반변경정보 등록 및 변경</h3>
-                        <div class="col-auto position-absolute" style="margin-left:1050px;">
-                            <button class="btn btn-success" type="button" onclick="save()" >저장(S)</button>
+                        <h3 class="mb-3 w-25 pt-2">환불정보 등록 및 변경</h3>
+                        <div class="col-auto position-absolute" style="margin-left:700px;">
+                            <button class="btn btn-phoenix-primary" type="button" onclick="save()" >환불대기(T)</button>
+                        </div>
+                        <div class="col-auto position-absolute" style="margin-left:850px;">
+                            <button class="btn btn-phoenix-secondary" type="button" onclick="save()" >대기취소(Q)</button>
+                        </div>
+                        <div class="col-auto position-absolute" style="margin-left:1000px;">
+                            <button class="btn btn-success" type="button" onclick="save()" >환불완료(S)</button>
                         </div>
                         <div class="col-auto position-absolute" style="margin-left:1150px;">
                             <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
@@ -94,12 +100,6 @@
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">일반전화</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}"/>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">회원등급</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}"/>
 					</div>
 				</div>
 	        </div>
@@ -179,14 +179,79 @@
 				<div class="col-md-5">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">판매금액</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" 
-						value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice"
+						 value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
-				<div class="col-md-10">
-					<div class="input-group input-group-sm">
-  						<span class="input-group-text">비고</span>
-						<textarea class="form-control" aria-label="With textarea" readonly="readonly"></textarea>
+				<div class="col-md-5">
+					<div class="input-group input-group-sm" style="width: 193px;">
+						<span class="input-group-text" id="basic-addon1">결제금액</span>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="input-group input-group-sm" style="width: 193px;">
+								<span class="input-group-text" id="basic-addon1">결제금액</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="col-auto">
+							<div class="card border border-primary mt-n8">
+						    	<div class="card-body my-n3" style="width: 226px;">
+						      		<div class="col-auto">
+		                        		<div class="row">
+		                           			<div class="col-auto">
+												<h4 class="card-title mb-2">결제내역</h4>
+												<div class="row">
+													<div class="col-auto ms-n3">
+														<div class="input-group input-group-sm" style="width: 232px;">
+															<div class="form-check form-check-inline" aria-describedby="basic-addon1">
+																<input class="form-check-input" id="indexradio1" type="radio" name="index" value="1" aria-describedby="basic-addon1" checked="checked"/>
+																<label class="form-check-label" for="indexradio1">납입회비</label>
+															</div>
+															<div class="form-check form-check-inline ms-n3" aria-describedby="basic-addon1">
+																<input class="form-check-input" id="indexradio2" type="radio" name="index" value="2" aria-describedby="basic-addon1"/>
+																<label class="form-check-label" for="indexradio2">표준회비</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-auto">
+														<div class="input-group mb-3 input-group-sm">
+															<span class="input-group-text" id="basic-addon1">총결제금액</span>
+															<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+														</div>
+													</div>
+													<div class="col-auto">
+														<div class="input-group mb-3 input-group-sm">
+															<span class="input-group-text" id="basic-addon1">등록</span>
+															<input class="form-control" type="text" id="enter" name="enter" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
+														</div>
+													</div>
+												</div>
+												<div class="row mb-n3">
+													<div class="col-auto">
+														<div class="input-group mb-3 input-group-sm">
+															<span class="input-group-text" id="basic-addon1">총미납금액</span>
+															<input class="form-control" type="text" id="tremainprice" name="tremainprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
+														</div>
+													</div>
+													<div class="col-auto">
+														<div class="input-group mb-3 input-group-sm">
+															<span class="input-group-text" id="basic-addon1">잔여</span>
+															<input class="form-control" type="text" id="remain" name="remain" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
+														</div>
+													</div>
+												</div>
+		                           			</div>
+										</div>
+									</div>
+						    	</div>
+							</div>
+						</div>
 					</div>
 				</div>
 	        </div>
@@ -261,7 +326,7 @@
 						<div class="col-auto" style="margin-left: 41px;">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">총매출금액</span>
-								<input class="form-control" type="text" id="totalprice" name="totalprice" style="width: 120px;text-align: right;" readonly="readonly"/>
+								<input class="form-control" type="text" id="totalprice" name="totalprice" style="width: 120px;" readonly="readonly"/>
 							</div>
 						</div>
 					</div>
@@ -279,13 +344,13 @@
 						</div>
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;text-align: right;" readonly="readonly"/>
+								<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">총결제금액</span>
-								<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" style="width: 120px;text-align: right;" readonly="readonly"/>
+								<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" style="width: 120px;" readonly="readonly"/>
 							</div>
 						</div>
 					</div>
@@ -295,13 +360,13 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">합계</span>
-								<input class="form-control" type="text" id="sortprice" name="sortprice" style="width: 120px;text-align: right;" readonly="readonly"/>
+								<input class="form-control" type="text" id="sortprice" name="sortprice" style="width: 120px;" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto" style="margin-left: 98px;">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">총미납금액</span>
-								<input class="form-control" type="text" id="tremainprice" name="tremainprice" style="width: 120px;text-align: right;" readonly="readonly"/>
+								<input class="form-control" type="text" id="tremainprice" name="tremainprice" style="width: 120px;" readonly="readonly"/>
 							</div>
 						</div>
 					</div>
@@ -344,7 +409,7 @@
 									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
 									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
 									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
-									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${paidprice}" pattern="#,###"/></td>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${paidprice}</td>
 									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
 									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
 									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
@@ -375,7 +440,7 @@
 	    				<div class="col-auto ms-n3">
 	    					<div class="input-group mb-3 input-group-sm">
 								<span class="input-group-text">변경차액</span>
-								<input class="form-control" type="text" style="width: 137px;text-align: right;font-weight: 900;" id="changeprice" name="changeprice" readonly="readonly"/>
+								<input class="form-control" type="text" style="width: 137px;" id="changeprice" name="changeprice" readonly="readonly"/>
 							</div>
 	    				</div>
 	    			</div>
@@ -383,7 +448,7 @@
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">금액</span>
-						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly"/>
 					</div>
 				</div>
 				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">

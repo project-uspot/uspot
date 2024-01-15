@@ -128,4 +128,8 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	public List<tblpaid> tblpaidbypaidgroupsaleno(tblpaid tblpaid) throws Exception {
 		return paidDAO.tblpaidbypaidgroupsaleno(tblpaid);
 	}
+	@Override
+	public void paidchange(tblpaid tblpaid) throws Exception {
+		paidDAO.paidchange(tblpaid);
+	}
 }

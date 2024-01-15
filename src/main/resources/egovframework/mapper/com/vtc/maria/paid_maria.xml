@@ -421,4 +421,10 @@
 			IsDelete = 'N'
 		and PaidGroupSaleNo = #{PaidGroupSaleNo}
 	</select>
+	<update id="paidchange" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		update tblpaid set
+		PaidGroupSaleNo = #{PaidGroupSaleNo}
+		where
+			FPKID = #{FPKID}
+	</update>
 </mapper>

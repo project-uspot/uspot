@@ -637,7 +637,7 @@
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
                     <button class="btn btn-soft-secondary" type="button" onclick="mitemreinsertF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
                     <button class="btn btn-soft-success" type="button" onclick="mitemchange()"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
-                    <button class="btn btn-soft-danger" type="button"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
+                    <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
                     <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
                     <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(F10)</button>
                     <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록</button>
@@ -651,7 +651,7 @@
                     var remembersubname = '';
                     var rememberweekname = '';
                     var rememberlevelname = '';
-
+					var rememberstate = '';
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
@@ -668,6 +668,20 @@
                     }
                     
                     function mitemreinsertF() {
+                    	if(remembersaleno == ''){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('수강을 선택해주세요.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
+                    	if(rememberstate == '반변경(-)'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('반 변경전 데이터는 [신규]버튼을 이용하여 해당 수강정보를 등록하십시오.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                     	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
                         if (myPopup === undefined || myPopup.closed) {
@@ -683,6 +697,13 @@
 					}
                     
                     function mitemselectF() {
+                    	if(rememberstate == '반변경(-)'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('반변경처리된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                         var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
                         if (myPopup === undefined || myPopup.closed) {
@@ -698,8 +719,39 @@
                     }
                     
                     function mitemchange() {
+                    	if(remembersaleno == ''){
+                    		alert('수강을 선택해주세요');
+                    		return false;
+                    	}
                     	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
                     	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
+                    
+                    function mitemrefund() {
+                    	if(remembersaleno == ''){
+                    		alert('수강을 선택해주세요');
+                    		return false;
+                    	}
+                    	if(rememberstate == '반변경(-)'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('반변경전 데이터는 환불대상이 아닙니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
+                    	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
+                    	var url = 'mitemrefundF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
@@ -748,7 +800,7 @@
                     });
                     var previousRow = null;
 					//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
-					function fmsc_s01onclick(rtodate,saleno,clickedRow,groupname,subname,weekname,levelname) {
+					function fmsc_s01onclick(rtodate,saleno,clickedRow,groupname,subname,weekname,levelname,state) {
 						if (previousRow !== null) {
 					    	$(previousRow).css('background-color', '');
 					    }
@@ -760,6 +812,7 @@
 	                    remembersubname = subname;
 	                    rememberweekname = weekname;
 	                    rememberlevelname = levelname;
+	                    rememberstate = state;
 					}
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
@@ -794,7 +847,7 @@
                                             </thead>
                                             <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}')" ondblclick="mitemselectF()">
+                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}','${list.state}')" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원' || list.state eq '반변경(+)' }">

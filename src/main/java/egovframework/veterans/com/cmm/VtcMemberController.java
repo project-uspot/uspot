@@ -935,7 +935,7 @@ public class VtcMemberController {
 	
 	@PostMapping("/classchange")
 	@ResponseBody
-	public int classchange(fmsc_s01 fmsc_s01)throws Exception{
+	public int classchange(fmsc_s01 fmsc_s01,tblpaid tblpaid)throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
 		fmsc_s01 oldfmS01 = new fmsc_s01();
@@ -958,15 +958,70 @@ public class VtcMemberController {
 		vtcMemberService.oldfmsc_s01update(fmsc_s01);
 		
 		fmsc_s01.setSiteCode(users.getSiteCode());
+		fmsc_s01.setUserPKID(users.getUserPKID());
 		fmsc_s01.setAddUserPKID(users.getUserPKID());
 		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+		fmsc_s01.setPrevInType("반변경");
+
+		int oldsaleno = fmsc_s01.getSaleNo();
 		
-		System.out.println(fmsc_s01.getSaleNo());
-		System.out.println(fmsc_s01);
+		tblpaid.setFPKID(oldsaleno);
+		
 		vtcMemberService.fmsc_01insert(fmsc_s01);
-		System.out.println(fmsc_s01.getSaleNo());
 		
+		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
 		
-		return 1;
+		vtcPaidService.paidchange(tblpaid);
+		
+		return fmsc_s01.getSaleNo();
+	}
+	
+	@GetMapping("/mitemrefundF.do")
+	public String mitemrefundF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
+								@RequestParam(name = "itemname")String itemname)throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		dc.setSiteCode(users.getSiteCode());
+		tblmember.setMemberID(result.getCustCode());
+		tblpaid.setPaidGroupSaleNo(result.getSaleNo());
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		List<tblpaid> paidlist = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
+		
+		String mleveltext = "";
+		String dcname = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		for(DC dc2 : dcList) {
+			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+				dcname = dc2.getDcName();
+			}
+		}
+
+		LocalDate currentDate = LocalDate.now();
+        
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
+		
+		model.addAttribute("member",member);
+		model.addAttribute("mleveltext",mleveltext);
+		model.addAttribute("dcname",dcname);
+		model.addAttribute("dclist",dcList);
+		model.addAttribute("itemname",itemname);
+		model.addAttribute("fmsc_s01", result);
+		model.addAttribute("paidlist",paidlist);
+		model.addAttribute("yearage",yearage);
+		
+		return "member/registration/mitemrefundF";
+		
 	}
 }

@@ -127,9 +127,9 @@
 									    <td class="member align-middle white-space-nowrap text-start">${item.DaesangName}</td>
 									    <td class="teacher align-middle white-space-nowrap text-start">${item.SawonName}</td>
 									    <td class="date py-2 align-middle white-space-nowrap">${fmsc_s01.fromDate}~${fmsc_s01.toDate}(${fmsc_s01.regMonth})</td>
-									    <td class="price py-2 align-middle white-space-nowrap">${fmsc_s01.itemPrice}</td>
-									    <td class="dc py-2 align-middle white-space-nowrap">${fmsc_s01.DCPrice}</td>
-									    <td class="sort py-2 align-middle white-space-nowrap">${fmsc_s01.realPrice}</td>
+									    <td class="price py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/></td>
+									    <td class="dc py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/></td>
+									    <td class="sort py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/></td>
 									    <td class="dccode py-2 align-middle white-space-nowrap">${fmsc_s01.DCID}</td>
 									    <td class="dcpercent py-2 align-middle white-space-nowrap">${fmsc_s01.discountRate}</td>
 									    <td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
@@ -184,22 +184,22 @@
 							<span class="input-group-text" id="basic-addon1">강습료</span>
 							<select class="form-select" aria-label="Default select example" id="price" aria-describedby="basic-addon1" style="width: 152px; text-align: right;">
 								<c:if test="${not empty DefPrice}">
-									<option value="${DefPrice}">어른${DefPrice}</option>
+									<option value="${DefPrice}">어른<fmt:formatNumber value="${item.DefPrice}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price1}">
-									<option value="${Price1}">청소년${Price1}</option>
+									<option value="${Price1}">청소년<fmt:formatNumber value="${item.Price1}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price2}">
-									<option value="${Price2}">어린이${Price2}</option>
+									<option value="${Price2}">어린이<fmt:formatNumber value="${item.Price2}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price3}">
-									<option value="${Price3}">경로${Price3}</option>
+									<option value="${Price3}">경로<fmt:formatNumber value="${item.Price3}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price4}">
-									<option value="${Price4}">기본금${Price4}</option>
+									<option value="${Price4}">기본금<fmt:formatNumber value="${item.Price4}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price5}">
-									<option value="${Price5}">${Price5}</option>								
+									<option value="${Price5}"><fmt:formatNumber value="${item.Price5}" pattern="#,###"/></option>								
 								</c:if>
 							</select>
 						</div>
@@ -252,7 +252,8 @@
 					</div>
 					<div class="col-auto ms-n2">
 						<div class="input-group mb-3 w-auto input-group-sm">
-							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" style="width: 99px;" value="${fmsc_s01.DCPrice}"/>
+							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" 
+							style="width: 99px;text-align: right;" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"/>
 						</div>
 					</div>
 				</div>
@@ -266,7 +267,7 @@
 		        	<div class="col-md-5" style="width: 312px;">
 		        		<div class="input-group mb-3 ms-n3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">합계</span>
-							<input class="form-control" type="number" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly" value="${fmsc_s01.realPrice}"/>
+							<input class="form-control" type="text" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly" value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>"/>
 						</div>
 		        	</div>
 		        </div>
@@ -324,7 +325,8 @@
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총매출금액</span>
 													<input class="form-control" type="text" id="totalprice" name="totalprice" 
-													aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.realPrice}"/>
+													aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly"
+													 value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -340,7 +342,8 @@
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총결제금액</span>
 													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice"
-													 aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.realPrice-fmsc_s01.misu}"/>
+													 aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly"
+													  value="<fmt:formatNumber value="${fmsc_s01.realPrice-fmsc_s01.misu}" pattern="#,###"/>"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -356,7 +359,7 @@
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총미납금액</span>
 													<input class="form-control" type="text" id="tremainprice" name="tremainprice"
-													 aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly" value="${fmsc_s01.misu}"/>
+													 aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly" value="<fmt:formatNumber value="${fmsc_s01.misu}" pattern="#,###"/>"/>
 												</div>
 											</div>
 											<div class="col-auto">
@@ -392,8 +395,7 @@
 				<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">강습료</span>
-						<input class="form-control" type="number" id="learnprice" name="learnprice"
-						 aria-label="Amount (to the nearest dollar)" min="0" readonly="readonly" style="text-align: right;" value="${fmsc_s01.itemPrice}"/>
+						<input class="form-control" type="text" id="learnprice" name="learnprice" readonly="readonly" style="text-align: right;font-weight: 900;" value="<fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/>"/>
 					</div>
 				</div>
 		    </div>
@@ -426,7 +428,7 @@
 									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
 									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
 									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
-									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${paidprice}</td>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${paidprice}" pattern="#,###"/></td>
 									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
 									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
 									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
@@ -448,8 +450,8 @@
 	    	<div class="card-body my-n3">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
-						<span class="input-group-text">받은금액</span>
-						<input class="form-control" type="number" aria-label="Amount (to the nearest dollar)" min="0"/>
+						<span class="input-group-text">받을금액</span>
+						<input class="form-control" type="text" value="<fmt:formatNumber value="${fmsc_s01.misu}" pattern="#,###"/>" style="text-align: right;font-weight: 900;" id="payprice" name="payprice" readonly="readonly"/>
 					</div>
 				</div>
 				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
@@ -494,8 +496,8 @@ document.addEventListener('keydown', function(event) {
 $('#price').on('change', function() {
     // 선택된 옵션의 값 가져오기
 	var selectedValue = $('#price').val();
-    $('#itemtbody').find('.price').text(selectedValue);
-    $('#learnprice').val(selectedValue);
+    $('#itemtbody').find('.price').text(formatNumberWithCommas(selectedValue));
+    $('#learnprice').val(formatNumberWithCommas(selectedValue));
     sortchange();
 });
 
@@ -569,15 +571,15 @@ $('#todate').on('change', function() {
    
 //소계바꾸는 함수
 function sortchange(){
-	var price = $('#itemtbody').find('.price').text();
+	var price = removeCommasFromNumber($('#itemtbody').find('.price').text());
 	var dcpercent = parseInt($('#itemtbody').find('.dcpercent').text());
 	const regmonth = $('#regmonth').val();
 	var dcprice = price*(dcpercent*0.01);
 	var afterdcprice = price-dcprice;
-	$('#itemtbody').find('.dc').text(dcprice*regmonth);
-	$('#itemtbody').find('.sort').text(afterdcprice*regmonth);
-	$('#dcpri').val(dcprice*regmonth);
-	$('#sortpri').val(afterdcprice*regmonth);
+	$('#itemtbody').find('.dc').text(formatNumberWithCommas(dcprice*regmonth));
+	$('#itemtbody').find('.sort').text(formatNumberWithCommas(afterdcprice*regmonth));
+	$('#dcpri').val(formatNumberWithCommas(dcprice*regmonth));
+	$('#sortpri').val(formatNumberWithCommas(afterdcprice*regmonth));
 	totalchange();
 }
    
@@ -586,14 +588,16 @@ function totalchange(){
 	var tpaidprice = 0;
 	
 	$('#paidbody tr').each(function() {
-		tpaidprice += parseInt($(this).find('.paidprice').text());
+		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
  	});
 	
 	$('#totalprice').val($('#sortpri').val());
 
-	$('#tpaidprice').val(tpaidprice);
+	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
 
-	$('#tremainprice').val($('#sortpri').val()-tpaidprice);
+	$('#tremainprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortpri').val())-tpaidprice));
+	
+	$('#payprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortpri').val())-tpaidprice));
 }
    
 //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
@@ -620,7 +624,7 @@ function formatDate(date) {
 }
 
 function save() {
-	if($('#tremainprice').val() != 0){
+	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
 		$('#resultmessage').html('미납금액이 존재합니다.<br>미납금액정산 없이 저장하시겠습니까?');
 		$('.modal-footer').empty();
 		var okaybutton = '<button class="btn btn-primary" type="button" onclick="fmsc_01save()">확인</button>';
@@ -655,10 +659,10 @@ function fmsc_01save() {
         	RegMonth : result[2],
         	DCID : $('#itemtbody').find('.dccode').text(),
         	DiscountRate : $('#itemtbody').find('.dcpercent').text(),
-        	DCPrice : $('#itemtbody').find('.dc').text(),
-        	ItemPrice : $('#itemtbody').find('.price').text(),
-        	RealPrice : $('#itemtbody').find('.sort').text(),
-        	Misu : $('#tremainprice').val()
+        	DCPrice : removeCommasFromNumber($('#itemtbody').find('.dc').text()),
+        	ItemPrice : removeCommasFromNumber($('#itemtbody').find('.price').text()),
+        	RealPrice : removeCommasFromNumber($('#itemtbody').find('.sort').text()),
+        	Misu : removeCommasFromNumber($('#tremainprice').val())
         },
         success: function(){
         	var numberOfTR = $('#paidbody tr#new').length;
@@ -674,7 +678,7 @@ function fmsc_01save() {
 		    	        	RealSaleDate : $(this).find('.paiddate').text(),
 		    	        	SaleType : '등록',
 		    	        	PayType : $(this).find('.paidcategory').text(),
-		    	        	Price : $(this).find('.paidprice').text(),
+		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
 		    	        	AssignType : $(this).find('.paidassignType').text(),
 		    	        	PaidGroupSaleNo : $('#itemtbody').find('input[name="SaleNo"]').val()
 		    	        },
@@ -708,7 +712,7 @@ function extractYearMonth(dateString) {
   
 //현금 결제
 function paycash() {
-	if($('#tremainprice').val() == 0 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) == 0 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -748,6 +752,44 @@ function getCurrentDateTime() {
 	var seconds = ('0' + today.getSeconds()).slice(-2); 
 	var datestring = year + '-' + month  + '-' + day +' '+ hours + ':' + minutes  + ':' + seconds; 
 	return datestring;
+}
+
+//금액에 , 를 붙혀서 return 해주는 함수
+function formatNumberWithCommas(amount) {
+    // Check if the input is a valid number
+    if (isNaN(amount)) {
+        return "Invalid input";
+    }
+
+    // Convert the number to a string
+    let amountStr = amount.toString();
+
+    // Split the string into integer and decimal parts
+    let parts = amountStr.split('.');
+
+    // Add commas to the integer part
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Join the integer and decimal parts back together
+    let formattedAmount = parts.join('.');
+
+    return formattedAmount;
+}
+
+//금액에 붙은 , 를 지워주는 함수
+function removeCommasFromNumber(formattedNumber) {
+    // Remove commas from the string
+    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+
+    // Convert the string to a number
+    let numericValue = parseFloat(numberWithoutCommas);
+
+    // Check if the conversion was successful
+    if (isNaN(numericValue)) {
+        return "Invalid input";
+    }
+
+    return numericValue;
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
