@@ -494,4 +494,22 @@ from fmsc_s01
 		where
 			SaleNo = #{SaleNo}
 	</update>
+	<select id="finddues" resultType="int" parameterType="String">
+		select dues from tblduescheck
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete ='N'
+	</select>
+	<update id="dueschange" parameterType="map">
+		update tblduescheck
+		set
+			dues = #{dues},
+			AddDate = now(),
+			AddUserPKID = #{AddUserPKID},
+			UpdDate = now(),
+			UpdUserPKID = #{UpdUserPKID}
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N' 
+	</update>
 </mapper>

@@ -161,6 +161,10 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	@Override
 	public List<selectitem> findItem(Map<String, Object> find) throws Exception {
 		return itemDAO.findItem(find);
+	}
+	@Override
+	public int itemmonthbyitemid(int itemid) throws Exception {
+		return itemDAO.itemmonthbyitemid(itemid);
 	}	
 	
 }

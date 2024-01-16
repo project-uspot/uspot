@@ -49,4 +49,5 @@ public interface VtcItemService {
 	List<selectitembyitemcode> daylist(String SiteCode)throws Exception;
 	List<maturitylist> maturitylist(Map<String, Object> map)throws Exception;
 	List<selectitem> findItem(Map<String, Object> find) throws Exception;
+	int itemmonthbyitemid(int itemid)throws Exception;
 }

@@ -167,4 +167,14 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public void oldfmsc_s01update(fmsc_s01 fmsc_s01) throws Exception {
 		vtcMemberDAO.oldfmsc_s01update(fmsc_s01);
 	}
+
+	@Override
+	public int finddues(String SiteCode) throws Exception {
+		return vtcMemberDAO.finddues(SiteCode);
+	}
+
+	@Override
+	public void dueschange(Map<String, Object> map) throws Exception {
+		vtcMemberDAO.dueschange(map);
+	}
 }

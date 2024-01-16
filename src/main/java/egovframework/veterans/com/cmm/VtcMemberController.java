@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
+import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcSamulhamService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
+import egovframework.veterans.com.cmm.service.vo.TblItem;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
@@ -45,6 +47,7 @@ public class VtcMemberController {
 	private final VtcSamulhamService vtcSamulhamService;
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
+	private final VtcItemService vtcItemService;
 
 	@GetMapping("/memberlist.do")
 	private String membershipF(Model model, tblmember tblmember) throws Exception {
@@ -991,7 +994,6 @@ public class VtcMemberController {
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
 		List<DC> dcList = vtcDCService.dclist(dc);
-		List<tblpaid> paidlist = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
 		
 		String mleveltext = "";
 		String dcname = "";
@@ -1007,21 +1009,46 @@ public class VtcMemberController {
 				dcname = dc2.getDcName();
 			}
 		}
-
-		LocalDate currentDate = LocalDate.now();
-        
-		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
 		
+		tblCode.setCodeGroupID("22");
+		List<tblCode> gongjelist = vtcService.listTblCode(tblCode);
+		
+		tblCode.setCodeGroupID("23");
+		List<tblCode> wiyaklist = vtcService.listTblCode(tblCode);
+		
+		tblCode.setCodeGroupID("21");
+		List<tblCode> julsaklist = vtcService.listTblCode(tblCode);
+        
 		model.addAttribute("member",member);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
 		model.addAttribute("dclist",dcList);
 		model.addAttribute("itemname",itemname);
 		model.addAttribute("fmsc_s01", result);
-		model.addAttribute("paidlist",paidlist);
-		model.addAttribute("yearage",yearage);
-		
+		model.addAttribute("paidlist",vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid));
+		model.addAttribute("itemmonth",vtcItemService.itemmonthbyitemid(result.getItemPKID()));
+		model.addAttribute("duescheck",vtcMemberService.finddues(users.getSiteCode()));
+		model.addAttribute("gongjelist",gongjelist);
+		model.addAttribute("wiyaklist",wiyaklist);
+		model.addAttribute("julsaklist",julsaklist);
 		return "member/registration/mitemrefundF";
 		
+	}
+	
+	@PostMapping("/dueschange")
+	public void dueschange(@RequestParam(value = "dues")int dues)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		System.out.println(users);
+		
+		Map<String, Object> duescheck = new HashMap<String, Object>();
+		
+		duescheck.put("dues",dues);
+		duescheck.put("SiteCode",users.getSiteCode());
+		duescheck.put("AddUserPKID",users.getUserPKID());
+		duescheck.put("UpdUserPKID",users.getUserPKID());
+		
+		vtcMemberService.dueschange(duescheck);
 	}
 }
