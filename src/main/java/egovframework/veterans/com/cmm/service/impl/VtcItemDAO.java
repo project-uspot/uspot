@@ -121,8 +121,7 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	public List<selectitem> findItem(Map<String, Object> find) {
 		return selectList("item.findItem", find);
 	}
-	
-	
-	
-	
+	public int itemmonthbyitemid(int itemid)throws Exception{
+		return selectOne("item.itemmonthbyitemid",itemid);
+	}
 }

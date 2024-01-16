@@ -123,4 +123,11 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public void oldfmsc_s01update(fmsc_s01 fmsc_s01)throws Exception{
 		update("member.oldfmsc_s01update",fmsc_s01);
 	}
+	public int finddues(String SiteCode)throws Exception{
+		return selectOne("member.finddues", SiteCode);
+	}
+	
+	public void dueschange(Map<String, Object> map)throws Exception{
+		update("member.dueschange",map);
+	}
 }

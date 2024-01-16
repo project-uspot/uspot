@@ -559,6 +559,11 @@
 		OR (#{findcategory} = '1' AND SubGroupName LIKE CONCAT('%', #{findvalue}, '%'))
 		OR (#{findcategory} = '2' AND LevelName LIKE CONCAT('%', #{findvalue}, '%'))
 		OR (#{findcategory} = '3' AND YakChing LIKE CONCAT('%', #{findvalue}, '%'))
-		
+	</select>
+	<select id="itemmonthbyitemid" parameterType="int" resultType="int">
+		select ItemMonth from tblitem
+		where
+			ItemID = #{ItemID}
+		and IsDelete  = 'N'
 	</select>
 </mapper>

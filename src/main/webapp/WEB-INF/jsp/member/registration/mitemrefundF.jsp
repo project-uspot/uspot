@@ -39,24 +39,26 @@
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
 </head>
 <body style="overflow: hidden;">
-    <div class="card h-100 mb-1" style="width: 1282px;">
+    <div class="card h-100 mb-1" style="width: 1595px;">
         <div class="card-body mb-n4 mt-n3">
-            <div class="col-12 col-xxl-8">
+            <div class="col-12">
                 <div>
                     <div class="row g-3">
                         <h3 class="mb-3 w-25 pt-2">환불정보 등록 및 변경</h3>
-                        <div class="col-auto position-absolute" style="margin-left:700px;">
-                            <button class="btn btn-phoenix-primary" type="button" onclick="save()" >환불대기(T)</button>
+                        <div style="margin-top: -46px;margin-left: 300px;">
+                        	<div class="col-auto position-absolute" style="margin-left:700px;">
+	                            <button class="btn btn-phoenix-primary" type="button" onclick="save()" >환불대기(T)</button>
+	                        </div>
+	                        <div class="col-auto position-absolute" style="margin-left:850px;">
+	                            <button class="btn btn-phoenix-secondary" type="button" onclick="save()" >대기취소(Q)</button>
+	                        </div>
+	                        <div class="col-auto position-absolute" style="margin-left:1000px;">
+	                            <button class="btn btn-success" type="button" onclick="save()" >환불완료(S)</button>
+	                        </div>
+	                        <div class="col-auto position-absolute" style="margin-left:1150px;">
+	                            <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
+	                    	</div>
                         </div>
-                        <div class="col-auto position-absolute" style="margin-left:850px;">
-                            <button class="btn btn-phoenix-secondary" type="button" onclick="save()" >대기취소(Q)</button>
-                        </div>
-                        <div class="col-auto position-absolute" style="margin-left:1000px;">
-                            <button class="btn btn-success" type="button" onclick="save()" >환불완료(S)</button>
-                        </div>
-                        <div class="col-auto position-absolute" style="margin-left:1150px;">
-                            <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
-                    	</div>
                     </div>
                 </div>
             </div>
@@ -105,7 +107,7 @@
 	        </div>
 	    </div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 465px;">
-	        <div class="card-body mb-n5 mt-n3 mx-n4" style="height: 330px; width: 510px;">
+	        <div class="card-body mb-n5 mt-n3 mx-n4" style="height: 425px; width: 510px;">
 	            <div class="col-md-10">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">강습반</span>
@@ -147,7 +149,7 @@
 				</div>
 				<div class="col-md-5">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">강습료</span>
+						<span class="input-group-text" id="basic-addon1">A.강습료</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemprice" name="olditemprice" 
 						value="<fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
 					</div>
@@ -156,7 +158,7 @@
 					<div class="row">
 						<div class="col-md-5">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">할인</span>
+								<span class="input-group-text" id="basic-addon1">B.할인</span>
 								<input class="form-control" type="text"  id="olddcprice" name="olddcprice" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"  
 								readonly="readonly" style="text-align: right;"/>
 							</div>
@@ -178,23 +180,23 @@
 				</div>
 				<div class="col-md-5">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">판매금액</span>
+						<span class="input-group-text" id="basic-addon1">C.판매금액</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice"
 						 value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="input-group input-group-sm" style="width: 193px;">
-						<span class="input-group-text" id="basic-addon1">결제금액</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" readonly="readonly"/>
+						<span class="input-group-text" id="basic-addon1">D.결제금액</span>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="tpaidprice" name="tpaidprice" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-auto">
 					<div class="row">
 						<div class="col-md-5">
 							<div class="input-group input-group-sm" style="width: 193px;">
-								<span class="input-group-text" id="basic-addon1">결제금액</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" readonly="readonly"/>
+								<span class="input-group-text" id="basic-addon1">E.기본개월</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="itemmonth" name="itemmonth" readonly="readonly" value="${itemmonth}" style="text-align: center;"/>
 							</div>
 						</div>
 						<div class="col-auto">
@@ -203,48 +205,65 @@
 						      		<div class="col-auto">
 		                        		<div class="row">
 		                           			<div class="col-auto">
-												<h4 class="card-title mb-2">결제내역</h4>
+												<h4 class="card-title mb-2">환불 옵션</h4>
 												<div class="row">
 													<div class="col-auto ms-n3">
 														<div class="input-group input-group-sm" style="width: 232px;">
 															<div class="form-check form-check-inline" aria-describedby="basic-addon1">
-																<input class="form-check-input" id="indexradio1" type="radio" name="index" value="1" aria-describedby="basic-addon1" checked="checked"/>
-																<label class="form-check-label" for="indexradio1">납입회비</label>
+																<c:if test="${duescheck == 1}">
+																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="0" aria-describedby="basic-addon1"/>
+																</c:if>
+																<c:if test="${duescheck == 0}">
+																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="0" aria-describedby="basic-addon1" checked="checked"/>
+																</c:if>
+																<label class="form-check-label" for="dues1">납입회비</label>
 															</div>
 															<div class="form-check form-check-inline ms-n3" aria-describedby="basic-addon1">
-																<input class="form-check-input" id="indexradio2" type="radio" name="index" value="2" aria-describedby="basic-addon1"/>
-																<label class="form-check-label" for="indexradio2">표준회비</label>
+																<c:if test="${duescheck == 0}">
+																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="1" aria-describedby="basic-addon1"/>
+																</c:if>
+																<c:if test="${duescheck == 1}">
+																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="1" aria-describedby="basic-addon1" checked="checked"/>
+																</c:if>
+																<label class="form-check-label" for="dues1">표준회비</label>
 															</div>
 														</div>
 													</div>
 												</div>
-												<div class="row">
-													<div class="col-auto">
-														<div class="input-group mb-3 input-group-sm">
-															<span class="input-group-text" id="basic-addon1">총결제금액</span>
-															<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
-														</div>
-													</div>
-													<div class="col-auto">
-														<div class="input-group mb-3 input-group-sm">
-															<span class="input-group-text" id="basic-addon1">등록</span>
-															<input class="form-control" type="text" id="enter" name="enter" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
-														</div>
-													</div>
+												<div class="col-auto">
+													<select class="form-select form-select-sm mb-1" id="dcds" name="dcds">
+														<c:forEach var="gongje" items="${gongjelist}">
+															<c:choose>
+																<c:when test="${gongje.codeValue eq '1'}">
+																	<option value="${gongje.codeName}" selected="selected">${gongje.codeName}</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${gongje.codeName}">${gongje.codeName}</option>	
+																</c:otherwise>
+															</c:choose>
+					                                	</c:forEach>
+													</select>
 												</div>
-												<div class="row mb-n3">
-													<div class="col-auto">
-														<div class="input-group mb-3 input-group-sm">
-															<span class="input-group-text" id="basic-addon1">총미납금액</span>
-															<input class="form-control" type="text" id="tremainprice" name="tremainprice" aria-describedby="basic-addon1" style="width: 134px;" readonly="readonly"/>
-														</div>
-													</div>
-													<div class="col-auto">
-														<div class="input-group mb-3 input-group-sm">
-															<span class="input-group-text" id="basic-addon1">잔여</span>
-															<input class="form-control" type="text" id="remain" name="remain" aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly"/>
-														</div>
-													</div>
+												<div class="col-auto">
+													<select class="form-select form-select-sm mb-1" aria-label=".form-select-sm example">
+														<c:forEach var="wiyak" items="${wiyaklist}">
+															<c:choose>
+																<c:when test="${wiyak.codeValue eq '1'}">
+																	<option value="${wiyak.codeName}" selected="selected">${wiyak.codeName}</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${wiyak.codeName}">${wiyak.codeName}</option>	
+																</c:otherwise>
+															</c:choose>
+					                                	</c:forEach>
+													</select>
+												</div>
+												<div class="col-auto">
+													<select class="form-select form-select-sm mb-1" aria-label=".form-select-sm example">
+														<option value="1">원단위 반올림/내림</option>
+														<option value="2">원단위 절삭</option>
+														<option value="3">원단위 절상</option>
+													</select>
 												</div>
 		                           			</div>
 										</div>
@@ -257,37 +276,33 @@
 	        </div>
 	    </div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 562px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 330px;">
-	            <div class="col-md-10">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">강습반조회</span>
-						<input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)"/>
-						<span class="input-group-text" id="basic-addon2" onclick="finditem()" style="cursor: pointer;">찾기</span>
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 490px;">
+	        	<div class="row">
+	        		<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">환불일자</span>
+							<input class="form-control" type="date" name="regdate" id="regdate"/>
+						</div>
 					</div>
-				</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">변경강습반</span>
-						<input class="form-control" type="text" id="itemname" name="itemname" readonly="readonly"/>
-						<input type="hidden" name="itemid" id="itemid">
-						<input type="hidden" name="empcode" id="empcode">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">금액반환일</span>
+							<input class="form-control" type="date" id="canceldate" name="canceldate"/>
+						</div>
 					</div>
-				</div>
+	        	</div>
 				<div class="col-auto">
 					<div class="row">
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">강습료</span>
-								<select class="form-select" id="price" name="price" style="width: 152px; text-align: right;">
-									<option selected="selected" value="0">0</option>
-								</select>
+								<span class="input-group-text" id="basic-addon1" style="width: 85px;">총일수</span>
+								<input class="form-control" type="number" id="totalcnt" name="totalcnt" style="width: 75px;"/>
 							</div>
 						</div>
-						<div class="col-md-6 ms-n2">
+						<div class="col-auto ms-10">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">등록개월</span>
-								<input class="form-control" type="number" id="regmonth" name="regmonth"/>
-								<span class="input-group-text" id="basic-addon1">개월</span>
+								<span class="input-group-text" id="basic-addon1" style="width: 100px;">총 사용일수</span>
+								<input class="form-control" type="number" id="usecnt" name="usecnt" style="width: 75px;"/>
 							</div>
 						</div>
 					</div>
@@ -296,25 +311,7 @@
 					<div class="row">
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">강습기간</span>
-								<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate"/>
-							</div>
-						</div>
-						<div class="col-auto mt-1 mx-n4">
-							~
-						</div>
-						<div class="col-auto ms-n1">
-							<div class="input-group input-group-sm">
-								<input class="form-control" type="date" id="todate" name="todate"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">할인유형</span>
+								<span class="input-group-text" id="basic-addon1" style="width: 122px;">1_1.전원할인</span>
 								<select class="form-select" id="dcds" name="dcds" style="width: 152px; text-align: right;">
 									<option selected="selected" id="0" value="0"></option>
 									<c:forEach var="dc" items="${dclist}">
@@ -323,34 +320,33 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-auto" style="margin-left: 41px;">
+						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총매출금액</span>
-								<input class="form-control" type="text" id="totalprice" name="totalprice" style="width: 120px;" readonly="readonly"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">할인율/금액</span>
 								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
 							</div>
 						</div>
-						<div class="col-auto mt-1 mx-n4">
+						<div class="col-auto mt-1">
 							%
 						</div>
-						<div class="col-auto">
+						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
 								<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;" readonly="readonly"/>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-auto">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">1.전월사용금액</span>
+								<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly" style="width: 152px;"/>
+							</div>
+						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총결제금액</span>
-								<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" style="width: 120px;" readonly="readonly"/>
+								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
+								<span class="input-group-text" id="basic-addon1">개월(a)</span>
 							</div>
 						</div>
 					</div>
@@ -359,26 +355,158 @@
 					<div class="row">
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">합계</span>
-								<input class="form-control" type="text" id="sortprice" name="sortprice" style="width: 120px;" readonly="readonly"/>
+								<span class="input-group-text" id="basic-addon1" style="width: 122px;">2_1.(당월)할인</span>
+								<select class="form-select" id="dcds" name="dcds" style="width: 152px; text-align: right;">
+									<option selected="selected" id="0" value="0"></option>
+									<c:forEach var="dc" items="${dclist}">
+										<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
+                                	</c:forEach>
+								</select>
 							</div>
 						</div>
-						<div class="col-auto" style="margin-left: 98px;">
+						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총미납금액</span>
-								<input class="form-control" type="text" id="tremainprice" name="tremainprice" style="width: 120px;" readonly="readonly"/>
+								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="col-auto mt-1">
+							%
+						</div>
+						<div class="col-auto ms-n4">
+							<div class="input-group input-group-sm">
+								<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;" readonly="readonly"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="input-group input-group-sm" style="width: 272px;">
+						<span class="input-group-text" id="basic-addon1">2.(당월)위약금액</span>
+						<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-auto">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">4.(당월)사용금액</span>
+								<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly" style="width: 144px;"/>
+							</div>
+						</div>
+						<div class="col-auto ms-n4">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">3.(당월)사용일수</span>
+								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;"/>
+								<span class="input-group-text" id="basic-addon1">일</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="input-group input-group-sm" style="width: 272px;">
+						<span class="input-group-text" id="basic-addon1">5.공제합계(1+4)</span>
+						<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-auto">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">6.잔여개월금액</span>
+								<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly" style="width: 152px;"/>
+							</div>
+						</div>
+						<div class="col-auto ms-n4">
+							<div class="input-group input-group-sm">
+								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
+								<span class="input-group-text" id="basic-addon1">개월(b)</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="input-group input-group-sm" style="width: 272px;">
+						<span class="input-group-text" id="basic-addon1">7.반환금액</span>
+						<input class="form-control" type="number" id="dcper" name="dcper" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-auto">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">환불사유</span>
+								<select class="form-select" id="dcds" name="dcds" style="width: 163px; text-align: right;">
+									<option selected="selected" id="0" value="0"></option>
+									<option id="0" value="0">위약금 면제(감염증외)</option>
+									<option id="0" value="0">폐강(100%환불)</option>
+									<option id="0" value="0">반변경(100%환불)</option>
+									<option id="0" value="0">입력오류/결제수단변경</option>
+									<option id="0" value="0">고객단순변심</option>
+									<option id="0" value="0">부재(여행 및 출장,기타)</option>
+									<option id="0" value="0">건강사유</option>
+									<option id="0" value="0">시설불만</option>
+									<option id="0" value="0">강사/강습불만</option>
+									<option id="0" value="0">자원봉사자지원</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-auto ms-n4">
+							<div class="input-group input-group-sm">
+								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 282px;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="row">
+						<div class="col-auto">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">예금주</span>
+								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 201px;"/>
+							</div>
+						</div>
+						<div class="col-auto ms-n4">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">은행명</span>
+								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 111px;"/>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-auto">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">변경사유</span>
-						<input class="form-control" type="text" id="note" name="note"/>
+						<span class="input-group-text" id="basic-addon1">계좌번호</span>
+						<input class="form-control" type="text" id="dcper" name="dcper" style="width: 111px;"/>
 					</div>
 				</div>
 	        </div>
 	    </div>
+	    <div class="card border border-primary" style="width: 308px;height: 444px;">
+	    	<div class="card-body my-n3 mx-n5">
+	      		<div class="col-auto">
+	      			<div class="form-check">
+						<input class="form-check-input" id="flexRadioDefault1" type="radio" name="flexRadioDefault" />
+						<label class="form-check-label" for="flexRadioDefault1">기본개월 종목</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" id="flexRadioDefault2" type="radio" name="flexRadioDefault" checked="checked" />
+						<label class="form-check-label" for="flexRadioDefault2">기본1개월종목 2개월 이상(표준회비)</label>
+					</div>
+	      		</div>
+	      		<div class="col-auto">
+		      		1.기본개월 2개월 이상 강좌 등록시 총금액에 10% 위약금<br>
+		      		2.1개월강좌 다개월 등록시 당월만 10% 위약금(다개월 할인 불가)<br><br>
+		      		3.1개월 종목 2개월이상 등록시 환불계산<br>
+		      		1= ((A-(B/F)*a))*(-1)<br>
+		      		2= A*10% / 100<br>
+		      		3= 당일<br>
+		      		4= ((A/30일)*3번)*(-1)<br>
+		      		5= 1+2+4<br>
+		      		6= A*b(잔여개월금액은 확인용도)<br>
+		      		7= (D-5)
+	      		</div>
+	    	</div>
+		</div>
     </div>
     <div class="row">
 	    <div class="card w-60 h-50">
@@ -427,41 +555,21 @@
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
+	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 317px; ">
 	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 273px;">
 	    		<div class="col-auto">
-	    			<div class="row">
-	    				<div class="col-auto">
-	    					<div class="input-group mb-3 input-group-sm">
-								<span class="input-group-text">변경일자</span>
-								<input class="form-control" type="date" id="saledate" name="saledate"/>
-							</div>
-	    				</div>
-	    				<div class="col-auto ms-n3">
-	    					<div class="input-group mb-3 input-group-sm">
-								<span class="input-group-text">변경차액</span>
-								<input class="form-control" type="text" style="width: 137px;" id="changeprice" name="changeprice" readonly="readonly"/>
-							</div>
-	    				</div>
-	    			</div>
-				</div>
-	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
-						<span class="input-group-text">금액</span>
+						<span class="input-group-text">반환금</span>
 						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly"/>
 					</div>
 				</div>
-				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
+				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 283px;">
   					<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
   					<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
-					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
 				</div>
-				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
+				<div class="btn-group btn-group-sm" role="group" style="width: 283px;">
   					<button class="btn btn-soft-primary" type="button">신용카드</button>
   					<button class="btn btn-soft-success" type="button">영수증재발행</button>
-  					<button class="btn btn-soft-danger" type="button">결제취소</button>
-  					<button class="btn btn-soft-info" type="button">행삭제</button>
 				</div>
 	    	</div>
 	    </div>
@@ -472,6 +580,15 @@
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
 
+var tpaidprice = 0;
+
+$('#paidbody tr').each(function() {
+	tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
+});
+
+$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
+
+
 // Get today's date
 var today = new Date();
 
@@ -479,33 +596,15 @@ var today = new Date();
 var formattedDate = today.toISOString().split('T')[0];
 
 // Set the value of the input field to today's date
-document.getElementById('saledate').value = formattedDate;
-
+$('#regdate, #canceldate').val(formattedDate);
 //어른 어린이 등을 저장하는 변수 생성
 var codelist;
 
-//엔터시에 검색하는 기능
-function handleKeyPress(event) {
-	if (event.key === "Enter") {
-		finditem();
- 	}
-}
 	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
-		if($('#itemtbody tr').length > 0){
-			$('#resultmessage').html('강습정보가 존재합니다.<br>정말 나가시겠습니까?');
-			$('.modal-footer').empty();
-			var okaybutton = '<button class="btn btn-primary" type="button" onclick="window.close();">확인</button>';
-			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-			$('.modal-footer').append(okaybutton);
-			$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		} else{
-			window.close();
-		}
+		window.close();
    	}
    	else if (event.key === 'Escape' && modalcheck) {
    		setTimeout(() => {
@@ -513,139 +612,23 @@ document.addEventListener('keydown', function(event) {
    	    }, 500);
    	}
 });
-	
-//검색하고 검색결과를 팝업으로 여는 함수
-function finditem() {
-	var findstring = document.getElementById('findstring').value;
-	var oldfromdate = document.getElementById('oldfromdate').value;
-	if(findstring == '' || findstring == null){
-   		$('#resultmessage').text('검색어를 입력해주세요.');
-   		$('.modal-footer').empty();
-	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-	  	$('.modal-footer').append(cancelbutton);
-        $('#modalButton').click();
-        modalcheck = true;
-		return false;
-	}
-	var url = "mitemfindlist?findstring=" + findstring+"&finddate="+ oldfromdate;
-    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
-    window.open(url, "_blank", windowFeatures);
-}
-	
-// 검색 하고나서 선택된 값을 테이블에 추가하는 함수
-function test(ItemID,selectedDate,nextDate) {
+
+$('input[name=dues]').on('change', function() {
 	$.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
+        url: "dueschange", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 
-        	AddDate: ItemID,
-        	UpdDate: selectedDate
-        },
-        success: function(list) {
-        		var olddcid = $('#olddcname').attr('name');
-				$('#itemname').val('['+list.CategoryName+']'+list.JungName+' '+list.DayName+' '+list.LevelName);
-				$('#empcode').val(list.DamDangUserPKID);
-		       	$('#itemid').val(list.ItemID);
-				
-				var priceoptionlist = $('#price');
-		       	priceoptionlist.empty();
-		       	$.ajax({
-		   	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		   	        url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
-		   	        dataType : 'json',
-		   	        success: function(codelist) {
-		   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.DefPrice,
-		   		                value: codelist[0]+list.DefPrice,
-		   		                text: codelist[0]+formatNumberWithCommas(list.DefPrice)
-		   		            }));
-		   	        	}
-		   	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price1,
-		   	        	        value: codelist[1] + list.Price1,
-		   	        	        text: codelist[1]+formatNumberWithCommas(list.Price1)
-		   	        	    });
-
-		   	        	    priceoptionlist.append(option);
-
-		   	        	    if ($('#yearage').val() > 13 && $('#yearage').val() < 19) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price2,
-		   	        	        value: codelist[2] + list.Price2,
-		   	        	        text: codelist[2]+formatNumberWithCommas(list.Price2)
-		   	        	    });
-
-		   	        	    priceoptionlist.append(option);
-
-		   	        	    if ($('#yearage').val() >= 0 && $('#yearage').val() < 14) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price3,
-		   	        	    	value: codelist[3]+list.Price3,
-		   		                text: codelist[3]+formatNumberWithCommas(list.Price3)
-		   	        	    });
-		   	        	    priceoptionlist.append(option);
-		   	        	    if ($('#yearage').val() > 64) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price4,
-		   		                value: codelist[4]+list.Price4,
-		   		                text: codelist[4]+formatNumberWithCommas(list.Price4)
-		   		            }));
-		   	        	}
-		   	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price5,
-		   		                value: codelist[5]+list.Price5,
-		   		                text: codelist[5]+formatNumberWithCommas(list.Price5)
-		   		            }));
-		   	        	}
-		   	        	
-		   	        	$('#dcds option').each(function() {
-		   	             // Check if the current option's value is equal to olddcpriceValue
-							if ($(this).val() === olddcid) {
-								// If it matches, set the 'selected' attribute
-    							$(this).attr('selected', 'selected');
-    							$('#dcper').val($(this).attr('id'));
-							}
-		   	         	});
-		   	        	
-		   	        	sortchange();
-		   	        },
-		   	        error: function(xhr, status, error) {
-		   	       	 console.log("Status: " + status);
-		   	         console.log("Error: " + error);
-		   	        }
-		   		});
-				
-		       	$('#regmonth').val($('#oldregmonth').val());
-		       	if($('#oldfromdate').val()< formattedDate){
-		       		$('#fromdate').val(formattedDate);
-		       	}else{
-		       		$('#fromdate').val($('#oldfromdate').val());
-		       	}		       	
-		       	$('#todate').val($('#oldtodate').val());
-        },
+	    	dues : $(this).val()
+	    },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
          console.log("Error: " + error);
         }
 	});
-}
-	
+});
+
+
 function alldelete(){
 	window.location.reload();
 }
