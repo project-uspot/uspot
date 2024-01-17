@@ -58,5 +58,10 @@ public class VtcServiceImpl extends EgovAbstractServiceImpl implements VtcServic
 	@Override
 	public List<String> listcodename(tblCode tblCode) {
 		return VtcDAO.listcodename(tblCode);
+	}
+
+	@Override
+	public void optionchange(tblCode tblCode) throws Exception {
+		VtcDAO.optionchange(tblCode);
 	}	
 }

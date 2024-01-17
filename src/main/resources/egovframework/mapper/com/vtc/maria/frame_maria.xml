@@ -84,4 +84,9 @@
 		and IsDelete = 'N'
 		order by sortOrder asc
 	</select>
+	<update id="optionchange" parameterType="egovframework.veterans.com.cmm.service.vo.tblCode">
+		UPDATE tblcode
+		SET CodeValue = CASE WHEN CodeName = #{CodeName} THEN 1 ELSE 0 END
+		WHERE SiteCode = #{SiteCode} AND CodeGroupID = #{CodeGroupID}
+	</update>
 </mapper>
