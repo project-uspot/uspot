@@ -41,13 +41,7 @@ public class VtcDAO extends EgovComAbstractDAO{
 	public List<String> listcodename(tblCode tblCode){
 		return selectList("frame.listcodename",tblCode);
 	}
-
-
-	
-
-
-
-
-	
-
+	public void optionchange(tblCode tblCode)throws Exception {
+		update("frame.optionchange",tblCode);
+	}
 }

@@ -504,8 +504,6 @@ from fmsc_s01
 		update tblduescheck
 		set
 			dues = #{dues},
-			AddDate = now(),
-			AddUserPKID = #{AddUserPKID},
 			UpdDate = now(),
 			UpdUserPKID = #{UpdUserPKID}
 		where

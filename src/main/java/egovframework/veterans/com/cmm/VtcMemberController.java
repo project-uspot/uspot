@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.formula.functions.Code;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -1035,20 +1036,49 @@ public class VtcMemberController {
 		
 	}
 	
-	@PostMapping("/dueschange")
-	public void dueschange(@RequestParam(value = "dues")int dues)throws Exception{
+	@PostMapping("/optionchange")
+	public void dueschange(@RequestParam(value = "dues",defaultValue = "2")int dues,
+							@RequestParam(value = "gongje",required = false)String gongje,
+							@RequestParam(value = "wiyak",required = false)String wiyak,
+							@RequestParam(value = "julsak",required = false)String julsak,tblCode tblCode)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
-		System.out.println(users);
-		
-		Map<String, Object> duescheck = new HashMap<String, Object>();
-		
-		duescheck.put("dues",dues);
-		duescheck.put("SiteCode",users.getSiteCode());
-		duescheck.put("AddUserPKID",users.getUserPKID());
-		duescheck.put("UpdUserPKID",users.getUserPKID());
-		
-		vtcMemberService.dueschange(duescheck);
+
+		if(dues != 2) {
+			Map<String, Object> duescheck = new HashMap<String, Object>();
+			
+			duescheck.put("dues",dues);
+			duescheck.put("SiteCode",users.getSiteCode());
+			duescheck.put("UpdUserPKID",users.getUserPKID());
+			
+			vtcMemberService.dueschange(duescheck);
+		}
+		else if(gongje != null) {
+			
+			tblCode.setCodeName(gongje);
+			tblCode.setCodeGroupID("22");
+			tblCode.setSiteCode(users.getSiteCode());
+			tblCode.setUpdUserPKID(users.getUpdUserPKID());
+			
+			vtcService.optionchange(tblCode);
+		}
+		else if(wiyak != null) {
+			
+			tblCode.setCodeName(wiyak);
+			tblCode.setCodeGroupID("23");
+			tblCode.setSiteCode(users.getSiteCode());
+			tblCode.setUpdUserPKID(users.getUpdUserPKID());
+			
+			vtcService.optionchange(tblCode);
+		}
+		else if(julsak != null) {
+			
+			tblCode.setCodeName(julsak);
+			tblCode.setCodeGroupID("21");
+			tblCode.setSiteCode(users.getSiteCode());
+			tblCode.setUpdUserPKID(users.getUpdUserPKID());
+			
+			vtcService.optionchange(tblCode);
+		}
 	}
 }
