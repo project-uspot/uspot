@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -27,7 +28,23 @@ public class Functions {
 	
 	private String[] WEEKDAY_NAME = new String[]{"Sun_GroupPkid","Mon_GroupPkid","Tue_GroupPkid","Wed_GroupPkid","Thu_GroupPkid","Fri_GroupPkid","Sat_GroupPkid"};
 
+	
+	private byte bszUser_key[] = {
+			(byte)0x088, (byte)0x0E3, (byte)0x04F, (byte)0x08F,
+			(byte)0x008, (byte)0x017, (byte)0x079, (byte)0x0F1,
+			(byte)0x0E9, (byte)0x0F3, (byte)0x094, (byte)0x037,
+			(byte)0x00A, (byte)0x0D4, (byte)0x005, (byte)0x089
+	};
+
+	private byte bszIV[] = {
+			(byte)0x026, (byte)0x08D, (byte)0x066, (byte)0x0A7,
+			(byte)0x035, (byte)0x0A8, (byte)0x01A, (byte)0x081,
+			(byte)0x06F, (byte)0x0BA, (byte)0x0D9, (byte)0x0FA,
+			(byte)0x036, (byte)0x016, (byte)0x025, (byte)0x001
+	};
+	
 	private String Encryption_Use="1";
+	private String Encryption_SEED_Use = "1";
 	private String Encryption_Mode="0";
 	
 	public String getEncryption_Use() {
@@ -66,6 +83,72 @@ public class Functions {
 			
 		}else{
 			return sData;
+		}
+	}
+	
+	/*###############################
+	양방향암호화 SEED CBC
+	###############################*/
+	public String fn_Encrypt(String Data) throws Exception{
+		if(Encryption_SEED_Use.equals("1")){
+			//암호화
+			byte[] plainText = Data.getBytes("euc-kr");
+			byte[] cipherText = KISA_SEED_CBC.SEED_CBC_Encrypt(bszUser_key, bszIV, plainText, 0, plainText.length);
+	
+			return Base64.getEncoder().encodeToString(cipherText).replace("\r\n", "");
+		}else {
+			return Data;
+		}
+	}
+
+	public String fn_Encrypt(String Data,int num) throws Exception{
+		if(Encryption_SEED_Use.equals("1")){
+			//암호화
+			if(Data.length() < 4) {
+				return Data;
+			}
+	
+			String DataStr = Data.substring(0, Data.length()-num);
+			byte[] plainText = DataStr.getBytes("euc-kr");
+			byte[] cipherText = KISA_SEED_CBC.SEED_CBC_Encrypt(bszUser_key, bszIV, plainText, 0, plainText.length);
+	
+			return Base64.getEncoder().encodeToString(cipherText).replace("\r\n", "") + Data.substring(Data.length()-num);
+		}else {
+			return Data;
+		}
+	}
+
+	/*###############################
+	양방향복호화 SEED CBC
+	###############################*/
+	public String fn_Decrypt(String Data) throws Exception{
+		if(Encryption_SEED_Use.equals("1")){
+			//복호화
+			if(Data.length() == 0) {
+				return Data;
+			}
+			byte[] cipherText = Base64.getDecoder().decode(Data);
+			byte[] plainText = KISA_SEED_CBC.SEED_CBC_Decrypt(bszUser_key, bszIV, cipherText, 0, cipherText.length);
+	
+			return new String(plainText,"euc-kr");
+		}else {
+			return Data;
+		}
+	}
+
+	public String fn_Decrypt(String Data,int num) throws Exception{
+		if(Encryption_SEED_Use.equals("1")){
+			//복호화
+			if(Data.length() == 0) {
+				return Data;
+			}
+			String DataStr = Data.substring(0, Data.length()-num);
+			byte[] cipherText = Base64.getDecoder().decode(DataStr);
+			byte[] plainText = KISA_SEED_CBC.SEED_CBC_Decrypt(bszUser_key, bszIV, cipherText, 0, cipherText.length);
+	
+			return new String(plainText,"utf-8") + Data.substring(Data.length()-num);
+		}else {
+			return Data;
 		}
 	}
 	
