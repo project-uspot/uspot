@@ -45,6 +45,7 @@
 <script src="/lib/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 <script>
 	function Logout(){
+		//url
 		top.location = "<c:url value='/m99.do'/>";
 	}
 </script>
