@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 
 @Repository
@@ -129,5 +130,9 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void dueschange(Map<String, Object> map)throws Exception{
 		update("member.dueschange",map);
+	}
+	
+	public void insertFmsc_s04(fmsc_s04 fmsc_s04)throws Exception{
+		insert("member.insertFmsc_s04",fmsc_s04);
 	}
 }

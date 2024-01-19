@@ -486,8 +486,8 @@ from fmsc_s01
 	<update id="oldfmsc_s01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 		update fmsc_s01 set
 		RToDate = #{RToDate},
-		State = 'H-',
-		InType = '반변경',
+		State = #{State},
+		InType = #{InType},
 		CurState = -1,
 		UpdUserPKID = #{UpdUserPKID},
 		UpdDate = now()
@@ -510,4 +510,20 @@ from fmsc_s01
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N' 
 	</update>
+	<insert id="insertFmsc_s04" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04">
+		INSERT INTO uspot_test.fmsc_s04
+		(SiteCode, SaleNo, RegDate, CancelDate, 
+		TotalCnt, UseCnt, TotalClassPaidPrice, TotalPaidPrice, 
+		TotalMinapPrice, WiyakPrice, UsePrice, GongjePrice, 
+		ReturnPrice, Account, Bank, AccountNo, 
+		ItemMonth, RegMonth, Note, IsDelete, 
+		AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(
+		#{SiteCode},#{SaleNo},#{RegDate},#{CancelDate}, 
+		#{TotalCnt},#{UseCnt},#{TotalClassPaidPrice},#{TotalPaidPrice}, 
+		#{TotalMinapPrice},#{WiyakPrice},#{UsePrice},#{GongjePrice}, 
+		#{ReturnPrice},#{Account},#{Bank},#{AccountNo}, 
+		#{ItemMonth},#{RegMonth},#{Note},'N', 
+		now(),#{AddUserPKID},now(),#{UpdUserPKID})
+	</insert>
 </mapper>

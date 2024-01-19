@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.ss.formula.functions.Code;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +23,11 @@ import egovframework.veterans.com.cmm.service.VtcSamulhamService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
-import egovframework.veterans.com.cmm.service.vo.TblItem;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
@@ -957,6 +956,8 @@ public class VtcMemberController {
         }
 		
 		oldfmS01.setSaleNo(fmsc_s01.getSaleNo());
+		oldfmS01.setState("H-");
+		oldfmS01.setInType("반변경");
 		oldfmS01.setUpdUserPKID(users.getUserPKID());
 		
 		vtcMemberService.oldfmsc_s01update(fmsc_s01);
@@ -1080,5 +1081,26 @@ public class VtcMemberController {
 			
 			vtcService.optionchange(tblCode);
 		}
+	}
+	
+	@PostMapping("/itemrefund")
+	@ResponseBody
+	public int itemrefund(fmsc_s04 fmsc_s04,fmsc_s01 fmsc_s01) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s04.setSiteCode(users.getSiteCode());
+		fmsc_s04.setAddUserPKID(users.getUserPKID());
+		fmsc_s04.setUpdUserPKID(users.getUserPKID());
+		
+		fmsc_s01.setRToDate(fmsc_s04.getRegDate());
+		fmsc_s01.setState("F0");
+		fmsc_s01.setInType("환불");
+		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+
+		vtcMemberService.oldfmsc_s01update(fmsc_s01);
+
+		vtcMemberService.insertFmsc_s04(fmsc_s04);
+
+		return fmsc_s04.getSaleNo();
 	}
 }

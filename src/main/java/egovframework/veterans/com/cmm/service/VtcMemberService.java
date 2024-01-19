@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
@@ -68,4 +69,6 @@ public interface VtcMemberService {
 	int finddues(String SiteCode)throws Exception;
 	
 	void dueschange(Map<String, Object> map)throws Exception;
+	
+	void insertFmsc_s04(fmsc_s04 fmsc_s04)throws Exception;
 }
