@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import lombok.RequiredArgsConstructor;
 
@@ -176,5 +177,10 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	@Override
 	public void dueschange(Map<String, Object> map) throws Exception {
 		vtcMemberDAO.dueschange(map);
+	}
+
+	@Override
+	public void insertFmsc_s04(fmsc_s04 fmsc_s04) throws Exception {
+		vtcMemberDAO.insertFmsc_s04(fmsc_s04);
 	}
 }

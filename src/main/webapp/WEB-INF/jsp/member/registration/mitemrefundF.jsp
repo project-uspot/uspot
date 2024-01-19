@@ -159,7 +159,7 @@
 						<div class="col-md-5">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">B.할인</span>
-								<input class="form-control" type="text"  id="olddcprice" name="olddcprice" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"  
+								<input class="form-control" type="text"  id="dcprice" name="dcprice" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"  
 								readonly="readonly" style="text-align: right;"/>
 							</div>
 						</div>
@@ -356,12 +356,12 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">1.전월사용금액</span>
-								<input class="form-control" type="text" id="prevuseprice" name="prevuseprice" readonly="readonly" style="width: 152px;color:darkgray;text-align: right;"/>
+								<input class="form-control" type="text" id="prevuseprice" name="prevuseprice" readonly="readonly" value="0" style="width: 152px;color:darkgray;text-align: right;"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="number" id="prevusemmonth" name="prevusemmonth" style="width: 72px;" readonly="readonly"/>
+								<input class="form-control" type="number" id="prevusemmonth" name="prevusemmonth" style="width: 72px;" readonly="readonly" value="0"/>
 								<span class="input-group-text" id="basic-addon1">개월(a)</span>
 							</div>
 						</div>
@@ -405,7 +405,7 @@
 				<div class="col-auto">
 					<div class="input-group input-group-sm" style="width: 272px;">
 						<span class="input-group-text" id="basic-addon1">2.(당월)위약금액</span>
-						<input class="form-control" type="text" id="wiyakprice" name="wiyakprice" readonly="readonly" style="text-align: right;"/>
+						<input class="form-control" type="text" id="wiyakprice" name="wiyakprice" readonly="readonly" style="text-align: right;" value="0"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -419,7 +419,7 @@
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">3.(당월)사용일수</span>
-								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;"/>
+								<input class="form-control" type="number" id="currentuseday" name="currentuseday" style="width: 72px;"/>
 								<span class="input-group-text" id="basic-addon1">일</span>
 							</div>
 						</div>
@@ -428,7 +428,7 @@
 				<div class="col-auto">
 					<div class="input-group input-group-sm" style="width: 272px;">
 						<span class="input-group-text" id="basic-addon1">5.공제합계(1+4)</span>
-						<input class="form-control" type="text" id="gongjesum" name="gongjesum" readonly="readonly" style="text-align: right;"/>
+						<input class="form-control" type="text" id="gongjesum" name="gongjesum" readonly="readonly" style="text-align: right;color:darkgray;"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -436,12 +436,12 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">6.잔여개월금액</span>
-								<input class="form-control" type="text" id="remainprice" name="remainprice" readonly="readonly" style="width: 152px;text-align: right;"/>
+								<input class="form-control" type="text" id="remainprice" name="remainprice" readonly="readonly" style="width: 152px;text-align: right;color:darkgray;"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="number" id="remainmonth" name="remainmonth" style="width: 72px;" readonly="readonly"/>
+								<input class="form-control" type="number" id="remainmonth" name="remainmonth" style="width: 72px;color:darkgray;" readonly="readonly"/>
 								<span class="input-group-text" id="basic-addon1">개월(b)</span>
 							</div>
 						</div>
@@ -458,7 +458,7 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">환불사유</span>
-								<select class="form-select" id="dcds" name="dcds" style="width: 163px; text-align: right;">
+								<select class="form-select" id="note" name="note" style="width: 163px; text-align: right;">
 									<option selected="selected" id="0" value="0"></option>
 									<option id="0" value="0">위약금 면제(감염증외)</option>
 									<option id="0" value="0">폐강(100%환불)</option>
@@ -475,7 +475,7 @@
 						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 282px;"/>
+								<input class="form-control" type="text" id="notetext" name="notetext" style="width: 282px;"/>
 							</div>
 						</div>
 					</div>
@@ -485,13 +485,13 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">예금주</span>
-								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 201px;"/>
+								<input class="form-control" type="text" id="account" name="account" style="width: 201px;"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n4">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">은행명</span>
-								<input class="form-control" type="text" id="dcper" name="dcper" style="width: 111px;"/>
+								<input class="form-control" type="text" id="bank" name="bank" style="width: 111px;"/>
 							</div>
 						</div>
 					</div>
@@ -499,7 +499,7 @@
 				<div class="col-auto">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">계좌번호</span>
-						<input class="form-control" type="text" id="dcper" name="dcper" style="width: 111px;"/>
+						<input class="form-control" type="text" id="accountno" name="accountno" style="width: 111px;"/>
 					</div>
 				</div>
 	        </div>
@@ -563,7 +563,7 @@
                         	</thead>
                         	<tbody class="list" id="paidbody">
                         		<c:forEach var="paid" items="${paidlist}">
-	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static">
+	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="${paid.saleType}">
 									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
 									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
 									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
@@ -661,10 +661,19 @@ function optionchange(data) {
 
 $('input[name=dues]').on('change', function() {
 	optionchange({ dues: $(this).val() });
+	DuesCheck();
+	GongjeSum();
+	SetReturnrice();
 });
 
 $('#gongje, #wiyak, #julsak').on('change', function() {
 	optionchange({ [this.id]: $(this).val() });
+});
+
+$('#regdate').on('change', function() {
+	prevusepricechange();
+	currentvusepricechange();
+	GongjeSum();
 });
 
 //총일수 값 설정
@@ -696,6 +705,8 @@ if (daysDifference > 0) {
     $('#usecnt').val(0);
 }
 
+
+
 $('#prevdc').on('change', function() {
     // 선택된 옵션의 값 가져오기
 	var dcrate = $(this).find('option:selected').attr('id');
@@ -708,80 +719,150 @@ $('#currentdc').on('change', function() {
 	$('#currentdcper').val(dcrate);
 });
 
-//전월 사용금액 산정
-var selectedDate = new Date(fromDate);
-if($('#regmonth').val() >1 && $('#itemmonth').val()== 1){
-	// 월 차이 계산
-	var monthsApart = (today.getFullYear() - selectedDate.getFullYear()) * 12 + today.getMonth() - selectedDate.getMonth();
 
-	$('#prevusemmonth').val(monthsApart);
+
+//전월 사용금액 산정
+prevusepricechange();
+currentvusepricechange();
+
+function prevusepricechange(){
+	var selectedDate = new Date(fromDate);
+	var regdate = new Date($('#regdate').val());
+	if($('#regmonth').val() >1 && $('#itemmonth').val()== 1 && daysDifference>0){
+		// 월 차이 계산
+		var monthsApart = (regdate.getFullYear() - selectedDate.getFullYear()) * 12 + regdate.getMonth() - selectedDate.getMonth();
 	
-	$('#prevuseprice').val(formatNumberWithCommas($('#prevusemmonth').val()*removeCommasFromNumber($('#itemprice').val())));
+		$('#prevusemmonth').val(monthsApart);
+		
+		var itemprice = removeCommasFromNumber($('#itemprice').val());
+		var dcprice = removeCommasFromNumber($('#dcprice').val())/$('#regmonth').val();
+		
+		var realprice = itemprice-dcprice;
+		
+		$('#prevuseprice').val(formatNumberWithCommas($('#prevusemmonth').val()*realprice));
+	}
 }
+
 
 //위약금 퍼센트 추출
 var wiyak = parseInt($('#wiyak').val().match(/\((\d+)%\)/)[1], 10);;
-
-//위약금 공제시작후일 경우
-if($('#gongje').val() == '위약금공제(시작후)'){
-	//수강이 시작했을 경우
-	if(Math.floor(daysDifference) > 0){
-		todaysaledate();
-		if($('#saledate').val() == formattedDate){
-			$('#currentuseprice').val(0);
-		}else{
-			var useprice = removeCommasFromNumber($('#itemprice').val())*$('#regmonth').val()*$('#usecnt').val()/$('#totalcnt').val();
-			$('#currentuseprice').val(formatNumberWithCommas(useprice.toFixed(0)));
+DuesCheck();
+function DuesCheck(){
+	if($('#gongje').val() == '위약금공제(시작후)'){
+		if(daysDifference>0){
+			wiyakbygongje();
 		}
 	}else{
-		$('#wiyakprice').val(0);
+		wiyakbygongje();
 	}
-//위약금 공제시작전 일 경우	
-}else if($('#gongje').val() == '위약금공제(시작전)'){
-	todaysaledate();
-//위약금 공제 일 경우
-}else{
-	wiyakbygongje();
 }
+//위약금 공제시작후일 경우
+
 
 //dues 옵션에 따라 위약금액 설정하는 함수
 function wiyakbygongje(){
+	
+	var itemprice = removeCommasFromNumber($('#itemprice').val());
+	var dcprice = removeCommasFromNumber($('#dcprice').val())/$('#regmonth').val();
+	
+	var realprice = itemprice-dcprice;
+	
 	//기본개월이 1개월인데 강습기간이 1개월 이상일 경우 
 	if($('#itemmonth').val() ==1 && $('#regmonth').val() > 1){				
-		$('#wiyakprice').val(formatNumberWithCommas(removeCommasFromNumber($('#realprice').val())*wiyak/100));
+		$('#wiyakprice').val(realprice*wiyak/100);
 	}else{
 		//납입회비 로 체크했을때
 		if($('input[name=dues]:checked').val() == 0){
-			$('#wiyakprice').val(formatNumberWithCommas(removeCommasFromNumber($('#tpaidprice').val())*wiyak));
+			$('#wiyakprice').val(formatNumberWithCommas(removeCommasFromNumber($('#tpaidprice').val())*wiyak/100));
 		}else{
-			$('#wiyakprice').val(formatNumberWithCommas(removeCommasFromNumber($('#realprice').val())*wiyak/100));
+			$('#wiyakprice').val(formatNumberWithCommas(removeCommasFromNumber($('#itemprice').val())*wiyak/100));
 		}
 	}
 }
 
-function todaysaledate(){
-	//오늘 등록했을경우
-	if($('#saledate').val() == formattedDate){
-		$('#wiyakprice').val(0);
+
+
+function currentvusepricechange(){
+	
+	if($('#itemmonth').val() ==1 && $('#regmonth').val() > 1){
+
+		//'#regdate'의 값을 가져옵니다.
+		var selectedDate = $('#regdate').val();
+		
+		// 선택된 날짜를 Date 객체로 변환합니다.
+		var date = new Date(selectedDate);
+		
+		// 해당 월의 첫 번째 날 (1일)을 Date 객체로 만듭니다.
+		var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+		
+		// 두 날짜 사이의 차이를 밀리초 단위로 계산합니다.
+		var differenceInTime = date.getTime() - firstDayOfMonth.getTime();
+		
+		// 밀리초를 일 단위로 변환합니다. (1일 = 24시간 * 60분 * 60초 * 1000밀리초)
+		var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24))+1;
+		
+		$('#currentuseday').val(differenceInDays);
+		
+		var itemprice = removeCommasFromNumber($('#itemprice').val());
+		var dcprice = removeCommasFromNumber($('#dcprice').val())/$('#regmonth').val();
+		
+		var realprice = itemprice-dcprice;
+		
+		$('#currentuseday').val(differenceInDays);
+		
+		$('#currentuseprice').val(formatNumberWithCommas(Math.floor(realprice*differenceInDays/30)));
 	}else{
-		wiyakbygongje();	
+		$('#currentuseprice').val(formatNumberWithCommas(removeCommasFromNumber($('#itemprice').val())*$('#usecnt').val()/$('#totalcnt').val()));
 	}
 }
 
+function calculateMonthDifference(date1, date2) {
+    var regdate = new Date(date1);
+    var todate = new Date(date2);
 
-$('#gongjesum').val(formatNumberWithCommas(removeCommasFromNumber($('#currentuseprice').val())+removeCommasFromNumber($('#wiyakprice').val())));
+    var yearsDifference = todate.getFullYear() - regdate.getFullYear();
+    var monthsDifference = todate.getMonth() - regdate.getMonth();
+
+    return yearsDifference * 12 + monthsDifference;
+}
 
 if(Math.floor(daysDifference) > 0){
-	$('#remainmonth').val($('#regmonth').val()-1);
+	
+	var monthDifference = calculateMonthDifference($('#regdate').val(), $('#todate').val());
+	
+	$('#remainmonth').val(monthDifference);
 }else{
 	$('#remainmonth').val($('#regmonth').val());
 }
-
 $('#remainprice').val(formatNumberWithCommas($('#remainmonth').val()*removeCommasFromNumber($('#itemprice').val())));
 
-$('#returnprice').val(formatNumberWithCommas(removeCommasFromNumber($('#tpaidprice').val())-removeCommasFromNumber($('#gongjesum').val())));
+GongjeSum();
+function GongjeSum() {
+	
+	var prevuseprice = removeCommasFromNumber($('#prevuseprice').val());
+	var wiyakprice = removeCommasFromNumber($('#wiyakprice').val());
+	var currentuseprice = removeCommasFromNumber($('#currentuseprice').val());
+	var gongjesum = prevuseprice + wiyakprice +currentuseprice;
+	$('#gongjesum').val(formatNumberWithCommas(gongjesum));
+}
 
-$('#refundprice').val($('#returnprice').val());
+
+SetReturnrice();
+function SetReturnrice() {
+	var tpaidprice = removeCommasFromNumber($('#tpaidprice').val());
+	
+	var gongjesum = removeCommasFromNumber($('#gongjesum').val());
+	
+	var returnprice = formatNumberWithCommas(tpaidprice-gongjesum);
+	
+	$('#returnprice').val(returnprice);
+	
+	$('#refundprice').val($('#returnprice').val());
+}
+
+if($('#paidbody tr#환불').length > 0){
+	$('#refundprice').val(0);
+}
 
 
 //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
@@ -824,6 +905,13 @@ function save() {
 function fmsc_04save() {
 	var iteration = 0;
 	const yearmonth = extractYearMonth($('#fromdate').val());
+	var note = '';
+	if($('#notetext').val()== ''){
+		note = $('#note option:selected').text();
+	}else{
+		note = $('#notetext').val();
+	}
+	
 	$.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
         url: "itemrefund", // 실제 엔드포인트로 교체해야 합니다
@@ -834,27 +922,21 @@ function fmsc_04save() {
         	CancelDate : $('#canceldate').val(),
         	TotalCnt : $('#totalcnt').val(),
         	UseCnt : $('#usecnt').val(),
-        	TotalItemPrice : $('#todate').val(),
-        	TotalPaidPrice : $('#fromdate').val(),
-        	TotalMinapPrice : removeCommasFromNumber($('#refundprice').val()),
-        	WiyakPrice : $('#regmonth').val(),
-        	UsePrice : $('#dcds').val(),
-        	GongjePrice : $('#dcper').val																																																																																																																																																																																																																																																																																																																																																																																																																																																																						(),
-        	ReturnPrice : removeCommasFromNumber($('#dcprice').val()),
-        	Account : $('#price option:selected').attr('id'),
-        	Bank : removeCommasFromNumber($('#sortprice').val()),
-        	Misu : removeCommasFromNumber($('#tremainprice').val()),
-        	EmpCode : $('#empcode').val(),
-        	IsReReg : '0',
-        	State : 'G+',
-        	ItemPKID : $('#itemid').val(),
-        	InType : '반변경',
-        	prevInType : '등록',
-        	CurState : 1,
-        	PaidPrice : 0
+        	TotalClassPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
+        	TotalPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
+        	TotalMinapPrice : 0,
+        	WiyakPrice : -removeCommasFromNumber($('#wiyakprice').val()),
+        	UsePrice : -removeCommasFromNumber($('#currentuseprice').val()),
+        	GongjePrice : -removeCommasFromNumber($('#gongjesum').val()),
+        	ReturnPrice : -removeCommasFromNumber($('#returnprice').val()),
+        	Account : $('#account').val(),
+        	Bank : $('#bank').val(),
+        	AccountNo : $('#accountno').val(),
+        	Note : note
         },
         success: function(data) {	
         	var numberOfTR = $('#paidbody tr#new').length;
+        	
         	if(numberOfTR>0){
         		$('#paidbody tr#new').each(function() {
 	        		$.ajax({
@@ -865,11 +947,11 @@ function fmsc_04save() {
 		    	        	FPKID: data,
 		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
 		    	        	RealSaleDate : $(this).find('.paiddate').text(),
-		    	        	SaleType : '반변경',
+		    	        	SaleType : '환불',
 		    	        	PayType : $(this).find('.paidcategory').text(),
 		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
 		    	        	AssignType : $(this).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : data
+		    	        	PaidGroupSaleNo : data,
 		    	        },
 		    	        success: function(data){
 		    	        	iteration++;

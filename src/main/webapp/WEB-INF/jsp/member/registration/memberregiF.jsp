@@ -682,6 +682,13 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '환불'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('환불 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                     	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
                         if (myPopup === undefined || myPopup.closed) {
@@ -704,6 +711,13 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '환불'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('환불 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                         var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
                         if (myPopup === undefined || myPopup.closed) {
@@ -722,6 +736,13 @@
                     	if(remembersaleno == ''){
                     		alert('수강을 선택해주세요');
                     		return false;
+                    	}
+                    	if(rememberstate == '환불'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('환불 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
                     	}
                     	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
                     	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
