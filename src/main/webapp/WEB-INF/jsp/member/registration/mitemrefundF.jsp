@@ -784,8 +784,9 @@ function wiyakbygongje(){
 
 function currentvusepricechange(){
 	
-	if($('#itemmonth').val() ==1 && $('#regmonth').val() > 1){
+	if($('#itemmonth').val() ==1 && $('#regmonth').val() > 1 && $('#regdate').val()>$('#fromdate').val()){
 
+		
 		//'#regdate'의 값을 가져옵니다.
 		var selectedDate = $('#regdate').val();
 		
