@@ -1,4 +1,4 @@
-package egovframework.veterans.com.cmm.lib;
+package egovframework.veterans.lib;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Objects;
@@ -294,5 +296,16 @@ public class Functions {
 		return output.toByteArray();
 	}
 	
-	
+    public String generateClientId() {
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            String hostName = localHost.getHostName(); // 컴퓨터 이름
+            String ipAddress = localHost.getHostAddress(); // 내부 IP 주소
+
+            return hostName + "_" + ipAddress;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return "UnknownHost";
+        }
+    }
 }

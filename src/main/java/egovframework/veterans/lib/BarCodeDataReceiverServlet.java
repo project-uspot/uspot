@@ -1,4 +1,4 @@
-package egovframework.veterans.com.cmm.lib;
+package egovframework.veterans.lib;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,18 +19,20 @@ import lombok.extern.slf4j.Slf4j;
 @WebServlet(value="/barCodeReceiveData.do")
 public class BarCodeDataReceiverServlet extends HttpServlet {
 	
+	Functions f = Functions.getInstance();
+	
 	public static Marker test = MarkerFactory.getMarker("Test");
 	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String clientId = request.getParameter("clientId"); // 클라이언트 식별자
+        //String clientId = request.getParameter("clientId"); // 클라이언트 식별자
         String data = request.getParameter("data");
 
         ServletContext context = getServletContext();
-        context.setAttribute("data_" + clientId, data); // 클라이언트 식별자를 사용하여 데이터 저장
-        request.getSession().setAttribute("clientId", clientId);
-        log.info(test,"receive : clientId_"+clientId);
+        context.setAttribute("data_" + f.generateClientId(), data); // 클라이언트 식별자를 사용하여 데이터 저장
+        //request.getSession().setAttribute("clientId", clientId);
+        log.info(test,"receive : clientId_"+request.getSession().getAttribute("clientId"));
         response.setContentType("text/plain");
-        response.getWriter().println("Data received successfully for client: " + clientId);
+        response.getWriter().println("Data received successfully for client: "+f.generateClientId());
     }
 }
