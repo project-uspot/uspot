@@ -47,13 +47,34 @@
                         <h3 class="mb-3 w-25 pt-2">환불정보 등록 및 변경</h3>
                         <div style="margin-top: -46px;margin-left: 300px;">
                         	<div class="col-auto position-absolute" style="margin-left:700px;">
-	                            <button class="btn btn-phoenix-primary" type="button">환불대기(T)</button>
+	                            <c:choose>
+	                        		<c:when test="${fmsc_s01.state eq 'F0'}">
+	                        			<button class="btn btn-phoenix-primary" type="button" onclick="alreadyrefund()">환불대기(T)</button>
+	                        		</c:when>
+	                        		<c:otherwise>
+	                        			<button class="btn btn-phoenix-primary" type="button" onclick="wait_save()">환불대기(T)</button>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        </div>
 	                        <div class="col-auto position-absolute" style="margin-left:850px;">
-	                            <button class="btn btn-phoenix-secondary" type="button">대기취소(Q)</button>
+	                        	<c:choose>
+	                        		<c:when test="${fmsc_s01.state eq 'F0'}">
+	                        			<button class="btn btn-phoenix-secondary" type="button" onclick="alreadyrefund()">대기취소(Q)</button>
+	                        		</c:when>
+	                        		<c:otherwise>
+	                        			<button class="btn btn-phoenix-secondary" type="button" onclick="wait_cancel()">대기취소(Q)</button>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        </div>
 	                        <div class="col-auto position-absolute" style="margin-left:1000px;">
-	                            <button class="btn btn-success" type="button" onclick="save()">환불완료(S)</button>
+	                        	<c:choose>
+	                        		<c:when test="${fmsc_s01.state eq 'F0'}">
+	                        			<button class="btn btn-success" type="button" onclick="alreadyrefund()">환불완료(S)</button>
+	                        		</c:when>
+	                        		<c:otherwise>
+	                        			<button class="btn btn-success" type="button" onclick="save()">환불완료(S)</button>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        </div>
 	                        <div class="col-auto position-absolute" style="margin-left:1150px;">
 	                            <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
@@ -889,6 +910,15 @@ function formatDate(date) {
 	return yyyy+'-'+mm+'-'+dd;
 }
 
+function alreadyrefund() {
+	$('#resultmessage').html('이미 환불처리 된 건입니다.');
+	$('.modal-footer').empty();
+	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+    return false;
+}
 
 function save() {
 	if($('#refundprice').val() != 0){
@@ -901,6 +931,81 @@ function save() {
 	    return false;
 	}
 	fmsc_04save();	
+}
+
+function wait_save() {
+	var numberOfTR = $('#paidbody tr#new').length;
+	
+	if(numberOfTR>0){
+		$('#resultmessage').html('전액환불 또는 공제 후 환불을 하신경우에는 환불대기를 하실 수 없습니다.<br>환불완료 또는 행삭제 해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+	
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "itemrefund", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'json',
+        data: { 
+        	SaleNo : $('#saleno').val(),
+        	RegDate : $('#regdate').val(),
+        	CancelDate : $('#canceldate').val(),
+        	TotalCnt : $('#totalcnt').val(),
+        	UseCnt : $('#usecnt').val(),
+        	TotalClassPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
+        	TotalPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
+        	TotalMinapPrice : 0,
+        	WiyakPrice : -removeCommasFromNumber($('#wiyakprice').val()),
+        	UsePrice : -removeCommasFromNumber($('#currentuseprice').val()),
+        	GongjePrice : -removeCommasFromNumber($('#gongjesum').val()),
+        	ReturnPrice : -removeCommasFromNumber($('#returnprice').val()),
+        	Account : $('#account').val(),
+        	Bank : $('#bank').val(),
+        	AccountNo : $('#accountno').val(),
+        	Note : note
+        },
+        success: function(data) {	
+        	var numberOfTR = $('#paidbody tr#new').length;
+        	
+        	if(numberOfTR>0){
+        		$('#paidbody tr#new').each(function() {
+	        		$.ajax({
+		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+		    	        dataType : 'text',
+		    	        data: { 
+		    	        	FPKID: data,
+		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+		    	        	RealSaleDate : $(this).find('.paiddate').text(),
+		    	        	SaleType : '환불',
+		    	        	PayType : $(this).find('.paidcategory').text(),
+		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+		    	        	AssignType : $(this).find('.paidassignType').text(),
+		    	        	PaidGroupSaleNo : data,
+		    	        },
+		    	        success: function(data){
+		    	        	iteration++;
+		    	        	if(iteration === numberOfTR){
+		    	        		window.opener.location.reload();
+		    	                window.close();
+		    	        	}
+		    	        }
+		    		});
+	        	});
+        	}else{
+        		window.opener.location.reload();
+                window.close();
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
 function fmsc_04save() {
