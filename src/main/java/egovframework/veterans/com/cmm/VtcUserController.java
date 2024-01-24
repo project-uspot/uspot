@@ -27,11 +27,18 @@ import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.TblItem_01;
 import egovframework.veterans.com.cmm.service.vo.UserGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
+import egovframework.veterans.lib.Functions;
+import egovframework.veterans.logs.VtcLogFunction;
+import egovframework.veterans.logs.service.VtcLogService;
+import egovframework.veterans.logs.service.vo.LogVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class VtcUserController{
+	
+	Functions f = Functions.getInstance();
+	VtcLogFunction logF = VtcLogFunction.getInstance();
 	
 	private final HttpSession session;
 
@@ -40,6 +47,8 @@ public class VtcUserController{
 	private final VtcService VtcServise;
 	
 	private final VtcItemService itemServise;
+	
+	private final VtcLogService VtcLogService;
 
 	@RequestMapping(value = "UserGroup.do")
 	public String selectUserGroup(ModelMap model) throws Exception {
@@ -338,46 +347,63 @@ public class VtcUserController{
 	}
 
 	@PostMapping("/login.do")
-	public String MainLoginP(Users users, Model model,HttpSession session,TblAuthuserGroup tblAuthuserGroup) {
+	public String MainLoginP(Users users, Model model,HttpSession session,TblAuthuserGroup tblAuthuserGroup, HttpServletRequest request) {
 
+		LogVO logVO = new LogVO();
+		logVO.setIP(f.GetIPAddress(request));
+		logVO.setEvent_CD(9);
+		logVO.setSiteCode(users.getSiteCode());
+		logVO.setURL(request.getRequestURL().toString());
 		try {
 
 			Users logincheck = VtcUserService.userlogincheck(users);
 
+			logVO.setUserPKID(logincheck.getUserPKID());
+
 			if (users.getUserID().equals(logincheck.getUserID())) {
 				if (users.getSiteCode().equals(logincheck.getSiteCode())) {
+					if(logincheck.getUserPWD().length() > 30) {
+						users.setUserPWD(f.fn_EncryptPWD(users.getUserPWD()));
+					}
 					if (users.getUserPWD().equals(logincheck.getUserPWD())) {
 						session.setAttribute("loginuserinfo", logincheck);
 						tblAuthuserGroup.setUserGroupID(logincheck.getUserGroupID());
-						
+
 						List<TblAuthuserGroup> tblAuthuserGroups = VtcUserService.tblauthusergroupbyusergroup(tblAuthuserGroup);
 						System.out.println(tblAuthuserGroups);
 						session.setAttribute("sessiontblAuthuserGroups", tblAuthuserGroups);
 						
+						logVO.setResult_CD(24);
+						logF.LogInsert(logVO, VtcLogService);
+
 						return "redirect:membership.do";
 					} else {
 
 						model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 						model.addAttribute("script", "back");
-
+						logVO.setResult_CD(25);
+						logF.LogInsert(logVO, VtcLogService);
 						return "common/msg";
 					}
 				} else {
 					model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
 					model.addAttribute("script", "back");
-
+					logVO.setResult_CD(25);
+					logF.LogInsert(logVO, VtcLogService);
 					return "common/msg";
 				}
 			} else {
 				model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
 				model.addAttribute("script", "back");
-
+				logVO.setResult_CD(25);
+				logF.LogInsert(logVO, VtcLogService);
 				return "common/msg";
 			}
 		} catch (Exception e) {
 			model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
 			model.addAttribute("script", "back");
-
+			logVO.setResult_CD(25);
+			logF.LogInsert(logVO, VtcLogService);
 			return "common/msg";
 		}
 	}

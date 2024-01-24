@@ -22,7 +22,9 @@ public class BarCodeDataProviderServlet extends HttpServlet {
 	Functions f = Functions.getInstance();
 	
 	public static Marker test = MarkerFactory.getMarker("Test");
-	
+	/**
+	 * 바코드 데이터 웹페이지에 전송
+	 * */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //String clientId = request.getParameter("clientId"); // 클라이언트 식별자
