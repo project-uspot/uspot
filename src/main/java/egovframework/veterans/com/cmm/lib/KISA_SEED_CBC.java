@@ -1,4 +1,4 @@
-package egovframework.veterans.lib;
+package egovframework.veterans.com.cmm.lib;
 
 /**
 @file KISA_SEED_CBC.java

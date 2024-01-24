@@ -18,6 +18,7 @@ public class VtcLogFunction {
 	}
 	
 	/**
+	 * log_tblcode
 	 * 이벤트 코드
 	 * 1 입력
 	 * 2 수정
@@ -32,6 +33,7 @@ public class VtcLogFunction {
 	 * */
 	
 	/**
+	 * log_tblcode
 	 * 업무 코드
 	 * 11 수강
 	 * 12 대관
@@ -45,6 +47,7 @@ public class VtcLogFunction {
 	 * */
 	
 	/**
+	 * log_tblcode
 	 * 상세업무 코드
 	 * 19 접수
 	 * 20 환불
@@ -54,6 +57,7 @@ public class VtcLogFunction {
 	 * */
 	
 	/**
+	 * log_tblcode
 	 * 처리구분
 	 * 24 완료
 	 * 25 오류

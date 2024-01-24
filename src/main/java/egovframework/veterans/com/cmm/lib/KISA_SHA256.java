@@ -1,4 +1,4 @@
-package egovframework.veterans.lib;
+package egovframework.veterans.com.cmm.lib;
 
 import sun.misc.BASE64Encoder;
 import sun.misc.BASE64Decoder;
