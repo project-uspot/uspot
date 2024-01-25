@@ -7,6 +7,7 @@ import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
@@ -71,4 +72,12 @@ public interface VtcMemberService {
 	void dueschange(Map<String, Object> map)throws Exception;
 	
 	void insertFmsc_s04(fmsc_s04 fmsc_s04)throws Exception;
+	
+	void insertFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception;
+
+	void refundComplete(fmsc_s04_01 fmsc_s04_01)throws Exception;
+	
+	void reutrnFmsc_s01(fmsc_s01 fmsc_s01)throws Exception;
+	
+	void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception;
 }

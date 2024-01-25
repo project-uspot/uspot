@@ -487,6 +487,7 @@ from fmsc_s01
 		update fmsc_s01 set
 		RToDate = #{RToDate},
 		State = #{State},
+		prevInType = InType,
 		InType = #{InType},
 		CurState = -1,
 		UpdUserPKID = #{UpdUserPKID},
@@ -526,4 +527,52 @@ from fmsc_s01
 		#{ItemMonth},#{RegMonth},#{Note},'N', 
 		now(),#{AddUserPKID},now(),#{UpdUserPKID})
 	</insert>
+	<insert id="insertFmsc_s04_01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		INSERT INTO uspot_test.fmsc_s04_01
+		(SiteCode, SaleNo, RegDate, CancelDate, 
+		TotalCnt, UseCnt, TotalClassPaidPrice, TotalPaidPrice, 
+		TotalMinapPrice, WiyakPrice, UsePrice, GongjePrice, 
+		ReturnPrice, Account, Bank, AccountNo, 
+		ORToDate, Note, IsComplete, IsDelete, 
+		AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(
+		#{SiteCode},#{SaleNo},#{RegDate},#{CancelDate}, 
+		#{TotalCnt},#{UseCnt},#{TotalClassPaidPrice},#{TotalPaidPrice}, 
+		#{TotalMinapPrice},#{WiyakPrice},#{UsePrice},#{GongjePrice}, 
+		#{ReturnPrice},#{Account},#{Bank},#{AccountNo}, 
+		#{ORToDate},#{Note},'N','N', 
+		now(),#{AddUserPKID},now(),#{UpdUserPKID})
+	</insert>
+	<update id="refundComplete" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		update fmsc_s04_01 set
+		IsComplete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="reutrnFmsc_s01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		UPDATE fmsc_s01
+		SET
+		    InType = prevInType,
+		    prevInType = '등록',
+		    CurState = 1,
+		    UpdDate = now(),
+		    UpdUserPKID = #{UpdUserPKID},
+		    State = CASE
+		        WHEN InType IN ('등록', '재등록') THEN 'A'
+		        WHEN InType = '반변경' THEN 'A+'
+		        ELSE State
+		    end
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="deleteFmsc_s04_01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		update fmsc_s04_01 set
+		IsDelete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
 </mapper>
