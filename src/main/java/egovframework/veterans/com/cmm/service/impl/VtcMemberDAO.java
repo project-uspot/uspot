@@ -12,6 +12,7 @@ import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 
 @Repository
@@ -134,5 +135,21 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void insertFmsc_s04(fmsc_s04 fmsc_s04)throws Exception{
 		insert("member.insertFmsc_s04",fmsc_s04);
+	}
+	
+	public void insertFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception{
+		insert("member.insertFmsc_s04_01",fmsc_s04_01);
+	}
+	
+	public void refundComplete(fmsc_s04_01 fmsc_s04_01)throws Exception{
+		update("member.refundComplete",fmsc_s04_01);
+	}
+	
+	public void reutrnFmsc_s01(fmsc_s01 fmsc_s01)throws Exception{
+		update("member.reutrnFmsc_s01",fmsc_s01);
+	}
+	
+	public void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception{
+		update("member.deleteFmsc_s04_01",fmsc_s04_01);
 	}
 }

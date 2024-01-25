@@ -61,6 +61,9 @@
 	                        		<c:when test="${fmsc_s01.state eq 'F0'}">
 	                        			<button class="btn btn-phoenix-secondary" type="button" onclick="alreadyrefund()">대기취소(Q)</button>
 	                        		</c:when>
+	                        		<c:when test="${fmsc_s01.state != 'E'}">
+	                        			<button class="btn btn-phoenix-secondary" type="button" onclick="notwait()">대기취소(Q)</button>
+	                        		</c:when>
 	                        		<c:otherwise>
 	                        			<button class="btn btn-phoenix-secondary" type="button" onclick="wait_cancel()">대기취소(Q)</button>
 	                        		</c:otherwise>
@@ -946,19 +949,26 @@ function wait_save() {
 	    return false;
 	}
 	
+	var note = '';
+	if($('#notetext').val()== ''){
+		note = $('#note option:selected').text();
+	}else{
+		note = $('#notetext').val();
+	}
+	
 	$.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "itemrefund", // 실제 엔드포인트로 교체해야 합니다
+        url: "itemrefund_wait", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
-        data: { 
+        data: {
         	SaleNo : $('#saleno').val(),
         	RegDate : $('#regdate').val(),
         	CancelDate : $('#canceldate').val(),
         	TotalCnt : $('#totalcnt').val(),
         	UseCnt : $('#usecnt').val(),
-        	TotalClassPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
-        	TotalPaidPrice : Math.abs(removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text())),
-        	TotalMinapPrice : 0,
+        	TotalClassPaidPrice : removeCommasFromNumber($('#realprice').val()),
+        	TotalPaidPrice : removeCommasFromNumber($('#tpaidprice').val()),
+        	TotalMinapPrice : -removeCommasFromNumber($('#returnprice').val()),
         	WiyakPrice : -removeCommasFromNumber($('#wiyakprice').val()),
         	UsePrice : -removeCommasFromNumber($('#currentuseprice').val()),
         	GongjePrice : -removeCommasFromNumber($('#gongjesum').val()),
@@ -966,51 +976,55 @@ function wait_save() {
         	Account : $('#account').val(),
         	Bank : $('#bank').val(),
         	AccountNo : $('#accountno').val(),
-        	Note : note
+        	Note : note,
+        	ORToDate : $('#todate').val()
         },
         success: function(data) {	
-        	var numberOfTR = $('#paidbody tr#new').length;
         	
-        	if(numberOfTR>0){
-        		$('#paidbody tr#new').each(function() {
-	        		$.ajax({
-		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-		    	        dataType : 'text',
-		    	        data: { 
-		    	        	FPKID: data,
-		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-		    	        	RealSaleDate : $(this).find('.paiddate').text(),
-		    	        	SaleType : '환불',
-		    	        	PayType : $(this).find('.paidcategory').text(),
-		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-		    	        	AssignType : $(this).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : data,
-		    	        },
-		    	        success: function(data){
-		    	        	iteration++;
-		    	        	if(iteration === numberOfTR){
-		    	        		window.opener.location.reload();
-		    	                window.close();
-		    	        	}
-		    	        }
-		    		});
-	        	});
-        	}else{
-        		window.opener.location.reload();
-                window.close();
-        	}
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
          console.log("Error: " + error);
         }
 	});
+	
+	window.opener.location.reload();
+    window.close();
+}
+
+function notwait() {
+	$('#resultmessage').html('환불 대기시에 대기 취소 가능합니다.');
+	$('.modal-footer').empty();
+	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+    return false;
+}
+
+function wait_cancel() {
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "itemrefund_wait_cancel", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'json',
+        data: {
+        	SaleNo : $('#saleno').val()
+        },
+        success: function(data) {	
+        	
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+	
+	window.opener.location.reload();
+    window.close();
 }
 
 function fmsc_04save() {
 	var iteration = 0;
-	const yearmonth = extractYearMonth($('#fromdate').val());
 	var note = '';
 	if($('#notetext').val()== ''){
 		note = $('#note option:selected').text();
@@ -1079,16 +1093,6 @@ function fmsc_04save() {
         }
 	}); 
 }  
-
-//itemperiod 를 위한 날짜 포맷 함수
-function extractYearMonth(dateString) {
-  
-	const [year, month] = dateString.split('-');
-  
-	const yearMonth = year + month;
-	
-    return yearMonth;
-}
   
 //환불처리
 function processRefund(isAllReturn) {

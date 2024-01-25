@@ -12,6 +12,7 @@ import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import lombok.RequiredArgsConstructor;
 
@@ -182,5 +183,25 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	@Override
 	public void insertFmsc_s04(fmsc_s04 fmsc_s04) throws Exception {
 		vtcMemberDAO.insertFmsc_s04(fmsc_s04);
+	}
+
+	@Override
+	public void insertFmsc_s04_01(fmsc_s04_01 fmsc_s04_01) throws Exception {
+		vtcMemberDAO.insertFmsc_s04_01(fmsc_s04_01);
+	}
+
+	@Override
+	public void refundComplete(fmsc_s04_01 fmsc_s04_01) throws Exception {
+		vtcMemberDAO.refundComplete(fmsc_s04_01);
+	}
+
+	@Override
+	public void reutrnFmsc_s01(fmsc_s01 fmsc_s01) throws Exception {
+		vtcMemberDAO.reutrnFmsc_s01(fmsc_s01);
+	}
+
+	@Override
+	public void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01) throws Exception {
+		vtcMemberDAO.deleteFmsc_s04_01(fmsc_s04_01);
 	}
 }
