@@ -51,6 +51,9 @@
 	                        		<c:when test="${fmsc_s01.state eq 'F0'}">
 	                        			<button class="btn btn-phoenix-primary" type="button" onclick="alreadyrefund()">환불대기(T)</button>
 	                        		</c:when>
+	                        		<c:when test="${fmsc_s01.state eq 'E'}">
+	                        			<button class="btn btn-phoenix-primary" type="button" onclick="alreadyrefund()" disabled="disabled">환불대기(T)</button>
+	                        		</c:when>
 	                        		<c:otherwise>
 	                        			<button class="btn btn-phoenix-primary" type="button" onclick="wait_save()">환불대기(T)</button>
 	                        		</c:otherwise>
@@ -980,7 +983,8 @@ function wait_save() {
         	ORToDate : $('#todate').val()
         },
         success: function(data) {	
-        	
+        	window.opener.location.reload();
+            window.close();
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
@@ -988,8 +992,7 @@ function wait_save() {
         }
 	});
 	
-	window.opener.location.reload();
-    window.close();
+	
 }
 
 function notwait() {
@@ -1011,16 +1014,14 @@ function wait_cancel() {
         	SaleNo : $('#saleno').val()
         },
         success: function(data) {	
-        	
+        	window.opener.location.reload();
+            window.close();
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
          console.log("Error: " + error);
         }
-	});
-	
-	window.opener.location.reload();
-    window.close();
+	});	
 }
 
 function fmsc_04save() {
