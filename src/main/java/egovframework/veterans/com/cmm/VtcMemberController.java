@@ -1110,7 +1110,8 @@ public class VtcMemberController {
 	}
 	
 	@PostMapping("/itemrefund_wait")
-	public void itemrefund_wait(fmsc_s04_01 fmsc_s04_01,fmsc_s01 fmsc_s01) throws Exception{
+	@ResponseBody
+	public String itemrefund_wait(fmsc_s04_01 fmsc_s04_01,fmsc_s01 fmsc_s01) throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -1126,10 +1127,12 @@ public class VtcMemberController {
 		vtcMemberService.oldfmsc_s01update(fmsc_s01);
 		
 		vtcMemberService.insertFmsc_s04_01(fmsc_s04_01);
+		return "success";
 	}
 	
 	@PostMapping("/itemrefund_wait_cancel")
-	public void itemrefund_wait_cancel(fmsc_s01 fmsc_s01,fmsc_s04_01 fmsc_s04_01)throws Exception{
+	@ResponseBody
+	public String itemrefund_wait_cancel(fmsc_s01 fmsc_s01,fmsc_s04_01 fmsc_s04_01)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -1139,5 +1142,16 @@ public class VtcMemberController {
 		
 		vtcMemberService.reutrnFmsc_s01(fmsc_s01);
 		vtcMemberService.deleteFmsc_s04_01(fmsc_s04_01);
+		return "success";
+	}
+	
+	@GetMapping("/mitemrestF.do")
+	public String mitemrestF(fmsc_s01 fmsc_s01,Model model) throws Exception {
+		
+		fmsc_s01 fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		
+		model.addAttribute("fmsc_s01",fmsc_s01_1);
+		
+		return "member/registration/mitemrestF";
 	}
 }

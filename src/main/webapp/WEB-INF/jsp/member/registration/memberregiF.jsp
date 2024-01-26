@@ -636,11 +636,11 @@
                 <div class="card-body pb-3">
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
                     <button class="btn btn-soft-secondary" type="button" onclick="mitemreinsertF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
-                    <button class="btn btn-soft-success" type="button" onclick="mitemchange()"><span data-feather="repeat"></span>&nbsp;반변경(F12)</button>
-                    <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(F11)</button>
-                    <button class="btn btn-soft-warning" type="button"><span data-feather="user-x"></span>&nbsp;휴회</button>
-                    <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(F10)</button>
-                    <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록</button>
+                    <button class="btn btn-soft-success" type="button" onclick="mitemchange()"><span data-feather="repeat"></span>&nbsp;반변경(Z)</button>
+                    <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(X)</button>
+                    <button class="btn btn-soft-warning" type="button" onclick="mitemrestF()"><span data-feather="user-x"></span>&nbsp;휴회(C)</button>
+                    <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(V)</button>
+                    <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
                     <script type="text/javascript">
                     var myPopup;
                     
@@ -737,6 +737,15 @@
                     		alert('수강을 선택해주세요');
                     		return false;
                     	}
+                    	
+                    	if(rememberstate == '반변경(-)'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('반변경전 데이터는 변경대상이 아닙니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
+                    	
                     	if(rememberstate == '환불' || rememberstate == '환불대기'){
                     		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
                             $('#resultmessage').html('환불 처리 된 데이터입니다.<br>수정할 수 없습니다.');
@@ -786,6 +795,21 @@
                       	});
 					}
                     
+                    function mitemrestF() {
+                    	var url = 'mitemrestF.do?SaleNo='+remembersaleno;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=530";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
+                    
                     function openpop(url,windowFeatures) {
                     	window.open(url, "_blank", windowFeatures);
 					}
@@ -817,6 +841,21 @@
                         if (event.keyCode === 120) {
                         	//f9
                         	mitemreinsertF();
+                        }
+                        if (event.ctrlKey && event.key === 'z') {
+                            mitemchange();
+                        }
+                        if (event.ctrlKey && event.key === 'x') {
+                        	mitemrefund();
+                        }
+                        if (event.ctrlKey && event.key === 'c') {
+                        	mitemrestF();
+                        }
+                        if (event.ctrlKey && event.key === 'v') {
+                        	mitemrefund();
+                        }
+                        if (event.ctrlKey && event.key === 'q') {
+                        	mitemrefund();
                         }
                     });
                     var previousRow = null;
