@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="../../include/AdminTop.jsp" %>
 <%request.setCharacterEncoding("UTF-8");%>
 <!DOCTYPE html>
@@ -318,7 +319,7 @@
                 </div>
             </div>
             <div class="row g-5">
-                <div class="col-12 col-xxl-4">
+                <div class="col-12 col-xxl-4" style="width: 28%;">
                     <div class="row g-3 g-xxl-0 h-100">
                         <div class="col-12 col-md-7 col-xxl-12 mb-xxl-3">
                             <div class="card h-100">
@@ -337,7 +338,69 @@
                                                 <input type="hidden" value="${tblmember.memberID}" name="memberID" id="memberID">
                                                 <label class="form-check-label text-9000" for="fragileCheck">대관팀</label>
                                             </p>
+                                            <div class="col-auto">
+											<div class="form-floating">
+	                                            <c:choose>
+	                                                <c:when test="${tblmember.siteCode eq '10001'}">
+	                                                    <select class="form-select text-primary" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:when test="${tblmember.siteCode eq '10002'}">
+	                                                    <select class="form-select text-danger" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:when test="${tblmember.siteCode eq '10003'}">
+	                                                    <select class="form-select text-success" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:when test="${tblmember.siteCode eq '10004'}">
+	                                                    <select class="form-select text-info" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:when test="${tblmember.siteCode eq '10005'}">
+	                                                    <select class="form-select text-warning" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:when test="${tblmember.siteCode eq '10006'}">
+	                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:when>
+	                                                <c:otherwise>
+	                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
+	                                                </c:otherwise>
+	                                            </c:choose>
+                          						<option value="${tblmember.siteCode}" selected="selected">
+                                    				<c:forEach var="site" items="${sitelist}">
+                                        				<c:if test="${tblmember.siteCode == site.siteCode}">
+                                            				${site.siteName}
+                                        				</c:if>
+                                    				</c:forEach>
+                           						</option>
+                              					<c:forEach var="sitevalue" items="${sitelist}">
+                                       				<c:choose>
+			                                        	<c:when test="${sitevalue.siteCode eq '10001'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-primary">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:when test="${sitevalue.siteCode eq '10002'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-danger">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:when test="${sitevalue.siteCode eq '10003'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-success">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:when test="${sitevalue.siteCode eq '10004'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-info">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:when test="${sitevalue.siteCode eq '10005'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-warning">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:when test="${sitevalue.siteCode eq '10006'}">
+			                                            	<option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
+			                                           	</c:when>
+			                                           	<c:otherwise>
+			                                            	<option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
+			                                           	</c:otherwise>
+													</c:choose>
+                                   				</c:forEach>
+                                            </select>
+                                			<label for="state">주 이용시설</label>
+                            				</div>
+  										</div>
                                         </div>
+                                        
                                         <div class="row">
                                         	<div class="col-auto">
 		                                        <div class="btn-group btn-group-sm mt-2" role="group" aria-label="...">
@@ -346,69 +409,8 @@
 												  <button class="btn btn-secondary" type="button">삭제</button>
 												</div>
 										    </div>
-										    <div class="col-auto">
-										    	<div class="form-floating" style="margin-top: -50px; margin-left: -36px;">
-		                                            <c:choose>
-		                                                <c:when test="${tblmember.siteCode eq '10001'}">
-		                                                    <select class="form-select text-primary" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:when test="${tblmember.siteCode eq '10002'}">
-		                                                    <select class="form-select text-danger" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:when test="${tblmember.siteCode eq '10003'}">
-		                                                    <select class="form-select text-success" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:when test="${tblmember.siteCode eq '10004'}">
-		                                                    <select class="form-select text-info" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:when test="${tblmember.siteCode eq '10005'}">
-		                                                    <select class="form-select text-warning" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:when test="${tblmember.siteCode eq '10006'}">
-		                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:when>
-		                                                <c:otherwise>
-		                                                    <select class="form-select text-secondary" id="SiteCode" name="SiteCode" disabled="disabled">
-		                                                </c:otherwise>
-		                                            </c:choose>
-                                           						<option value="${tblmember.siteCode}" selected="selected">
-					                                                <c:forEach var="site" items="${sitelist}">
-					                                                    <c:if test="${tblmember.siteCode == site.siteCode}">
-					                                                        ${site.siteName}
-					                                                    </c:if>
-					                                                </c:forEach>
-                                            					</option>
-                                            					<c:forEach var="sitevalue" items="${sitelist}">
-					                                                <c:choose>
-					                                                    <c:when test="${sitevalue.siteCode eq '10001'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-primary">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:when test="${sitevalue.siteCode eq '10002'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-danger">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:when test="${sitevalue.siteCode eq '10003'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-success">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:when test="${sitevalue.siteCode eq '10004'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-info">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:when test="${sitevalue.siteCode eq '10005'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-warning">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:when test="${sitevalue.siteCode eq '10006'}">
-					                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
-					                                                    </c:when>
-					                                                    <c:otherwise>
-					                                                        <option value="${sitevalue.siteCode}" class="text-secondary">${sitevalue.siteName}</option>
-					                                                    </c:otherwise>
-					                                                </c:choose>
-					                                            </c:forEach>
-                                            				</select>
-                                            				<label for="state">주 이용시설</label>
-                                        					</div>
-										    			</div>
-									    			</div>
-                                     			</div>
+										</div>
+                                    </div>
                                     <div class="d-flex flex-between-center border-top border-dashed border-300 pt-4">
                                         <div class="col-sm-6 col-md-4">
                                             <h6 class="text-primary">생년월일</h6>
@@ -631,7 +633,7 @@
                     </div>
                 </div>
         </form>
-        <div class="col-12 col-xxl-8">
+        <div class="col-12 col-xxl-8" style="width: 72%;">
             <div class="card h-100">
                 <div class="card-body pb-3">
                     <button class="btn btn-soft-primary" type="button" onclick="miteminsertF(${tblmember.memberID})"><span data-feather="file-plus"></span>&nbsp;신규등록(F8)</button>
@@ -928,8 +930,8 @@
                                                         <td class="Time align-middle white-space-nowrap text-900 fs--1 text-start">${list.fromTime} ~ ${list.toTime}</td>
                                                         <td class="LevelName align-middle white-space-nowrap text-900 fs--1 text-start">${list.levelName}</td>
                                                         <td class="Date align-middle white-space-nowrap text-900 fs--1 text-start">${list.RFromDate} ~ ${list.RToDate}</td>
-                                                        <td class="Regmonth align-middle white-space-nowrap text-700 fs--1 text-end">${list.regmonth}</td>
-                                                        <td class="RealPrice align-middle white-space-nowrap text-700 fs--1 text-start">${list.realPrice}</td>
+                                                        <td class="Regmonth align-middle white-space-nowrap text-700 fs--1 text-center">${list.regmonth}</td>
+                                                        <td class="RealPrice align-middle white-space-nowrap text-700 fs--1 text-end"><fmt:formatNumber value="${list.realPrice}" pattern="#,###"/></td>
                                                         <td class="Note align-middle white-space-nowrap text-900 fs--1 text-start">${list.note}</td>
                                                         <td class="InType align-middle white-space-nowrap text-900 fs--1 text-start">${list.inType}</td>
                                                     </tr>

@@ -110,7 +110,7 @@
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">휴회사유</span>
-							<input class="form-control" type="text" id="note" name="note" readonly="readonly"/>
+							<input class="form-control" type="text" id="note" name="note"/>
 						</div>
 					</div>
 				</div>
@@ -209,6 +209,43 @@ $('#regdate,#fromdate,#todate').val(formattedDate);
 $('#refromdate').val(formattedTomorrow);
 
 var retodate = $('#retodate').val();
+
+//$('#fromdate').val();
+//$('#todate').val();
+
+$('#fromdate').on('change', function() {
+	var fromDate = new Date($('#fromdate').val());
+	var toDate = new Date($('#todate').val());
+	
+	// Calculate the difference in milliseconds
+	var differenceInMilliseconds = toDate - fromDate;
+	
+	// Calculate the difference in days
+	var differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+	
+	// Add 1 if the dates are the same
+	if (differenceInDays === 0) {
+	    differenceInDays += 1;
+	}
+});
+
+$('#todate').on('change', function() {
+	var fromDate = new Date($('#fromdate').val());
+	var toDate = new Date($('#todate').val());
+	
+	// Calculate the difference in milliseconds
+	var differenceInMilliseconds = toDate - fromDate;
+	
+	// Calculate the difference in days
+	var differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+	
+	// Add 1 if the dates are the same
+	if (differenceInDays === 0) {
+	    differenceInDays += 1;
+	}
+});
+// Now, differenceInDays contains the result you're looking for
+console.log(differenceInDays);
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
