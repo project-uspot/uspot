@@ -71,7 +71,7 @@
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
 									<span class="input-group-text" id="basic-addon1">휴회기간</span>
-									<input class="form-control" type="date" id="fromdate" name="fromdate" readonly="readonly"/>
+									<input class="form-control" type="date" id="fromdate" name="fromdate"/>
 								</div>
 							</div>
 							<div class="col-auto mx-n3 pt-1">
@@ -79,8 +79,8 @@
 							</div>
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
-									<input class="form-control" type="date" id="todate" name="todate" readonly="readonly"/>
-									<span class="input-group-text" id="basic-addon1">19일</span>
+									<input class="form-control" type="date" id="todate" name="todate"/>
+									<span class="input-group-text" id="difdate" >1일</span>
 								</div>
 							</div>
 							<div class="col-auto">
@@ -93,7 +93,7 @@
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
 									<span class="input-group-text" id="basic-addon1">재수강일자</span>
-									<input class="form-control" type="date" id="refromdate" name="refromdate" readonly="readonly"/>
+									<input class="form-control" type="date" id="refromdate" name="refromdate" readonly="readonly" disabled="disabled"/>
 								</div>
 							</div>
 							<div class="col-auto mx-n3 pt-1">
@@ -102,7 +102,7 @@
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
 									<input class="form-control" type="date" id="retodate" name="retodate" readonly="readonly" value="${fmsc_s01.RToDate}"/>
-									<span class="input-group-text" id="basic-addon1">19일</span>
+									<span class="input-group-text" id="difredate">1일</span>
 								</div>
 							</div>
 						</div>
@@ -210,42 +210,99 @@ $('#refromdate').val(formattedTomorrow);
 
 var retodate = $('#retodate').val();
 
+//날짜 형식 파싱 (yyyy-MM-dd)
+var currentDate = new Date(retodate);
+
+// 하루를 더함
+currentDate.setDate(currentDate.getDate() + 1);
+
+// 새로운 날짜를 yyyy-MM-dd 형식의 문자열로 변환
+var newDateValue = currentDate.toISOString().slice(0, 10);
+
+// 새로운 값 설정
+$('#retodate').val(newDateValue);
+
 //$('#fromdate').val();
 //$('#todate').val();
 
+//날짜 형식 파싱 (yyyy-MM-dd)
+var formattodate = new Date($('#todate').val());
+
+// 하루를 더함
+formattodate.setDate(formattodate.getDate() + 1);
+
+// 새로운 날짜를 yyyy-MM-dd 형식의 문자열로 변환
+var newDatetodate = formattodate.toISOString().slice(0, 10);
+
+// 새로운 값 설정
+$('#refromdate').val(newDatetodate);
+
+difRetodate();
+
 $('#fromdate').on('change', function() {
+	$('#todate').val($('#fromdate').val());
 	var fromDate = new Date($('#fromdate').val());
 	var toDate = new Date($('#todate').val());
-	
 	// Calculate the difference in milliseconds
 	var differenceInMilliseconds = toDate - fromDate;
+
+	// Convert the difference to days and add 1
+	var differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+
+	$('#difdate').text(differenceInDays+'일');
 	
-	// Calculate the difference in days
-	var differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-	
-	// Add 1 if the dates are the same
-	if (differenceInDays === 0) {
-	    differenceInDays += 1;
-	}
+	//날짜 형식 파싱 (yyyy-MM-dd)
+	var currentDate = new Date(retodate);
+
+	// 하루를 더함
+	currentDate.setDate(currentDate.getDate() + differenceInDays);
+
+	// 새로운 날짜를 yyyy-MM-dd 형식의 문자열로 변환
+	var newDateValue = currentDate.toISOString().slice(0, 10);
+
+	// 새로운 값 설정
+	$('#retodate').val(newDateValue);
 });
 
 $('#todate').on('change', function() {
 	var fromDate = new Date($('#fromdate').val());
 	var toDate = new Date($('#todate').val());
-	
 	// Calculate the difference in milliseconds
 	var differenceInMilliseconds = toDate - fromDate;
+
+	// Convert the difference to days and add 1
+	var differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+
+	// Now, differenceInDays contains the result you're looking for
+	$('#difdate').text(differenceInDays+'일');
 	
-	// Calculate the difference in days
-	var differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+	// Convert retodate to a JavaScript Date object
+	var dateObject = new Date(retodate);
+
+	// Add the differenceInDays to the dateObject
+	dateObject.setDate(dateObject.getDate() + differenceInDays);
+
+	// Convert the updated dateObject back to the 'yyyy-mm-dd' format
+	var newDate = dateObject.toISOString().split('T')[0];
 	
-	// Add 1 if the dates are the same
-	if (differenceInDays === 0) {
-	    differenceInDays += 1;
-	}
+	$('#retodate').val(newDate);
 });
-// Now, differenceInDays contains the result you're looking for
-console.log(differenceInDays);
+
+function difRetodate() {
+	var formatfromdate = new Date($('#refromdate').val());
+	var formattodate = new Date($('#retodate').val());
+	
+	// Calculate the difference in milliseconds
+	var differenceInMilliseconds = formattodate - formatfromdate;
+
+	// Convert the difference to days and add 1
+	var differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+
+	// Now, differenceInDays contains the result you're looking for
+	$('#difredate').text(differenceInDays+'일');
+	
+	
+}
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
