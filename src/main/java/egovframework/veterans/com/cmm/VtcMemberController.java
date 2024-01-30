@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm;
 
 import java.time.LocalDate;
+
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +40,9 @@ import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class VtcMemberController {
@@ -50,6 +55,9 @@ public class VtcMemberController {
 	private final VtcPaidService vtcPaidService;
 	private final VtcItemService vtcItemService;
 
+	public static Marker member = MarkerFactory.getMarker("member");
+	
+	
 	@GetMapping("/memberlist.do")
 	private String membershipF(Model model, tblmember tblmember) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -1147,6 +1155,10 @@ public class VtcMemberController {
 	
 	@GetMapping("/mitemrestF.do")
 	public String mitemrestF(fmsc_s01 fmsc_s01,Model model) throws Exception {
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		log.info(member,"관리자 pkid : "+users.getUserPKID()+"강좌 번호 : "+fmsc_s01.getSaleNo()+"의 대한 휴회창");
 		
 		fmsc_s01 fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
