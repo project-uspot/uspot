@@ -333,7 +333,7 @@
 		</div>
 	    <div class="card w-60 mt-n12 h-50">
 	    	<div class="card-body my-n3">
-	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 210px;"
+	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 263px;"
                     data-list='{"valueNames":["paiddate","paidcategory","paidprice","paidassignType","paidmapsa",""paidcardtype"","paidassignN","paidcardN","POS","signpad","OID","PayKind"],"page":6,"pagination":true}'>
                 	<div class="table-responsive scrollbar">
                     	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
@@ -360,7 +360,7 @@
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 ms-1" style="width: 509px; height: 132px;">
+	    <div class="card w-35 ms-1" style="width: 509px; height: 185px;">
 	    	<div class="card-body my-n3">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
@@ -368,18 +368,38 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
-  					<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
-  					<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
-					<button class="btn btn-phoenix-success" type="button">현금(제로페이)</button>
-					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+					</div>
+					<div class="col-auto ms-4">
+						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					</div>
+					<div class="col-auto ms-n6">
+						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+					</div>
 				</div>
-				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
-  					<button class="btn btn-soft-primary" type="button">신용카드</button>
-  					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
-  					<button class="btn btn-soft-success" type="button">영수증재발행</button>
-  					<button class="btn btn-soft-danger" type="button">결제취소</button>
-  					<button class="btn btn-soft-info" type="button">행삭제</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
+					</div>
+					<div class="col-auto ms-n1">
+						<button class="btn btn-phoenix-success" type="button">현금(제로페이)</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<button class="btn btn-soft-primary" type="button">신용카드</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-danger" type="button">결제취소</button>
+					</div>
+					<div class="col-auto ms-5">
+						<button class="btn btn-soft-info" type="button">행삭제</button>
+					</div>
 				</div>
 	    	</div>
 	    </div>

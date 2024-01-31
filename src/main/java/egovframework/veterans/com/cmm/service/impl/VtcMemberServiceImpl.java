@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
@@ -203,5 +204,25 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	@Override
 	public void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01) throws Exception {
 		vtcMemberDAO.deleteFmsc_s04_01(fmsc_s04_01);
+	}
+
+	@Override
+	public void deleteFmsc_s03(fmsc_s03 fmsc_s03) throws Exception {
+		vtcMemberDAO.deleteFmsc_s03(fmsc_s03);
+	}
+
+	@Override
+	public void insertFmsc_s03(fmsc_s03 fmsc_s03) throws Exception {
+		vtcMemberDAO.insertFmsc_s03(fmsc_s03);
+	}
+
+	@Override
+	public List<fmsc_s03> fmsc_s03BySaleNo(fmsc_s03 fmsc_s03) throws Exception {
+		return vtcMemberDAO.fmsc_s03BySaleNo(fmsc_s03);
+	}
+
+	@Override
+	public void cancelRestFmsc_s01(fmsc_s01 fmsc_s01) throws Exception {
+		vtcMemberDAO.cancelRestFmsc_s01(fmsc_s01);
 	}
 }

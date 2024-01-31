@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
@@ -80,4 +81,12 @@ public interface VtcMemberService {
 	void reutrnFmsc_s01(fmsc_s01 fmsc_s01)throws Exception;
 	
 	void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception;
+	
+	void deleteFmsc_s03(fmsc_s03 fmsc_s03)throws Exception;
+
+	void insertFmsc_s03(fmsc_s03 fmsc_s03)throws Exception;
+	
+	List<fmsc_s03> fmsc_s03BySaleNo(fmsc_s03 fmsc_s03)throws Exception;
+	
+	void cancelRestFmsc_s01(fmsc_s01 fmsc_s01)throws Exception;
 }
