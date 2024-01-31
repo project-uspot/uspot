@@ -47,7 +47,10 @@
 						<h3 class="mb-3 pt-2">휴회(연기)정보 등록 및 변경</h3>
             		</div>
             		<div class="col-auto">
-						<button class="btn btn-success" type="button">저장</button>
+						<button class="btn btn-success" type="button" onclick="save()">저장</button>
+						<c:if test="${fmsc_s01.state eq 'D'}">
+							<button class="btn btn-danger" type="button" onclick="deleteAll()">삭제</button>
+						</c:if>
             		</div>
         		</div>
         	</div>
@@ -62,7 +65,10 @@
 								</div>
 							</div>
 							<div class="col-auto mt-1">
-								<p>기존(처음)기간:</p>
+								<p>기존(처음)기간: ${fmsc_s01.fromDate} ~ ${fmsc_s01.toDate}</p>
+								<input type="hidden" id="saleno" value="${fmsc_s01.saleNo}">
+								<input type="hidden" id="oldfromdate" value="${fmsc_s01.fromDate}">
+								<input type="hidden" id="oldtodate" value="${fmsc_s01.toDate}">
 							</div>
 						</div>
 					</div>
@@ -80,7 +86,7 @@
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
 									<input class="form-control" type="date" id="todate" name="todate"/>
-									<span class="input-group-text" id="difdate" >1일</span>
+									<span class="input-group-text" id="difdate" title="1">1일</span>
 								</div>
 							</div>
 							<div class="col-auto">
@@ -101,8 +107,8 @@
 							</div>
 							<div class="col-md-3">
 								<div class="input-group input-group-sm">
-									<input class="form-control" type="date" id="retodate" name="retodate" readonly="readonly" value="${fmsc_s01.RToDate}"/>
-									<span class="input-group-text" id="difredate">1일</span>
+									<input class="form-control" type="date" id="retodate" name="retodate" value="${fmsc_s01.RToDate}"/>
+									<span class="input-group-text" id="difredate" title="1">1일</span>
 								</div>
 							</div>
 						</div>
@@ -126,36 +132,71 @@
                     	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
                         	<thead>
 	                        	<tr>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paiddate">신청일자</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcategory">기존시작일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidprice">기존종료일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">기존일수</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">휴회시작일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">휴회종료일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">휴회일수</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">휴회복귀일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="POS">휴회복귀(강습)종료일</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="signpad">잔여일수</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="OID">휴회사유</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="PayKind">생성일</th>
-	                            </tr>
+		                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">신청일자</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcategory">기존시작일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidprice">기존종료일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">기존일수</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">휴회시작일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">휴회종료일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">휴회일수</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">휴회복귀일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="POS">휴회복귀(강습)종료일</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="signpad">잔여일수</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="OID">휴회사유</th>
+		                        	<th class="sort align-middle text-center" scope="col" data-sort="PayKind">생성일</th>
+	                        	</tr>
                         	</thead>
-                        	<tbody class="list" id="paidbody">
-                        		<c:forEach var="paid" items="${paidlist}">
-	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static">
-									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
-									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
-									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
-									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${paidprice}" pattern="#,###"/></td>
-									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
-									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
-									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
-									    <td class="paidassignN align-middle white-space-nowrap text-start">${paid.assignNo}</td>
-									    <td class="paidcardN align-middle white-space-nowrap text-start">${paid.cardNo}</td>
-									    <td class="POS align-middle white-space-nowrap text-start">${paid.pos}</td>
-									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
-									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
-									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+                        	<tbody class="list" id="restlist">
+                        		<c:forEach var="rest" items="${restlist}">
+	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static"
+	                        			<c:if test="${rest.isDelete eq 'Y'}">
+	                        				style="background-color: gray;"
+	                        			</c:if>>
+									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${rest.regDate}</td>
+									    <td class="paidcategory align-middle white-space-nowrap text-center">${fmsc_s01.fromDate}</td>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">${fmsc_s01.toDate}</td>
+									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-center" id="fmsc_01_daysDifference_${rest.PKID}"></td>
+							            <script>
+							                var fmfromDate = "${fmsc_s01.fromDate}";
+							                var fmtoDate = "${fmsc_s01.toDate}";
+							
+							                var fromDateObj = new Date(fmfromDate);
+							                var toDateObj = new Date(fmtoDate);
+							
+							                var daysDifference = (toDateObj - fromDateObj) / (1000 * 60 * 60 * 24)+1;
+							                
+							                document.getElementById("fmsc_01_daysDifference_${rest.PKID}").textContent = daysDifference;
+							            </script>
+									    <td class="paidmapsa align-middle white-space-nowrap text-center">${rest.fromDate}</td>
+									    <td class="paidcardtype align-middle white-space-nowrap text-start">${rest.toDate}</td>
+									    <td class="paidassignN align-middle white-space-nowrap text-start" id="rest_daysDifference_${rest.PKID}"></td>
+									    <script>
+							                var rfromDate = "${rest.fromDate}";
+							                var rtoDate = "${rest.toDate}";
+							
+							                var fromDateObj = new Date(rfromDate);
+							                var toDateObj = new Date(rtoDate);
+							
+							                var daysDifference = (toDateObj - fromDateObj) / (1000 * 60 * 60 * 24)+1;
+							
+							                document.getElementById("rest_daysDifference_${rest.PKID}").textContent = daysDifference;
+							            </script>
+									    <td class="paidcardN align-middle white-space-nowrap text-start">${rest.reFromDate}</td>
+									    <td class="POS align-middle white-space-nowrap text-start">${rest.reToDate}</td>
+									    <td class="signpad py-2 align-middle white-space-nowrap" id="rerest_daysDifference_${rest.PKID}"></td>
+									    <script>
+							                var refromDate = "${rest.reFromDate}";
+							                var retoDate = "${rest.reToDate}";
+							
+							                var fromDateObj = new Date(refromDate);
+							                var toDateObj = new Date(retoDate);
+							
+							                var daysDifference = (toDateObj - fromDateObj) / (1000 * 60 * 60 * 24)+1;
+							
+							                document.getElementById("rerest_daysDifference_${rest.PKID}").textContent = daysDifference;
+							            </script>
+									    <td class="OID py-2 align-middle white-space-nowrap">${rest.note}</td>
+									    <td class="PayKind py-2 align-middle white-space-nowrap">${rest.addDate}</td>
 									</tr>
 								</c:forEach>
                         	</tbody>
@@ -251,6 +292,8 @@ $('#fromdate').on('change', function() {
 
 	$('#difdate').text(differenceInDays+'일');
 	
+	$('#difdate').attr('title',differenceInDays);
+	
 	//날짜 형식 파싱 (yyyy-MM-dd)
 	var currentDate = new Date(retodate);
 
@@ -262,6 +305,17 @@ $('#fromdate').on('change', function() {
 
 	// 새로운 값 설정
 	$('#retodate').val(newDateValue);
+	
+	var tomorrowDate = new Date(toDate);
+	tomorrowDate.setDate(toDate.getDate() + 1);
+
+	// Convert the new date to a string in yyyy-MM-dd format
+	var newDateValue = tomorrowDate.toISOString().slice(0, 10);
+
+	// set new value
+	$('#refromdate').val(newDateValue);
+	
+	difRetodate();
 });
 
 $('#todate').on('change', function() {
@@ -276,6 +330,8 @@ $('#todate').on('change', function() {
 	// Now, differenceInDays contains the result you're looking for
 	$('#difdate').text(differenceInDays+'일');
 	
+	$('#difdate').attr('title',differenceInDays);
+	
 	// Convert retodate to a JavaScript Date object
 	var dateObject = new Date(retodate);
 
@@ -286,6 +342,21 @@ $('#todate').on('change', function() {
 	var newDate = dateObject.toISOString().split('T')[0];
 	
 	$('#retodate').val(newDate);
+	
+	var tomorrowDate = new Date(toDate);
+	tomorrowDate.setDate(toDate.getDate() + 1);
+
+	// Convert the new date to a string in yyyy-MM-dd format
+	var newDateValue = tomorrowDate.toISOString().slice(0, 10);
+
+	// set new value
+	$('#refromdate').val(newDateValue);
+	
+	difRetodate();
+});
+
+$('#retodate').on('change', function() {
+	difRetodate();
 });
 
 function difRetodate() {
@@ -301,13 +372,86 @@ function difRetodate() {
 	// Now, differenceInDays contains the result you're looking for
 	$('#difredate').text(differenceInDays+'일');
 	
-	
+	$('#difredate').attr('title',differenceInDays);
+}
+
+function save() {
+	if($('#note').val().trim() == null || $('#note').val().trim() == ''){
+		$('#resultmessage').html('연기사유를 반드시 입력하십시오.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}else{
+		itemrest();
+	}
+}
+
+function itemrest() {
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "itemrest", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'json',
+        data: { 
+         SaleNo : $('#saleno').val(),
+         RegDate : $('#regdate').val(),
+         FromDate : $('#fromdate').val(),
+         ToDate : $('#todate').val(),
+         ReFromDate : $('#refromdate').val(),
+         ReToDate : $('#retodate').val(),
+         ReFromCheck : 'N',
+         Note : $('#note').val(),
+         IsDelete : 'N'
+        },
+        success: function(data) {	
+       		if(data){
+      	 		window.opener.location.reload();
+           		window.close();
+           	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function deleteAll() {
+	$('#resultmessage').html('연기신청을 취소하시겠습니까?');
+	$('.modal-footer').empty();
+	var okaybutton = '<button class="btn btn-primary" type="button" onclick="cancelRest()">확인</button>';
+	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	$('.modal-footer').append(okaybutton);
+	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+}
+
+function cancelRest() {
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "cancelrest", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'json',
+        data: { 
+         SaleNo : $('#saleno').val()
+        },
+        success: function(data) {	
+       		if(data){
+      	 		window.opener.location.reload();
+           		window.close();
+           	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/list.js/list.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>

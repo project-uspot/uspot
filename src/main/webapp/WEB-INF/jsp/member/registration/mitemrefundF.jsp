@@ -620,13 +620,21 @@
 						<input class="form-control" type="text" id="refundprice" name="refundprice" readonly="readonly" style="text-align: right;font-weight: 900;color: red;"/>
 					</div>
 				</div>
-				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 283px;">
-  					<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="processRefund(false)">공제 후 환불</button>
-  					<button class="btn btn-phoenix-secondary" type="button" onclick="processRefund(true)">전액환불</button>
+				<div class="row mb-2">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="processRefund(false)">공제 후 환불</button>	
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-phoenix-secondary" type="button" onclick="processRefund(true)">전액환불</button>
+					</div>
 				</div>
-				<div class="btn-group btn-group-sm" role="group" style="width: 283px;">
-  					<button class="btn btn-soft-primary" type="button">영수증재발행</button>
-  					<button class="btn btn-soft-success" type="button">행삭제</button>
+				<div class="row">
+					<div class="col-auto">
+						<button class="btn btn-soft-primary" type="button">영수증재발행</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-success" type="button">행삭제</button>
+					</div>
 				</div>
 	    	</div>
 	    </div>

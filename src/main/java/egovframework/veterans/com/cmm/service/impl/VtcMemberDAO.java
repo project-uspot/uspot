@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
@@ -151,5 +152,21 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void deleteFmsc_s04_01(fmsc_s04_01 fmsc_s04_01)throws Exception{
 		update("member.deleteFmsc_s04_01",fmsc_s04_01);
+	}
+	
+	public void deleteFmsc_s03(fmsc_s03 fmsc_s03)throws Exception{
+		update("member.deleteFmsc_s03",fmsc_s03);
+	}
+	
+	public void insertFmsc_s03(fmsc_s03 fmsc_s03)throws Exception{
+		insert("member.insertFmsc_s03",fmsc_s03);
+	}
+	
+	public List<fmsc_s03> fmsc_s03BySaleNo(fmsc_s03 fmsc_s03)throws Exception{
+		return selectList("member.fmsc_s03BySaleNo",fmsc_s03);
+	}
+	
+	public void cancelRestFmsc_s01(fmsc_s01 fmsc_s01)throws Exception{
+		update("member.cancelRestFmsc_s01",fmsc_s01);
 	}
 }

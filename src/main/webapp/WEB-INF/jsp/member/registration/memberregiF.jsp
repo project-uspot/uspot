@@ -334,7 +334,8 @@
                                             <input class="form-control form-control-lg" id="name" type="hidden" value="${tblmember.name}" name="name" />
                                             <h3 class="nameview">${tblmember.name}</h3>
                                             <p class="text-800">
-                                                ${tblmember.memberID}&emsp;<input class="form-check-input" id="isdeletecheck" type="checkbox" name="isdeletecheck" disabled="disabled" />
+                                                ${tblmember.memberID}&emsp;
+                                                <input class="form-check-input" id="isdeletecheck" type="checkbox" name="isdeletecheck" disabled="disabled" />
                                                 <input type="hidden" value="${tblmember.memberID}" name="memberID" id="memberID">
                                                 <label class="form-check-label text-9000" for="fragileCheck">대관팀</label>
                                             </p>
@@ -640,8 +641,8 @@
                     <button class="btn btn-soft-secondary" type="button" onclick="mitemreinsertF()"><span data-feather="file-text"></span>&nbsp;재등록(F9)</button>
                     <button class="btn btn-soft-success" type="button" onclick="mitemchange()"><span data-feather="repeat"></span>&nbsp;반변경(Z)</button>
                     <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(X)</button>
-                    <button class="btn btn-soft-warning" type="button" onclick="mitemrestF()"><span data-feather="user-x"></span>&nbsp;휴회(C)</button>
-                    <button class="btn btn-soft-info" type="button"><span data-feather="archive"></span>&nbsp;사물함 임대(V)</button>
+                    <button class="btn btn-soft-warning" type="button" onclick="mitemrestF()"><span data-feather="user-x"></span>&nbsp;휴회(shift+C)</button>
+                    <button class="btn btn-soft-info" type="button" onclick="mLockerF()"><span data-feather="archive"></span>&nbsp;사물함 임대(shift+V)</button>
                     <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
                     <script type="text/javascript">
                     var myPopup;
@@ -656,7 +657,7 @@
 					var rememberstate = '';
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -691,8 +692,15 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '휴회'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('휴회 처리 된 데이터입니다.<br>휴회취소 후 등록해주세요.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                     	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -720,8 +728,15 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '휴회'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('휴회 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                         var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=780";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -755,6 +770,13 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '휴회'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('휴회 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                     	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
                     	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
@@ -782,6 +804,13 @@
                             $('#modalButton').click();
                             return false;
                     	}
+                    	if(rememberstate == '휴회'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('휴회 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
                     	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
                     	var url = 'mitemrefundF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1600,height=744";
@@ -798,8 +827,42 @@
 					}
                     
                     function mitemrestF() {
+                    	if(remembersaleno == ''){
+                    		alert('수강을 선택해주세요');
+                    		return false;
+                    	}
+                    	if(rememberstate == '반변경(-)'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('반변경 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
+                    	if(rememberstate == '환불'){
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('환불 처리 된 데이터입니다.<br>수정할 수 없습니다.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
+                    	}
+                    	
                     	var url = 'mitemrestF.do?SaleNo='+remembersaleno;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=530";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
+                    
+                    function mLockerF() {
+                    	var url = 'mLockerF.do?MemberID='+$('#memberID').val();
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=600";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -850,10 +913,10 @@
                         if (event.ctrlKey && event.key === 'x') {
                         	mitemrefund();
                         }
-                        if (event.ctrlKey && event.key === 'c') {
+                        if (event.shiftKey && event.key === 'C') {
                         	mitemrestF();
                         }
-                        if (event.ctrlKey && event.key === 'v') {
+                        if (event.shiftKey && event.key === 'V') {
                         	mitemrefund();
                         }
                         if (event.ctrlKey && event.key === 'q') {
@@ -1836,7 +1899,7 @@
             </div>
         </div>
     </div>
-
+	
     <!-- 모달 3개 -->
 </body>
 

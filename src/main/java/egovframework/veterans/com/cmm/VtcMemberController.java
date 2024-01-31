@@ -30,6 +30,7 @@ import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
+import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
@@ -1154,7 +1155,7 @@ public class VtcMemberController {
 	}
 	
 	@GetMapping("/mitemrestF.do")
-	public String mitemrestF(fmsc_s01 fmsc_s01,Model model) throws Exception {
+	public String mitemrestF(fmsc_s01 fmsc_s01,fmsc_s03 fmsc_s03,Model model) throws Exception {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -1162,8 +1163,61 @@ public class VtcMemberController {
 		
 		fmsc_s01 fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
+		fmsc_s03.setSiteCode(users.getSiteCode());
+		
+		List<fmsc_s03> fmsc_s03_list = vtcMemberService.fmsc_s03BySaleNo(fmsc_s03);
+		
 		model.addAttribute("fmsc_s01",fmsc_s01_1);
+		model.addAttribute("restlist",fmsc_s03_list);
 		
 		return "member/registration/mitemrestF";
+	}
+	
+	@PostMapping("/itemrest")
+	@ResponseBody
+	public String itemrest(fmsc_s03 fmsc_s03,fmsc_s01 fmsc_s01)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01.setRFromDate(fmsc_s03.getReFromDate());
+		fmsc_s01.setRToDate(fmsc_s03.getReToDate());
+		fmsc_s01.setState("D");
+		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+		
+		fmsc_s03.setSiteCode(users.getSiteCode());
+		fmsc_s03.setAddUserPKID(users.getUserPKID());
+		fmsc_s03.setUpdUserPKID(users.getUserPKID());
+		
+		vtcMemberService.oldfmsc_s01update(fmsc_s01);
+		vtcMemberService.deleteFmsc_s03(fmsc_s03);
+		vtcMemberService.insertFmsc_s03(fmsc_s03);
+		return "success";
+	}
+	
+	@PostMapping("/cancelrest")
+	@ResponseBody
+	public String cancelrest(fmsc_s03 fmsc_s03,fmsc_s01 fmsc_s01)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s03.setUpdUserPKID(users.getUserPKID());
+		
+		fmsc_s01.setUpdUserPKID(users.getUserPKID());
+		
+		vtcMemberService.deleteFmsc_s03(fmsc_s03);
+		
+		vtcMemberService.cancelRestFmsc_s01(fmsc_s01);
+		
+		return "success";
+	}
+	
+	@GetMapping("/mLockerF.do")
+	public String mLockerF(tblmember tblmember,Model model)throws Exception{
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		
+		model.addAttribute("member",member);
+		
+		return "member/registration/mLockerF";
 	}
 }

@@ -363,7 +363,7 @@
 	    	</div>
 	    </div>
 	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
-	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 273px;">
+	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 285px;">
 	    		<div class="col-auto">
 	    			<div class="row">
 	    				<div class="col-auto">
@@ -386,17 +386,36 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
-  					<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
-  					<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
-					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+					</div>
+					<div class="col-auto ms-4">
+						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					</div>
+					<div class="col-auto ms-n6">
+						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+					</div>
 				</div>
-				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
-  					<button class="btn btn-soft-primary" type="button">신용카드</button>
-  					<button class="btn btn-soft-success" type="button">영수증재발행</button>
-  					<button class="btn btn-soft-danger" type="button">결제취소</button>
-  					<button class="btn btn-soft-info" type="button">행삭제</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-primary" type="button">신용카드</button>
+					</div>
+					<div class="col-auto ms-4">
+						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					</div>
+				</div>
+				<div class="row">
+					
+					<div class="col-auto">
+						<button class="btn btn-soft-danger" type="button">결제취소</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-info" type="button">행삭제</button>
+					</div>
 				</div>
 	    	</div>
 	    </div>

@@ -485,10 +485,15 @@ from fmsc_s01
 	</update>
 	<update id="oldfmsc_s01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 		update fmsc_s01 set
+		<if test="RFromDate != null">
+			RFromDate = #{RFromDate},
+		</if>
 		RToDate = #{RToDate},
 		State = #{State},
 		prevInType = InType,
+		<if test="InType != null">
 		InType = #{InType},
+		</if>
 		CurState = -1,
 		UpdUserPKID = #{UpdUserPKID},
 		UpdDate = now()
@@ -572,6 +577,50 @@ from fmsc_s01
 		IsDelete = 'Y',
 		UpdUserPKID = #{UpdUserPKID},
 		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="deleteFmsc_s03" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		update fmsc_s03 set
+		IsDelete = 'Y',
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<insert id="insertFmsc_s03" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		INSERT INTO fmsc_s03
+		(SiteCode, SaleNo, RegDate, FromDate, 
+		ToDate, ReFromDate, ReToDate, ReFromCheck, 
+		Note, IsDelete, AddDate, AddUserPKID, 
+		UpdDate, UpdUserPKID)
+		VALUES
+		(#{SiteCode},#{SaleNo},#{RegDate},#{FromDate}, 
+		#{ToDate},#{ReFromDate},#{ReToDate},#{ReFromCheck}, 
+		#{Note},#{IsDelete},now(),#{AddUserPKID}, 
+		now(),#{UpdUserPKID})
+	</insert>
+	<select id="fmsc_s03BySaleNo" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		select * from fmsc_s03
+		where
+			SiteCode = #{SiteCode}
+		and SaleNo = #{SaleNo}
+		order by AddDate desc
+	</select>
+	<update id="cancelRestFmsc_s01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		UPDATE fmsc_s01 SET
+		RFromDate = FromDate,
+		RToDate = ToDate,
+	    InType = prevInType,
+	    prevInType = '등록',
+	    CurState = 1,
+	    UpdDate = now(),
+	    UpdUserPKID = #{UpdUserPKID},
+	    State = CASE
+	        WHEN InType IN ('등록', '재등록') THEN 'A'
+	        WHEN InType = '반변경' THEN 'A+'
+	        ELSE State
+	    end
 		where
 			SaleNo = #{SaleNo}
 	</update>
