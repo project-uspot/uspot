@@ -153,7 +153,7 @@ function fetchData() {
         	document.getElementById('barCode').value = this.responseText;
         }
     };
-    xhr.open("GET", "/barCodeGetData.do", true); // 데이터를 받아오는 서버의 URL
+    xhr.open("GET", "${pageContext.request.contextPath}/barCodeGetData.do", true); // 데이터를 받아오는 서버의 URL
     xhr.send();
 }
 

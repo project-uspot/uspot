@@ -38,6 +38,6 @@ public class BarCodeDataProviderServlet extends HttpServlet {
 
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
-        out.println(data != null ? data : "No data available for client: " + f.generateClientId());
+        out.println(data != null ? data : "");
 	}
 }

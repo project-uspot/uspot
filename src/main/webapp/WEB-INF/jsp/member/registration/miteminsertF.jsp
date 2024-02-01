@@ -375,7 +375,7 @@
 					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
 				</div>
 				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
-  					<button class="btn btn-soft-primary" type="button">신용카드</button>
+  					<button class="btn btn-soft-primary" type="button" onclick="paycredit()">신용카드</button>
   					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
   					<button class="btn btn-soft-success" type="button">영수증재발행</button>
   					<button class="btn btn-soft-danger" type="button">결제취소</button>
@@ -1022,6 +1022,23 @@ function paycash() {
 		$(this).attr('id', 'Y');
 	});
 	totalchange();
+}
+
+<%-- 신용카드 결제 --%>
+function paycredit(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+	
+	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val();
+    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=700";
+    window.open(url, "_blank", windowFeatures);
 }
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
