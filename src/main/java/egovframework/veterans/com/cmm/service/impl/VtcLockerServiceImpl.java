@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.veterans.com.cmm.service.VtcSamulhamService;
+import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 
 @Service("VtcSamulhamService")
-public class VtcSamulhamServiceImpl extends EgovAbstractServiceImpl implements VtcSamulhamService{
+public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements VtcLockerService{
 	
 	@Resource(name="VtcSamulhamDAO")
-	private VtcSamulhamDAO vtcSamulhamDAO;
+	private VtcLockerDAO vtcSamulhamDAO;
 	
 	@Override
 	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{

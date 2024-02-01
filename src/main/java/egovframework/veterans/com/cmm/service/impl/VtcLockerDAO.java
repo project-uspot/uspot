@@ -12,7 +12,7 @@ import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Repository("VtcSamulhamDAO")
-public class VtcSamulhamDAO extends EgovComAbstractDAO{
+public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
 		

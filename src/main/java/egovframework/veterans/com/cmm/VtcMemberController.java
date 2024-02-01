@@ -22,7 +22,7 @@ import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
-import egovframework.veterans.com.cmm.service.VtcSamulhamService;
+import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
@@ -52,7 +52,7 @@ public class VtcMemberController {
 	private final HttpSession session;
 	private final VtcMemberService vtcMemberService;
 	private final VtcDCService vtcDCService;
-	private final VtcSamulhamService vtcSamulhamService;
+	private final VtcLockerService vtcSamulhamService;
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
 	private final VtcItemService vtcItemService;

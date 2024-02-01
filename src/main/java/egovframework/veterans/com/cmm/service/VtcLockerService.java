@@ -7,7 +7,7 @@ import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
-public interface VtcSamulhamService {
+public interface VtcLockerService {
 
 	List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception;
 

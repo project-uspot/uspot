@@ -1,4 +1,4 @@
-package egovframework.veterans.com.cmm.lib;
+package egovframework.veterans.lib;
 
 import java.io.IOException;
 import java.io.InputStream;

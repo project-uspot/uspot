@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.veterans.com.cmm.service.VtcSamulhamService;
+import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +32,10 @@ import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Controller
 @RequiredArgsConstructor
-public class VtcsamulhamController{
+public class VtcLockerController{
 	
 	private final HttpSession session;
-	private final VtcSamulhamService vtcSamulhamService;
+	private final VtcLockerService vtcSamulhamService;
 	
 	@GetMapping("/samulhaminfo.do")
 	public String samulhaminfo(Model model) throws Exception {
