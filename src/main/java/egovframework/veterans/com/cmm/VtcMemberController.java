@@ -639,7 +639,11 @@ public class VtcMemberController {
 	public String miteminsertF(tblmember tblmember,DC dc,Model model,tblCode tblCode) throws Exception {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
@@ -840,7 +844,12 @@ public class VtcMemberController {
 	public String mitemreinsertF(fmsc_s01 fmsc_s01,tblmember tblmember,DC dc,Model model,tblCode tblCode,TblItem_02 tblItem_02)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
+
 		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
 		tblCode.setSiteCode(users.getSiteCode());
@@ -902,6 +911,11 @@ public class VtcMemberController {
 	public String mitemchangeF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
 								@RequestParam(name = "itemname")String itemname)throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 		
 		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		tblCode.setSiteCode(users.getSiteCode());

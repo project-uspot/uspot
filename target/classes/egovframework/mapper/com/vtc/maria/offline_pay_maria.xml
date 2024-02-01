@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="offlinePay">
+
+	<select id="getCreditCardMenu" parameterType="String" resultType="Map">
+		SELECT Code, CreditName
+		FROM tblCreditCard
+		WHERE 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		ORDER BY SortOrder ASC
+	</select>
+
+</mapper>

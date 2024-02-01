@@ -107,10 +107,10 @@
             </div>
             <div class="row flex-between-center mb-7">
               <div class="col-auto">
-                <div class="form-check mb-0">
+                <%-- <div class="form-check mb-0">
                   <input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" />
                   <label class="form-check-label mb-0" for="basic-checkbox">아이디 저장</label>
-                </div>
+                </div> --%>
               </div>
               <div class="col-auto"><a class="fs--1 fw-semi-bold" href="javascript:passwordchange();">사용자 비밀번호 변경</a></div>
             </div>

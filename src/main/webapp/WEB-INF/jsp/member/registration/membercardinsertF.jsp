@@ -142,6 +142,22 @@ function submitconfirm() {
         }
 	});
 }
+
+function fetchData() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+    	console.log(this.readyState+","+this.status+","+this.responseText);
+        if (this.readyState == 4 && this.status == 200 && this.responseText != "") {
+            // TODO: 서버로부터 받은 데이터를 처리합니다.
+            //document.getElementById("data").innerHTML = this.responseText;
+        	document.getElementById('barCode').value = this.responseText;
+        }
+    };
+    xhr.open("GET", "${pageContext.request.contextPath}/barCodeGetData.do", true); // 데이터를 받아오는 서버의 URL
+    xhr.send();
+}
+
+setInterval(fetchData, 5000); // 5초마다 fetchData 함수를 호출하여 서버로부터 데이터를 받아옵니다.
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>

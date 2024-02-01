@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
+	<properties>
+		<Property name="FILENAME">/home/uspot/logs/</Property>
+	</properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="[log4j]%d %5p [%c] %m%n" />
         </Console>
+        
+   		<RollingFile name="Test" 
+				fileName   ="${FILENAME}/Test.log"
+				filePattern="${FILENAME}/daily/%d{yyyyMM}/Test_%d{yyyyMMddHH}.log" >
+			<MarkerFilter marker="Test" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout>
+				<pattern>${defaultPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- interval(default 1)이므로 1초 간격으로 rolling 수행 --> 
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
     </Appenders>
+    
+    
     <Loggers>
         <Logger name="java.sql" level="DEBUG" additivity="false">
             <AppenderRef ref="console" />
@@ -19,6 +37,11 @@
 	    <Logger name="org.springframework" level="DEBUG" additivity="false">
 	        <AppenderRef ref="console" />
 	    </Logger>
+	    
+	    <Logger name="egovframework.veterans" level="DEBUG" additivity="true">
+			<AppenderRef ref="Test" />
+		</Logger>
+		
         <Root level="DEBUG">
             <AppenderRef ref="console" />
         </Root>

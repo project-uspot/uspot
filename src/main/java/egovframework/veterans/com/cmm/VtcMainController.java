@@ -29,7 +29,7 @@ public class VtcMainController {
 	
 	
 	@RequestMapping(value="/main.do")
-	public String Main(ModelMap model, String SiteCode,HttpSession session) throws Exception {
+	public String Main(ModelMap model, String SiteCode, HttpSession session) throws Exception {
 		if(session.getAttribute("loginuserinfo") == null) {
 			model.addAttribute("script", "redirect");
 			model.addAttribute("msg", "세션이 만료되었습니다 다시 로그인해주세요");
@@ -65,8 +65,14 @@ public class VtcMainController {
 	
 	
 	@RequestMapping("selecSitecode.do")
-	public String selectArticleList(PGM pgm,@RequestParam(name = "siteCode",defaultValue="10001")String SiteCode, ModelMap model) throws Exception {
-		
+	public String selectArticleList(PGM pgm,@RequestParam(name = "siteCode",defaultValue="10001")String SiteCode, ModelMap model, HttpSession session) throws Exception {
+		if(session.getAttribute("loginuserinfo") == null) {
+			model.addAttribute("script", "redirect");
+			model.addAttribute("msg", "세션이 만료되었습니다 다시 로그인해주세요");
+			model.addAttribute("url","login.do");
+
+			return "common/msg";
+		}
 		pgm = VtcService.selectPGMInfo(pgm);
 		
 		Sitecode list = VtcService.selectSiteCode(SiteCode);
