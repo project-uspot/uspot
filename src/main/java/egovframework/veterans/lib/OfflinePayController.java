@@ -1,6 +1,7 @@
 package egovframework.veterans.lib;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import egovframework.veterans.com.cmm.lib.Functions;
+import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.vo.Users;
+import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.lib.service.OfflinePayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,7 @@ public class OfflinePayController {
 	
 	private final HttpSession session;
 	private final OfflinePayService OfflinePayService;
+	private final VtcMemberService vtcMemberService;
 	
 	@GetMapping(value = "/{uparam}/CreditCard.do")
 	public String selectCreditCard(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
@@ -96,6 +100,12 @@ public class OfflinePayController {
 
 		String Price = request.getParameter("Price");
 		String MemberID = request.getParameter("MemberID");
+		tblmember tblMemberVO = new tblmember();
+		tblMemberVO.setMemberID(MemberID);
+		tblMemberVO = vtcMemberService.tblmemberBymemberId(tblMemberVO);
+		String addField = "";
+		addField = "POS" + f.formatDate(new Date(), "yMdHmsR")+tblMemberVO.getMemberID()+tblMemberVO.getName()+tblMemberVO.getCellPhone();
+
 		//String optPay = request.getParameter("optPay");
 		//String optType = request.getParameter("optType");
 		String url = "http://127.0.0.1:8090/?"+"callback=";
@@ -115,7 +125,7 @@ public class OfflinePayController {
 			msg = msg + "^";// 11. 단만기번호(TID)
 			msg = msg + "^"+"30";// 12. 타임아웃
 			msg = msg + "^"+"A";// 13. 부가세 A:자동계산 / M+'부가세금액': 수동입력 / F: 면세
-			msg = msg + "^";// 14. 추가필드
+			msg = msg + "^"+addField;// 14. 추가필드
 			msg = msg + "^";// 15. 수신 핸들값
 			msg = msg + "^";// 16. 단말기 구분 '40':일반거래
 			msg = msg + "^";// 17. 할인/적립구분

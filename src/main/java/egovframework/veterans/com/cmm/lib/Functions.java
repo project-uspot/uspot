@@ -8,8 +8,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -308,4 +311,69 @@ public class Functions {
             return "UnknownHost";
         }
     }
+    
+
+	public Date parseDate(String dateString, String type) throws ParseException {
+		Date date = new Date();
+		SimpleDateFormat format;
+		switch (type) {
+		case "yMd":
+			format = new SimpleDateFormat ( "yyyy-MM-dd");
+			date = format.parse(dateString);
+			break;
+		case "yMdR":
+			format = new SimpleDateFormat ( "yyyyMMdd");
+			date = format.parse(dateString);
+			break;
+		default:
+			format = new SimpleDateFormat ( "yyyy-MM-dd");
+			date = format.parse(dateString);
+			break;
+		}
+		return date;
+	}
+
+	public String formatDate(Date date, String type) throws ParseException {
+		String formatDate = "";
+		SimpleDateFormat format;
+		switch (type) {
+		case "yMd":
+			format = new SimpleDateFormat ( "yyyy-MM-dd");
+			formatDate = format.format(date);
+			break;
+		case "yMdR":
+			format = new SimpleDateFormat ( "yyyyMMdd");
+			formatDate = format.format(date);
+			break;
+		case "yMdHm":
+			format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
+			formatDate = format.format(date);
+			break;
+		case "yMdHmR":
+			format = new SimpleDateFormat ( "yyyyMMddHHmm");
+			formatDate = format.format(date);
+			break;
+		case "yMdHms":
+			format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+			formatDate = format.format(date);
+			break;
+		case "yMdHmsR":
+			format = new SimpleDateFormat ( "yyyyMMddHHmmss");
+			formatDate = format.format(date);
+			break;
+		case "Hm":
+			format = new SimpleDateFormat ( "HH:mm");
+			formatDate = format.format(date);
+			break;
+		case "Hms":
+			format = new SimpleDateFormat ( "HH:mm:ss");
+			formatDate = format.format(date);
+			break;
+		default:
+			format = new SimpleDateFormat ( "yyyy-MM-dd");
+			formatDate = format.format(date);
+			break;
+		}
+		return formatDate;
+	}
 }
