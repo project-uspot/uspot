@@ -26,11 +26,11 @@
 												</div>
 												<div class="input-group input-group-sm mb-1">
 													<span class="input-group-text" id="HalbuSpan">할부개월</span>
-													<input class="form-control" id="Halbu" name="Halbu" type="text" readonly="">
+													<input class="form-control" id="Halbu" name="Halbu" type="text" readonly="" maxlength="2">
 												</div>
 												<div class="input-group input-group-sm mb-1">
 													<span class="input-group-text" id="PriceSpan">결제금액</span>
-													<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="">
+													<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
 												</div>
 												<div class="card">
 													<div class="card-header p-1 bg-soft">
@@ -144,13 +144,14 @@
 						<input type="hidden" id="OID" name="OID" value="">
 						<input type="hidden" id="TID" name="TID" value="">
 						<input type="hidden" id="FCardNo" name="FCardNo" value="">
+						<input type="hidden" id="MemberID" name="MemberID" value="${param.memberID }">
 					</form>
 					<div class="row">
 						<div class="col-auto position-absolute" style="margin-left:750px;">
 							<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
 						</div>
 						<div class="col-auto position-absolute" style="margin-left:870px;">
-							<button class="btn btn-phoenix-primary" type="button" onclick="">결제하기</button>
+							<button class="btn btn-phoenix-primary" type="button" onclick="paid()">결제하기</button>
 						</div>
 					</div>
 				</div>
@@ -361,6 +362,83 @@ function save(){
 	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:hidden">' + $("#SaleTime").val() + '</td>');
 	$(opener.document).find('#paidbody').append(newRow);
 	self.close();
+}
+
+<%-- 결제 --%>
+function paid(){
+	if($("#Price").val() == "" || $("#Price").val() == "0" ){
+		$("#verticallyCenteredModalLabel").html(" 오 류 ");
+		$('#resultmessage').html('결제금액을 확인해주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+	var checkedRadio = document.querySelector('input[name="optPay"]:checked').value;
+	var urlParam = "";
+	if(checkedRadio == '0'){
+		urlParam = "card";
+	}else if(checkedRadio == '1'){
+		if($("#BarCode").val() == ""){
+			$("#verticallyCenteredModalLabel").html(" 오 류 ");
+			$('#resultmessage').html('확인번호를 입력해주세요.');
+		  	$('.modal-footer').empty();
+		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		  	$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
+		}
+		urlParam = "cash";
+	}else if(checkedRadio == '2'){
+		if($("#BarCode").val() == ""){
+			$("#verticallyCenteredModalLabel").html(" 오 류 ");
+			$('#resultmessage').html('확인번호를 입력해주세요.');
+		  	$('.modal-footer').empty();
+		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		  	$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
+		}
+		urlParam = "simple";
+	}else if(checkedRadio == '3'){
+		if($("#BarCode").val() == ""){
+			$("#verticallyCenteredModalLabel").html(" 오 류 ");
+			$('#resultmessage').html('확인번호를 입력해주세요.');
+		  	$('.modal-footer').empty();
+		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		  	$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
+		}
+		urlParam = "zero";
+	}
+
+	$.ajax({
+		type : 'POST',
+		url : '${pageContext.request.contextPath}/'+urlParam+'/paidReg',
+		async : false,
+		dataType : 'json',
+		data: {
+			BarCode : $("#BarCode").val(),
+			Halbu : $("#Halbu").val(),
+			Price : parseInt(removeCommasFromNumber($("#Price").val())),
+			optPay : document.querySelector('input[name="optPay"]:checked').value,
+			optType : document.querySelector('input[name="optType"]:checked').value,
+			MemberID : $("#MemberID").val()
+		},
+		success: function(data){
+			
+		},
+		error: function(xhr, status, error){
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+		}
+	});
 }
 </script>
 <jsp:include page="/WEB-INF/jsp/include/foot.jsp"></jsp:include>
