@@ -80,5 +80,10 @@ public class VtcSamulhamServiceImpl extends EgovAbstractServiceImpl implements V
 
 		return vtcSamulhamDAO.memberuselocker(MemberID);
 	}
+
+	@Override
+	public List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception {
+		return vtcSamulhamDAO.plockerByGroupID(tblplockergroup);
+	}
 	
 }

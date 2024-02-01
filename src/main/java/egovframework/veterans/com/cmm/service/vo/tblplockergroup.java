@@ -1,56 +1,82 @@
 package egovframework.veterans.com.cmm.service.vo;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
-@SuppressWarnings("serial")
 @Data
-public class tblplockergroup implements Serializable{
+public class tblplockergroup{
+	private int PLockerGroupID;
 
-	private int PLockergroupid;
-	
+
 	private String SiteCode;
-	
-	private String PLockergroupname;
-	
-	private String PLockerlocation;
-	
-	private int PLockertype;
-	
-	private double PLockerdeposite;
-	
-	private double PLockerprice;
-	
-	private int PLockermonth;
-	
-	private int Sortorder;
-	
+
+
+	private String PLockerGroupName;
+
+
+	private String PLockerLocation;
+
+
+	private int PLockerType;
+
+
+	private double PLockerDeposite;
+
+
+	private double PLockerPrice;
+
+
+	private int PLockerMonth;
+
+
+	private int SortOrder;
+
+
 	private String NVAT;
-	
+
+
 	private String LockerImage;
-	
-	private String JStype;
-	
-	private String Jungsinewdate;
-	
-	private String Jungsiredate;
-	
-	private String Jungsifromtodate;
-	
-	private String Jungsinew_etime;
-	
-	private String Jungsire_stime;
-	
-	private String Isdelete;
-	
+
+
+	private String JSType;
+
+
+	private String JungsiNewDate;
+
+
+	private String JungsiReDate;
+
+
+	private String JungsiFromToDate;
+
+
+	private String JungsiNewSTime;
+
+
+	private String JungsiNewETime;
+
+
+	private String JungsiReSTime;
+
+
+	private String JungsiReETime;
+
+
+	private String IsDelete;
+
+
 	private String AddDate;
-	
-	private int AdduserPKID;
-	
-	private String Upddate;
-	
+
+
+	private int AddUserPKID;
+
+
+	private String UpdDate;
+
+
 	private int UpdUserPKID;
-	
-	private int Dancnt;
+
+
+	private int DanCnt;
+
+
 }

@@ -40,6 +40,7 @@ import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
+import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -1214,8 +1215,12 @@ public class VtcMemberController {
 	@GetMapping("/mLockerF.do")
 	public String mLockerF(tblmember tblmember,Model model)throws Exception{
 		
-		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		Users users = (Users) session.getAttribute("loginuserinfo");
 		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblplockergroup> lockergrouplist = vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
+		
+		model.addAttribute("lockergrouplist",lockergrouplist);
 		model.addAttribute("member",member);
 		
 		return "member/registration/mLockerF";

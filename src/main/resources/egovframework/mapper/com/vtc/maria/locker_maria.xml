@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="samulhamMapper">
+<mapper namespace="locker">
 
 	<select id="selectSamulhamInfoList" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" parameterType="String">
 		select * from tblplockergroup 
@@ -143,5 +143,12 @@ END AS IsFlagText,
 		tblUseLocker.MemberID = #{MemberID}
 	and tblUseLocker.IsDelete = 'N'
 	order by IsFlag,RegDate desc
+</select>
+<select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+	select * from tblplocker
+	where 
+		PLockerGroupID = #{PLockerGroupID}
+	and SiteCode = #{SiteCode}
+	and IsDelete = 'N'
 </select>
 </mapper>
