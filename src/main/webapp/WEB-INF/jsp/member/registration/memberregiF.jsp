@@ -862,7 +862,7 @@
                     
                     function mLockerF() {
                     	var url = 'mLockerF.do?MemberID='+$('#memberID').val();
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=600";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=800";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -917,7 +917,7 @@
                         	mitemrestF();
                         }
                         if (event.shiftKey && event.key === 'V') {
-                        	mitemrefund();
+                        	mLockerF();
                         }
                         if (event.ctrlKey && event.key === 'q') {
                         	mitemrefund();

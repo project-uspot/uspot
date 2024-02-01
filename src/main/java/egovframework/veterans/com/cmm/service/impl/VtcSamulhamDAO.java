@@ -16,51 +16,55 @@ public class VtcSamulhamDAO extends EgovComAbstractDAO{
 	
 	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
 		
-		return selectList("samulhamMapper.selectSamulhamInfoList",SiteCode);
+		return selectList("locker.selectSamulhamInfoList",SiteCode);
 	}
 	
 	public tblplockergroup selectSamulhamInfodetail(int lockergroupIid) throws Exception{
 		
-		return selectOne("samulhamMapper.selectSamulhamInfodetail",lockergroupIid);
+		return selectOne("locker.selectSamulhamInfodetail",lockergroupIid);
 	}
 	
 	public List<lockercodelist> lockercodelist(tblplocker tblplocker) throws Exception{
 
-		return selectList("samulhamMapper.lockercodelist",tblplocker);
+		return selectList("locker.lockercodelist",tblplocker);
 	}
 	
 	public int maxsortorder(String SiteCode) throws Exception{
 		
-		return selectOne("samulhamMapper.maxsortorder",SiteCode);
+		return selectOne("locker.maxsortorder",SiteCode);
 	}
 	
 	public int plockernovalue(tblplockergroup tblplockergroup) throws Exception{
 		
-		return selectOne("samulhamMapper.plockernovalue",tblplockergroup);
+		return selectOne("locker.plockernovalue",tblplockergroup);
 	}
 	
 	public void lockercodeinsert(tblplocker tblplocker) throws Exception {
 		
-		insert("samulhamMapper.lockercodeinsert",tblplocker);
+		insert("locker.lockercodeinsert",tblplocker);
 	}
 	
 	public List<tblplocker> plockernolist(tblplocker tblplocker) throws Exception{
 		
-		return selectList("samulhamMapper.plockernolist", tblplocker);
+		return selectList("locker.plockernolist", tblplocker);
 	}
 	
 	public tblplocker lockervobyplockerid(tblplocker tblplocker) throws Exception{
 		
-		return selectOne("samulhamMapper.lockervobyplockerid",tblplocker);
+		return selectOne("locker.lockervobyplockerid",tblplocker);
 	}
 	
 	public void lockercodeupdate(tblplocker tblplocker) throws Exception{
 		
-		insert("samulhamMapper.lockercodeupdate",tblplocker);
+		insert("locker.lockercodeupdate",tblplocker);
 	}
 	
 	public List<memberuselocker> memberuselocker(String MemberID) throws Exception{
 		
-		return selectList("samulhamMapper.memberuselocker", MemberID);
+		return selectList("locker.memberuselocker", MemberID);
+	}
+	
+	public List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception{
+		return selectList("locker.plockerByGroupID",tblplockergroup);
 	}
 }

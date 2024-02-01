@@ -58,8 +58,8 @@
         </div>
     </div>
     <div class="row">
-	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 480px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 500px;">
+	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 630px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 530px;">
 	        	<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
@@ -180,146 +180,162 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-auto">
+					<div class="col-auto ms-n3 me-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
 							<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
 						</div>
 					</div>
-					<div class="col-auto mt-1 mx-n4">
+					<div class="col-auto mt-1">
 						%
 					</div>
-					<div class="col-auto">
+					<div class="col-auto mx-n5">
 						<div class="input-group input-group-sm">
 							<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 				</div>
+				<div class="row">
+	        		<div class="col-md-6">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">합계</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}"/>
+						</div>
+					</div>
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">판매일자</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 110px;" value="${fmsc_s01.fromDate}" readonly="readonly"/>
+						</div>
+					</div>
+	        	</div>
+	        	<div class="col-auto">
+					<div class="input-group input-group-sm">
+						<span class="input-group-text" id="basic-addon1">비고</span>
+						<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총매출금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n5">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총미납금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+					<div class="col-auto me-n2">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총결제금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1" style="width: 98px;">사용금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n5">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1" style="width: 98px;">위약금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+					<div class="col-auto me-n2">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1" style="width: 98px;">반환금액</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총일수</span>
+							<input class="form-control" type="number" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n5">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">사용일수</span>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n4">
+						<div class="input-group input-group-sm mb-3">
+							<span class="input-group-text me-3" id="basic-addon1" style="height: 33px;">영수증인쇄</span>
+							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
+								<input class="form-check-input" id="inlineRadio1" type="radio" name="inlineRadioOptions" value="option1" aria-describedby="basic-addon1"/>
+								<label class="form-check-label" for="inlineRadio1">2장</label>
+							</div>
+							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
+								<input class="form-check-input" id="inlineRadio2" type="radio" name="inlineRadioOptions" value="option2" aria-describedby="basic-addon1"/>
+								<label class="form-check-label" for="inlineRadio2">1장</label>
+							</div>
+							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
+								<input class="form-check-input" id="inlineRadio3" type="radio" name="inlineRadioOptions" value="option3" aria-describedby="basic-addon1" checked="checked"/>
+								<label class="form-check-label" for="inlineRadio3">0장</label>
+							</div>
+						</div>
+					</div>
+				</div>
 	        </div>
 		</div>
-	    <div class="card h-100 mb-1 w-20 me-1" style="width: 562px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 330px;">
-	            <div class="col-md-10">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">강습반조회</span>
-						<input class="form-control" type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" name="findstring" id="findstring" onkeydown="handleKeyPress(event)"/>
-						<span class="input-group-text" id="basic-addon2" onclick="finditem()" style="cursor: pointer;">찾기</span>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">변경강습반</span>
-						<input class="form-control" type="text" id="itemname" name="itemname" readonly="readonly"/>
-						<input type="hidden" name="itemid" id="itemid">
-						<input type="hidden" name="empcode" id="empcode">
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">강습료</span>
-								<select class="form-select" id="price" name="price" style="width: 152px; text-align: right;">
-									<option selected="selected" value="0">0</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6 ms-n2">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">등록개월</span>
-								<input class="form-control" type="number" id="regmonth" name="regmonth"/>
-								<span class="input-group-text" id="basic-addon1">개월</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">강습기간</span>
-								<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate"/>
-							</div>
-						</div>
-						<div class="col-auto mt-1 mx-n4">
-							~
-						</div>
-						<div class="col-auto ms-n1">
-							<div class="input-group input-group-sm">
-								<input class="form-control" type="date" id="todate" name="todate"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">할인유형</span>
-								<select class="form-select" id="dcds" name="dcds" style="width: 152px; text-align: right;">
-									<option selected="selected" id="0" value="0"></option>
-									<c:forEach var="dc" items="${dclist}">
-										<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
-                                	</c:forEach>
-								</select>
-							</div>
-						</div>
-						<div class="col-auto" style="margin-left: 41px;">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총매출금액</span>
-								<input class="form-control" type="text" id="totalprice" name="totalprice" style="width: 120px;text-align: right;" readonly="readonly"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">할인율/금액</span>
-								<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-auto mt-1 mx-n4">
-							%
-						</div>
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;text-align: right;" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-auto ms-n4">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총결제금액</span>
-								<input class="form-control" type="text" id="tpaidprice" name="tpaidprice" style="width: 120px;text-align: right;" readonly="readonly"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="row">
-						<div class="col-auto">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">합계</span>
-								<input class="form-control" type="text" id="sortprice" name="sortprice" style="width: 120px;text-align: right;" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-auto" style="margin-left: 98px;">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">총미납금액</span>
-								<input class="form-control" type="text" id="tremainprice" name="tremainprice" style="width: 120px;text-align: right;" readonly="readonly"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">변경사유</span>
-						<input class="form-control" type="text" id="note" name="note"/>
-					</div>
+	    <div class="card h-100 mb-1 w-20 me-1" style="width: 662px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 530px;">
+	        	<ul class="nav nav-underline" id="myTab" role="tablist">
+	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
+	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
+	        		</c:forEach>
+					<li class="nav-item"><a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab">Profile</a></li>
+					<li class="nav-item"><a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab">Contact</a></li>
+				</ul>
+				<div class="tab-content mt-3" id="myTabContent">
+					<c:forEach var="lockergroup" items="${lockergrouplist}">
+	        			<div class="tab-pane fade" id="tab-${lockergroup.PLockerGroupID}">
+	        			</div>
+	        		</c:forEach>
+				  	<div class="tab-pane fade" id="tab-profile">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic.</div>
+				  	<div class="tab-pane fade" id="tab-contact">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
 				</div>
 	        </div>
 	    </div>
+	    <script type="text/javascript">
+	    	$('.nav-item').on('click', function() {
+	    		var tab_id = $(this).find('a').attr('href');
+	    		
+	    		var plockergroupid = $(this).find('a').attr('itemid');
+	    		
+	    		$.ajax({
+	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+	    	        url: "plockerByGroupID", // 실제 엔드포인트로 교체해야 합니다
+	    	        dataType : 'json',
+	    	        data: { 
+	    	        	PLockerGroupID : plockergroupid
+	    	        },
+	    	        success: function(data) {
+	    	        	var contentHtml = '<table><tr>';
+	    	        	data.forEach(function(plocker, index) {    	        		
+	    	        		contentHtml += '<td><button type="button" onclick="" id="" class="btn btn-outline-primary">' + plocker.plockerNO + '</button></td>';
+	    	        	});
+	    	        	contentHtml += '</tr></table>';
+	    	        	
+	    	            $(tab_id).html(contentHtml);
+	    	        },
+	    	        error: function(xhr, status, error) {
+	    	       	 console.log("Status: " + status);
+	    	         console.log("Error: " + error);
+	    	        }
+	    		});
+	    	});
+	    </script>
 	</div>
     <div class="row">
 	    <div class="card w-60 h-50">
@@ -370,22 +386,6 @@
 	    </div>
 	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
 	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 273px;">
-	    		<div class="col-auto">
-	    			<div class="row">
-	    				<div class="col-auto">
-	    					<div class="input-group mb-3 input-group-sm">
-								<span class="input-group-text">변경일자</span>
-								<input class="form-control" type="date" id="saledate" name="saledate"/>
-							</div>
-	    				</div>
-	    				<div class="col-auto ms-n3">
-	    					<div class="input-group mb-3 input-group-sm">
-								<span class="input-group-text">변경차액</span>
-								<input class="form-control" type="text" style="width: 137px;text-align: right;font-weight: 900;" id="changeprice" name="changeprice" readonly="readonly"/>
-							</div>
-	    				</div>
-	    			</div>
-				</div>
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">금액</span>
