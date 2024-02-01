@@ -339,7 +339,7 @@ function manualPay(){
 	}
 	var url = "${pageContext.request.contextPath}/"+urlParam+"/manualReg.do?payprice=" + $("#Price").val();
     var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=700";
-    window.open(url, "_blank", windowFeatures);
+    window.open(url, "manualReg", windowFeatures);
 }
 
 <%-- 결제 완료 --%>
@@ -347,7 +347,7 @@ function save(){
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#SaleType").val() + '</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($(this).text()))) + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + $("#AssignType").val() + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + $("#Maeipsa").val() + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' + $("#CardName").val() + '</td>');
@@ -359,9 +359,10 @@ function save(){
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 	newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:hidden">' + $("#Halbu").val() + '</td>');
 	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:hidden">' + $("#SaleTime").val() + '</td>');
-	opener.document.getElementById('paidbody').append(newRow);
+	$(opener.document).find('#paidbody').append(newRow);
 	self.close();
 }
 </script>
+<jsp:include page="/WEB-INF/jsp/include/foot.jsp"></jsp:include>
 </body>
 </html>

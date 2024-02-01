@@ -49,7 +49,7 @@
 							<button class="btn btn-success" type="button" onclick="save()">확인</button>
 						</div>
 						<div class="col-auto position-absolute" style="margin-left:570px;">
-							<button class="btn btn-danger" type="button" onclick="close()">취소</button>
+							<button class="btn btn-danger" type="button" onclick="closePage()">취소</button>
 						</div>
 					</div>
 				</div>
@@ -140,17 +140,17 @@ function save(){
 	var year = $("#SaleDate").val().substring(0, 4);
     var month = $("#SaleDate").val().substring(4, 6);
     var day = $("#SaleDate").val().substring(6, 8);
-	console.log();
-	opener.parent.frmOffline.RealSaleDate.value = year+"-"+month+"-"+day+" "+ getCurrentTime();
-	opener.parent.frmOffline.SaleType.value = "신용카드";
-	opener.parent.frmOffline.AssignType.value = "신용승인";
-	opener.parent.frmOffline.Maeipsa.value = $("#Maeipsa").val();
-	opener.parent.frmOffline.CardName.value = $("#CardName").val();
-	opener.parent.frmOffline.AssignNo.value = $("#AssignNo").val();
-	opener.parent.frmOffline.Pos.value = "POS";
-	opener.parent.frmOffline.Halbu.value = $("#Halbu").val();
-	opener.parent.frmOffline.SaleTime.value = $("#SaleDate").val();
-	opener.parent.save();
+
+	opener.frmOffline.RealSaleDate.value = year+"-"+month+"-"+day+" "+ getCurrentTime();
+	opener.frmOffline.SaleType.value = "신용카드";
+	opener.frmOffline.AssignType.value = "신용승인";
+	opener.frmOffline.Maeipsa.value = $("#Maeipsa").val();
+	opener.frmOffline.CardName.value = $("#CardName").val();
+	opener.frmOffline.AssignNo.value = $("#AssignNo").val();
+	opener.frmOffline.Pos.value = "POS";
+	opener.frmOffline.Halbu.value = $("#Halbu").val();
+	opener.frmOffline.SaleTime.value = $("#SaleDate").val();
+	opener.save();
 	self.close();
 }
 
@@ -168,7 +168,7 @@ function getCurrentTime() {
     return hours + ':' + minutes + ':' + seconds;
 }
 
-function close(){
+function closePage(){
 	self.close();
 }
 </script>

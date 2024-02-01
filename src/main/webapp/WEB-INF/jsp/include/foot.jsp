@@ -19,6 +19,7 @@
 <script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
+<script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
 <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
