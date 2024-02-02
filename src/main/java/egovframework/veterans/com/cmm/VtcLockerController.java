@@ -221,6 +221,8 @@ public class VtcLockerController{
 		
 		List<tblplocker> plockerlist = vtcSamulhamService.plockerByGroupID(tblplockergroup);
 		
+		System.out.println(plockerlist);
+		
 		return plockerlist;
 	}
 }

@@ -7,6 +7,7 @@
 		where 
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
+		order by SortOrder
 	</select>
 	<select id="selectSamulhamInfodetail" parameterType="int" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
 		select *from tblplockergroup 
@@ -150,5 +151,6 @@ END AS IsFlagText,
 		PLockerGroupID = #{PLockerGroupID}
 	and SiteCode = #{SiteCode}
 	and IsDelete = 'N'
+	order by SortOrder
 </select>
 </mapper>

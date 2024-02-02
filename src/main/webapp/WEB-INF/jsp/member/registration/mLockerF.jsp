@@ -292,7 +292,7 @@
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 530px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
-	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
+	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
 	        		</c:forEach>
 					<li class="nav-item"><a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab">Profile</a></li>
 					<li class="nav-item"><a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab">Contact</a></li>
@@ -313,6 +313,8 @@
 	    		
 	    		var plockergroupid = $(this).find('a').attr('itemid');
 	    		
+	    		var dancnt = $(this).find('a').attr('title');
+	    		
 	    		$.ajax({
 	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
 	    	        url: "plockerByGroupID", // 실제 엔드포인트로 교체해야 합니다
@@ -321,12 +323,36 @@
 	    	        	PLockerGroupID : plockergroupid
 	    	        },
 	    	        success: function(data) {
-	    	        	var contentHtml = '<table><tr>';
-	    	        	data.forEach(function(plocker, index) {    	        		
-	    	        		contentHtml += '<td><button type="button" onclick="" id="" class="btn btn-outline-primary">' + plocker.plockerNO + '</button></td>';
-	    	        	});
-	    	        	contentHtml += '</tr></table>';
-	    	        	
+	    	        	var contentHtml = '<table>';
+	    	            var n = Number(dancnt); // Change this to the desired number of items per column
+
+	    	            for (var i = 0; i < n; i++) {
+	    	                contentHtml += '<tr>';
+
+	    	                for (var j = i; j < data.length; j += n) {
+	    	                	if(data[j].state == 1){
+	    	                		contentHtml += '<td><button type="button" onclick="" id="" class="btn btn-outline-primary">'+
+		    	                    '<span class="uil uil-key-skeleton fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	}
+	    	                	else if(data[j].state == 2){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
+		    	                    '<span class="uil uil-lock-alt fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	}
+	    	                	else if(data[j].state == 3){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
+		    	                    '<span class="uil uil-wrench fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	}
+	    	                	else if(data[j].state == 4){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
+		    	                    '<span class="uil uil-lock-slash fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	}
+	    	                    
+	    	                }
+
+	    	                contentHtml += '</tr>';
+	    	            }
+
+	    	            contentHtml += '</table>';
 	    	            $(tab_id).html(contentHtml);
 	    	        },
 	    	        error: function(xhr, status, error) {
@@ -335,6 +361,23 @@
 	    	        }
 	    		});
 	    	});
+	    	
+	    	function NoBooking(message) {
+	    		var reason = '';
+				if(message == 2){
+					reason = '사용중';
+				}else if(message == 3){
+					reason = '고장';
+				}else if(message == 4){
+					reason = '사용불가';
+				}
+				$('#resultmessage').html('선택하신 사물함은 임대할 수 없습니다.<br>임대불가사유 : '+reason);
+				$('.modal-footer').empty();
+				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+				$('.modal-footer').append(cancelbutton);
+			    $('#modalButton').click();
+			    modalcheck = true;
+			}
 	    </script>
 	</div>
     <div class="row">
