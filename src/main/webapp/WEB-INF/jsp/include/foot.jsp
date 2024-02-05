@@ -3,23 +3,25 @@
 <!DOCTYPE html>
 <html>
 <footer>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/feather-icons/feather.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dayjs/dayjs.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/phoenix.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/echarts/echarts.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
-<script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/new_lib/vendors/popper/popper.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/feather-icons/feather.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/dayjs/dayjs.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/assets/js/phoenix.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/echarts/echarts.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
+    <script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/choices/choices.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

@@ -213,15 +213,13 @@ public class VtcLockerController{
 	
 	@ResponseBody
 	@PostMapping("plockerByGroupID")
-	public List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup)throws Exception{
+	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup)throws Exception{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		
-		List<tblplocker> plockerlist = vtcSamulhamService.plockerByGroupID(tblplockergroup);
-		
-		System.out.println(plockerlist);
+		List<Map<String,Object>> plockerlist = vtcSamulhamService.plockerByGroupID(tblplockergroup);
 		
 		return plockerlist;
 	}

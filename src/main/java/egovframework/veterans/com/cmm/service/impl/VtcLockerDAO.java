@@ -1,9 +1,9 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
-import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
@@ -64,7 +64,7 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 		return selectList("locker.memberuselocker", MemberID);
 	}
 	
-	public List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception{
+	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception{
 		return selectList("locker.plockerByGroupID",tblplockergroup);
 	}
 }

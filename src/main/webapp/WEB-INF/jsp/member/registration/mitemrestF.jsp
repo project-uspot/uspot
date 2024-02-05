@@ -116,7 +116,7 @@
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">휴회사유</span>
-							<input class="form-control" type="text" id="note" name="note"/>
+							<input class="form-control" type="text" id="note" name="note" maxlength="100"/>
 						</div>
 					</div>
 				</div>

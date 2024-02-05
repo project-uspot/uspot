@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -82,7 +83,7 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	}
 
 	@Override
-	public List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception {
+	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception {
 		return vtcSamulhamDAO.plockerByGroupID(tblplockergroup);
 	}
 	

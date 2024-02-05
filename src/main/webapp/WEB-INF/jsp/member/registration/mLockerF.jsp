@@ -2,41 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ include file="../../include/head.jsp" %>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>사물함임대정보 등록 및 변경</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon.ico">
-    <link rel="manifest" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/manifest.json">
-    <meta name="msapplication-TileImage" content="${pageContext.request.contextPath}/new_lib/assets/img/favicons/mstile-150x150.png">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="robots" content="noindex">
-    <script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
-    <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- ===============================================-->
-    <!--    Stylesheets-->
-    <!-- ===============================================-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <link href="${pageContext.request.contextPath}/new_lib/assets/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
-    <link href="${pageContext.request.contextPath}/new_lib/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-    <link href="${pageContext.request.contextPath}/new_lib/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
-    <link href="${pageContext.request.contextPath}/new_lib/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-    <link href="${pageContext.request.contextPath}/new_lib/scss/theme/_navbar-vertical.scss" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
 </head>
 <body style="overflow: hidden;">
     <div class="card h-100 mb-1">
@@ -47,7 +18,7 @@
 						<h3 class="mb-3 pt-2">사물함임대정보 등록 및 변경</h3>
             		</div>
             		<div class="col-auto">
-						<button class="btn btn-success" type="button" onclick="save()">저장</button>
+						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
 						<button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
 						<button class="btn btn-danger" type="button">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
@@ -58,7 +29,7 @@
         </div>
     </div>
     <div class="row">
-	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 630px;">
+	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 530px;">
 	        	<div class="row">
 	        		<div class="col-md-6">
@@ -288,7 +259,7 @@
 				</div>
 	        </div>
 		</div>
-	    <div class="card h-100 mb-1 w-20 me-1" style="width: 662px;">
+	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 530px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
@@ -297,7 +268,7 @@
 					<li class="nav-item"><a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab">Profile</a></li>
 					<li class="nav-item"><a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab">Contact</a></li>
 				</ul>
-				<div class="tab-content mt-3" id="myTabContent">
+				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;">
 					<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<div class="tab-pane fade" id="tab-${lockergroup.PLockerGroupID}">
 	        			</div>
@@ -308,6 +279,9 @@
 	        </div>
 	    </div>
 	    <script type="text/javascript">
+	    $(function () {
+	        $('[data-bs-toggle="tooltip"]').tooltip();
+	    });
 	    	$('.nav-item').on('click', function() {
 	    		var tab_id = $(this).find('a').attr('href');
 	    		
@@ -330,21 +304,26 @@
 	    	                contentHtml += '<tr>';
 
 	    	                for (var j = i; j < data.length; j += n) {
-	    	                	if(data[j].state == 1){
-	    	                		contentHtml += '<td><button type="button" onclick="" id="" class="btn btn-outline-primary">'+
-		    	                    '<span class="uil uil-key-skeleton fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	if(data[j].State == 1){
+	    	                		contentHtml += '<td><button class="btn btn-outline-primary" type="button">'+
+		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
 	    	                	}
-	    	                	else if(data[j].state == 2){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
-		    	                    '<span class="uil uil-lock-alt fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	else if(data[j].State == 2){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="left" '+
+	    	                		'title="&lt;b&gt;회원번호 :&lt;/b&gt; &lt;em&gt;'+data[j].MemberID+'&lt;/em&gt; &lt;br&gt;'+
+	    	                		' &lt;b&gt;회원명 :&lt;/b&gt; &lt;em&gt;'+data[j].Name+'&lt;/em&gt; &lt;br&gt; '+
+	    	                		' &lt;b&gt;생년원일 :&lt;/b&gt; &lt;em&gt;'+data[j].BirthDay+'&lt;/em&gt; &lt;br&gt; '+
+	    	                		' &lt;b&gt;휴대전화 :&lt;/b&gt; &lt;em&gt;'+data[j].CellPhone+'&lt;/em&gt; &lt;br&gt;" '+
+	    	                		' data-bs-html="true">'+
+		    	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
 	    	                	}
-	    	                	else if(data[j].state == 3){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
-		    	                    '<span class="uil uil-wrench fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	else if(data[j].State == 3){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
+		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
 	    	                	}
-	    	                	else if(data[j].state == 4){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].state+')" id="" class="btn btn-outline-danger">'+
-		    	                    '<span class="uil uil-lock-slash fs-1"></span>&ensp;' + data[j].plockerNO + '</button></td>';
+	    	                	else if(data[j].State == 4){
+	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
+		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
 	    	                	}
 	    	                    
 	    	                }
@@ -354,6 +333,10 @@
 
 	    	            contentHtml += '</table>';
 	    	            $(tab_id).html(contentHtml);
+	    	            
+	    	            $(function(){
+	    	                $('[data-bs-toggle="tooltip"]').tooltip();
+	    	            });
 	    	        },
 	    	        error: function(xhr, status, error) {
 	    	       	 console.log("Status: " + status);
@@ -462,8 +445,7 @@ var today = new Date();
 // Format the date as "YYYY-MM-DD" which is the required format for the date input
 var formattedDate = today.toISOString().split('T')[0];
 
-// Set the value of the input field to today's date
-document.getElementById('saledate').value = formattedDate;
+
 
 //어른 어린이 등을 저장하는 변수 생성
 var codelist;
@@ -904,37 +886,5 @@ function removeCommasFromNumber(formattedNumber) {
     return numericValue;
 }
 </script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/feather-icons/feather.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dayjs/dayjs.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/phoenix.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/echarts/echarts.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
-
-<div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="verticallyCenteredModalLabel">Uspot</h5>
-        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-700 lh-lg mb-0" id="resultmessage"></p>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
 </html>
+<%@ include file="../../include/foot.jsp" %>
