@@ -145,12 +145,13 @@ END AS IsFlagText,
 	and tblUseLocker.IsDelete = 'N'
 	order by IsFlag,RegDate desc
 </select>
-<select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="egovframework.veterans.com.cmm.service.vo.tblplocker">
-	select * from tblplocker
+<select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="map">
+	select * from tblplocker a
+	left join tblmember b on a.MemberID = b.MemberID
 	where 
 		PLockerGroupID = #{PLockerGroupID}
-	and SiteCode = #{SiteCode}
-	and IsDelete = 'N'
+	and a.SiteCode = #{SiteCode}
+	and a.IsDelete = 'N'
 	order by SortOrder
 </select>
 </mapper>

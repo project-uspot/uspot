@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
@@ -29,5 +30,5 @@ public interface VtcLockerService {
 
 	List<memberuselocker> memberuselocker(String MemberID) throws Exception;
 	
-	List<tblplocker> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception;
+	List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception;
 }
