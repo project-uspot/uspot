@@ -154,4 +154,37 @@ END AS IsFlagText,
 	and a.IsDelete = 'N'
 	order by SortOrder
 </select>
+<update id="UpdClickTime" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+	update tblplocker set
+	<choose>
+		<when test="ClickUserPKID != 0">
+			ClickUserPKID = #{ClickUserPKID},
+			ClickTime = now(),
+		</when>
+		<otherwise>
+			ClickUserPKID = null,
+			ClickTime = null,
+		</otherwise>
+	</choose>
+	UpdUserPKID = #{UpdUserPKID},
+	UpdDate = now()
+where 
+	PLockerID = #{PLockerID} 
+</update>
+<select id="PLockerJoinGroupByID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker" resultType="map">
+	select * from tblplocker a
+	left join tblplockergroup b on a.PLockerGroupID = b.PLockerGroupID 
+	and a.SiteCode = b.SiteCode 
+	where 
+		a.SiteCode = #{SiteCode}
+	and PLockerID = #{PLockerID}
+	and a.IsDelete = 'N'
+</select>
+<select id="ClickTimeByID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker" resultType="String">
+	select ClickTime from tblplocker 
+	where 
+		PLockerID = #{PLockerID}
+	and IsDelete  = 'N'
+	and SiteCode = #{SiteCode}
+</select>
 </mapper>

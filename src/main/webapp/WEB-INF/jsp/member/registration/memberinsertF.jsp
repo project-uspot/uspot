@@ -2,11 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../../include/AdminTop.jsp" %>
+<%@page import="java.util.*"%>
 <%request.setCharacterEncoding("UTF-8");%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
+<head><head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <title>Insert title here</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="${pageContext.request.contextPath}/lib/js/exeDaumPostCode.js"></script>
@@ -43,11 +44,13 @@
                         <div class="col-12 col-sm-auto flex-1">
                         	<h6 class="text-primary">회원성명</h6>
                         	 <input class="form-control form-control-lg" id="name" type="text" value="${tblmember.name}" name="name"/> 
+                        	 <input type="hidden" id="regdate" name="regdate">
                           <p class="text-800">
 					  	  	${memberid}&emsp;<input class="form-check-input" id="isdeletecheck" type="checkbox" name="isdeletecheck" disabled="disabled"/>
 					  	  	<input type="hidden" value="${memberid}" name="memberID" id="memberID">
 					 	  	<label class="form-check-label text-9000" for="fragileCheck">대관팀</label>
 					  	</p>
+					  	
                         </div>
                       </div>
                  <div class="col-sm-6 col-md-3 mb-2" style="padding-left: 170px; margin-top: -70px; width: 350px;">
@@ -117,6 +120,14 @@
 					        	  history.back(-1);
 					          }
 						    });
+                     // Get the current date
+                        var currentDate = new Date();
+
+                        // Format the date as yyyy-mm-dd
+                        var formattedDate = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
+
+                        // Set the formatted date as the value of the hidden input
+                        document.getElementById('regdate').value = formattedDate;
                         </script>
                         <div class="col-sm-6 col-md-3">
                           <h6 class="text-primary">성별</h6>

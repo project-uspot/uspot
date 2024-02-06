@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -387,8 +390,9 @@ public class VtcMemberController {
 
 		return "member/registration/memberinsertF";
 	}
-
-	@GetMapping("memberinsertP")
+	
+	//포스트 매핑시 한글깨짐 해결하면 개천재
+	@GetMapping(value = "memberinsertP", produces = "text/plain;charset=UTF-8")
 	public String memebrinsert(tblmember tblmember, Model model,
 			@RequestParam(name = "emgPhonecheck", required = false) String emgPhonecheck,
 			@RequestParam(name = "IFFlagcheck", required = false) String IFFlagcheck,
@@ -397,7 +401,7 @@ public class VtcMemberController {
 			@RequestParam(name = "remailcheck", required = false) String remailcheck,
 			@RequestParam(name = "rsmscheck", required = false) String rsmscheck,
 			@RequestParam(name = "rdmcheck", required = false) String rdmcheck) throws Exception {
-
+        
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if (users == null) {
 
@@ -458,9 +462,9 @@ public class VtcMemberController {
 		if (rdmcheck != null) {
 			tblmember.setRDM("Y");
 		}
-
+		
 		tblmember.setAddUserPKID(users.getAddUserPKID());
-
+		log.info(member,"관리자 pkid : "+users.getUserPKID()+", 회원 번호 : "+tblmember.getMemberID()+"의 대한 회원등록 처리");
 		vtcMemberService.insertmember(tblmember);
 
 		model.addAttribute("script", "redirect");
@@ -1227,15 +1231,29 @@ public class VtcMemberController {
 	}
 	
 	@GetMapping("/mLockerF.do")
-	public String mLockerF(tblmember tblmember,Model model)throws Exception{
+	public String mLockerF(tblmember tblmember,tblCode tblCode,Model model) throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblplockergroup> lockergrouplist = vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
 		
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		
+		String mleveltext = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
 		model.addAttribute("lockergrouplist",lockergrouplist);
 		model.addAttribute("member",member);
+		model.addAttribute("mleveltext",mleveltext);
 		
 		return "member/registration/mLockerF";
 	}

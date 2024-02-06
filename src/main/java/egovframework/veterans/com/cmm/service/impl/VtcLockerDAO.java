@@ -11,7 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
-@Repository("VtcSamulhamDAO")
+@Repository
 public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
@@ -66,5 +66,17 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception{
 		return selectList("locker.plockerByGroupID",tblplockergroup);
+	}
+	
+	public void UpdClickTime(tblplocker tblplocker)throws Exception{
+		update("locker.UpdClickTime",tblplocker);
+	}
+	
+	public Map<String,Object> PLockerJoinGroupByID(tblplocker tblplocker)throws Exception{
+		return selectOne("locker.PLockerJoinGroupByID",tblplocker);
+	}
+	
+	public String ClickTimeByID(tblplocker tblplocker)throws Exception{
+		return selectOne("locker.ClickTimeByID",tblplocker);
 	}
 }

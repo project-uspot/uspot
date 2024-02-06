@@ -35,3 +35,12 @@ function removeCommasFromNumber(formattedNumber) {
 
     return numericValue;
 }
+
+//현재날짜를 YYYY-MM-DD 형식으로 반환해주는 함수
+function getCurrentDate(){
+	var currentDate = new Date();
+	// Format the date as yyyy-mm-dd
+	var formattedDate = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
+
+	return formattedDate;
+}

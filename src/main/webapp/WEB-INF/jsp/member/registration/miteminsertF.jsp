@@ -420,7 +420,7 @@ function handleKeyPress(event) {
 		finditem();
  	}
 }
-	
+var myPopup;	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
@@ -459,6 +459,16 @@ function finditem() {
 	var url = "mitemfindlist?findstring=" + findstring;
     var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
     window.open(url, "_blank", windowFeatures);
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
 }
 	
 // 검색 하고나서 선택된 값을 테이블에 추가하는 함수

@@ -21,7 +21,7 @@
     <script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
-
+	<script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
 
 
     <!-- ===============================================-->

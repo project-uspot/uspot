@@ -30,7 +30,7 @@
     </div>
     <div class="row">
 	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 530px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 495px;">
 	        	<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
@@ -41,21 +41,21 @@
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">회원성명</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
 						</div>
 					</div>
 	        	</div>
 	        	<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">성별</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}"/>
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">회원구분</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
 						</div>
 					</div>
 	        	</div>
@@ -63,13 +63,13 @@
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">회원종류</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">최초등록일</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}"/>
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
 						</div>
 					</div>
 	        	</div>
@@ -77,49 +77,49 @@
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">휴대전화</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">일반전화</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
 						</div>
 					</div>
 	        	</div>
 				<div class="col-auto">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">비고</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="note" name="note" value="${member.note}"/>
+						<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
 					</div>
 				</div>
 				<div class="cal-auto">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text">사물함</span>
-						<input class="form-control" type="text" />
-						<input class="form-control" type="text" />
-						<input class="form-control" type="text" />
+						<span class="input-group-text" style="width: 85px;">사물함</span>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo"/>
 					</div>
 				</div>
 				<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">보증금</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}"/>
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">보증금</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="PLockerDeposite" name="PLockerDeposite"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">임대료</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}"/>
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">임대료</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="PLockerPrice" name="PLockerPrice"/>
 						</div>
 					</div>
 	        	</div>
 	        	<div class="row">
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">강습기간</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 110px;" value="${fmsc_s01.fromDate}" readonly="readonly"/>
+							<span class="input-group-text" id="basic-addon1">사용기간</span>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -127,19 +127,19 @@
 					</div>
 					<div class="col-auto ms-n1">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="text" id="todate" name="todate" style="width: 115px;" value="${fmsc_s01.toDate}" readonly="readonly"/>
+							<input class="form-control" type="date" id="todate" name="todate" style="width: 130px;"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="text" id="regmonth" name="regmonth" style="width: 50px;" value="${fmsc_s01.regMonth}" readonly="readonly"/>
+							<input class="form-control" type="text" id="regmonth" name="regmonth" style="width: 50px;" value="0" min="0"/>
 						</div>
 					</div>
-					<div class="col-auto ms-n2 mt-2">
+					<div class="col-auto ms-n3 mt-2">
 						개월
 					</div>
 				</div>
-				<div class="row">
+			<!--<div class="row" > 할인유형 적용안함
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인유형</span>
@@ -165,24 +165,24 @@
 							<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">합계</span>
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">합계</span>
 							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}"/>
 						</div>
 					</div>
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">판매일자</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 110px;" value="${fmsc_s01.fromDate}" readonly="readonly"/>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="regdate" name="regdate" style="width: 110px;"/>
 						</div>
 					</div>
 	        	</div>
 	        	<div class="col-auto">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">비고</span>
+						<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
 						<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}"/>
 					</div>
 				</div>
@@ -190,19 +190,19 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총매출금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총미납금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-auto me-n2">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총결제금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 				</div>
@@ -210,19 +210,19 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 98px;">사용금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 98px;">위약금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
 						</div>
 					</div>
 					<div class="col-auto me-n2">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 98px;">반환금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px;"/>
+							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
 						</div>
 					</div>
 				</div>
@@ -260,28 +260,23 @@
 	        </div>
 		</div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 530px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 495px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
 	        		</c:forEach>
-					<li class="nav-item"><a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab">Profile</a></li>
-					<li class="nav-item"><a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab">Contact</a></li>
 				</ul>
 				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;">
 					<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<div class="tab-pane fade" id="tab-${lockergroup.PLockerGroupID}">
 	        			</div>
 	        		</c:forEach>
-				  	<div class="tab-pane fade" id="tab-profile">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic.</div>
-				  	<div class="tab-pane fade" id="tab-contact">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
 				</div>
 	        </div>
 	    </div>
 	    <script type="text/javascript">
-	    $(function () {
-	        $('[data-bs-toggle="tooltip"]').tooltip();
-	    });
+	    $('#fromdate,#todate,#regdate').val(getCurrentDate());
+	    
 	    	$('.nav-item').on('click', function() {
 	    		var tab_id = $(this).find('a').attr('href');
 	    		
@@ -290,22 +285,22 @@
 	    		var dancnt = $(this).find('a').attr('title');
 	    		
 	    		$.ajax({
-	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	    	        url: "plockerByGroupID", // 실제 엔드포인트로 교체해야 합니다
+	    	        type: "POST",
+	    	        url: "plockerByGroupID",
 	    	        dataType : 'json',
 	    	        data: { 
 	    	        	PLockerGroupID : plockergroupid
 	    	        },
 	    	        success: function(data) {
 	    	        	var contentHtml = '<table>';
-	    	            var n = Number(dancnt); // Change this to the desired number of items per column
+	    	            var n = Number(dancnt);
 
 	    	            for (var i = 0; i < n; i++) {
 	    	                contentHtml += '<tr>';
 
 	    	                for (var j = i; j < data.length; j += n) {
 	    	                	if(data[j].State == 1){
-	    	                		contentHtml += '<td><button class="btn btn-outline-primary" type="button">'+
+	    	                		contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+')">'+
 		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
 	    	                	}
 	    	                	else if(data[j].State == 2){
@@ -361,6 +356,49 @@
 			    $('#modalButton').click();
 			    modalcheck = true;
 			}
+	    	
+	    	var PrevPLockerID = 0;
+	    	function StartBooking(plockerid) {
+	    		$.ajax({
+	    	        type: "POST", 
+	    	        url: "StartBooking", 
+	    	        dataType : 'json',
+	    	        data: { 
+	    	        	PLockerID: plockerid,
+	    	        	PrevPLockerID : PrevPLockerID
+	    	        },
+	    	        success: function(data) {
+	    	        	if(data == null){
+	    	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+	    	        		window.opener.location.reload();
+	    	                window.close();	
+	    	        	}else if(data.already == 'already'){
+	    	        		$('#resultmessage').html('이미 등록진행중인 사물함 입니다.');
+	    					$('.modal-footer').empty();
+	    					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	    					$('.modal-footer').append(cancelbutton);
+	    				    $('#modalButton').click();
+	    				    modalcheck = true;
+	    	        		
+	    	        		return false;
+	    	        	}else{
+	    	        		PrevPLockerID = plockerid;
+		    	        	
+		    	        	$('#PLockerGroupName').val(data.PLockerGroupName);
+		    	        	$('#PLockerLocation').val(data.PLockerLocation);
+		    	        	$('#PLockerNo').val(data.PLockerNo);
+		    	        	$('#PLockerDeposite').val(data.PLockerDeposite);
+		    	        	$('#PLockerPrice').val(data.PLockerPrice);
+		    	        	$('#regmonth').val(data.PLockerMonth);
+	    	        	}	    	        	
+	    	        },
+	    	        error: function(xhr, status, error) {
+	    	       	 console.log("Status: " + status);
+	    	         console.log("Error: " + error);
+	    	        }
+	    		});
+	    		
+			}
 	    </script>
 	</div>
     <div class="row">
@@ -414,7 +452,7 @@
 	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 273px;">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
-						<span class="input-group-text">금액</span>
+						<span class="input-group-text">받을금액</span>
 						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
