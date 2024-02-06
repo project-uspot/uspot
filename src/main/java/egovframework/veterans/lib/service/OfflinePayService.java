@@ -6,4 +6,6 @@ import java.util.Map;
 public interface OfflinePayService {
 
 	public List<Map<String,Object>> getCreditCardMenu(String SiteCode);
+	
+	public void insertElecAssignData(Map<String,Object> sqlMap);
 }

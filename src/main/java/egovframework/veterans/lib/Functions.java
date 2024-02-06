@@ -13,11 +13,17 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Functions {
 	
 	static Functions instance;
@@ -375,5 +381,38 @@ public class Functions {
 			break;
 		}
 		return formatDate;
+	}
+	
+	public Map<String,String> JsonpToMap(String jsonp){
+		// JSONP에서 JSON 부분만 추출
+		String json = jsonp.substring(jsonp.indexOf("(")+1,jsonp.lastIndexOf(")"));
+
+		// JSON 문자열의 작은 따옴표를 큰따옴표로 변경(JSON 표준형식)
+		json = json.replace("'","\"");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		Map<String, String> dataMap = null;
+		try {
+			dataMap = mapper.readValue(json, Map.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return dataMap;
+	}
+	
+	public String MapToJson(Map<String,Object> map){
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		String json = null;
+		try {
+			json = mapper.writeValueAsString(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return json;
 	}
 }

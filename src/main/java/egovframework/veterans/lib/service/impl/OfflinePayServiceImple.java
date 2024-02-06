@@ -19,4 +19,9 @@ public class OfflinePayServiceImple implements OfflinePayService {
 		return offlinePayDAO.getCreditCardMenu(SiteCode);
 	}
 
+	@Override
+	public void insertElecAssignData(Map<String, Object> sqlMap) {
+		offlinePayDAO.insertElecAssignData(sqlMap);
+	}
+
 }

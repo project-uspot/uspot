@@ -979,7 +979,16 @@ function fmsc_01save() {
 		    	        	PayType : $('#paidbody tr').eq(iteration).find('.paidcategory').text(),
 		    	        	Price : paidprice,
 		    	        	AssignType : $('#paidbody tr').eq(iteration).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : data
+		    	        	Maeipsa : $('#paidbody tr').eq(iteration).find('.paidmapsa').text(),
+		    	        	CardName : $('#paidbody tr').eq(iteration).find('.paidcardtype').text(),
+		    	        	AssignNo : $('#paidbody tr').eq(iteration).find('.paidassignN').text(),
+		    	        	Pos : $('#paidbody tr').eq(iteration).find('.POS').text(),
+		    	        	SignPad : $('#paidbody tr').eq(iteration).find('.signpad').text(),
+		    	        	Halbu : $('#paidbody tr').eq(iteration).find('.Halbu').text(),
+		    	        	SaleTime : $('#paidbody tr').eq(iteration).find('.SaleTime').text(),
+		    	        	PaidGroupSaleNo : data,
+		    	        	OID : $('#paidbody tr').eq(iteration).find('.OID').text(),
+		    	        	TID : $('#paidbody tr').eq(iteration).find('.TID').text(),
 		    	        }
 		    		});
 	        	}
@@ -1035,6 +1044,9 @@ function paycash() {
 		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
 		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
 		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+		newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
+		newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
+		newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
 		
 		// Get the tbody element with ID 'paidbody' and append the new row
 		var tableBody = $('#paidbody');

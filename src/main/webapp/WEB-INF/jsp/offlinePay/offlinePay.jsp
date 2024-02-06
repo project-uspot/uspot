@@ -131,7 +131,7 @@
 					</div>
 					<form id="frmOffline" name="frmOffline" action="">
 						<input type="hidden" id="RealSaleDate" name="RealSaleDate" value="">
-						<input type="hidden" id="SaleType" name="SaleType" value="">
+						<input type="hidden" id="PayType" name="PayType" value="">
 						<input type="hidden" id="Price" name="Price" value="">
 						<input type="hidden" id="AssignType" name="AssignType" value="">
 						<input type="hidden" id="Maeipsa" name="Maeipsa" value="">
@@ -144,7 +144,7 @@
 						<input type="hidden" id="OID" name="OID" value="">
 						<input type="hidden" id="TID" name="TID" value="">
 						<input type="hidden" id="FCardNo" name="FCardNo" value="">
-						<input type="hidden" id="MemberID" name="MemberID" value="${param.memberID }">
+						<input type="hidden" id="MemberID" name="MemberID" value="${param.MemberID }">
 					</form>
 					<div class="row">
 						<div class="col-auto position-absolute" style="margin-left:750px;">
@@ -260,7 +260,7 @@ function fetchData() {
 	if(checkedRadio > 1){
 		var xhr = new XMLHttpRequest();
 	    xhr.onreadystatechange = function() {
-	    	//console.log(this.readyState+","+this.status+","+this.responseText);
+	    	console.log(this.readyState+","+this.status+","+this.responseText);
 	        if (this.readyState == 4 && this.status == 200 && this.responseText != "") {
 	            <%-- TODO: 서버로부터 받은 데이터를 처리합니다. --%>
 	        	document.getElementById('BarCode').value = this.responseText;
@@ -347,7 +347,7 @@ function manualPay(){
 function save(){
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
-	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#SaleType").val() + '</td>');
+	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#PayType").val() + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + $("#AssignType").val() + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + $("#Maeipsa").val() + '</td>');
@@ -355,12 +355,20 @@ function save(){
 	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + $("#AssignNo").val() + '</td>');
 	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
 	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + $("#Pos").val() + '</td>');
-	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
-	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + $("#SignPad").val() + '</td>');
+	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  $("#OID").val() + '</td>');
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-	newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:hidden">' + $("#Halbu").val() + '</td>');
-	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:hidden">' + $("#SaleTime").val() + '</td>');
+	newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:none">' + $("#Halbu").val() + '</td>');
+	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none">' + $("#SaleTime").val() + '</td>');
+	newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + $("#TID").val() + '</td>');
+
 	$(opener.document).find('#paidbody').append(newRow);
+
+	$(opener.document).find('#itemtbody tr').each(function() {
+		$(this).find('.sort').attr('id','Y');
+	});
+
+	opener.totalchange();
 	self.close();
 }
 
@@ -376,12 +384,23 @@ function paid(){
 	    modalcheck = true;
 	    return false;
 	}
+	if (opener && !opener.closed) {
+	}else{
+		$("#verticallyCenteredModalLabel").html(" 오 류 ");
+		$('#resultmessage').html('이전 창이 닫혔습니다.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
 	var checkedRadio = document.querySelector('input[name="optPay"]:checked').value;
 	var urlParam = "";
 	if(checkedRadio == '0'){
 		urlParam = "card";
 	}else if(checkedRadio == '1'){
-		if($("#BarCode").val() == ""){
+		/* if($("#BarCode").val() == ""){
 			$("#verticallyCenteredModalLabel").html(" 오 류 ");
 			$('#resultmessage').html('확인번호를 입력해주세요.');
 		  	$('.modal-footer').empty();
@@ -390,7 +409,7 @@ function paid(){
 		    $('#modalButton').click();
 		    modalcheck = true;
 		    return false;
-		}
+		} */
 		urlParam = "cash";
 	}else if(checkedRadio == '2'){
 		if($("#BarCode").val() == ""){
@@ -429,14 +448,38 @@ function paid(){
 			Price : parseInt(removeCommasFromNumber($("#Price").val())),
 			optPay : document.querySelector('input[name="optPay"]:checked').value,
 			optType : document.querySelector('input[name="optType"]:checked').value,
-			MemberID : $("#MemberID").val()
+			MemberID : $("#MemberID").val(),
+			saleType : "${uparam}"
 		},
 		success: function(data){
-			
+			console.log(data);
+			if(typeof data === "string"){
+				data = JSON.parse(data);
+			}
+			$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
+			$("#PayType").val(data.PayType);
+			$("#Price").val(data.Price);
+			$("#AssignType").val(data.AssignType);
+			$("#Maeipsa").val(data.CompanyName);
+			$("#CardName").val(data.CardName);
+			$("#AssignNo").val(data.AssignNo);
+			$("#Pos").val("POS");
+			$("#SignPad").val(data.SignGubun);
+			$("#Halbu").val(data.Halbu);
+			$("#SaleTime").val(data.SaleDate);
+			$("#OID").val(data.OID);
+			$("#TID").val(data.TID);
+			save();
 		},
 		error: function(xhr, status, error){
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
+			$("#verticallyCenteredModalLabel").html(" 오 류 ");
+			$('#resultmessage').html('결제를 실패하였습니다.');
+		  	$('.modal-footer').empty();
+		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		  	$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
 		}
 	});
 }

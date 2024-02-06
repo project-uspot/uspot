@@ -3,12 +3,47 @@
 <mapper namespace="offlinePay">
 
 	<select id="getCreditCardMenu" parameterType="String" resultType="Map">
+	<![CDATA[
 		SELECT Code, CreditName
 		FROM tblCreditCard
 		WHERE 
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
 		ORDER BY SortOrder ASC
+	]]>
 	</select>
 
+	<insert id="insertElecAssignData" parameterType="Map">
+	<![CDATA[
+	INSERT INTO tblelecassigndata
+		(SiteCode, PayType, AssignType, ResponseCode, Price, ValidDate, Halbu, AssignNo, CardName, Maeipsa, Msg1, Msg2, Msg3, SignPad, AssignTime, IsPos, IsConfirm, MemberID, MemberName, SaleType, FPKID, RegisterID, IsDelete, UpdDate, UpdUserPKID)
+		VALUES(
+		  #{SiteCode}
+		, #{PayType}
+		, #{AssignType}
+		, #{responseCode}
+		, #{Price}
+		, #{ValidDate}
+		, #{Halbu}
+		, #{AssignNo}
+		, #{CardName}
+		, #{CompanyName}
+		, #{msg1}
+		, #{msg2}
+		, #{msg3}
+		, #{SignGubun}
+		, #{SaleDate}
+		, #{IsPos}
+		, #{Isconfirm}
+		, #{MemberID}
+		, #{MemberName}
+		, #{SaleType}
+		, 0
+		, 0
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' )
+		, #{userPKID});
+	
+	]]>
+	</insert>
 </mapper>
