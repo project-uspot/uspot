@@ -3,88 +3,102 @@ package egovframework.veterans.com.cmm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
+import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 
-@Service("VtcSamulhamService")
+@Service
+@RequiredArgsConstructor
 public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements VtcLockerService{
 	
-	@Resource(name="VtcSamulhamDAO")
-	private VtcLockerDAO vtcSamulhamDAO;
+	
+	private final VtcLockerDAO vtcLockerDAO;
 	
 	@Override
 	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
 		
-		return vtcSamulhamDAO.selectSamulhamInfoList(SiteCode);
+		return vtcLockerDAO.selectSamulhamInfoList(SiteCode);
 	}
 
 	@Override
 	public tblplockergroup selectSamulhamInfodetail(int lockergroupIid) throws Exception {
 	
-		return vtcSamulhamDAO.selectSamulhamInfodetail(lockergroupIid);
+		return vtcLockerDAO.selectSamulhamInfodetail(lockergroupIid);
 	}
 
 	@Override
 	public List<lockercodelist> lockercodelist(tblplocker tblplocker) throws Exception {
 		
-		return vtcSamulhamDAO.lockercodelist(tblplocker);
+		return vtcLockerDAO.lockercodelist(tblplocker);
 	}
 
 	@Override
 	public int maxsortorder(String SiteCode) throws Exception {
 
-		return vtcSamulhamDAO.maxsortorder(SiteCode);
+		return vtcLockerDAO.maxsortorder(SiteCode);
 	}
 
 	@Override
 	public int plockernovalue(tblplockergroup tblplockergroup) throws Exception {
 
-		return vtcSamulhamDAO.plockernovalue(tblplockergroup);
+		return vtcLockerDAO.plockernovalue(tblplockergroup);
 	}
 
 	@Override
 	public void lockercodeinsert(tblplocker tblplocker) throws Exception {
 		
-		vtcSamulhamDAO.lockercodeinsert(tblplocker);
+		vtcLockerDAO.lockercodeinsert(tblplocker);
 	}
 
 	@Override
 	public List<tblplocker> plockernolist(tblplocker tblplocker) throws Exception {
 
-		return vtcSamulhamDAO.plockernolist(tblplocker);
+		return vtcLockerDAO.plockernolist(tblplocker);
 	}
 
 	@Override
 	public tblplocker lockervobyplockerid(tblplocker tblplocker) throws Exception {
 
-		return vtcSamulhamDAO.lockervobyplockerid(tblplocker);
+		return vtcLockerDAO.lockervobyplockerid(tblplocker);
 	}
 
 	@Override
 	public void lockercodeupdate(tblplocker tblplocker) throws Exception {
 		
-		vtcSamulhamDAO.lockercodeupdate(tblplocker);
+		vtcLockerDAO.lockercodeupdate(tblplocker);
 	}
 
 	@Override
 	public List<memberuselocker> memberuselocker(String MemberID)
 			throws Exception {
 
-		return vtcSamulhamDAO.memberuselocker(MemberID);
+		return vtcLockerDAO.memberuselocker(MemberID);
 	}
 
 	@Override
 	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception {
-		return vtcSamulhamDAO.plockerByGroupID(tblplockergroup);
+		return vtcLockerDAO.plockerByGroupID(tblplockergroup);
 	}
-	
+
+	@Override
+	public void UpdClickTime(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.UpdClickTime(tblplocker);
+	}
+
+	@Override
+	public Map<String, Object> PLockerJoinGroupByID(tblplocker tblplocker) throws Exception {
+		return vtcLockerDAO.PLockerJoinGroupByID(tblplocker);
+	}
+
+	@Override
+	public String ClickTimeByID(tblplocker tblplocker) throws Exception {
+		return vtcLockerDAO.ClickTimeByID(tblplocker);
+	}
 }

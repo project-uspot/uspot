@@ -233,7 +233,7 @@ from fmsc_s01
 		<if test="EmgPhone != null">
 			EmgPhone,
 		</if>
-		MLevel,type,
+		MLevel,regdate,type,
 		DCDS,WebID,BarCode,ZipCode,SCC_CardNo,Address,SubAddress,
 		<if test="IFFlag != null">
 			IF_Flag,
@@ -248,7 +248,7 @@ from fmsc_s01
 		<if test="EmgPhone != null">
 			#{EmgPhone},
 		</if>
-		#{MLevel},#{type},
+		#{MLevel},#{regdate},#{type},
 		#{DCDS},#{WebID},#{BarCode},#{ZipCode},#{SCCCardNo},#{Address},#{SubAddress},
 		<if test="IFFlag != null">
 			#{IFFlag},

@@ -1,5 +1,10 @@
 package egovframework.veterans.com.cmm;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -26,16 +33,20 @@ import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class VtcLockerController{
 	
 	private final HttpSession session;
-	private final VtcLockerService vtcSamulhamService;
+	private final VtcLockerService vtcLockerService;
+	
+	public static Marker locker = MarkerFactory.getMarker("locker");
 	
 	@GetMapping("/samulhaminfo.do")
 	public String samulhaminfo(Model model) throws Exception {
@@ -48,7 +59,7 @@ public class VtcLockerController{
 
 			return "common/msg";
 		}
-		List<tblplockergroup> SamulhamList=vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
+		List<tblplockergroup> SamulhamList=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
 
 		model.addAttribute("list",SamulhamList);
 		
@@ -58,7 +69,7 @@ public class VtcLockerController{
 	@GetMapping("/samulhaminfodetail")
 	public String samulhamdetail(@RequestParam(name = "lockergroupid")int lockergroupid,Model model) throws Exception {
 		
-		tblplockergroup samulhamdetail = vtcSamulhamService.selectSamulhamInfodetail(lockergroupid);
+		tblplockergroup samulhamdetail = vtcLockerService.selectSamulhamInfodetail(lockergroupid);
 		
 		model.addAttribute("vo",samulhamdetail);
 		
@@ -69,11 +80,11 @@ public class VtcLockerController{
 	public String lockercodelist(Model model) throws Exception {
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
-		List<tblplockergroup> tblplockergroup = vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
+		List<tblplockergroup> tblplockergroup = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
 		tblplocker tblplocker = new tblplocker();
 		tblplocker.setSiteCode(users.getSiteCode());
 		tblplocker.setIsDelete("N");
-		List<lockercodelist> lockercodelist = vtcSamulhamService.lockercodelist(tblplocker);
+		List<lockercodelist> lockercodelist = vtcLockerService.lockercodelist(tblplocker);
 		model.addAttribute("grouplist",tblplockergroup);
 		model.addAttribute("list",lockercodelist);
 		
@@ -85,8 +96,8 @@ public class VtcLockerController{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
-		List<tblplockergroup> PlockergroupName=vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
-		int maxsortorder = vtcSamulhamService.maxsortorder(users.getSiteCode());
+		List<tblplockergroup> PlockergroupName=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		int maxsortorder = vtcLockerService.maxsortorder(users.getSiteCode());
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);
 		return "samulham/lockercode/lockercodeinsertF";
@@ -100,7 +111,7 @@ public class VtcLockerController{
 		
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		
-		int plockernovalue = vtcSamulhamService.plockernovalue(tblplockergroup);
+		int plockernovalue = vtcLockerService.plockernovalue(tblplockergroup);
 		return Integer.toString(plockernovalue);
 		
 	}
@@ -113,7 +124,7 @@ public class VtcLockerController{
 		tblplocker.setSiteCode(users.getSiteCode());
 		tblplocker.setAddUserPKID(users.getUserPKID());
 		
-		List<tblplocker> plockernolist = vtcSamulhamService.plockernolist(tblplocker);
+		List<tblplocker> plockernolist = vtcLockerService.plockernolist(tblplocker);
 		int success = 0;
 		for(tblplocker plockerno : plockernolist) {
 			if (plockerno.getPLockerNO() == tblplocker.getPLockerNO()) {
@@ -125,7 +136,7 @@ public class VtcLockerController{
 		}
 		if(success != 1) {
 			
-			vtcSamulhamService.lockercodeinsert(tblplocker);
+			vtcLockerService.lockercodeinsert(tblplocker);
 			
 			model.addAttribute("msg", "등록되었습니다.");
 			model.addAttribute("script", "reload");
@@ -147,9 +158,9 @@ public class VtcLockerController{
 		
 		tblplocker.setPLockerID(PLockerID);
 		tblplocker.setSiteCode(users.getSiteCode());
-		tblplocker lockercodedetail = vtcSamulhamService.lockervobyplockerid(tblplocker);
-		List<tblplockergroup> PlockergroupName=vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
-		int maxsortorder = vtcSamulhamService.maxsortorder(users.getSiteCode());
+		tblplocker lockercodedetail = vtcLockerService.lockervobyplockerid(tblplocker);
+		List<tblplockergroup> PlockergroupName=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		int maxsortorder = vtcLockerService.maxsortorder(users.getSiteCode());
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);
 		model.addAttribute("detail",lockercodedetail);
@@ -161,8 +172,8 @@ public class VtcLockerController{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		tblplocker.setSiteCode(users.getSiteCode());
-		tblplocker lockercodedetail = vtcSamulhamService.lockervobyplockerid(tblplocker);
-		List<tblplocker> plockernolist = vtcSamulhamService.plockernolist(tblplocker);
+		tblplocker lockercodedetail = vtcLockerService.lockervobyplockerid(tblplocker);
+		List<tblplocker> plockernolist = vtcLockerService.plockernolist(tblplocker);
 		
 		int success = 0;
 		if(lockercodedetail.getPLockerNO() != tblplocker.getPLockerNO()) {
@@ -182,7 +193,7 @@ public class VtcLockerController{
 			tblplocker.setAddUserPKID(lockercodedetail.getAddUserPKID());
 			tblplocker.setUpdUserPKID(users.getUserPKID());
 			
-			vtcSamulhamService.lockercodeupdate(tblplocker);
+			vtcLockerService.lockercodeupdate(tblplocker);
 			
 			model.addAttribute("msg", "변경되었습니다.");
 			model.addAttribute("script", "reload");
@@ -203,7 +214,7 @@ public class VtcLockerController{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		tblplocker.setSiteCode(users.getSiteCode());
-		List<lockercodelist> lockercodelist = vtcSamulhamService.lockercodelist(tblplocker);
+		List<lockercodelist> lockercodelist = vtcLockerService.lockercodelist(tblplocker);
 		
 
 		lockerlist.put("size", lockercodelist.size());
@@ -219,8 +230,78 @@ public class VtcLockerController{
 		
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		
-		List<Map<String,Object>> plockerlist = vtcSamulhamService.plockerByGroupID(tblplockergroup);
+		List<Map<String,Object>> plockerlist = vtcLockerService.plockerByGroupID(tblplockergroup);
 		
 		return plockerlist;
+	}
+	
+	@ResponseBody
+	@PostMapping("StartBooking")
+	public Map<String,Object> StartBooking(tblplocker tblplocker,Model model,
+				@RequestParam(value = "PrevPLockerID")int PrevPLockerID){
+		
+		try {
+			Users users =  (Users) session.getAttribute("loginuserinfo");
+			
+			if (users == null) {
+				return null;
+			}
+			tblplocker.setSiteCode(users.getSiteCode());
+			tblplocker.setClickUserPKID(users.getUserPKID());
+			tblplocker.setUpdUserPKID(users.getUserPKID());
+			
+			tblplocker Oldtblplocker = new tblplocker();
+			
+			Oldtblplocker.setSiteCode(users.getSiteCode());
+			Oldtblplocker.setClickUserPKID(users.getUserPKID());
+			Oldtblplocker.setUpdUserPKID(users.getUserPKID());
+			Oldtblplocker.setPLockerID(PrevPLockerID);
+        	Oldtblplocker.setClickUserPKID(0);
+			
+			String ClickTimeByID = vtcLockerService.ClickTimeByID(tblplocker);
+			
+			//등록하고 있지 않을경우
+			if(ClickTimeByID == null) {
+				
+				vtcLockerService.UpdClickTime(Oldtblplocker);
+				
+				vtcLockerService.UpdClickTime(tblplocker);
+				
+				Map<String,Object> PLockerJoinGroupByID = vtcLockerService.PLockerJoinGroupByID(tblplocker);
+				
+				log.info(locker,"관리자 pkid : "+users.getUserPKID()+", 사물함 pkid : "+tblplocker.getPLockerID()+"의 대한 등록 시작");
+				return PLockerJoinGroupByID;
+			}else {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		        LocalDateTime clickTime = LocalDateTime.parse(ClickTimeByID, formatter);
+
+		        LocalDateTime currentTime = LocalDateTime.now();
+
+		        long minutesDifference = ChronoUnit.MINUTES.between(clickTime, currentTime);
+		        
+		        //10분이 지났을 경우
+		        if(minutesDifference>1) {
+		        	
+					vtcLockerService.UpdClickTime(Oldtblplocker);
+		        	
+		        	vtcLockerService.UpdClickTime(tblplocker);
+					
+					Map<String,Object> PLockerJoinGroupByID = vtcLockerService.PLockerJoinGroupByID(tblplocker);
+					
+					log.info(locker,"관리자 pkid : "+users.getUserPKID()+", 사물함 pkid : "+tblplocker.getPLockerID()+"의 대한 등록 시작");
+					
+					return PLockerJoinGroupByID;
+		        }else {
+		        	Map<String,Object> map = new HashMap<String, Object>();
+		        	
+		        	map.put("already","already");
+		        	
+					return map;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -22,4 +22,6 @@ public class tblplocker {
 	private String UpdDate;
 	private int UpdUserPKID;
 	private String updchk;
+	private int ClickUserPKID;
+	private String ClickTime;
 }

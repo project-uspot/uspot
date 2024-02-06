@@ -31,4 +31,10 @@ public interface VtcLockerService {
 	List<memberuselocker> memberuselocker(String MemberID) throws Exception;
 	
 	List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception;
+	
+	void UpdClickTime(tblplocker tblplocker)throws Exception;
+	
+	Map<String,Object> PLockerJoinGroupByID(tblplocker tblplocker)throws Exception;
+	
+	String ClickTimeByID(tblplocker tblplocker)throws Exception;
 }
