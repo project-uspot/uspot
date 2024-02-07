@@ -458,7 +458,6 @@ function finditem() {
 	}
 	var url = "mitemfindlist?findstring=" + findstring;
     var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
-    window.open(url, "_blank", windowFeatures);
     if (myPopup === undefined || myPopup.closed) {
         myPopup = window.open(url, "_blank", windowFeatures);
     } else {

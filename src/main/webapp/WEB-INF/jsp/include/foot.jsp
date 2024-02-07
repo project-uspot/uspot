@@ -26,7 +26,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verticallyCenteredModalLabel" >정 원 초 과</h5>
+        <h5 class="modal-title" id="verticallyCenteredModalLabel" >USPOT</h5>
         <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
       </div>
       <div class="modal-body">
