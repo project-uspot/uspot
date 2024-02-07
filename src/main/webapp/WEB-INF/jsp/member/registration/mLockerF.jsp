@@ -8,6 +8,15 @@
 <head>
     <meta charset="UTF-8">
     <title>사물함임대정보 등록 및 변경</title>
+    <script type="text/javascript">
+    <!--처음 사물함 클릭하는 함수-->
+    document.addEventListener("DOMContentLoaded", function() {
+        var firstLi = document.querySelector('.nav-item:first-child');
+
+        var firstLinkId = firstLi.querySelector('a').id;
+        firstLi.querySelector('a').click();
+    });
+    </script>
 </head>
 <body style="overflow: hidden;">
     <div class="card h-100 mb-1">
@@ -15,14 +24,14 @@
             <div class="col-auto">
         		<div class="row justify-content-between">
         			<div class="col-auto">
-						<h3 class="mb-3 pt-2">사물함임대정보 등록 및 변경</h3>
+						<h3 class="mb-3 pt-2">사물함임대정보 등록</h3>
             		</div>
             		<div class="col-auto">
 						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
-						<button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
+						<!-- <button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
 						<button class="btn btn-danger" type="button">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
-						<button class="btn btn-soft-info" type="button" onclick="lockerChange()">변경</button>
+						<button class="btn btn-soft-info" type="button" onclick="lockerChange()">변경</button> -->
             		</div>
         		</div>
         	</div>
@@ -96,22 +105,22 @@
 				<div class="cal-auto">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" style="width: 85px;">사물함</span>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">보증금</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="PLockerDeposite" name="PLockerDeposite"/>
+							<input class="form-control" type="text" id="PLockerDeposite" name="PLockerDeposite" style="text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">임대료</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="PLockerPrice" name="PLockerPrice"/>
+							<input class="form-control" type="text" id="PLockerPrice" name="PLockerPrice" style="text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 	        	</div>
@@ -132,7 +141,7 @@
 					</div>
 					<div class="col-auto ms-n3">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="text" id="regmonth" name="regmonth" style="width: 50px;" value="0" min="0"/>
+							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;" min="1"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3 mt-2">
@@ -167,67 +176,81 @@
 					</div>
 				</div>-->
 				<div class="row">
-	        		<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 85px;">합계</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}"/>
-						</div>
-					</div>
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">판매일자</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="regdate" name="regdate" style="width: 110px;"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="regdate" name="regdate" style="width: 130px;"/>
+						</div>
+					</div>
+					<div class="col-md">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
+							<input class="form-control" type="text" id="note" name="note" maxlength="100"/>
 						</div>
 					</div>
 	        	</div>
-	        	<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
-						<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}"/>
+				<div class="row">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총임대료</span>
+							<input class="form-control" type="text" id="totalPLockerPrice" name="totalPLockerPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n5">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">임대료미납</span>
+							<input class="form-control" type="text" id="misuPLockerPrice" name="misuPLockerPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="col-auto me-n2">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">입대료결제금</span>
+							<input class="form-control" type="text" id="paidPLockerPrice" name="paidPLockerPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">총매출금액</span>
-							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<span class="input-group-text" id="basic-addon1">총보증금</span>
+							<input class="form-control" type="text" id="totalPLockerDeposite" name="totalPLockerDeposite" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="col-auto ms-n5">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">보증금미납</span>
+							<input class="form-control" type="text" id="misuPLockerDeposite" name="misuPLockerDeposite" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="col-auto me-n2">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">보증금결제금</span>
+							<input class="form-control" type="text" id="paidPLockerDeposite" name="paidPLockerDeposite" style="width: 100px; text-align: right;" readonly="readonly"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1">총매출금</span>
+							<input class="form-control" type="text" id="RealPrice" name="RealPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총미납금액</span>
-							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="Misu" name="Misu" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 					<div class="col-auto me-n2">
 						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">총결제금액</span>
-							<input class="form-control" type="text" id="note" name="note" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<span class="input-group-text" id="basic-addon1">총결제금액&emsp;</span>
+							<input class="form-control" type="text" id="PaidPrice" name="PaidPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-auto">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 98px;">사용금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
-						</div>
-					</div>
-					<div class="col-auto ms-n5">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 98px;">위약금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
-						</div>
-					</div>
-					<div class="col-auto me-n2">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 98px;">반환금액</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 100px; text-align: right;"/>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
+					<!--<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총일수</span>
 							<input class="form-control" type="number" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
@@ -238,10 +261,10 @@
 							<span class="input-group-text" id="basic-addon1">사용일수</span>
 							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
 						</div>
-					</div>
-					<div class="col-auto ms-n4">
+					</div>-->
+					<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text me-3" id="basic-addon1" style="height: 33px;">영수증인쇄</span>
+							<span class="input-group-text me-3" id="basic-addon1" style="width: 85px;">영수증인쇄</span>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
 								<input class="form-check-input" id="inlineRadio1" type="radio" name="inlineRadioOptions" value="option1" aria-describedby="basic-addon1"/>
 								<label class="form-check-label" for="inlineRadio1">2장</label>
@@ -275,198 +298,92 @@
 	        </div>
 	    </div>
 	    <script type="text/javascript">
-	    $('#fromdate,#todate,#regdate').val(getCurrentDate());
-	    
-	    	$('.nav-item').on('click', function() {
-	    		var tab_id = $(this).find('a').attr('href');
-	    		
-	    		var plockergroupid = $(this).find('a').attr('itemid');
-	    		
-	    		var dancnt = $(this).find('a').attr('title');
-	    		
-	    		$.ajax({
-	    	        type: "POST",
-	    	        url: "plockerByGroupID",
-	    	        dataType : 'json',
-	    	        data: { 
-	    	        	PLockerGroupID : plockergroupid
-	    	        },
-	    	        success: function(data) {
-	    	        	var contentHtml = '<table>';
-	    	            var n = Number(dancnt);
-
-	    	            for (var i = 0; i < n; i++) {
-	    	                contentHtml += '<tr>';
-
-	    	                for (var j = i; j < data.length; j += n) {
-	    	                	if(data[j].State == 1){
-	    	                		contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+')">'+
-		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
-	    	                	}
-	    	                	else if(data[j].State == 2){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="left" '+
-	    	                		'title="&lt;b&gt;회원번호 :&lt;/b&gt; &lt;em&gt;'+data[j].MemberID+'&lt;/em&gt; &lt;br&gt;'+
-	    	                		' &lt;b&gt;회원명 :&lt;/b&gt; &lt;em&gt;'+data[j].Name+'&lt;/em&gt; &lt;br&gt; '+
-	    	                		' &lt;b&gt;생년원일 :&lt;/b&gt; &lt;em&gt;'+data[j].BirthDay+'&lt;/em&gt; &lt;br&gt; '+
-	    	                		' &lt;b&gt;휴대전화 :&lt;/b&gt; &lt;em&gt;'+data[j].CellPhone+'&lt;/em&gt; &lt;br&gt;" '+
-	    	                		' data-bs-html="true">'+
-		    	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
-	    	                	}
-	    	                	else if(data[j].State == 3){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
-		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
-	    	                	}
-	    	                	else if(data[j].State == 4){
-	    	                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
-		    	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
-	    	                	}
-	    	                    
-	    	                }
-
-	    	                contentHtml += '</tr>';
-	    	            }
-
-	    	            contentHtml += '</table>';
-	    	            $(tab_id).html(contentHtml);
-	    	            
-	    	            $(function(){
-	    	                $('[data-bs-toggle="tooltip"]').tooltip();
-	    	            });
-	    	        },
-	    	        error: function(xhr, status, error) {
-	    	       	 console.log("Status: " + status);
-	    	         console.log("Error: " + error);
-	    	        }
-	    		});
-	    	});
 	    	
-	    	function NoBooking(message) {
-	    		var reason = '';
-				if(message == 2){
-					reason = '사용중';
-				}else if(message == 3){
-					reason = '고장';
-				}else if(message == 4){
-					reason = '사용불가';
-				}
-				$('#resultmessage').html('선택하신 사물함은 임대할 수 없습니다.<br>임대불가사유 : '+reason);
-				$('.modal-footer').empty();
-				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-				$('.modal-footer').append(cancelbutton);
-			    $('#modalButton').click();
-			    modalcheck = true;
-			}
-	    	
-	    	var PrevPLockerID = 0;
-	    	function StartBooking(plockerid) {
-	    		$.ajax({
-	    	        type: "POST", 
-	    	        url: "StartBooking", 
-	    	        dataType : 'json',
-	    	        data: { 
-	    	        	PLockerID: plockerid,
-	    	        	PrevPLockerID : PrevPLockerID
-	    	        },
-	    	        success: function(data) {
-	    	        	if(data == null){
-	    	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
-	    	        		window.opener.location.reload();
-	    	                window.close();	
-	    	        	}else if(data.already == 'already'){
-	    	        		$('#resultmessage').html('이미 등록진행중인 사물함 입니다.');
-	    					$('.modal-footer').empty();
-	    					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-	    					$('.modal-footer').append(cancelbutton);
-	    				    $('#modalButton').click();
-	    				    modalcheck = true;
-	    	        		
-	    	        		return false;
-	    	        	}else{
-	    	        		PrevPLockerID = plockerid;
-		    	        	
-		    	        	$('#PLockerGroupName').val(data.PLockerGroupName);
-		    	        	$('#PLockerLocation').val(data.PLockerLocation);
-		    	        	$('#PLockerNo').val(data.PLockerNo);
-		    	        	$('#PLockerDeposite').val(data.PLockerDeposite);
-		    	        	$('#PLockerPrice').val(data.PLockerPrice);
-		    	        	$('#regmonth').val(data.PLockerMonth);
-	    	        	}	    	        	
-	    	        },
-	    	        error: function(xhr, status, error) {
-	    	       	 console.log("Status: " + status);
-	    	         console.log("Error: " + error);
-	    	        }
-	    		});
-	    		
-			}
 	    </script>
 	</div>
     <div class="row">
 	    <div class="card w-60 h-50">
 	    	<div class="card-body my-n3">
-	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 210px;"
+	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 236px;"
                     data-list='{"valueNames":["paiddate","paidcategory","paidprice","paidassignType","paidmapsa",""paidcardtype"","paidassignN","paidcardN","POS","signpad","OID","PayKind"],"page":6,"pagination":true}'>
                 	<div class="table-responsive scrollbar">
                     	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
                         	<thead>
 	                        	<tr>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paiddate">결제일자</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcategory">결제유형</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidprice">결제금액</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">승인구분</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">매입사</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">카드종류</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">승인번호</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">카드번호</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="POS">POS</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="signpad">사인패드</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="OID">OID</th>
-		                             <th class="sort align-middle text-center" scope="col" data-sort="PayKind">PayKind</th>
+		                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">결제일자</th>
+		                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">결제유형</th>
+		                           	<th class="sort align-middle text-center" scope="col" data-sort="paidprice">결제금액</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">승인구분</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">매입사</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">카드종류</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">승인번호</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">카드번호</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="POS">POS</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="signpad">사인패드</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="OID">OID</th>
+		                            <th class="sort align-middle text-center" scope="col" data-sort="PayKind">PayKind</th>
 	                            </tr>
                         	</thead>
                         	<tbody class="list" id="paidbody">
-                        		<c:forEach var="paid" items="${paidlist}">
-	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static">
-									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
-									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
-									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
-									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${paidprice}" pattern="#,###"/></td>
-									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
-									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
-									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
-									    <td class="paidassignN align-middle white-space-nowrap text-start">${paid.assignNo}</td>
-									    <td class="paidcardN align-middle white-space-nowrap text-start">${paid.cardNo}</td>
-									    <td class="POS align-middle white-space-nowrap text-start">${paid.pos}</td>
-									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
-									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
-									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
-									</tr>
-								</c:forEach>
                         	</tbody>
                     	</table>
                     </div>
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
-	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 273px;">
+	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 515px; ">
+	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 300px;">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">받을금액</span>
-						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;" oninput="onlyNumber(this)"/>
 					</div>
 				</div>
-				<div class="btn-group btn-group-sm mt-n2" role="group" style="width: 431px;">
-  					<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
-  					<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
-					<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()">현금</button>
+					</div>
+					<div class="col-auto ms-4">
+						<button class="btn btn-phoenix-secondary" type="button">신용카드</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+					</div>
 				</div>
-				<div class="btn-group btn-group-sm" role="group" style="width: 431px;">
-  					<button class="btn btn-soft-primary" type="button">신용카드</button>
-  					<button class="btn btn-soft-success" type="button">영수증재발행</button>
-  					<button class="btn btn-soft-danger" type="button">결제취소</button>
-  					<button class="btn btn-soft-info" type="button">행삭제</button>
+				<div class="row mb-1">
+					<div class="col-auto">
+						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
+					</div>
+					<div class="col-auto ms-n1">
+						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-success" type="button">현.영재발행</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<button class="btn btn-soft-danger" type="button">결제취소</button>
+					</div>
+					<div class="col-auto ms-5">
+						<button class="btn btn-soft-info" type="button" onclick="deleteRow()">행삭제</button>
+					</div>
+				</div>
+				<div class="col-auto ms-n2 mt-2">
+					<div class="card border border-primary mt-2">
+				    	<div class="card-body my-n3">
+				      		<div class="col-auto ms-n3">
+		                   		<div class="row">
+		                      		<div class="col-auto">
+		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
+									</div>
+									<div class="col-auto ms-5">
+										<button class="btn btn-soft-danger" type="button">보증금환불</button>
+									</div>
+								</div>
+							</div>
+				    	</div>
+					</div>
 				</div>
 	    	</div>
 	    </div>
@@ -477,24 +394,6 @@
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
 
-// Get today's date
-var today = new Date();
-
-// Format the date as "YYYY-MM-DD" which is the required format for the date input
-var formattedDate = today.toISOString().split('T')[0];
-
-
-
-//어른 어린이 등을 저장하는 변수 생성
-var codelist;
-
-//엔터시에 검색하는 기능
-function handleKeyPress(event) {
-	if (event.key === "Enter") {
-		finditem();
- 	}
-}
-	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
@@ -518,157 +417,169 @@ document.addEventListener('keydown', function(event) {
    	}
 });
 	
-//검색하고 검색결과를 팝업으로 여는 함수
-function finditem() {
-	var findstring = document.getElementById('findstring').value;
-	var oldfromdate = document.getElementById('oldfromdate').value;
-	if(findstring == '' || findstring == null){
-   		$('#resultmessage').text('검색어를 입력해주세요.');
-   		$('.modal-footer').empty();
-	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-	  	$('.modal-footer').append(cancelbutton);
-        $('#modalButton').click();
-        modalcheck = true;
-		return false;
-	}
-	var url = "mitemfindlist?findstring=" + findstring+"&finddate="+ oldfromdate;
-    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
-    window.open(url, "_blank", windowFeatures);
+function alldelete(){
+	window.location.reload();
 }
+
+$('#fromdate,#todate,#regdate').val(getCurrentDate());
+
+
+$(document).ready(function() {
+    $('#paidbody').on('click', 'tr', function() {
+        paidbodyclick(this);
+	});
+});
+
+var previousRow = null;
+function paidbodyclick(clickedRow){
+	if (previousRow !== null) {
+    	$(previousRow).css('background-color', '');
+    }
+	$(clickedRow).css('background-color', 'lightblue');
+    previousRow = clickedRow;
+}
+
+
+var DBregmonth;
+$('.nav-item').on('click', function() {
+	var tab_id = $(this).find('a').attr('href');
 	
-// 검색 하고나서 선택된 값을 테이블에 추가하는 함수
-function test(ItemID,selectedDate,nextDate) {
+	var plockergroupid = $(this).find('a').attr('itemid');
+	
+	var dancnt = $(this).find('a').attr('title');
+	
 	$.ajax({
-        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
+        type: "POST",
+        url: "plockerByGroupID",
         dataType : 'json',
         data: { 
-        	AddDate: ItemID,
-        	UpdDate: selectedDate
+        	PLockerGroupID : plockergroupid
         },
-        success: function(list) {
-        		var olddcid = $('#olddcname').attr('name');
-				$('#itemname').val('['+list.CategoryName+']'+list.JungName+' '+list.DayName+' '+list.LevelName);
-				$('#empcode').val(list.DamDangUserPKID);
-		       	$('#itemid').val(list.ItemID);
-				
-				var priceoptionlist = $('#price');
-		       	priceoptionlist.empty();
-		       	$.ajax({
-		   	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		   	        url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
-		   	        dataType : 'json',
-		   	        success: function(codelist) {
-		   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.DefPrice,
-		   		                value: codelist[0]+list.DefPrice,
-		   		                text: codelist[0]+formatNumberWithCommas(list.DefPrice)
-		   		            }));
-		   	        	}
-		   	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price1,
-		   	        	        value: codelist[1] + list.Price1,
-		   	        	        text: codelist[1]+formatNumberWithCommas(list.Price1)
-		   	        	    });
+        success: function(data) {
+        	var contentHtml = '<table>';
+            var n = Number(dancnt);
 
-		   	        	    priceoptionlist.append(option);
+            for (var i = 0; i < n; i++) {
+                contentHtml += '<tr>';
 
-		   	        	    if ($('#yearage').val() > 13 && $('#yearage').val() < 19) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price2,
-		   	        	        value: codelist[2] + list.Price2,
-		   	        	        text: codelist[2]+formatNumberWithCommas(list.Price2)
-		   	        	    });
+                for (var j = i; j < data.length; j += n) {
+                	if(data[j].State == 1){
+                		contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+')">'+
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                	}
+                	else if(data[j].State == 2){
+                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="left" '+
+                		'title="&lt;b&gt;회원번호 :&lt;/b&gt; &lt;em&gt;'+data[j].MemberID+'&lt;/em&gt; &lt;br&gt;'+
+                		' &lt;b&gt;회원명 :&lt;/b&gt; &lt;em&gt;'+data[j].Name+'&lt;/em&gt; &lt;br&gt; '+
+                		' &lt;b&gt;생년원일 :&lt;/b&gt; &lt;em&gt;'+data[j].BirthDay+'&lt;/em&gt; &lt;br&gt; '+
+                		' &lt;b&gt;휴대전화 :&lt;/b&gt; &lt;em&gt;'+data[j].CellPhone+'&lt;/em&gt; &lt;br&gt;" '+
+                		' data-bs-html="true">'+
+	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                	}
+                	else if(data[j].State == 3){
+                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                	}
+                	else if(data[j].State == 4){
+                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                	}
+                    
+                }
 
-		   	        	    priceoptionlist.append(option);
+                contentHtml += '</tr>';
+            }
 
-		   	        	    if ($('#yearage').val() >= 0 && $('#yearage').val() < 14) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price3,
-		   	        	    	value: codelist[3]+list.Price3,
-		   		                text: codelist[3]+formatNumberWithCommas(list.Price3)
-		   	        	    });
-		   	        	    priceoptionlist.append(option);
-		   	        	    if ($('#yearage').val() > 64) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price4,
-		   		                value: codelist[4]+list.Price4,
-		   		                text: codelist[4]+formatNumberWithCommas(list.Price4)
-		   		            }));
-		   	        	}
-		   	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price5,
-		   		                value: codelist[5]+list.Price5,
-		   		                text: codelist[5]+formatNumberWithCommas(list.Price5)
-		   		            }));
-		   	        	}
-		   	        	
-		   	        	$('#dcds option').each(function() {
-		   	             // Check if the current option's value is equal to olddcpriceValue
-							if ($(this).val() === olddcid) {
-								// If it matches, set the 'selected' attribute
-    							$(this).attr('selected', 'selected');
-    							$('#dcper').val($(this).attr('id'));
-							}
-		   	         	});
-		   	        	
-		   	        	sortchange();
-		   	        },
-		   	        error: function(xhr, status, error) {
-		   	       	 console.log("Status: " + status);
-		   	         console.log("Error: " + error);
-		   	        }
-		   		});
-				
-		       	$('#regmonth').val($('#oldregmonth').val());
-		       	if($('#oldfromdate').val()< formattedDate){
-		       		$('#fromdate').val(formattedDate);
-		       	}else{
-		       		$('#fromdate').val($('#oldfromdate').val());
-		       	}		       	
-		       	$('#todate').val($('#oldtodate').val());
+            contentHtml += '</table>';
+            $(tab_id).html(contentHtml);
+            
+            $(function(){
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            });
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
          console.log("Error: " + error);
         }
 	});
+});
+
+
+function NoBooking(message) {
+	var reason = '';
+	if(message == 2){
+		reason = '사용중';
+	}else if(message == 3){
+		reason = '고장';
+	}else if(message == 4){
+		reason = '사용불가';
+	}
+	$('#resultmessage').html('선택하신 사물함은 임대할 수 없습니다.<br>임대불가사유 : '+reason);
+	$('.modal-footer').empty();
+	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
 }
+
+var PrevPLockerID = 0;
+function StartBooking(plockerid) {
+	$.ajax({
+        type: "POST", 
+        url: "StartBooking", 
+        dataType : 'json',
+        data: { 
+        	PLockerID: plockerid,
+        	PrevPLockerID : PrevPLockerID
+        },
+        success: function(data) {
+        	if(data == null){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();	
+        	}else if(data.already == 'already'){
+        		$('#resultmessage').html('이미 등록진행중인 사물함 입니다.');
+				$('.modal-footer').empty();
+				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+				$('.modal-footer').append(cancelbutton);
+			    $('#modalButton').click();
+			    modalcheck = true;
+        		
+        		return false;
+        	}else{
+        		PrevPLockerID = plockerid;
+	        	
+	        	$('#PLockerGroupName').val(data.PLockerGroupName);
+	        	$('#PLockerLocation').val(data.PLockerLocation);
+	        	$('#PLockerNo').val(data.PLockerNo);
+	        	$('#PLockerDeposite').val(formatNumberWithCommas(data.PLockerDeposite));
+	        	$('#PLockerPrice').val(formatNumberWithCommas(data.PLockerPrice));
+	        	$('#regmonth').val(data.PLockerMonth);
+	        	DBregmonth = data.PLockerMonth;
+	        	DBPLockerPrice = data.PLockerPrice;
+	        	dateChange();
+	        	PLockerDepositeChange();
+        	}	    	        	
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 	
-function alldelete(){
-	window.location.reload();
 }
-  
+
 //강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
 $('#price').on('change', function() {
 	sortchange();	
 });
-   
-   //할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수
-$('#dcds').on('change', function() {
-    var selectedpercent = $('#dcds').find('option:selected').attr('id'); // 선택된 옵션의 id 값을 가져오기
-    $('#dcper').val(selectedpercent);
-    sortchange();
-});
 
 $('#regmonth, #fromdate').on('change', function() {
-  
-    var selectedValue = $('#regmonth').val();
+	dateChange();
+});
+   
+function dateChange() {
+	var selectedValue = $('#regmonth').val();
     var fromdate = $('#fromdate').val();
     
     const formattedDate = new Date(fromdate);
@@ -680,61 +591,91 @@ $('#regmonth, #fromdate').on('change', function() {
     const formattedDateString = formatDate(formattedDate);
     
     $('#todate').val(formattedDateString);
-});
-   
-//소계바꾸는 함수
-function sortchange(){
-	var regmonth = $('#regmonth').val();
-	var price = $('#price option:selected').attr('id');
-   	var dcper = $('#dcds').find('option:selected').attr('id');
-   	var dcprice = (price*dcper/100)*regmonth;
-   	var sortprice = (price*regmonth)-dcprice;
-   	
-   	$('#dcprice').val(formatNumberWithCommas(dcprice));
-   	$('#sortprice').val(formatNumberWithCommas(sortprice));
-   	
-   	totalchange();
-}
-   
-//결제 내역에 있는 총 금액 변경 함수
-function totalchange(){
-	var totalprice = removeCommasFromNumber($('#sortprice').val());	
-	
-	var tpaidprice = 0;
-	
-	$('#paidbody tr').each(function() {
-		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
- 	});
-	
-	$('#totalprice').val(formatNumberWithCommas(totalprice));
-	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
-	$('#tremainprice').val(formatNumberWithCommas(totalprice-tpaidprice));	
-	$('#changeprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortprice').val())-removeCommasFromNumber($('#oldprice').val())));
-	$('#payprice').val(formatNumberWithCommas(totalprice-tpaidprice));	
-}
-   
-//날짜를 테이블에서 가지고와서 잘라서 보내는 함수
-function parseString(inputString) {
-	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
-	const matches = inputString.match(regex);
+    
+    PLockerPriceChange();
+}   
 
-	if (!matches || matches.length !== 4) {
-		return null; // 입력 형식이 잘못된 경우 처리
+function PLockerPriceChange(){
+   	var totalPLockerPrice;
+   	
+   	if(DBregmonth>1){
+   		totalPLockerPrice = DBPLockerPrice;
+	}else{
+		var regmonth = $('#regmonth').val();
+		totalPLockerPrice = regmonth * DBPLockerPrice;
 	}
-	const startDate = matches[1];
-	const endDate = matches[2];
-	const numberOfMonths = parseInt(matches[3], 10);
-
-	return [startDate, endDate, numberOfMonths.toString()];
+   	$('#PLockerPrice').val(formatNumberWithCommas(totalPLockerPrice));
+   	$('#totalPLockerPrice').val(formatNumberWithCommas(totalPLockerPrice));
+   	
+   	var paidPLockerPrice = 0;
+   	
+   	$('#paidbody tr#PLockerPrice').each(function() {
+   		var paidPrice = removeCommasFromNumber($(this).find('td.paidprice').text());
+   		paidPLockerPrice += paidPrice;
+   		
+   		if(isNaN(paidPLockerPrice)){
+   			paidPLockerPrice = 0;
+   		}
+    });
+   	$('#paidPLockerPrice').val(formatNumberWithCommas(paidPLockerPrice));
+   	
+   	var misuPLockerPrice = totalPLockerPrice-paidPLockerPrice;
+   	
+   	$('#misuPLockerPrice').val(formatNumberWithCommas(misuPLockerPrice));
+   	
+   	totalChange();
 }
    
-//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
-function formatDate(date) {
-	const yyyy = date.getFullYear();
-	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
-	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
-	return yyyy+'-'+mm+'-'+dd;
+function PLockerDepositeChange() {
+	var PLockerDeposite = removeCommasFromNumber($('#PLockerDeposite').val());
+	
+	$('#totalPLockerDeposite').val(formatNumberWithCommas(PLockerDeposite));
+	
+	var paidPLockerDeposite = 0;
+   	
+   	$('#paidbody tr#Deposite').each(function() {
+   		var paidPrice = removeCommasFromNumber($(this).find('td.paidprice').text());
+   		paidPLockerDeposite += paidPrice;
+   		
+   		if(isNaN(paidPLockerDeposite)){
+   			paidPLockerDeposite = 0;
+   		}
+    });
+   	$('#paidPLockerDeposite').val(formatNumberWithCommas(paidPLockerDeposite));
+   	
+   	var misuPLockerDeposite = PLockerDeposite-paidPLockerDeposite;
+   	
+   	$('#misuPLockerDeposite').val(formatNumberWithCommas(misuPLockerDeposite));
+	
+	totalChange();
 }
+
+function totalChange() {
+	
+	var totalPLockerPrice = removeCommasFromNumber($('#totalPLockerPrice').val());
+	var totalPLockerDeposite = removeCommasFromNumber($('#totalPLockerDeposite').val());
+	
+	var RealPrice = totalPLockerPrice+totalPLockerDeposite;
+	
+	$('#RealPrice').val(formatNumberWithCommas(RealPrice));
+	
+	var misuPLockerPrice = removeCommasFromNumber($('#misuPLockerPrice').val());
+	var misuPLockerDeposite = removeCommasFromNumber($('#misuPLockerDeposite').val());
+	
+	var Misu = misuPLockerPrice+misuPLockerDeposite;
+	
+	$('#Misu').val(formatNumberWithCommas(Misu));
+	
+	var paidPLockerPrice = removeCommasFromNumber($('#paidPLockerPrice').val());
+	var paidPLockerDeposite = removeCommasFromNumber($('#paidPLockerDeposite').val());
+	
+	var PaidPrice = paidPLockerPrice+paidPLockerDeposite;
+	
+	$('#PaidPrice').val(formatNumberWithCommas(PaidPrice));
+	
+	$('#payprice').val(formatNumberWithCommas(misuPLockerPrice));
+}
+
 
 
 function save() {
@@ -760,76 +701,6 @@ function save() {
 	}
 }
 
-function fmsc_01save() {
-		var iteration = 0;
-		const yearmonth = extractYearMonth($('#fromdate').val());
-		$.ajax({
-	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	        url: "classchange", // 실제 엔드포인트로 교체해야 합니다
-	        dataType : 'json',
-	        data: { 
-	        	SaleNo : $('#saleno').val(),
-	        	SaleDate : $('#saledate').val(),
-	        	ItemPeriod : yearmonth,
-	        	CustCode : $('#memberid').val(),
-	        	FromDate : $('#fromdate').val(),
-	        	ToDate : $('#todate').val(),
-	        	RFromDate : $('#fromdate').val(),
-	        	RToDate : $('#todate').val(),
-	        	RegMonth : $('#regmonth').val(),
-	        	DCID : $('#dcds').val(),
-	        	DiscountRate : $('#dcper').val(),
-	        	DCPrice : removeCommasFromNumber($('#dcprice').val()),
-	        	ItemPrice : $('#price option:selected').attr('id'),
-	        	RealPrice : removeCommasFromNumber($('#sortprice').val()),
-	        	Misu : removeCommasFromNumber($('#tremainprice').val()),
-	        	EmpCode : $('#empcode').val(),
-	        	IsReReg : '0',
-	        	State : 'G+',
-	        	ItemPKID : $('#itemid').val(),
-	        	InType : '반변경',
-	        	prevInType : '등록',
-	        	CurState : 1,
-	        	PaidPrice : 0
-	        },
-	        success: function(data) {	
-	        	var numberOfTR = $('#paidbody tr#new').length;
-	        	if(numberOfTR>0){
-	        		$('#paidbody tr#new').each(function() {
-		        		$.ajax({
-			    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-			    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-			    	        dataType : 'text',
-			    	        data: { 
-			    	        	FPKID: data,
-			    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-			    	        	RealSaleDate : $(this).find('.paiddate').text(),
-			    	        	SaleType : '반변경',
-			    	        	PayType : $(this).find('.paidcategory').text(),
-			    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-			    	        	AssignType : $(this).find('.paidassignType').text(),
-			    	        	PaidGroupSaleNo : data
-			    	        },
-			    	        success: function(data){
-			    	        	iteration++;
-			    	        	if(iteration === numberOfTR){
-			    	        		window.opener.location.reload();
-			    	                window.close();
-			    	        	}
-			    	        }
-			    		});
-		        	});
-	        	}else{
-	        		window.opener.location.reload();
-	                window.close();
-	        	}
-	        },
-	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
-	        }
-		}); 
-}  
 
 //itemperiod 를 위한 날짜 포맷 함수
 function extractYearMonth(dateString) {
@@ -842,9 +713,9 @@ function extractYearMonth(dateString) {
 }
   
 //현금 결제
-function paycash() {
-	if($('#tremainprice').val() == 0 || $('#tremainprice').val() == ''){
-	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+function payCash() {
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -852,7 +723,7 @@ function paycash() {
 	    modalcheck = true;
 	    return false;
 	}
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#payprice').val() + '</td>');
@@ -869,7 +740,38 @@ function paycash() {
 	// Get the tbody element with ID 'paidbody' and append the new row
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
-	totalchange();
+	PLockerPriceChange();
+}
+
+//현금 결제
+function payDeposite() {
+	if($('#misuPLockerDeposite').val() == 0 || $('#misuPLockerDeposite').val() == ''){
+	  	$('#resultmessage').html('받을 보증금이 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "Deposite"></tr>');
+	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#totalPLockerDeposite').val() + '</td>');
+	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+	
+	// Get the tbody element with ID 'paidbody' and append the new row
+	var tableBody = $('#paidbody');
+	tableBody.append(newRow);
+	PLockerDepositeChange();
 }
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
@@ -886,42 +788,44 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
-//금액에 , 를 붙혀서 return 해주는 함수
-function formatNumberWithCommas(amount) {
-    // Check if the input is a valid number
-    if (isNaN(amount)) {
-        return "Invalid input";
+function deleteRow() {
+    if (previousRow !== null) {
+    	
+    	var rowToDelete = $(previousRow).closest('tr');
+        
+    	var prevRow = rowToDelete.prev('tr');
+    	
+    	rowToDelete.remove();
+
+    	if (prevRow.length > 0) {
+            paidbodyclick(prevRow);
+        } else {
+            previousRow = null;
+        }
+        
+        PLockerPriceChange();
+        PLockerDepositeChange();
     }
-
-    // Convert the number to a string
-    let amountStr = amount.toString();
-
-    // Split the string into integer and decimal parts
-    let parts = amountStr.split('.');
-
-    // Add commas to the integer part
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-    // Join the integer and decimal parts back together
-    let formattedAmount = parts.join('.');
-
-    return formattedAmount;
 }
 
-//금액에 붙은 , 를 지워주는 함수
-function removeCommasFromNumber(formattedNumber) {
-    // Remove commas from the string
-    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+function payCancel() {
+    if (previousRow !== null) {
+    	
+    	var rowToDelete = $(previousRow).closest('tr');
+        
+    	var prevRow = rowToDelete.prev('tr');
+    	
+    	rowToDelete.remove();
 
-    // Convert the string to a number
-    let numericValue = parseFloat(numberWithoutCommas);
-
-    // Check if the conversion was successful
-    if (isNaN(numericValue)) {
-        return "Invalid input";
+    	if (prevRow.length > 0) {
+            paidbodyclick(prevRow);
+        } else {
+            previousRow = null;
+        }
+        
+        PLockerPriceChange();
+        PLockerDepositeChange();
     }
-
-    return numericValue;
 }
 </script>
 </html>

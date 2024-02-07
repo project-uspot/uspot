@@ -751,8 +751,11 @@
                     
                     function mitemchange() {
                     	if(remembersaleno == ''){
-                    		alert('수강을 선택해주세요');
-                    		return false;
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('수강을 선택해주세요.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
                     	}
                     	
                     	if(rememberstate == '반변경(-)'){
@@ -794,8 +797,11 @@
                     
                     function mitemrefund() {
                     	if(remembersaleno == ''){
-                    		alert('수강을 선택해주세요');
-                    		return false;
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('수강을 선택해주세요.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
                     	}
                     	if(rememberstate == '반변경(-)'){
                     		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
@@ -828,8 +834,11 @@
                     
                     function mitemrestF() {
                     	if(remembersaleno == ''){
-                    		alert('수강을 선택해주세요');
-                    		return false;
+                    		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+                            $('#resultmessage').html('수강을 선택해주세요.');
+                            $('body').append(buttonHTML);
+                            $('#modalButton').click();
+                            return false;
                     	}
                     	if(rememberstate == '반변경(-)'){
                     		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
@@ -862,7 +871,7 @@
                     
                     function mLockerF() {
                     	var url = 'mLockerF.do?MemberID='+$('#memberID').val();
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=750";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=773";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {

@@ -278,9 +278,9 @@ public class VtcLockerController{
 		        LocalDateTime currentTime = LocalDateTime.now();
 
 		        long minutesDifference = ChronoUnit.MINUTES.between(clickTime, currentTime);
-		        
+		        //System.out.println("지난시간은 : "+minutesDifference);
 		        //10분이 지났을 경우
-		        if(minutesDifference>1) {
+		        if(minutesDifference>10) {
 		        	
 					vtcLockerService.UpdClickTime(Oldtblplocker);
 		        	
