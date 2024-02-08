@@ -1,11 +1,13 @@
 package egovframework.veterans.com.cmm;
 
+import java.net.URLDecoder;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
@@ -718,9 +720,7 @@ public class VtcMemberController {
 			tblItem_02.setUpdDate(finddate);
 			formattedDate = finddate;
 		}
-		
-		
-		
+
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
 		
 		model.addAttribute("lists",selectItemsByFilter);
@@ -732,15 +732,35 @@ public class VtcMemberController {
 	
 	@PostMapping("/mitemfindbyid")
 	@ResponseBody
-	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02)throws Exception{
+	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02, String MemberID, String GroupSaleNo)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
         
 		tblItem_02.setSiteCode(users.getSiteCode());
 		
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
-		
+		if(!Objects.isNull(MemberID)) {
+			list.put("SiteCode",users.getSiteCode());
+			list.put("MemberID",MemberID);
+			list.put("UserPKID",users.getUserPKID());
+			list.put("GroupSaleNo", GroupSaleNo);
+			vtcMemberService.insertFmsc_s01_insert_temp(list);
+		}
 		return list;
+	}
+	
+	@PostMapping("/tempSaleDel")
+	@ResponseBody
+	public void tempSaleDel(String GroupSaleNo)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+        
+		Map<String, Object> setSql = new HashMap<String,Object>();
+		setSql.put("UserPKID",users.getUserPKID());
+		setSql.put("tempSaleNo",GroupSaleNo);
+		vtcMemberService.fmsc_01insertTemp_delete(setSql);
+		
+		//return list;
 	}
 	
 	@PostMapping("/mitemlistChange")
@@ -778,6 +798,22 @@ public class VtcMemberController {
 		return fmsc_s01.getSaleNo();
 	}
 	
+	@ResponseBody
+	@PostMapping("/fmsc_01insert_save")
+	public int  fmsc_01insert_save(fmsc_s01 fmsc_s01) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		fmsc_s01.setSiteCode(users.getSiteCode());
+		fmsc_s01.setUserPKID(users.getUserPKID());
+		fmsc_s01.setAddUserPKID(users.getAddUserPKID());
+		fmsc_s01.setUpdUserPKID(users.getAddUserPKID());
+		
+		vtcMemberService.fmsc_01insert_save(fmsc_s01);
+		
+		return fmsc_s01.getSaleNo();
+	}
+	
+	
 	@GetMapping("/mitemselectF.do")
 	public String mitemselectF(fmsc_s01 fmsc_s01,TblItem_02 tblItem_02,tblpaid tblpaid,Model model,tblCode tblCode,DC dc,tblmember tblmember) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -786,7 +822,7 @@ public class VtcMemberController {
 		
 		tblItem_02.setSiteCode(result.getSiteCode());
 		tblItem_02.setUpdDate(result.getFromDate());
-		tblItem_02.setAddDate(String.valueOf(result.getItemPKID()));
+		tblItem_02.setItemID(result.getItemPKID()+"");
 		
 		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
 		
@@ -958,7 +994,7 @@ public class VtcMemberController {
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
 		model.addAttribute("dclist",dcList);
-		model.addAttribute("itemname",itemname);
+		model.addAttribute("itemname",URLDecoder.decode(itemname, "UTF-8"));
 		model.addAttribute("fmsc_s01", result);
 		model.addAttribute("paidlist",paidlist);
 		model.addAttribute("yearage",yearage);

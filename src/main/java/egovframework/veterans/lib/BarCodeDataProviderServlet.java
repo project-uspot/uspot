@@ -27,13 +27,10 @@ public class BarCodeDataProviderServlet extends HttpServlet {
 	 * */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //String clientId = request.getParameter("clientId"); // 클라이언트 식별자
-    	//String clientId = f.getNullToSpaceStrValue(request.getSession().getAttribute("clientId"));
-    	log.info(test,"provider : clientId_"+f.generateClientId());
-    	request.getSession().removeAttribute("clientId");
-    	
+
         ServletContext context = getServletContext();
         String data = (String) context.getAttribute("data_" + f.generateClientId()); // 클라이언트 식별자를 사용하여 데이터 검색
+        log.info(test,"provider : clientId_"+f.generateClientId()+", data_"+data);
 
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();

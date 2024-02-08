@@ -22,7 +22,7 @@
 											<div class="col-auto">
 												<div class="input-group input-group-sm mb-1">
 													<span class="input-group-text" id="BarCodeSpan">확인번호</span>
-													<input class="form-control" id="BarCode" name="BarCode" type="text" readonly="">
+													<input class="form-control" id="BarCode" name="BarCode" type="text">
 												</div>
 												<div class="input-group input-group-sm mb-1">
 													<span class="input-group-text" id="HalbuSpan">할부개월</span>
@@ -39,29 +39,29 @@
 													<div class="card-body p-0 row">
 														<div class="m-3 mt-0 mb-0 p-1 col">
 															<div class="form-check">
-																<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" checked="checked">
+																<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" disabled="disabled">
 																<label class="form-check-label" for="optPay0">카드결제</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" >
+																<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" checked="checked">
 																<label class="form-check-label" for="optPay1">현금영수증</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2">
+																<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2" disabled="disabled">
 																<label class="form-check-label" for="optPay2">간편결제</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3">
+																<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3" disabled="disabled">
 																<label class="form-check-label" for="optPay3">제로페이</label>
 															</div>
 														</div>
 														<div class="p-1 col">
 															<div class="form-check">
-																<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked" disabled="disabled">
+																<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked">
 																<label class="form-check-label" for="optType0">소비자</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optType1" name="optType" type="radio" value="1" disabled="disabled">
+																<input class="form-check-input" id="optType1" name="optType" type="radio" value="1">
 																<label class="form-check-label" for="optType1">사업자</label>
 															</div>
 														</div>
@@ -103,27 +103,6 @@
 									<div class="card-body">
 										<div id="msg_box">
 										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="card">
-									<div class="card-header">
-										<h4 class="input-group-text" id="ZipCodespan">서명방법</h4>
-										<div class="input-group input-group-sm mb-1">
-											<div class="form-check">
-												<input class="form-check-input" id="optSign0" name="optSign" type="radio" value="0">
-												<label class="form-check-label" for="optSign0">전자서명</label>
-											</div>
-											<div class="form-check">
-												<input class="form-check-input" id="optSign1" name="optSign" type="radio" value="1" checked="checked">
-												<label class="form-check-label" for="optSign1">직접서명</label>
-											</div>
-										</div>
-									</div>
-									<div class="card-body">
-										<h4 class="input-group-text" id="ZipCodespan">전자서명</h4>
-    									<canvas id="signatureCanvas" style="border:1px solid #000;width:100%;height:100%;"></canvas>
 									</div>
 								</div>
 							</div>
@@ -377,6 +356,13 @@ function save(){
 	newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + $("#TID").val() + '</td>');
 	newRow.append('<td class="PKID py-2 align-middle white-space-nowrap" style="display:none">' + $("#paidPKID").val() + '</td>');
 
+	$(opener.document).find("#paidbody .hover-actions-trigger").each(function() {
+		var bgColor = $(this).css("background-color");
+        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+            $(this).remove();
+        }
+    });
+	
 	$(opener.document).find('#paidbody').append(newRow);
 	
 	$(opener.document).find('#GroupSaleNo').val($("#SaleNo").val());

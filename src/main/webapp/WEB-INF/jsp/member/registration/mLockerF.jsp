@@ -587,7 +587,7 @@ function dateChange() {
     formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
     formattedDate.setDate(formattedDate.getDate()-1);
     
-    const formattedDateString = formatDate(formattedDate);
+    const formattedDateString = formatDate(formattedDate,'yMd');
     
     $('#todate').val(formattedDateString);
     

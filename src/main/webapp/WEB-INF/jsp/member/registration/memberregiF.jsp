@@ -781,7 +781,8 @@
                             return false;
                     	}
                     	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
-                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
+                    	
+                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+encodeURIComponent(itemname);
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);

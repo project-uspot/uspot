@@ -36,4 +36,6 @@ public class fmsc_s01toselectitem {
 	private String InType;
 	
 	private String SiteName;
+	
+	private int GroupSaleNo;
 }

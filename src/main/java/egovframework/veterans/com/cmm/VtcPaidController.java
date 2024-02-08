@@ -20,8 +20,11 @@ import egovframework.veterans.com.cmm.service.vo.Expense;
 import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
+import egovframework.veterans.lib.OfflinePayController;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class VtcPaidController {
@@ -281,7 +284,10 @@ public class VtcPaidController {
 	public String tblpaidinsert(tblpaid tblpaid) throws Exception {
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
+		if(users == null){
+			users = new Users();
+		}
+
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("saleDate", tblpaid.getSaleDate());
 	    map.put("outputOrderNo", 0);
@@ -290,7 +296,7 @@ public class VtcPaidController {
 	    tblpaid.setSiteCode(users.getSiteCode());
 	    tblpaid.setAddUserPKID(users.getUserPKID());
 	    tblpaid.setUpdUserPKID(users.getUserPKID());
-	  
+	    //log.debug(tblpaid.toString());
 	    VtcPaidService.tblpaidinsert(tblpaid);
 	    
 	    return "success";

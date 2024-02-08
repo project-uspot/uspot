@@ -21,7 +21,6 @@ function formatNumberWithCommas(amount) {
 }
 
 //금액에 붙은 , 를 지워주는 함수
-
 function removeCommasFromNumber(formattedNumber) {
     // Remove commas from the string
     let numberWithoutCommas = formattedNumber.replace(/,/g, '');
@@ -35,6 +34,35 @@ function removeCommasFromNumber(formattedNumber) {
     }
 
     return numericValue;
+}
+
+//문자열 날짜를 날짜 형식으로 변환
+function formatDate(dateStr,dateFrm) {
+    // 입력된 문자열에서 각 부분을 추출
+    var year = dateStr.substring(0, 4);
+    var month = dateStr.substring(4, 6);
+    var day = dateStr.substring(6, 8);
+
+	switch(dateFrm){
+		case "yMdHms":
+		    var hour = dateStr.substring(8, 10);
+		    var minute = dateStr.substring(10, 12);
+		    var second = dateStr.substring(12, 14);
+
+			// 추출된 부분을 'yyyy-MM-dd HH:mm:ss' 형식으로 조합
+		    return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+		case "yMdHm":
+		    var hour = dateStr.substring(8, 10);
+		    var minute = dateStr.substring(10, 12);
+		    
+			// 추출된 부분을 'yyyy-MM-dd HH:mm:ss' 형식으로 조합
+		    return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+		case "yMd":
+			// 추출된 부분을 'yyyy-MM-dd HH:mm:ss' 형식으로 조합
+		    return year + '-' + month + '-' + day;
+		default:
+			return '';
+	}
 }
 
 //현재날짜를 YYYY-MM-DD 형식으로 반환해주는 함수
@@ -55,12 +83,4 @@ function onlyNumber(input) {
 
     // Update the input value
     input.value = value;
-}
-
-//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
-function formatDate(date) {
-	const yyyy = date.getFullYear();
-	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
-	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
-	return yyyy+'-'+mm+'-'+dd;
 }

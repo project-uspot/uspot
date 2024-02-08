@@ -26,8 +26,8 @@
 					<form action="">
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="inputGroup-sizing-default">카드종류</span>
-							<input class="form-control" id="CardName" name="CardName" type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="readonly">
-							<input id="Maeipsa" name="Maeipsa" type="hidden">
+							<input class="form-control" id="CardName" name="CardName" type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${param.CardName }" readonly="readonly">
+							<input id="Maeipsa" name="Maeipsa" type="hidden" value="${param.Maeipsa }">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="inputGroup-sizing-default">할부개월</span>

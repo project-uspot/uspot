@@ -3,12 +3,55 @@
 <mapper namespace="offlinePay">
 
 	<select id="getCreditCardMenu" parameterType="String" resultType="Map">
+	<![CDATA[
 		SELECT Code, CreditName
 		FROM tblCreditCard
 		WHERE 
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
 		ORDER BY SortOrder ASC
+	]]>
 	</select>
 
+	<insert id="insertElecAssignData" parameterType="Map">
+	<![CDATA[
+	INSERT INTO tblelecassigndata
+		(SiteCode, PayType, AssignType, ResponseCode, Price, ValidDate, Halbu, AssignNo, CardName, Maeipsa, Msg1, Msg2, Msg3, SignPad, AssignTime, IsPos, IsConfirm, MemberID, MemberName, SaleType, FPKID, RegisterID, IsDelete, UpdDate, UpdUserPKID)
+		VALUES(
+		  #{SiteCode}
+		, #{PayType}
+		, #{AssignType}
+		, #{responseCode}
+		, #{Price}
+		, #{ValidDate}
+		, #{Halbu}
+		, #{AssignNo}
+		, #{CardName}
+		, #{CompanyName}
+		, #{msg1}
+		, #{msg2}
+		, #{msg3}
+		, #{SignGubun}
+		, #{SaleDate}
+		, #{IsPos}
+		, #{Isconfirm}
+		, #{MemberID}
+		, #{MemberName}
+		, #{SaleType}
+		, 0
+		, 0
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' )
+		, #{userPKID});
+	
+	]]>
+	</insert>
+	
+	<select id="insertPaidFmsc_s01" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[
+			{call SP_InsertPaidFmsc_S01( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}
+			, #{ValidDate, mode=IN}, #{Halbu, mode=IN}, #{AssignNo, mode=IN}, #{CardName, mode=IN}, #{companyName, mode=IN}, #{msg1, mode=IN}, #{msg2, mode=IN}, #{signGubun, mode=IN}
+			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
+		]]>
+	</select>
 </mapper>
