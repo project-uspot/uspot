@@ -225,4 +225,14 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public void cancelRestFmsc_s01(fmsc_s01 fmsc_s01) throws Exception {
 		vtcMemberDAO.cancelRestFmsc_s01(fmsc_s01);
 	}
+
+	@Override
+	public void insertFmsc_s01_insert_temp(Map<String, Object> list) throws Exception {
+		vtcMemberDAO.insertFmsc_s01_insert_temp(list);
+	}
+
+	@Override
+	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
+		vtcMemberDAO.fmsc_01insertTemp_delete(setSql);		
+	}
 }

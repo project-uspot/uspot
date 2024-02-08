@@ -113,6 +113,7 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void fmsc_01insert(fmsc_s01 fmsc_s01)throws Exception{
 		insert("member.fmsc_01insert",fmsc_s01);
+		update("member.fmsc_01insert_update",fmsc_s01);
 	}
 	
 	public fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception{
@@ -168,5 +169,14 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	
 	public void cancelRestFmsc_s01(fmsc_s01 fmsc_s01)throws Exception{
 		update("member.cancelRestFmsc_s01",fmsc_s01);
+	}
+
+	public void insertFmsc_s01_insert_temp(Map<String, Object> list) {
+		insert("member.insertFmsc_s01_insert_temp",list);
+		update("member.fmsc_01insertTemp_update",list);
+	}
+
+	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
+		update("member.fmsc_01insertTemp_delete",setSql);
 	}
 }

@@ -89,4 +89,8 @@ public interface VtcMemberService {
 	List<fmsc_s03> fmsc_s03BySaleNo(fmsc_s03 fmsc_s03)throws Exception;
 	
 	void cancelRestFmsc_s01(fmsc_s01 fmsc_s01)throws Exception;
+
+	void insertFmsc_s01_insert_temp(Map<String, Object> list) throws Exception;
+
+	void fmsc_01insertTemp_delete(Map<String, Object> setSql);
 }

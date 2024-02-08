@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp">
@@ -8,7 +8,7 @@
 <body>
 	<div class="card ">
 		<div class="card-header ">
-			<h1>결제</h1>
+			<h1>결제취소</h1>
 		</div>
 		<div class="card-body pb-3">
 			<div class="col-12 col-xxl-8">
@@ -21,12 +21,13 @@
 										<div class="row">
 											<div class="col-auto">
 												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="BarCodeSpan">확인번호</span>
-													<input class="form-control" id="BarCode" name="BarCode" type="text" readonly="">
+													<span class="input-group-text" id="OIDSpan">확인번호</span>
+													<input class="form-control" id="OID" name="OID" type="text" value="${param.OID }" readonly="readonly">
 												</div>
 												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="HalbuSpan">할부개월</span>
-													<input class="form-control" id="Halbu" name="Halbu" type="text" readonly="" maxlength="2">
+													<span class="input-group-text" id="SaleTimeSpan">결제일시</span>
+													<input class="form-control" id="SaleTime" name="SaleTime" type="text" value="${param.SaleTime }" readonly="readonly">
+													<input class="form-control" id="AssignNo" name="AssignNo" type="hidden" value="${param.AssignNo }">
 												</div>
 												<div class="input-group input-group-sm mb-1">
 													<span class="input-group-text" id="PriceSpan">결제금액</span>
@@ -39,19 +40,19 @@
 													<div class="card-body p-0 row">
 														<div class="m-3 mt-0 mb-0 p-1 col">
 															<div class="form-check">
-																<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" checked="checked">
+																<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" <c:if test="${param.paidCategory eq '신용카드' }"> checked="checked"</c:if> readonly="readonly">
 																<label class="form-check-label" for="optPay0">카드결제</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" >
+																<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" <c:if test="${param.paidCategory eq '현금영수증' }"> checked="checked"</c:if> readonly="readonly">
 																<label class="form-check-label" for="optPay1">현금영수증</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2">
+																<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2" <c:if test="${param.paidCategory eq '간편결제' }"> checked="checked"</c:if> readonly="readonly">
 																<label class="form-check-label" for="optPay2">간편결제</label>
 															</div>
 															<div class="form-check">
-																<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3">
+																<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3" <c:if test="${param.paidCategory eq '제로페이' }"> checked="checked"</c:if> readonly="readonly">
 																<label class="form-check-label" for="optPay3">제로페이</label>
 															</div>
 														</div>
@@ -151,7 +152,7 @@
 							<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
 						</div>
 						<div class="col-auto position-absolute" style="margin-left:870px;">
-							<button class="btn btn-phoenix-primary" type="button" onclick="paid()">결제하기</button>
+							<button class="btn btn-phoenix-primary" type="button" onclick="paid()">결제취소</button>
 						</div>
 					</div>
 				</div>
@@ -339,7 +340,7 @@ function manualPay(){
 	}else if(checkedRadio == '3'){
 		urlParam = "zero";
 	}
-	var url = "${pageContext.request.contextPath}/"+urlParam+"/manualReg.do?payprice=" + $("#Price").val();
+	var url = "${pageContext.request.contextPath}/"+urlParam+"/manualRegCancel.do?payprice=" + $("#Price").val()+"&Maeipsa=${param.Maeipsa}&CardName=${param.CardName}";
     var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=700";
     if (myPopup === undefined || myPopup.closed) {
         myPopup = window.open(url, "manualReg", windowFeatures);
@@ -374,19 +375,15 @@ function save(){
 
 	$(opener.document).find('#paidbody').append(newRow);
 
-	<%-- $(opener.document).find('#itemtbody tr').each(function() {
-		$(this).find('.sort').attr('id','Y');
-	}); --%>
-
 	opener.totalchange();
 	self.close();
 }
 
-<%-- 결제 --%>
+<%-- 결제취소 --%>
 function paid(){
-	if($("#Price").val() == "" || $("#Price").val() == "0" ){
+	if($("#Price").val() == "" || $("#Price").val() <= "0" ){
 		$("#verticallyCenteredModalLabel").html(" 오 류 ");
-		$('#resultmessage').html('결제금액을 확인해주세요.');
+		$('#resultmessage').html('취소금액을 확인해주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -410,77 +407,58 @@ function paid(){
 	if(checkedRadio == '0'){
 		urlParam = "card";
 	}else if(checkedRadio == '1'){
-		/* if($("#BarCode").val() == ""){
-			$("#verticallyCenteredModalLabel").html(" 오 류 ");
-			$('#resultmessage').html('확인번호를 입력해주세요.');
-		  	$('.modal-footer').empty();
-		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		  	$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		    return false;
-		} */
 		urlParam = "cash";
 	}else if(checkedRadio == '2'){
-		if($("#BarCode").val() == ""){
-			$("#verticallyCenteredModalLabel").html(" 오 류 ");
-			$('#resultmessage').html('확인번호를 입력해주세요.');
-		  	$('.modal-footer').empty();
-		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		  	$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		    return false;
-		}
 		urlParam = "simple";
 	}else if(checkedRadio == '3'){
-		if($("#BarCode").val() == ""){
-			$("#verticallyCenteredModalLabel").html(" 오 류 ");
-			$('#resultmessage').html('확인번호를 입력해주세요.');
-		  	$('.modal-footer').empty();
-		  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		  	$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		    return false;
-		}
 		urlParam = "zero";
 	}
 
 	$.ajax({
 		type : 'POST',
-		url : '${pageContext.request.contextPath}/'+urlParam+'/paidReg',
+		url : '${pageContext.request.contextPath}/'+urlParam+'/paidRegCancel',
 		async : false,
 		dataType : 'json',
 		data: {
-			BarCode : $("#BarCode").val(),
-			Halbu : $("#Halbu").val(),
+			OID : $("#OID").val(),
+			SaleTime : $("#SaleTime").val(),
+			AssignNo : $("#AssignNo").val(),
 			Price : parseInt(removeCommasFromNumber($("#Price").val())),
 			optPay : document.querySelector('input[name="optPay"]:checked').value,
 			optType : document.querySelector('input[name="optType"]:checked').value,
 			MemberID : $("#MemberID").val(),
-			saleType : "${uparam}",
-			tempSaleNo : "${param.tempSaleNo}",
+			saleType : "${uparam}"
 		},
 		success: function(data){
 			console.log(data);
 			if(typeof data === "string"){
 				data = JSON.parse(data);
 			}
-			$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
-			$("#PayType").val(data.PayType);
-			$("#Price").val(data.Price);
-			$("#AssignType").val(data.AssignType);
-			$("#Maeipsa").val(data.CompanyName);
-			$("#CardName").val(data.CardName);
-			$("#AssignNo").val(data.AssignNo);
-			$("#Pos").val("POS");
-			$("#SignPad").val(data.SignGubun);
-			$("#Halbu").val(data.Halbu);
-			$("#SaleTime").val(data.SaleDate);
-			$("#OID").val(data.OID);
-			$("#TID").val(data.TID);
-			save();
+			if(data.responseCode == "0000"){
+				$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
+				$("#PayType").val(data.PayType);
+				$("#Price").val(data.Price);
+				$("#AssignType").val(data.AssignType);
+				$("#Maeipsa").val(data.CompanyName);
+				$("#CardName").val(data.CardName);
+				$("#AssignNo").val(data.AssignNo);
+				$("#Pos").val("POS");
+				$("#SignPad").val(data.SignGubun);
+				$("#Halbu").val(data.Halbu);
+				$("#SaleTime").val(data.SaleDate);
+				$("#OID").val(data.OID);
+				$("#TID").val(data.TID);
+				save();	
+			}else{
+				$("#verticallyCenteredModalLabel").html("거래실패");
+				$('#resultmessage').html(data.msg2);
+			  	$('.modal-footer').empty();
+			  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			  	$('.modal-footer').append(cancelbutton);
+			    $('#modalButton').click();
+			    modalcheck = true;
+			    return false;
+			}
 		},
 		error: function(xhr, status, error){
 			$("#verticallyCenteredModalLabel").html(" 오 류 ");

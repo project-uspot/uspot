@@ -498,7 +498,17 @@ $('body').append(buttonHTML);
 
 //어른 어린이 등을 저장하는 변수 생성
 var codelist;
+var myPopup;
 
+$(document).ready(function() {
+	$('#paidbody').on('click', 'tr', function() {
+		paidbodyclick(this);
+	});
+
+	$('#itemtbody').on('click', 'tr', function() {
+		itemtbodyclick(this);
+	});
+});
 	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {

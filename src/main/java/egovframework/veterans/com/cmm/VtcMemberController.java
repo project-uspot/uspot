@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
@@ -712,9 +713,7 @@ public class VtcMemberController {
 			tblItem_02.setUpdDate(finddate);
 			formattedDate = finddate;
 		}
-		
-		
-		
+
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
 		
 		model.addAttribute("lists",selectItemsByFilter);
@@ -726,15 +725,35 @@ public class VtcMemberController {
 	
 	@PostMapping("/mitemfindbyid")
 	@ResponseBody
-	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02)throws Exception{
+	public Map<String, Object>mitemfindbyid(TblItem_02 tblItem_02, String MemberID, String GroupSaleNo)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
         
 		tblItem_02.setSiteCode(users.getSiteCode());
 		
 		Map<String, Object>list = vtcMemberService.mitemfindbyid(tblItem_02);
-		
+		if(!Objects.isNull(MemberID)) {
+			list.put("SiteCode",users.getSiteCode());
+			list.put("MemberID",MemberID);
+			list.put("UserPKID",users.getUserPKID());
+			list.put("GroupSaleNo", GroupSaleNo);
+			vtcMemberService.insertFmsc_s01_insert_temp(list);
+		}
 		return list;
+	}
+	
+	@PostMapping("/tempSaleDel")
+	@ResponseBody
+	public void tempSaleDel(String GroupSaleNo)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+        
+		Map<String, Object> setSql = new HashMap<String,Object>();
+		setSql.put("UserPKID",users.getUserPKID());
+		setSql.put("tempSaleNo",GroupSaleNo);
+		vtcMemberService.fmsc_01insertTemp_delete(setSql);
+		
+		//return list;
 	}
 	
 	@PostMapping("/mitemlistChange")
@@ -780,7 +799,7 @@ public class VtcMemberController {
 		
 		tblItem_02.setSiteCode(result.getSiteCode());
 		tblItem_02.setUpdDate(result.getFromDate());
-		tblItem_02.setAddDate(String.valueOf(result.getItemPKID()));
+		tblItem_02.setItemID(result.getItemPKID()+"");
 		
 		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
 		

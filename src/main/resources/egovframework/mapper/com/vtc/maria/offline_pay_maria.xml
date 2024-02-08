@@ -46,4 +46,12 @@
 	
 	]]>
 	</insert>
+	
+	<insert id="insertPaidFmsc_s01" parameterType="Map">
+		<![CDATA[
+			call insertPaidFmsc_s01 #{SiteCode}, #{PayType}, #{AssignType}, #{responseCode}, #{Price}, #{CardNo}
+			, #{ValidDate}, #{Halbu}, #{AssignNo}, #{CardName}, #{companyName}, #{msg1}, #{msg2}, #{signGubun}
+			, #{SaleDate}, #{IsPos}, #{MemberID}, #{SaleType}, #{userPKID}, #{OID}, #{TID}, #{tempSaleNo} 
+		]]>
+	</insert>
 </mapper>

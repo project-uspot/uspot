@@ -33,4 +33,7 @@ public class TblItem_02 implements Serializable {
 	private int GroupID;
 	
 	private String GroupName;
+
+	private String ItemID;
+	
 }

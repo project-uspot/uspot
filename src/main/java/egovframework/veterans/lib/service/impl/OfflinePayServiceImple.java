@@ -24,4 +24,19 @@ public class OfflinePayServiceImple implements OfflinePayService {
 		offlinePayDAO.insertElecAssignData(sqlMap);
 	}
 
+	@Override
+	public void insertPaidFmsc_s01(Map<String, Object> sqlMap) {
+		offlinePayDAO.insertPaidFmsc_s01(sqlMap);
+	}
+
+	@Override
+	public void insertPaidLocker(Map<String, Object> sqlMap) {
+		offlinePayDAO.insertPaidLocker(sqlMap);
+	}
+
+	@Override
+	public void insertPaidRent(Map<String, Object> sqlMap) {
+		offlinePayDAO.insertPaidRent(sqlMap);
+	}
+
 }
