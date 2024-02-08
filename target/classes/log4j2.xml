@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
 	<properties>
+		<property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | %-30.30C::%-30.30M:%-5.5L | %msg%n</property>
+		<property name="defaultPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | %logger{36} - %msg%n</property>
 		<Property name="FILENAME">/home/uspot/logs/</Property>
 	</properties>
     <Appenders>
@@ -12,6 +14,19 @@
 				fileName   ="${FILENAME}/Test.log"
 				filePattern="${FILENAME}/daily/%d{yyyyMM}/Test_%d{yyyyMMddHH}.log" >
 			<MarkerFilter marker="Test" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout>
+				<pattern>${defaultPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- interval(default 1)이므로 1초 간격으로 rolling 수행 --> 
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		        
+   		<RollingFile name="OfflinePay" 
+				fileName   ="${FILENAME}/OfflinePay.log"
+				filePattern="${FILENAME}/daily/%d{yyyyMM}/OfflinePay_%d{yyyyMMddHH}.log" >
+			<MarkerFilter marker="OfflinePay" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout>
 				<pattern>${defaultPattern}</pattern>
 			</PatternLayout>
@@ -40,6 +55,7 @@
 	    
 	    <Logger name="egovframework.veterans" level="DEBUG" additivity="true">
 			<AppenderRef ref="Test" />
+			<AppenderRef ref="OfflinePay" />
 		</Logger>
 		
         <Root level="DEBUG">

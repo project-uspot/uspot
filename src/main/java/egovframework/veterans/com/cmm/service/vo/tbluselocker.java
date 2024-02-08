@@ -29,31 +29,31 @@ public class tbluselocker {
 	private int RegMonth;
 
 
-	private String Deposite;
+	private int Deposite;
 
 
-	private String UsePrice;
+	private int UsePrice;
 
 
-	private String TotalPrice;
+	private int TotalPrice;
 
 
 	private int DCID;
 
 
-	private String DiscountRate;
+	private int DiscountRate;
 
 
-	private String DCPrice;
+	private int DCPrice;
 
 
-	private String RealPrice;
+	private int RealPrice;
 
 
-	private String PaidPrice;
+	private int PaidPrice;
 
 
-	private String Misu;
+	private int Misu;
 
 
 	private int SaleNo;
@@ -65,22 +65,16 @@ public class tbluselocker {
 	private String IsReturn;
 
 
-	private String WiyakPrice;
+	private int WiyakPrice;
 
 
-	private String GongjePrice;
+	private int Use_Price;
+
+
+	private int GongjePrice;
 
 
 	private int IsFlag;
-
-
-	private String InType;
-
-
-	private int BeforePKID;
-
-
-	private String ReEndFlag;
 
 
 	private String Note;
@@ -101,8 +95,5 @@ public class tbluselocker {
 	private int UpdUserPKID;
 
 
-	private int tblState;
-
-
-
+	private String afterTodate;
 }

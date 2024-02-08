@@ -7,6 +7,7 @@
 		where 
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
+		order by SortOrder
 	</select>
 	<select id="selectSamulhamInfodetail" parameterType="int" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
 		select *from tblplockergroup 
@@ -144,11 +145,75 @@ END AS IsFlagText,
 	and tblUseLocker.IsDelete = 'N'
 	order by IsFlag,RegDate desc
 </select>
-<select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="egovframework.veterans.com.cmm.service.vo.tblplocker">
-	select * from tblplocker
+<select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="map">
+	select * from tblplocker a
+	left join tblmember b on a.MemberID = b.MemberID
 	where 
 		PLockerGroupID = #{PLockerGroupID}
-	and SiteCode = #{SiteCode}
-	and IsDelete = 'N'
+	and a.SiteCode = #{SiteCode}
+	and a.IsDelete = 'N'
+	order by SortOrder
 </select>
+<update id="UpdClickTime" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+	update tblplocker set
+	<choose>
+		<when test="ClickUserPKID != 0">
+			ClickUserPKID = #{ClickUserPKID},
+			ClickTime = now(),
+		</when>
+		<otherwise>
+			ClickUserPKID = null,
+			ClickTime = null,
+		</otherwise>
+	</choose>
+	UpdUserPKID = #{UpdUserPKID},
+	UpdDate = now()
+where 
+	PLockerID = #{PLockerID} 
+</update>
+<select id="PLockerJoinGroupByID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker" resultType="map">
+	select * from tblplocker a
+	left join tblplockergroup b on a.PLockerGroupID = b.PLockerGroupID 
+	and a.SiteCode = b.SiteCode 
+	where 
+		a.SiteCode = #{SiteCode}
+	and PLockerID = #{PLockerID}
+	and a.IsDelete = 'N'
+</select>
+<select id="ClickTimeByID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker" resultType="String">
+	select ClickTime from tblplocker 
+	where 
+		PLockerID = #{PLockerID}
+	and IsDelete  = 'N'
+	and SiteCode = #{SiteCode}
+</select>
+<insert id="useLockerInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker" useGeneratedKeys="true" keyProperty="PKID">
+	INSERT INTO tbluselocker
+	(SiteCode, LockerID, MemberID, RegDate, 
+	FromDate, ToDate, RegMonth, Deposite, 
+	UsePrice, TotalPrice, RealPrice, PaidPrice, 
+	Misu, IsReturn, IsFlag, Note, IsDelete, 
+	AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+	values
+	(#{SiteCode},#{LockerID},#{MemberID},#{RegDate}, 
+	#{FromDate},#{ToDate},#{RegMonth},#{Deposite}, 
+	#{UsePrice},#{TotalPrice},#{RealPrice},#{PaidPrice}, 
+	#{Misu},#{IsReturn},#{IsFlag},#{Note},#{IsDelete}, 
+	now(),#{AddUserPKID},now(),#{UpdUserPKID})
+</insert>
+<update id="UpdPLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+UPDATE tblplocker SET 
+	State=#{State}, 
+	lSaleNo=#{lSaleNo}, 
+	FromDate=#{FromDate}, 
+	ToDate=#{ToDate}, 
+	RegMonth=#{RegMonth}, 
+	MemberID=#{MemberID}, 
+	UpdDate=now(), 
+	UpdUserPKID=#{UpdUserPKID}, 
+	updchk='up_update', 
+	ClickUserPKID=NULL, 
+	ClickTime=NULL
+WHERE PLockerID=#{PLockerID} AND SiteCode=#{SiteCode} And IsDelete = 'N'
+</update>
 </mapper>

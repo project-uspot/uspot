@@ -422,7 +422,7 @@ function handleKeyPress(event) {
 		finditem();
  	}
 }
-	
+var myPopup;	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {

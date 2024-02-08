@@ -34,7 +34,7 @@ public class tblmember {
 
 	private String ChkDC;
 
-	private String RegDate;
+	private String regdate;
 
 	private String ZipCode;
 

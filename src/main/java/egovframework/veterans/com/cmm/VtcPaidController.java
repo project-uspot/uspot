@@ -1,13 +1,13 @@
 package egovframework.veterans.com.cmm;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.hsqldb.rights.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -281,8 +281,8 @@ public class VtcPaidController {
 	
 	@ResponseBody
 	@PostMapping("/tblpaidinsert")
-	public void tblpaidinsert(tblpaid tblpaid) throws Exception {
-
+	public String tblpaidinsert(tblpaid tblpaid) throws Exception {
+		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			users = new Users();
@@ -298,6 +298,7 @@ public class VtcPaidController {
 	    tblpaid.setUpdUserPKID(users.getUserPKID());
 	    //log.debug(tblpaid.toString());
 	    VtcPaidService.tblpaidinsert(tblpaid);
-
+	    
+	    return "success";
 	}
 }

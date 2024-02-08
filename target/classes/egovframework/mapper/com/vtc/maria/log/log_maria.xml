@@ -5,7 +5,7 @@
 	<![CDATA[
 		insert into log_recode(SiteCode, LogDate, UserPKID, Frm_Code, Event_CD, Part_CD, Detail_CD, Result_CD
 							, Code1, Code2, Code3, Code4, Code5, Note, File_Name, MemberID, SaleNo, OrderID, IP, RegType, URL)
-		values(#{SiteCode}, now(), #{UserPKID}, #{Frm_Code}, #{Event_CD}, #{Part_CD}, #{Detail_CD}, #{Result_CD}
+		values(#{SiteCode}, date_format(NOW(), '%Y-%m-%d %T' ), #{UserPKID}, #{Frm_Code}, #{Event_CD}, #{Part_CD}, #{Detail_CD}, #{Result_CD}
 			, #{Code1}, #{Code2}, #{Code3}, #{Code4}, #{Code5}, #{Note}, #{File_Name}, #{MemberID}, #{SaleNo}, #{OrderID}, #{IP}, #{RegType}, #{URL})
 	]]>
 	</insert>

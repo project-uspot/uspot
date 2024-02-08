@@ -49,30 +49,35 @@
 			MemberID = 
 		(select max(MemberID) from tblmember where IsDelete = 'N')
 	</select>
+
 	<select id="fmsc_s01toselectitem" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem">
 		select SaleNo,
- CASE
-        WHEN fmsc_s01.State = 'A' THEN '현재원'
-        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
-        WHEN fmsc_s01.State = 'B' THEN '만기'
-        WHEN fmsc_s01.State = 'C' THEN '휴회중'
-        WHEN fmsc_s01.State = 'D' THEN '휴회'
-        WHEN fmsc_s01.State = 'E' THEN '환불대기'
-        WHEN fmsc_s01.State = 'F0' THEN '환불'
-        WHEN fmsc_s01.State = 'G' THEN '현재원'
-        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
-        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
-        WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
-        ELSE ''
-    END AS State
-,SaleDate,selectitem.GroupName,selectitem.SubGroupName,selectitem.WeekName,selectitem.FromTime,selectitem.ToTime,
-	selectitem.LevelName ,fmsc_s01.RFromDate,fmsc_s01.RToDate,fmsc_s01.RegMonth ,CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice,COALESCE(fmsc_s01.Note, ' ') AS Note,fmsc_s01.InType 
-from fmsc_s01
+ 			CASE
+		        WHEN fmsc_s01.State = 'A' THEN '현재원'
+		        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'B' THEN '만기'
+		        WHEN fmsc_s01.State = 'C' THEN '휴회중'
+		        WHEN fmsc_s01.State = 'D' THEN '휴회'
+		        WHEN fmsc_s01.State = 'E' THEN '환불대기'
+		        WHEN fmsc_s01.State = 'F0' THEN '환불'
+		        WHEN fmsc_s01.State = 'G' THEN '현재원'
+		        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
+		        WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
+		        ELSE ''
+		    END AS State,
+			SaleDate, selectitem.GroupName, selectitem.SubGroupName, selectitem.WeekName, selectitem.FromTime, selectitem.ToTime,
+			selectitem.LevelName, fmsc_s01.RFromDate, fmsc_s01.RToDate, fmsc_s01.RegMonth,
+			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice, COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType ,
+			fmsc_s01.Group_SaleNo as GroupSaleNo
+		from fmsc_s01
 		left join selectitem 
 		on fmsc_s01.ItemPKID = selectitem.ItemID
 		where CustCode = #{CustCode}
+		and fmsc_s01.isDelete = 'N'
 		order by fmsc_s01.State ,SaleDate desc
 	</select>
+
 	<select id="membertblmembertalk" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmembertalk">
 		select UserName,TalkDate ,TalkText,
 		CASE
@@ -209,7 +214,7 @@ from fmsc_s01
         WHEN tblmember.Type = 11 THEN '어린이'
         WHEN tblmember.Type = 40 THEN '경로'
         END AS TypeText,
-         CASE
+        CASE
         WHEN tblmember.IF_Flag = 'Y' THEN '구민'
         WHEN tblmember.IF_Flag = 'N' THEN '구외'
         ELSE ''
@@ -218,7 +223,7 @@ from fmsc_s01
         WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
         WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
         ELSE '인증안됨'
-         END AS ipinNumbertext
+        END AS ipinNumbertext
    		from tblmember
    		where
 		MemberID = #{MemberID}
@@ -233,7 +238,7 @@ from fmsc_s01
 		<if test="EmgPhone != null">
 			EmgPhone,
 		</if>
-		MLevel,type,
+		MLevel,regdate,type,
 		DCDS,WebID,BarCode,ZipCode,SCC_CardNo,Address,SubAddress,
 		<if test="IFFlag != null">
 			IF_Flag,
@@ -248,7 +253,7 @@ from fmsc_s01
 		<if test="EmgPhone != null">
 			#{EmgPhone},
 		</if>
-		#{MLevel},#{type},
+		#{MLevel},#{regdate},#{type},
 		#{DCDS},#{WebID},#{BarCode},#{ZipCode},#{SCCCardNo},#{Address},#{SubAddress},
 		<if test="IFFlag != null">
 			#{IFFlag},
@@ -412,24 +417,27 @@ from fmsc_s01
 		where
 			PKID = #{PKID}
 	</update>
+	
 	<select id="selectItemsByFilter" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="map">
-	    <![CDATA[
-	    CALL up_SelectItemByFilter_New(
-	        #{siteCode},#{UpdDate},
-	        CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N'' AND ]]>
-	        <choose>
-	        	<when test="SubGroupName != null">
-	        		<![CDATA[tblItem_02.SubGroupName LIKE CONCAT(''%'', '#{SubGroupName}', ''%'')]]>
-	        	</when>
-	        	<when test="GroupName != null"> 
-	        		<![CDATA[tblitem.ItemCode LIKE CONCAT(''%'', '#{GroupName}', ''%'')]]>
-	        	</when>
-	        	<when test="AddDate != null"> 
-	        		<![CDATA[tblItem.ItemID = '#{AddDate}']]>
-	        	</when>
-	        </choose> 
-	        <![CDATA[ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
+		<![CDATA[
+			CALL up_SelectItemByFilter_New(
+				#{siteCode},#{UpdDate},
+				 CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N''',
+		]]>
+		<choose>
+			<when test="SubGroupName != null">
+				<![CDATA[' AND tblItem_02.SubGroupName LIKE CONCAT(''%'', '#{SubGroupName}', ''%'')',]]>
+			</when>
+			<when test="GroupName != null"> 
+				<![CDATA[' AND tblitem.ItemCode LIKE CONCAT(''%'', '#{GroupName}', ''%'')',]]>
+			</when>
+			<when test="ItemID != null">
+				<![CDATA[' AND tblItem.ItemID = '#{ItemID}'',]]>
+			</when>
+		</choose> 
+		<![CDATA[' ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
 	</select>
+	
 	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
     	SELECT LAST_INSERT_ID()
@@ -455,8 +463,44 @@ from fmsc_s01
 			#{prevInType},#{CurState},#{RegType},#{ReEndFlag}, 
 			#{BeforeSaleNo},#{IFFlag},#{IFDateTime},#{IsConfirm}, 
 			#{UseDayCnt},#{TotDayCnt},'N',now(), 
-			#{AddUserPKID},now(),#{UpdUserPKID},#{IsPackage},#{PaidPrice})
+			#{AddUserPKID},now(),#{UpdUserPKID},#{IsPackage},#{PaidPrice});
 	</insert>
+	<update id="fmsc_01insert_update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		<choose>
+			<when test="GroupSaleNo != 0">
+				update fmsc_s01 set Group_SaleNo = #{GroupSaleNo}
+				where SaleNo = LAST_INSERT_ID()
+			</when>
+			<otherwise>
+				update fmsc_s01 set Group_SaleNo = SaleNo
+				where SaleNo = LAST_INSERT_ID()
+			</otherwise>
+		</choose>
+	</update>
+	
+	<update id="fmsc_01insert_save" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		SaleDate = #{SaleDate},
+		ItemPeriod = #{ItemPeriod},
+		FromDate = #{FromDate},
+		ToDate = #{ToDate},
+		RFromDate = #{RFromDate},
+		RToDate = #{RToDate},
+		RegMonth = #{RegMonth},
+		DCID = #{DCID},
+		DiscountRate = #{DiscountRate},
+		DCPrice = #{DCPrice},
+		ItemPrice = #{ItemPrice},
+		RealPrice = #{RealPrice},
+		Misu = #{Misu},
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			Group_SaleNo = #{GroupSaleNo}
+		and isDelete = 'N'
+		and ItemPKID = #{ItemPKID}
+	</update>
+
 	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
 		select * from fmsc_s01  
 		where
@@ -623,5 +667,49 @@ from fmsc_s01
 	    end
 		where
 			SaleNo = #{SaleNo}
+	</update>
+	
+	<insert id="insertFmsc_s01_insert_temp" parameterType="Map">
+	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+	<![CDATA[
+		insert into fmsc_s01_insert_temp(SiteCode, SaleDate, CustCode, FromDate, ToDate, RegMonth, ItemPrice, Note, ItemPKID, CurState, RegType, ReEndFlag, Before_SaleNo, IsConfirm, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(#{SiteCode}
+		, date_format(NOW(), '%Y-%m-%d' )
+		, #{MemberID}
+		, left(#{Jungsi3},10)
+		, right(#{Jungsi3},10)
+		, #{itemmonth}
+		, #{DefPrice}
+		, NULL
+		, #{ItemID}
+		, 1
+		, NULL
+		, NULL
+		, NULL
+		, NULL
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' ), #{UserPKID}
+		, NULL, 0);
+	]]>
+	</insert>
+	<update id="fmsc_01insertTemp_update" parameterType="Map">
+		<choose>
+			<when test="GroupSaleNo != null and GroupSaleNo != 0">
+				update fmsc_s01_insert_temp set GroupSaleNo = #{GroupSaleNo}
+				where SaleNo = LAST_INSERT_ID()
+			</when>
+			<otherwise>
+				update fmsc_s01_insert_temp set GroupSaleNo = SaleNo
+				where SaleNo = LAST_INSERT_ID()
+			</otherwise>
+		</choose>
+	</update>
+	<update id="fmsc_01insertTemp_delete" parameterType="Map">
+		<![CDATA[
+			update fmsc_s01_insert_temp set isDelete = 'Y', UpdUserPKID = #{UserPKID}, UpdDate = date_format(NOW(), '%Y-%m-%d %T' )
+			where SaleNo = #{tempSaleNo}
+		]]>
 	</update>
 </mapper>

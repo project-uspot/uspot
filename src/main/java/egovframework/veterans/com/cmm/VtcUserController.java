@@ -411,6 +411,8 @@ public class VtcUserController{
 	@GetMapping("/logout.do")
 	public String logout(SessionStatus status,Model model) {
 		status.setComplete();
+		session.removeAttribute("loginuserinfo");
+		session.removeAttribute("sessiontblAuthuserGroups");
 		
 		model.addAttribute("msg", "로그아웃 되었습니다.");
 		model.addAttribute("script", "redirect");
