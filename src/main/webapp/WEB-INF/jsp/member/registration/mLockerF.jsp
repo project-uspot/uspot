@@ -363,7 +363,7 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()">결제취소</button>
 					</div>
 					<div class="col-auto ms-5">
 						<button class="btn btn-soft-info" type="button" onclick="deleteRow()">행삭제</button>
@@ -533,7 +533,7 @@ function StartBooking(plockerid) {
         	PrevPLockerID : PrevPLockerID
         },
         success: function(data) {
-        	if(data == null){
+        	if(data.fail == 'fail'){
         		alert("세션이 만료되었습니다.다시 로그인해주세요.");
         		window.opener.location.reload();
                 window.close();	
@@ -566,7 +566,6 @@ function StartBooking(plockerid) {
          console.log("Error: " + error);
         }
 	});
-	
 }
 
 //강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
@@ -676,8 +675,6 @@ function totalChange() {
 	$('#payprice').val(formatNumberWithCommas(misuPLockerPrice));
 }
 
-
-
 function save() {
 	if($('#itemname').val()==''){
 		$('#resultmessage').html('변경 할 강좌를 선택해주세요.');
@@ -723,10 +720,11 @@ function payCash() {
 	    modalcheck = true;
 	    return false;
 	}
+	
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#payprice').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -737,13 +735,76 @@ function payCash() {
 	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 	
-	// Get the tbody element with ID 'paidbody' and append the new row
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	PLockerPriceChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "useLockerInsert",
+        dataType : 'json',
+        data: { 
+        	LockerID : PrevPLockerID,
+        	PLockerNo : $('#PLockerNo').val(),
+        	MemberID : $('#memberid').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			IsReturn : 'N',
+			IsFlag : 0,
+			Note : $('#note').val(),
+			IsDelete : 'N'
+        },
+        success: function(data) {
+        	if(data == 0){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();	
+        	}else if(data == -1){
+        		alert("이미 등록된 사물함입니다.");
+                window.location.reload();
+        	}else if(data == -2){
+        		alert("이미 등록중인 사물함입니다.");
+                window.location.reload();
+        	}else{
+        		$.ajax({
+        	        type: "POST", 
+        	        url: "tblpaidinsert", 
+        	        dataType : 'json',
+        	        data: { 
+        	        	FPKID : data,
+        	        	SaleDate : $('#regdate').val(),
+        	        	RealSaleDate : $('#paidbody tr').eq(iteration).find('.paiddate').text(),
+        	        	SaleType : '사물함',
+        	        	PayType : $('#paidbody tr').eq(iteration).find('.paidcategory').text(),
+        	        	Price : removeCommasFromNumber($('#paidbody tr').eq(iteration).find('.paidprice').text()),
+        	        	PaidGroupSaleNo : data
+        	        },
+        	        success: function(success) {	
+        	       	 	window.location.href = ''
+        	        },
+        	        error: function(xhr, status, error) {
+        	       	 console.log("Status: " + status);
+        	         console.log("Error: " + error);
+        	        }
+        		});
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
-//현금 결제
+
 function payDeposite() {
 	if($('#misuPLockerDeposite').val() == 0 || $('#misuPLockerDeposite').val() == ''){
 	  	$('#resultmessage').html('받을 보증금이 0원입니다.<br>확인 후 결제해 주세요.');
@@ -757,7 +818,7 @@ function payDeposite() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "Deposite"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#totalPLockerDeposite').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -768,7 +829,6 @@ function payDeposite() {
 	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 	
-	// Get the tbody element with ID 'paidbody' and append the new row
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	PLockerDepositeChange();
@@ -810,21 +870,13 @@ function deleteRow() {
 
 function payCancel() {
     if (previousRow !== null) {
-    	
-    	var rowToDelete = $(previousRow).closest('tr');
-        
-    	var prevRow = rowToDelete.prev('tr');
-    	
-    	rowToDelete.remove();
+        // Find the row with the class 'paidprice' within the previousRow
+        var paidPriceText = $(previousRow).find('.paidprice').text();
 
-    	if (prevRow.length > 0) {
-            paidbodyclick(prevRow);
-        } else {
-            previousRow = null;
-        }
-        
-        PLockerPriceChange();
-        PLockerDepositeChange();
+        // Display the text in an alert window
+        alert('Paid Price: ' + paidPriceText);
+    } else {
+        alert('No row selected.');
     }
 }
 </script>

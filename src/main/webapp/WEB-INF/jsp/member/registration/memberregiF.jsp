@@ -643,7 +643,7 @@
                     <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(X)</button>
                     <button class="btn btn-soft-warning" type="button" onclick="mitemrestF()"><span data-feather="user-x"></span>&nbsp;휴회(shift+C)</button>
                     <button class="btn btn-soft-info" type="button" onclick="mLockerF()"><span data-feather="archive"></span>&nbsp;사물함 임대(shift+V)</button>
-                    <button class="btn btn-soft-primary" type="button"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
+                    <button class="btn btn-soft-primary" type="button" onclick="etcPaidF()"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
                     <script type="text/javascript">
                     var myPopup;
                     
@@ -884,6 +884,10 @@
                       	});
 					}
                     
+                    function etcPaidF() {
+						
+					}
+                    
                     function openpop(url,windowFeatures) {
                     	window.open(url, "_blank", windowFeatures);
 					}
@@ -1033,16 +1037,16 @@
                                         <table class="table table-sm fs--1 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="LockerName" style="width:15%;">사물함</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="RegDate" style="width:15%;">신청일</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="FromDate" style="width:20%;">시작일</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="ToDate" style="width:15%;">종료일</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="RegMonth" style="width:15%;">기간</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="RealPrice" style="width:15%;">판매금액</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="PaidPrice" style="width:15%;">결제금액</th>
-                                                    <th class="sort align-middle text-700" scope="col" data-sort="Misu" style="width:15%;">미수금액</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="IsFlag" style="width:15%;">반납</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="ReturnDate" style="width:20%;">반납일</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="LockerName">사물함</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="RegDate">신청일</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="FromDate">시작일</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="ToDate">종료일</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="RegMonth">기간</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="RealPrice">판매금액</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="PaidPrice">결제금액</th>
+                                                    <th class="sort align-middle text-700" scope="col" data-sort="Misu">미수금액</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="IsFlag">반납</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="ReturnDate">반납일</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list" id="customer-wishlist-table-body">
@@ -1053,9 +1057,9 @@
                                                         <td class="FromDate align-middle fw-bold text-900">${locker.fromDate}</td>
                                                         <td class="ToDate align-middle fw-bold text-900">${locker.toDate}</td>
                                                         <td class="RegMonth align-middle fw-bold text-700">${locker.regMonth}개월</td>
-                                                        <td class="RealPrice align-middle fw-bold text-700">${locker.realPrice}</td>
-                                                        <td class="PaidPrice align-middle fw-bold text-700">${locker.paidPrice}</td>
-                                                        <td class="Misu align-middle fw-bold text-700">${locker.misu}</td>
+                                                        <td class="RealPrice align-middle fw-bold text-md-center"><fmt:formatNumber value="${locker.realPrice}" pattern="#,###"/></td>
+                                                        <td class="PaidPrice align-middle fw-bold text-md-center"><fmt:formatNumber value="${locker.paidPrice}" pattern="#,###"/></td>
+                                                        <td class="Misu align-middle fw-bold text-md-center"><fmt:formatNumber value="${locker.misu}" pattern="#,###"/></td>
                                                         <td class="IsFlag align-middle fw-bold text-1000 text-end">
                                                             <c:choose>
                                                                 <c:when test="${locker.isFlagText eq '반납'}">
@@ -1072,7 +1076,7 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td class="ReturnDate align-middle white-space-nowrap text-start">${locker.returnDate}</td>
+                                                        <td class="ReturnDate align-middle white-space-nowrap text-end">${locker.returnDate}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>

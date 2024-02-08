@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
+import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
@@ -100,5 +101,15 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	@Override
 	public String ClickTimeByID(tblplocker tblplocker) throws Exception {
 		return vtcLockerDAO.ClickTimeByID(tblplocker);
+	}
+
+	@Override
+	public void useLockerInsert(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.useLockerInsert(tbluselocker);
+	}
+
+	@Override
+	public void UpdPLocker(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.UpdPLocker(tblplocker);
 	}
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcItemService;
@@ -44,12 +45,14 @@ import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
+import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("loginuserinfo")
 public class VtcMemberController {
 
 	private final HttpSession session;
@@ -96,7 +99,6 @@ public class VtcMemberController {
 	private String memberregiF(Model model, DC dc) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if (users == null) {
-
 			return "redirect:login.do";
 		}
 
@@ -1232,6 +1234,34 @@ public class VtcMemberController {
 	
 	@GetMapping("/mLockerF.do")
 	public String mLockerF(tblmember tblmember,tblCode tblCode,Model model) throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblplockergroup> lockergrouplist = vtcSamulhamService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		
+		String mleveltext = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		model.addAttribute("lockergrouplist",lockergrouplist);
+		model.addAttribute("member",member);
+		model.addAttribute("mleveltext",mleveltext);
+		
+		return "member/registration/mLockerF";
+	}
+	
+	@GetMapping("/mLockerSelectF.do")
+	public String mLockerSelectF(tblmember tblmember,tbluselocker tbluselocker,tblCode tblCode,Model model)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
