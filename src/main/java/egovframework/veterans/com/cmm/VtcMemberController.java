@@ -1,5 +1,6 @@
 package egovframework.veterans.com.cmm;
 
+import java.net.URLDecoder;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
@@ -987,7 +988,7 @@ public class VtcMemberController {
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
 		model.addAttribute("dclist",dcList);
-		model.addAttribute("itemname",itemname);
+		model.addAttribute("itemname",URLDecoder.decode(itemname, "UTF-8"));
 		model.addAttribute("fmsc_s01", result);
 		model.addAttribute("paidlist",paidlist);
 		model.addAttribute("yearage",yearage);
