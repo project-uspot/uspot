@@ -1,7 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -9,29 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
-import egovframework.com.cmm.service.EgovFileMngService;
-import egovframework.com.cmm.service.EgovFileMngUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
-import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
+import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
@@ -242,9 +231,13 @@ public class VtcLockerController{
 		
 		try {
 			Users users =  (Users) session.getAttribute("loginuserinfo");
-			
+			System.out.println(users);
 			if (users == null) {
-				return null;
+				Map<String,Object> map = new HashMap<String, Object>();
+	        	
+	        	map.put("fail","fail");
+	        	
+				return map;
 			}
 			tblplocker.setSiteCode(users.getSiteCode());
 			tblplocker.setClickUserPKID(users.getUserPKID());
@@ -303,5 +296,51 @@ public class VtcLockerController{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/useLockerInsert")
+	public int useLockerInsert(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return 0;
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setAddUserPKID(users.getUserPKID());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(users.getSiteCode());
+		tblplocker.setState(2);
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+		
+		//등록중이거나 등록된 사물함인지 판단하는 로직
+		tblplocker result = vtcLockerService.lockervobyplockerid(tblplocker);
+		
+		if(result.getState() == 2) {
+			return -1;
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime clickTime = LocalDateTime.parse(result.getClickTime(), formatter);
+
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        long minutesDifference = ChronoUnit.MINUTES.between(clickTime, currentTime);
+		
+		if(result.getClickUserPKID() != users.getUserPKID() && minutesDifference < 11) {
+			return -2;
+		}
+		
+		vtcLockerService.useLockerInsert(tbluselocker);
+		
+		tblplocker.setLSaleNo(tbluselocker.getPKID());
+		
+		vtcLockerService.UpdPLocker(tblplocker);
+		
+		return tbluselocker.getPKID();
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
+import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
@@ -78,5 +79,13 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public String ClickTimeByID(tblplocker tblplocker)throws Exception{
 		return selectOne("locker.ClickTimeByID",tblplocker);
+	}
+	
+	public void useLockerInsert(tbluselocker tbluselocker)throws Exception{
+		insert("locker.useLockerInsert",tbluselocker);
+	}
+	
+	public void UpdPLocker(tblplocker tblplocker)throws Exception{
+		update("locker.UpdPLocker",tblplocker);
 	}
 }

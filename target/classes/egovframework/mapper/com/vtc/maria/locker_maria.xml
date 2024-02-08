@@ -187,4 +187,33 @@ where
 	and IsDelete  = 'N'
 	and SiteCode = #{SiteCode}
 </select>
+<insert id="useLockerInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker" useGeneratedKeys="true" keyProperty="PKID">
+	INSERT INTO tbluselocker
+	(SiteCode, LockerID, MemberID, RegDate, 
+	FromDate, ToDate, RegMonth, Deposite, 
+	UsePrice, TotalPrice, RealPrice, PaidPrice, 
+	Misu, IsReturn, IsFlag, Note, IsDelete, 
+	AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+	values
+	(#{SiteCode},#{LockerID},#{MemberID},#{RegDate}, 
+	#{FromDate},#{ToDate},#{RegMonth},#{Deposite}, 
+	#{UsePrice},#{TotalPrice},#{RealPrice},#{PaidPrice}, 
+	#{Misu},#{IsReturn},#{IsFlag},#{Note},#{IsDelete}, 
+	now(),#{AddUserPKID},now(),#{UpdUserPKID})
+</insert>
+<update id="UpdPLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+UPDATE tblplocker SET 
+	State=#{State}, 
+	lSaleNo=#{lSaleNo}, 
+	FromDate=#{FromDate}, 
+	ToDate=#{ToDate}, 
+	RegMonth=#{RegMonth}, 
+	MemberID=#{MemberID}, 
+	UpdDate=now(), 
+	UpdUserPKID=#{UpdUserPKID}, 
+	updchk='up_update', 
+	ClickUserPKID=NULL, 
+	ClickTime=NULL
+WHERE PLockerID=#{PLockerID} AND SiteCode=#{SiteCode} And IsDelete = 'N'
+</update>
 </mapper>
