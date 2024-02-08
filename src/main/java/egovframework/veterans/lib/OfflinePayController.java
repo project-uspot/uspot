@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcMemberService;
+import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.lib.service.OfflinePayService;
@@ -37,9 +38,10 @@ public class OfflinePayController {
 	private final OfflinePayService OfflinePayService;
 	private final VtcMemberService vtcMemberService;
 	private final HttpRequester httpRequester;
-	
+	private final VtcPaidService VtcPaidService;
+
 	public static Marker OfflinePay = MarkerFactory.getMarker("OfflinePay");
-	
+		
 	/**
 	 * 결제
 	 * */
@@ -416,6 +418,11 @@ public class OfflinePayController {
 				OfflinePayService.insertElecAssignData(returnMap);
 				
 				if(RS04.equals("0000")) {
+					Map<String, Object> map = new HashMap<String, Object>();
+				    map.put("saleDate", f.formatDate(new Date(),"yMd"));
+				    map.put("outputOrderNo", 0);
+
+				    returnMap.put("ReceiptNo",String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
 					switch (saleType) {
 					case "강습":
 						returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
@@ -849,6 +856,17 @@ public class OfflinePayController {
 			log.info(OfflinePay,rMsg);
 			throw new Exception();
 		}
+	}
+	
+	@GetMapping(value = "/{uparam}/ChangeReceipt.do")
+	public String ChangeReceipt(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃되었습니다.");
+			return "common/msg";
+		}
 
+		model.addAttribute("uparam", uparam);
+		return "/offlinePay/OldCashNewReceipt";
 	}
 }

@@ -51,7 +51,7 @@
 		<![CDATA[
 			{call SP_InsertPaidFmsc_S01( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}
 			, #{ValidDate, mode=IN}, #{Halbu, mode=IN}, #{AssignNo, mode=IN}, #{CardName, mode=IN}, #{companyName, mode=IN}, #{msg1, mode=IN}, #{msg2, mode=IN}, #{signGubun, mode=IN}
-			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}, #{tempSaleNo, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
+			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
 		]]>
 	</select>
 </mapper>
