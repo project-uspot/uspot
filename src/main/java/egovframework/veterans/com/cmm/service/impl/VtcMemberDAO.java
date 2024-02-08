@@ -116,6 +116,10 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 		update("member.fmsc_01insert_update",fmsc_s01);
 	}
 	
+	public void fmsc_01insert_save(fmsc_s01 fmsc_s01)throws Exception{
+		insert("member.fmsc_01insert_save",fmsc_s01);
+	}
+	
 	public fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception{
 		return selectOne("member.fmsc_s01bysaleno",fmsc_s01);
 	}

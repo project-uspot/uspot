@@ -15,18 +15,33 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 	}
 
 	public void insertElecAssignData(Map<String, Object> sqlMap) {
-		insert("offlinePay.insertElecAssignData",sqlMap);
+		selectOne("offlinePay.insertElecAssignData",sqlMap);
 	}
 
-	public void insertPaidFmsc_s01(Map<String, Object> sqlMap) {
-		insert("offlinePay.insertPaidFmsc_s01",sqlMap);
+	public Map<String, Object> insertPaidFmsc_s01(Map<String, Object> sqlMap) {
+		selectOne("offlinePay.insertPaidFmsc_s01",sqlMap);
+		return sqlMap;
 	}
 
-	public void insertPaidLocker(Map<String, Object> sqlMap) {
-		insert("offlinePay.insertPaidLocker",sqlMap);
+	public Map<String, Object> insertPaidLocker(Map<String, Object> sqlMap) {
+		selectOne("offlinePay.insertPaidLocker",sqlMap);
+		return sqlMap;
 	}
 
-	public void insertPaidRent(Map<String, Object> sqlMap) {
-		insert("offlinePay.insertPaidRent",sqlMap);
+	public Map<String, Object> insertPaidRent(Map<String, Object> sqlMap) {
+		selectOne("offlinePay.insertPaidRent",sqlMap);
+		return sqlMap;
+	}
+
+	public void insertPaidCancelFmsc_s01(Map<String, Object> returnMap) {
+		
+	}
+
+	public void insertPaidCancelLocker(Map<String, Object> returnMap) {
+		
+	}
+
+	public void insertPaidCancelRent(Map<String, Object> returnMap) {
+		
 	}
 }

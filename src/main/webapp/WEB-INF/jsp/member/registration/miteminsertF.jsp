@@ -401,6 +401,7 @@
 	    	<input type="hidden" name="TID" value="">
 	    	<input type="hidden" name="Maeipsa" value="">
 	    	<input type="hidden" name="CardName" value="">
+	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="">
 	    </form>
 	</div>
 </body>
@@ -1005,7 +1006,13 @@ function fmsc_01save() {
 	if(numberOfTR > 1){
 		IsPackagecheck = 1;
 	}
-	var GroupNo = 0;
+	var GroupNo = $("#GroupSaleNo").val();
+	var url = "fmsc_01insert_save"; <%--// 수강정보 수정(실결제시) --%>
+	if(GroupNo == ''){
+		GroupNo = 0;
+		url = "fmsc_01insert"; <%--// 수강정보 저장(현금/임의결제시) --%>
+	}
+
 	$('#itemtbody tr').each(function() {
 		var totalprice = 0;<%--총매출금액--%>
 		var tpaidprice = 0;<%--총결제금--%>
@@ -1030,7 +1037,7 @@ function fmsc_01save() {
 		const yearmonth = extractYearMonth(result[0]);
 		$.ajax({
 			type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
-			url: "fmsc_01insert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
+			url: url, <%--// 실제 엔드포인트로 교체해야 합니다--%>
 			dataType : 'json',
 			async : false,
 			data: { 
@@ -1075,7 +1082,8 @@ function fmsc_01save() {
 	$('#paidbody tr').each(function() {
 		var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
 		var paiddate = $(this).find('.paiddate').text();
-		if(paidprice != ''){
+		var paidPkid = $(this).find('.PKID').text();
+		if(paidprice != '' && paidPkid == ''){
 			$.ajax({
 				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
 				url: "tblpaidinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>

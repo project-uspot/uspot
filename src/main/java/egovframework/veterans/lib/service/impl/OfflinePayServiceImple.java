@@ -25,18 +25,33 @@ public class OfflinePayServiceImple implements OfflinePayService {
 	}
 
 	@Override
-	public void insertPaidFmsc_s01(Map<String, Object> sqlMap) {
-		offlinePayDAO.insertPaidFmsc_s01(sqlMap);
+	public Map<String, Object> insertPaidFmsc_s01(Map<String, Object> sqlMap) {
+		return offlinePayDAO.insertPaidFmsc_s01(sqlMap);
 	}
 
 	@Override
-	public void insertPaidLocker(Map<String, Object> sqlMap) {
-		offlinePayDAO.insertPaidLocker(sqlMap);
+	public Map<String, Object> insertPaidLocker(Map<String, Object> sqlMap) {
+		return offlinePayDAO.insertPaidLocker(sqlMap);
 	}
 
 	@Override
-	public void insertPaidRent(Map<String, Object> sqlMap) {
-		offlinePayDAO.insertPaidRent(sqlMap);
+	public Map<String, Object> insertPaidRent(Map<String, Object> sqlMap) {
+		return offlinePayDAO.insertPaidRent(sqlMap);
+	}
+
+	@Override
+	public void insertPaidCancelFmsc_s01(Map<String, Object> returnMap) {
+		offlinePayDAO.insertPaidCancelFmsc_s01(returnMap);
+	}
+
+	@Override
+	public void insertPaidCancelLocker(Map<String, Object> returnMap) {
+		offlinePayDAO.insertPaidCancelLocker(returnMap);
+	}
+
+	@Override
+	public void insertPaidCancelRent(Map<String, Object> returnMap) {
+		offlinePayDAO.insertPaidCancelRent(returnMap);
 	}
 
 }

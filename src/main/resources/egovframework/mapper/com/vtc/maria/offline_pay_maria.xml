@@ -47,11 +47,11 @@
 	]]>
 	</insert>
 	
-	<insert id="insertPaidFmsc_s01" parameterType="Map">
+	<select id="insertPaidFmsc_s01" statementType="CALLABLE" parameterType="Map">
 		<![CDATA[
-			call insertPaidFmsc_s01 #{SiteCode}, #{PayType}, #{AssignType}, #{responseCode}, #{Price}, #{CardNo}
-			, #{ValidDate}, #{Halbu}, #{AssignNo}, #{CardName}, #{companyName}, #{msg1}, #{msg2}, #{signGubun}
-			, #{SaleDate}, #{IsPos}, #{MemberID}, #{SaleType}, #{userPKID}, #{OID}, #{TID}, #{tempSaleNo} 
+			{call SP_InsertPaidFmsc_S01( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}
+			, #{ValidDate, mode=IN}, #{Halbu, mode=IN}, #{AssignNo, mode=IN}, #{CardName, mode=IN}, #{companyName, mode=IN}, #{msg1, mode=IN}, #{msg2, mode=IN}, #{signGubun, mode=IN}
+			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}, #{tempSaleNo, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
 		]]>
-	</insert>
+	</select>
 </mapper>

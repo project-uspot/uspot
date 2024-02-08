@@ -477,6 +477,29 @@
 			</otherwise>
 		</choose>
 	</update>
+	
+	<update id="fmsc_01insert_save" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		SaleDate = #{SaleDate},
+		ItemPeriod = #{ItemPeriod},
+		FromDate = #{FromDate},
+		ToDate = #{ToDate},
+		RFromDate = #{RFromDate},
+		RToDate = #{RToDate},
+		RegMonth = #{RegMonth},
+		DCID = #{DCID},
+		DiscountRate = #{DiscountRate},
+		DCPrice = #{DCPrice},
+		ItemPrice = #{ItemPrice},
+		RealPrice = #{RealPrice},
+		Misu = #{Misu},
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			Group_SaleNo = #{GroupSaleNo}
+		and isDelete = 'N'
+		and ItemPKID = #{ItemPKID}
+	</update>
 
 	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
 		select * from fmsc_s01  

@@ -145,6 +145,8 @@
 						<input type="hidden" id="TID" name="TID" value="">
 						<input type="hidden" id="FCardNo" name="FCardNo" value="">
 						<input type="hidden" id="MemberID" name="MemberID" value="${param.MemberID }">
+						<input type="hidden" id="SaleNo" name="SaleNo" value="">
+						<input type="hidden" id="paidPKID" name="paidPKID" value="">
 					</form>
 					<div class="row">
 						<div class="col-auto position-absolute" style="margin-left:750px;">
@@ -283,8 +285,10 @@ document.querySelectorAll('input[name="optPay"]').forEach(input => {
 function toggleType(enabled) {
     if (enabled) {
     	$('input[name="optType"]').removeAttr("disabled");
+    	$("#BarCode").removeAttr("readonly");
     } else {
     	$('input[name="optType"]').attr("disabled",true);
+    	$("#BarCode").attr("readonly",true);
     }
 }
 </script>
@@ -371,8 +375,11 @@ function save(){
 	newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:none">' + $("#Halbu").val() + '</td>');
 	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none">' + $("#SaleTime").val() + '</td>');
 	newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + $("#TID").val() + '</td>');
+	newRow.append('<td class="PKID py-2 align-middle white-space-nowrap" style="display:none">' + $("#paidPKID").val() + '</td>');
 
 	$(opener.document).find('#paidbody').append(newRow);
+	
+	$(opener.document).find('#GroupSaleNo').val($("#SaleNo").val());
 
 	<%-- $(opener.document).find('#itemtbody tr').each(function() {
 		$(this).find('.sort').attr('id','Y');
@@ -480,6 +487,8 @@ function paid(){
 			$("#SaleTime").val(data.SaleDate);
 			$("#OID").val(data.OID);
 			$("#TID").val(data.TID);
+			$("#SaleNo").val(data.SaleNo);
+			$("#paidPKID").val(data.paidPKID);
 			save();
 		},
 		error: function(xhr, status, error){

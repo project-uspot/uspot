@@ -116,6 +116,7 @@ public class OfflinePayController {
 		    Halbu = "00";
 		}
 
+		String tempSaleNo = request.getParameter("tempSaleNo");
 		String Price = request.getParameter("Price");
 		String MemberID = request.getParameter("MemberID");
 		String saleType = request.getParameter("saleType");
@@ -408,19 +409,22 @@ public class OfflinePayController {
 			returnMap.put("userPKID",users.getUserPKID());
 			returnMap.put("OID",RS08);
 			returnMap.put("TID",RQ02);
+			returnMap.put("tempSaleNo",tempSaleNo);
+			returnMap.put("SaleNo",0);
+			returnMap.put("paidPKID",0);
 			try {
 				OfflinePayService.insertElecAssignData(returnMap);
 				
 				if(RS04.equals("0000")) {
 					switch (saleType) {
 					case "강습":
-						OfflinePayService.insertPaidFmsc_s01(returnMap);
+						returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
 						break;
 					case "사물함":
-						OfflinePayService.insertPaidLocker(returnMap);
+						returnMap = OfflinePayService.insertPaidLocker(returnMap);
 						break;
 					case "대관":
-						OfflinePayService.insertPaidRent(returnMap);
+						returnMap = OfflinePayService.insertPaidRent(returnMap);
 						break;
 					default:
 						break;
@@ -822,13 +826,13 @@ public class OfflinePayController {
 				if(RS04.equals("0000")) {
 					switch (saleType) {
 					case "강습":
-						OfflinePayService.insertPaidFmsc_s01(returnMap);
+						OfflinePayService.insertPaidCancelFmsc_s01(returnMap);
 						break;
 					case "사물함":
-						OfflinePayService.insertPaidLocker(returnMap);
+						OfflinePayService.insertPaidCancelLocker(returnMap);
 						break;
 					case "대관":
-						OfflinePayService.insertPaidRent(returnMap);
+						OfflinePayService.insertPaidCancelRent(returnMap);
 						break;
 					default:
 						break;
