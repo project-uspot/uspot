@@ -7,6 +7,7 @@ import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 public interface VtcLockerService {
@@ -42,4 +43,10 @@ public interface VtcLockerService {
 	void useLockerInsert(tbluselocker tbluselocker)throws Exception;
 
 	void UpdPLocker(tblplocker tblplocker)throws Exception;
+	
+	tbluselocker useLockerByPKID(tbluselocker tbluselocker)throws Exception;
+	
+	void DepositeInsert(tbldeposite tbldeposite)throws Exception;
+	
+	tbldeposite DepositeByMemberID(tbldeposite tbldeposite)throws Exception;
 }

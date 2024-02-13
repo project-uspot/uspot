@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Slf4j
@@ -342,5 +343,20 @@ public class VtcLockerController{
 		vtcLockerService.UpdPLocker(tblplocker);
 		
 		return tbluselocker.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/tbldepositeinsert")
+	public String tbldepositeinsert(tbldeposite tbldeposite)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tbldeposite.setSiteCode(users.getSiteCode());
+		tbldeposite.setAddUserPKID(users.getUserPKID());
+		tbldeposite.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.DepositeInsert(tbldeposite);
+		
+		return "success";
 	}
 }

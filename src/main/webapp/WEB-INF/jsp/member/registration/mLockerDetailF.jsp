@@ -111,22 +111,24 @@
 				<div class="cal-auto">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" style="width: 85px;">사물함</span>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;font-weight: 900;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;font-weight: 900;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;font-weight: 900;" value="${lockerinfo.PLockerGroupName}"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;font-weight: 900;" value="${lockerinfo.PLockerLocation}"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;" value="${lockerinfo.PLockerNo}"/>
 					</div>
 				</div>
 				<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">보증금</span>
-							<input class="form-control" type="text" id="PLockerDeposite" name="PLockerDeposite" style="text-align: right;" readonly="readonly"/>
+							<fmt:formatNumber value="${uselocker.deposite}" pattern="#,###" var="deposite"/>
+							<input class="form-control" type="text" id="PLockerDeposite" name="PLockerDeposite" style="text-align: right;" readonly="readonly" value="${deposite}"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">임대료</span>
-							<input class="form-control" type="text" id="PLockerPrice" name="PLockerPrice" style="text-align: right;" readonly="readonly"/>
+							<fmt:formatNumber value="${uselocker.usePrice}" pattern="#,###" var="usePrice"/>
+							<input class="form-control" type="text" id="PLockerPrice" name="PLockerPrice" style="text-align: right;" readonly="readonly" value="${usePrice}"/>
 						</div>
 					</div>
 	        	</div>
@@ -134,7 +136,7 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">사용기간</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;font-weight: 900;"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;font-weight: 900;" value="${uselocker.fromDate}"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -142,56 +144,29 @@
 					</div>
 					<div class="col-auto ms-n1">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="date" id="todate" name="todate" style="width: 130px;font-weight: 900;"/>
+							<input class="form-control" type="date" id="todate" name="todate" style="width: 130px;font-weight: 900;" value="${uselocker.toDate}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;font-weight: 900;" min="1"/>
+							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;font-weight: 900;" min="1" value="${uselocker.regMonth}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3 mt-2">
 						개월
 					</div>
 				</div>
-			<!--<div class="row" > 할인유형 적용안함
-					<div class="col-auto">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">할인유형</span>
-							<select class="form-select" id="dcds" name="dcds" style="width: 152px; text-align: right;">
-								<option selected="selected" id="0" value="0"></option>
-								<c:forEach var="dc" items="${dclist}">
-									<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
-                               	</c:forEach>
-							</select>
-						</div>
-					</div>
-					<div class="col-auto ms-n3 me-n5">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
-							<input class="form-control" type="number" id="dcper" name="dcper" style="width: 72px;" readonly="readonly"/>
-						</div>
-					</div>
-					<div class="col-auto mt-1">
-						%
-					</div>
-					<div class="col-auto mx-n5">
-						<div class="input-group input-group-sm">
-							<input class="form-control" type="text" id="dcprice" name="dcprice" style="width: 97px;text-align: right;" readonly="readonly"/>
-						</div>
-					</div>
-				</div>-->
 				<div class="row">
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">판매일자</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="regdate" name="regdate" style="width: 130px;"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="regdate" name="regdate" style="width: 130px;" value="${uselocker.regDate}"/>
 						</div>
 					</div>
 					<div class="col-md">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
-							<input class="form-control" type="text" id="note" name="note" maxlength="100"/>
+							<input class="form-control" type="text" id="note" name="note" maxlength="100" value="${uselocker.note}"/>
 						</div>
 					</div>
 	        	</div>
@@ -199,7 +174,8 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총임대료</span>
-							<input class="form-control" type="text" id="totalPLockerPrice" name="totalPLockerPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<fmt:formatNumber value="${uselocker.usePrice}" pattern="#,###" var="usePrice"/>
+							<input class="form-control" type="text" id="totalPLockerPrice" name="totalPLockerPrice" style="width: 100px; text-align: right;" readonly="readonly" value="${usePrice}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
@@ -219,7 +195,7 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총보증금</span>
-							<input class="form-control" type="text" id="totalPLockerDeposite" name="totalPLockerDeposite" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="totalPLockerDeposite" name="totalPLockerDeposite" style="width: 100px; text-align: right;" readonly="readonly" value="${uselocker.deposite}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
@@ -239,35 +215,35 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총매출금</span>
-							<input class="form-control" type="text" id="RealPrice" name="RealPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="RealPrice" name="RealPrice" style="width: 100px; text-align: right;" readonly="readonly" value="${uselocker.realPrice}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총미납금액</span>
-							<input class="form-control" type="text" id="Misu" name="Misu" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="Misu" name="Misu" style="width: 100px; text-align: right;" readonly="readonly" value="${uselocker.misu}"/>
 						</div>
 					</div>
 					<div class="col-auto me-n2">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총결제금액&emsp;</span>
-							<input class="form-control" type="text" id="PaidPrice" name="PaidPrice" style="width: 100px; text-align: right;" readonly="readonly"/>
+							<input class="form-control" type="text" id="PaidPrice" name="PaidPrice" style="width: 100px; text-align: right;" readonly="readonly" value="${uselocker.paidPrice}"/>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<!--<div class="col-auto">
+					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">총일수</span>
-							<input class="form-control" type="number" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
+							<input class="form-control" type="number" id="note" name="note" style="width: 72px;"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n5">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">사용일수</span>
-							<input class="form-control" type="text" id="note" name="note" value="${fmsc_s01.fromDate}" style="width: 72px;"/>
+							<input class="form-control" type="text" id="note" name="note" style="width: 72px;"/>
 						</div>
-					</div>-->
+					</div>
 					<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text me-3" id="basic-addon1" style="width: 85px;">영수증인쇄</span>
@@ -328,6 +304,40 @@
 	                            </tr>
                         	</thead>
                         	<tbody class="list" id="paidbody">
+                        		<c:forEach var="paid" items="${paidlist}">
+	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice">
+									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
+									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
+									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${paidprice}" pattern="#,###"/></td>
+									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">${paid.assignType}</td>
+									    <td class="paidmapsa align-middle white-space-nowrap text-center">${paid.maeipsa}</td>
+									    <td class="paidcardtype align-middle white-space-nowrap text-start">${paid.cardName}</td>
+									    <td class="paidassignN align-middle white-space-nowrap text-start">${paid.assignNo}</td>
+									    <td class="paidcardN align-middle white-space-nowrap text-start">${paid.cardNo}</td>
+									    <td class="POS align-middle white-space-nowrap text-start">${paid.pos}</td>
+									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
+									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
+									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									</tr>
+								</c:forEach>
+								 <c:if test="${deposite != null}">
+									 <tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite">
+									    <%-- <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td> --%>
+									    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
+									    <fmt:parseNumber var="depoprice" integerOnly="true" value="${paid.paidPrice}"/>
+									    <td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700"><fmt:formatNumber value="${depoprice}" pattern="#,###"/></td>
+									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
+									    <td class="paidmapsa align-middle white-space-nowrap text-center"></td>
+									    <td class="paidcardtype align-middle white-space-nowrap text-start"></td>
+									    <td class="paidassignN align-middle white-space-nowrap text-start"></td>
+									    <td class="paidcardN align-middle white-space-nowrap text-start"></td>
+									    <td class="POS align-middle white-space-nowrap text-start"></td>
+									    <td class="signpad py-2 align-middle white-space-nowrap"></td>
+									    <td class="OID py-2 align-middle white-space-nowrap"></td>
+									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									</tr>
+								 </c:if>
                         	</tbody>
                     	</table>
                     </div>
@@ -423,9 +433,6 @@ document.addEventListener('keydown', function(event) {
 function alldelete(){
 	window.location.reload();
 }
-
-$('#fromdate,#todate,#regdate').val(getCurrentDate());
-
 
 $(document).ready(function() {
     $('#paidbody').on('click', 'tr', function() {
@@ -652,7 +659,15 @@ function PLockerPriceChange(){
    	$('#PLockerPrice').val(formatNumberWithCommas(totalPLockerPrice));
    	$('#totalPLockerPrice').val(formatNumberWithCommas(totalPLockerPrice));
    	
-   	var paidPLockerPrice = 0;
+   	PriceChange();
+}
+
+PriceChange();
+function PriceChange(){
+	
+	var paidPLockerPrice = 0;
+   	var totalPLockerPrice = $('#totalPLockerPrice').val();
+   	alert(totalPLockerPrice);
    	
    	$('#paidbody tr#PLockerPrice').each(function() {
    		var paidPrice = removeCommasFromNumber($(this).find('td.paidprice').text());
@@ -671,6 +686,7 @@ function PLockerPriceChange(){
    	totalChange();
 }
 
+PLockerDepositeChange();
 function PLockerDepositeChange() {
 	var PLockerDeposite = removeCommasFromNumber($('#PLockerDeposite').val());
 	
@@ -862,7 +878,7 @@ function payDeposite() {
 	    modalcheck = true;
 	    return false;
 	}
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "Deposite"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
