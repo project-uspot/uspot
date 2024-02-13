@@ -10,6 +10,7 @@ import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Repository
@@ -87,5 +88,17 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public void UpdPLocker(tblplocker tblplocker)throws Exception{
 		update("locker.UpdPLocker",tblplocker);
+	}
+	
+	public tbluselocker useLockerByPKID(tbluselocker tbluselocker)throws Exception{
+		return selectOne("locker.useLockerByPKID",tbluselocker);
+	}
+	
+	public void DepositeInsert(tbldeposite tbldeposite)throws Exception{
+		insert("locker.DepositeInsert",tbldeposite);
+	}
+	
+	public tbldeposite DepositeByMemberID(tbldeposite tbldeposite)throws Exception{
+		return selectOne("locker.DepositeByMemberID",tbldeposite);
 	}
 }
