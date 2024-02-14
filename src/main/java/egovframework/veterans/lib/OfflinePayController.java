@@ -41,10 +41,49 @@ public class OfflinePayController {
 	private final VtcPaidService VtcPaidService;
 
 	public static Marker OfflinePay = MarkerFactory.getMarker("OfflinePay");
+
+	/**
+	 * 계좌이체
+	 * */
+	//TODO 계좌이체
+	@GetMapping(value = "/{uparam}/Account.do")
+	public String selectAccount(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃되었습니다.");
+			return "common/msg";
+		}
+
+		List<Map<String,Object>> accountList = OfflinePayService.getAccountMenu(users.getSiteCode());
 		
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("uparam", uparam);
+		return "/offlinePay/AccountManualReg";
+	}
+	
+	/**
+	 * 계좌이체 취소
+	 * */
+	//TODO 계좌이체 취소
+	@GetMapping(value = "/{uparam}/AccountCancel.do")
+	public String selectAccountCancel(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃되었습니다.");
+			return "common/msg";
+		}
+
+		List<Map<String,Object>> accountList = OfflinePayService.getAccountMenu(users.getSiteCode());
+		
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("uparam", uparam);
+		return "/offlinePay/AccountManualRegCancel";
+	}
+
 	/**
 	 * 결제
 	 * */
+	//TODO 결제페이지
 	@GetMapping(value = "/{uparam}/CreditCard.do")
 	public String selectCreditCard(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -60,6 +99,7 @@ public class OfflinePayController {
 	/**
 	 * 임의결제
 	 * */
+	//TODO 임의결제
 	@GetMapping(value = "/{uparam}/manualReg.do")
 	public String selectManualReg(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -84,6 +124,7 @@ public class OfflinePayController {
 	/**
 	 * 실결제
 	 * */
+	//TODO 실결제
 	@PostMapping(value = "/{uparam}/paidReg", produces = "application/json;charset=UTF-8")
 	@ResponseBody 
 	public Map<String,Object> selectPaidReg(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception {
@@ -118,6 +159,8 @@ public class OfflinePayController {
 		    Halbu = "00";
 		}
 
+		String InType = request.getParameter("InType");
+		String insertYN = request.getParameter("insert");
 		String tempSaleNo = request.getParameter("tempSaleNo");
 		String Price = request.getParameter("Price");
 		String MemberID = request.getParameter("MemberID");
@@ -414,6 +457,8 @@ public class OfflinePayController {
 			returnMap.put("tempSaleNo",tempSaleNo);
 			returnMap.put("SaleNo",0);
 			returnMap.put("paidPKID",0);
+			returnMap.put("InsertYN",insertYN);
+			
 			try {
 				OfflinePayService.insertElecAssignData(returnMap);
 				
@@ -425,7 +470,15 @@ public class OfflinePayController {
 				    returnMap.put("ReceiptNo",String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
 					switch (saleType) {
 					case "강습":
-						returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
+						//returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
+						if(insertYN.equals("Y")) {
+							returnMap.put("tempSaleNo",tempSaleNo);
+						}else {
+							returnMap.put("SaleType",InType);
+							returnMap = OfflinePayService.insertFMSC_S01(returnMap);
+						}
+						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
+						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
 						break;
 					case "사물함":
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
@@ -436,6 +489,8 @@ public class OfflinePayController {
 					default:
 						break;
 					}
+					
+					returnMap = OfflinePayService.insertPaid(returnMap);
 				}
 			}catch (Exception e) {
 				log.error(OfflinePay,"ElecAssignData 저장오류:"+e.getMessage());
@@ -454,6 +509,7 @@ public class OfflinePayController {
 	/**
 	 * 결제취소
 	 * */
+	//TODO 결제취소 페이지
 	@GetMapping(value = "/{uparam}/CancelPaid.do")
 	public String selectCancelPaid(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -471,6 +527,7 @@ public class OfflinePayController {
 	/**
 	 * 임의결제 취소
 	 * */
+	//TODO 임의결제 취소
 	@GetMapping(value = "/{uparam}/manualRegCancel.do")
 	public String selectManualRegCancel(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -495,6 +552,7 @@ public class OfflinePayController {
 	/**
 	 * 실결제 취소
 	 * */
+	//TODO 실결제 취소
 	@PostMapping(value = "/{uparam}/paidRegCancel", produces = "application/json;charset=UTF-8")
 	@ResponseBody 
 	public Map<String,Object> selectPaidRegCancel(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception {
@@ -805,7 +863,7 @@ public class OfflinePayController {
 			returnMap.put("PayType",payType);
 			returnMap.put("AssignType",acType);
 			returnMap.put("responseCode",RS04);
-			returnMap.put("Price",RQ07);
+			returnMap.put("Price","-"+RQ07);
 			returnMap.put("CardNo",RQ04);
 			returnMap.put("ValidDate",RQ05);
 			returnMap.put("Halbu",RQ06);
@@ -829,7 +887,6 @@ public class OfflinePayController {
 			try {
 				OfflinePayService.insertElecAssignData(returnMap);
 
-				returnMap.put("Price","-"+RQ07);
 				if(RS04.equals("0000")) {
 					switch (saleType) {
 					case "강습":
@@ -858,6 +915,10 @@ public class OfflinePayController {
 		}
 	}
 	
+	/**
+	 * 현금-> 현금영수증변경페이지
+	 * */
+	//TODO 현금 -> 현금영수증 변경페이지
 	@GetMapping(value = "/{uparam}/ChangeReceipt.do")
 	public String ChangeReceipt(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");

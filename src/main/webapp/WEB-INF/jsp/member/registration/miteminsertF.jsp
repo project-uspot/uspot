@@ -368,26 +368,26 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" style="width: 130px;" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
-					<div class="col-auto ms-n4">
-						<button class="btn btn-soft-primary" type="button" style="width: 130px;" onclick="paycredit()">현금 외 결제</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button" style="width: 130px;">계좌입금</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button" style="width: 130px;" onclick="cashReceiptChange()">현.영발행</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
-					<div class="col-auto ms-n4">
-						<button class="btn btn-soft-success" type="button" style="width: 130px;">영수증재발행</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-success w-100" type="button" >영수증재발행</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" style="width: 130px;" onclick="paidCancel()">결제취소</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
 					</div>
 				</div>
 	    	</div>
@@ -402,6 +402,7 @@
 	    	<input type="hidden" name="Maeipsa" value="">
 	    	<input type="hidden" name="CardName" value="">
 	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="">
+	    	<input type="hidden" name="Insert" id="Insert" value="">
 	    </form>
 	</div>
 </body>
@@ -1192,9 +1193,15 @@ function paycredit(){
 		modalcheck = true;
 		return false;
 	}
-
-	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
-	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=700";
+	if($("#Insert").val() == ''){
+		var GroupSaleNo = $("#tempSaleNo").val();
+	}else{
+		var GroupSaleNo = $("#GroupSaleNo").val();	
+	}
+ 	
+ 	
+	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert="+$("#Insert").val()+"&InType=등록";
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
     if (myPopup === undefined || myPopup.closed) {
         myPopup = window.open(url, "_blank", windowFeatures);
     } else {
@@ -1236,9 +1243,22 @@ function paidCancel(){
 	            $(this).remove();
 	        }
 	    });
+	}else if(frm.paidCategory.value == "계좌이체" ){
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
 	}else{
 		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
-		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=700";
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
 	    } else {
@@ -1281,7 +1301,7 @@ function cashReceiptChange(){
 	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
 	        	console.log($(this).find(".paidprice"));
 	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
-	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=700";
+	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	            if (myPopup === undefined || myPopup.closed) {
 	                myPopup = window.open(url, "_blank", windowFeatures);
 	            } else {
@@ -1303,6 +1323,32 @@ function cashReceiptChange(){
 		modalcheck = true;
 		return false;
 	}
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/lecture/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
 }
 
 <%--//paid 의 결제 일자를 넣기 위한 현재날짜 포맷--%>
