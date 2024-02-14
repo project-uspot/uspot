@@ -38,9 +38,9 @@ public class VtcSalesController {
 			
 			return "redirect:login.do";
 		}
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 		
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "sales/settlement/settlemnetlist";
 	}

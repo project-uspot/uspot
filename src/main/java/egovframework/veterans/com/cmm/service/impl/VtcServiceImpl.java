@@ -21,7 +21,7 @@ public class VtcServiceImpl extends EgovAbstractServiceImpl implements VtcServic
 
 	
 	@Override
-	public Sitecode selectSiteCode(String SiteCode) throws Exception {
+	public List<Sitecode> selectSiteCode(String SiteCode) throws Exception {
 		return VtcDAO.selectSiteCode(SiteCode);
 	}
 

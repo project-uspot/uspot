@@ -12,8 +12,8 @@ import egovframework.veterans.com.cmm.service.vo.tblCode;
 @Repository("VtcDAO")
 public class VtcDAO extends EgovComAbstractDAO{
 
-	public Sitecode selectSiteCode(String SiteCode) throws Exception {
-		return selectOne("frame.selectSiteCode", SiteCode);
+	public List<Sitecode> selectSiteCode(String SiteCode) throws Exception {
+		return selectList("frame.selectSiteCode", SiteCode);
 	}
 
 	public void updateSiteCode(Sitecode sitecode) throws Exception {

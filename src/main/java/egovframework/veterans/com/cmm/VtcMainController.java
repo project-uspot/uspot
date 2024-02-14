@@ -65,27 +65,25 @@ public class VtcMainController {
 	
 	
 	@RequestMapping("selecSitecode.do")
-	public String selectArticleList(PGM pgm,@RequestParam(name = "siteCode",defaultValue="10001")String SiteCode, ModelMap model, HttpSession session) throws Exception {
-		if(session.getAttribute("loginuserinfo") == null) {
+	public String selectArticleList(ModelMap model, HttpSession session) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
 			model.addAttribute("script", "redirect");
 			model.addAttribute("msg", "세션이 만료되었습니다 다시 로그인해주세요");
 			model.addAttribute("url","login.do");
-
 			return "common/msg";
 		}
-		pgm = VtcService.selectPGMInfo(pgm);
+
+		String SiteCode = users.getSiteCode();
+		List<Sitecode> siteList = VtcService.selectSiteCode(SiteCode);
 		
-		Sitecode list = VtcService.selectSiteCode(SiteCode);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pgm", pgm);
+		model.addAttribute("siteList", siteList);
 		return "basic/sitecode";
 	}
 	
 	@RequestMapping(value="/siteDetail.do") 
-	public String sitecodeDetail(ModelMap model) throws Exception{
-		String SiteCode = "10001";
-		model.addAttribute("sitecode", VtcService.selectSiteCode(SiteCode));
+	public String sitecodeDetail(@RequestParam(name = "SiteCode",defaultValue="10001")String SiteCode, ModelMap model) throws Exception{
+		model.addAttribute("sitecode", VtcService.selectSiteCode(SiteCode).get(0));
 		return "basic/detail";
 	}
 	
