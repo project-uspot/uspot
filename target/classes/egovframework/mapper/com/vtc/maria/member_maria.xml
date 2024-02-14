@@ -698,11 +698,11 @@
 		<choose>
 			<when test="GroupSaleNo != null and GroupSaleNo != 0">
 				update fmsc_s01_insert_temp set GroupSaleNo = #{GroupSaleNo}
-				where SaleNo = LAST_INSERT_ID()
+				where SaleNo = #{SaleNo}
 			</when>
 			<otherwise>
 				update fmsc_s01_insert_temp set GroupSaleNo = SaleNo
-				where SaleNo = LAST_INSERT_ID()
+				where SaleNo = #{SaleNo}
 			</otherwise>
 		</choose>
 	</update>

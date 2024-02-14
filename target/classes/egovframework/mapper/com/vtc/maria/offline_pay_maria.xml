@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="offlinePay">
 
+	<select id="getAccountMenu" parameterType="String" resultType="Map">
+	<![CDATA[
+		SELECT PKID, BankName, Account, ACName 
+		FROM tblBANK 
+		WHERE IsDelete = 'N' 
+		ORDER BY SortOrder 
+	]]>
+	</select>
+
 	<select id="getCreditCardMenu" parameterType="String" resultType="Map">
 	<![CDATA[
 		SELECT Code, CreditName
@@ -51,7 +60,23 @@
 		<![CDATA[
 			{call SP_InsertPaidFmsc_S01( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}
 			, #{ValidDate, mode=IN}, #{Halbu, mode=IN}, #{AssignNo, mode=IN}, #{CardName, mode=IN}, #{companyName, mode=IN}, #{msg1, mode=IN}, #{msg2, mode=IN}, #{signGubun, mode=IN}
-			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
+			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}
+			, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{InsertYN, mode=IN}, #{SaleNo, mode=OUT, jdbcType=INTEGER}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
+		]]>
+	</select>
+	
+	<select id="insertFMSC_S01" parameterType="Map" resultType="Map">
+		<![CDATA[
+			{call SP_InsertFMSC_S01_NEW(#{SiteCode},#{SaleType},#{tempSaleNo},#{userPKID})}
+		]]>
+	</select>
+	
+	<select id="insertPaid" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[
+			{call SP_InsertPaid( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}
+			, #{ValidDate, mode=IN}, #{Halbu, mode=IN}, #{AssignNo, mode=IN}, #{CardName, mode=IN}, #{companyName, mode=IN}, #{msg1, mode=IN}, #{msg2, mode=IN}, #{signGubun, mode=IN}
+			, #{SaleDate, mode=IN}, #{IsPos, mode=IN}, #{MemberID, mode=IN}, #{SaleType, mode=IN}, #{userPKID, mode=IN}, #{OID, mode=IN}, #{TID, mode=IN}
+			, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
 		]]>
 	</select>
 </mapper>
