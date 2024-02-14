@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="log">
+	<insert id="logInsert" parameterType="egovframework.veterans.logs.service.vo.LogVO">
+	<![CDATA[
+		insert into log_recode(SiteCode, LogDate, UserPKID, Frm_Code, Event_CD, Part_CD, Detail_CD, Result_CD
+							, Code1, Code2, Code3, Code4, Code5, Note, File_Name, MemberID, SaleNo, OrderID, IP, RegType, URL)
+		values(#{SiteCode}, date_format(NOW(), '%Y-%m-%d %T' ), #{UserPKID}, #{Frm_Code}, #{Event_CD}, #{Part_CD}, #{Detail_CD}, #{Result_CD}
+			, #{Code1}, #{Code2}, #{Code3}, #{Code4}, #{Code5}, #{Note}, #{File_Name}, #{MemberID}, #{SaleNo}, #{OrderID}, #{IP}, #{RegType}, #{URL})
+	]]>
+	</insert>
+</mapper>

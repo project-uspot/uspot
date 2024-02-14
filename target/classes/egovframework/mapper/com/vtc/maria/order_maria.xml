@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+	
+	<select id="selectSLOrderGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
+		select 
+			PKID , GroupName , SiteCode , SortOrder , GroupJungWon ,
+			case ParkingTimeWeek 
+				when '60' then '1시간' when '120' then '2시간' when '180' then '3시간' when '240' then '4시간'
+				when '300' then '5시간' when '360' then '6시간' when '420' then '7시간' 
+			end as 'ParkingTimeWeek'
+			, case ParkingTimeWeekend 
+				when '60' then '1시간' when '120' then '2시간' when '180' then '3시간' when '240' then '4시간'
+				when '300' then '5시간' when '360' then '6시간' when '420' then '7시간' 
+			end as 'ParkingTimeWeekend' 
+		 from fs_dsgroup where SiteCode = #{SiteCode} and IsDelete = 'N'
+	</select>
+	<select id="getOrderGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
+		select 
+			PKID , GroupName , SiteCode , SortOrder , GroupJungWon , ParkingTimeWeek , ParkingTimeWeekend
+		from fs_dsgroup where SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and pkid = #{pkid}
+	</select>
+	<update id="updateOrderGroup" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
+		update fs_dsgroup set
+			GroupName = #{GroupName}
+			, SortOrder = #{SortOrder}
+			, GroupJungWon = #{GroupJungWon}
+			, ParkingTimeWeek = #{ParkingTimeWeek}
+			, ParkingTimeWeekend = #{ParkingTimeWeekend}
+			, UpdUserPKID = ${UpdUserPKID}
+			, UpdDate = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and pkid = #{pkid}
+	</update>
+	<insert id="insertOrderGroup" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
+		INSERT INTO fs_dsgroup
+			(SiteCode, GroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, GroupJungWon, ParkingTimeWeek, ParkingTimeWeekend)
+		VALUES
+			(#{SiteCode}, #{GroupName},  #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{GroupJungWon}, #{ParkingTimeWeek}, #{ParkingTimeWeekend})
+	</insert>
+	<update id="deleteOrderGroup" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderGroup">
+		update fs_dsgroup set
+			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	pkid = #{pkid}
+	</update>
+	<select id="getGroupSortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			fs_dsgroup 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
+	
+	<select id="listSLOderItem" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		select 
+			a.SiteCode, a.pkid, b.GroupName, ItemName, FromTime, ToTime, ShortName
+			, case AdultGBN when 0 then '어른' when 1 then '청소년'	when 2 then '어린이' when 3 then '경로' end as 'AdultGBN'
+			, case Gender when 1 then '남자' else '여자' end as 'Gender'
+			, c.CodeName as 'Upjang' 
+			, case a.DCType when -1 then '' when 0 then '단체' when 1 then '감면' when 2 then 'CA' end as 'dcType'
+			, a.Price as 'Price', Jungwon , Mon ,Tue ,Wed ,Thu ,Fri , Sat , Sun , a.SortOrder  , a.KioskYN 
+		from fs_dsitem a
+		left join fs_dsgroup b on a.SiteCode = b.SiteCode and a.GroupCode  = b.PKID
+		left join tblcode c on a.SiteCode = c.SiteCode and a.Upjang = c.PKID 
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+	</select>
+	<select id="getOrderItemDetail" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		select 
+			a.SiteCode, a.PKID , b.GroupName, ItemName, FromTime, ToTime, ShortName
+			, AdultGBN , Gender , Upjang , a.DCType , a.Price as 'Price', Jungwon 
+			, Mon ,Tue ,Wed ,Thu ,Fri , Sat , Sun , a.SortOrder  , a.KioskYN, NVAT as 'Nvat'
+		from fs_dsitem a
+		left join fs_dsgroup b on a.SiteCode = b.SiteCode and a.GroupCode  = b.PKID
+		where 
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and a.pkid = #{pkid}
+	</select>
+	<update id="updateOrderItem" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		update fs_dsitem set
+			itemName = #{itemName}
+			, ShortName = #{ShortName}
+			, GroupCode = #{GroupCode}
+			, FromTime = #{FromTime}
+			, ToTime = #{ToTime}
+			, AdultGBN = #{AdultGBN}
+			, Gender = #{Gender}
+			, Price = #{Price}
+			, VAT = #{vat}
+			, NVAT = #{Nvat}
+			, Jungwon = #{Jungwon}
+			, Upjang = #{UpJang}
+			, KioskYN = #{KioskYN}
+			, DCType = #{dcType}
+			, Mon = #{Mon}
+			, Tue = #{Tue}
+			, Wed = #{Wed}
+			, Thu = #{Thu}
+			, Fri = #{Fri}
+			, Sat = #{Sat}
+			, Sun = #{Sun}
+			, SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and pkid = #{pkid}
+	</update>
+	<insert id="insertOrderItem" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		INSERT INTO fs_dsitem
+			(SiteCode, GroupCode, ItemName, ShortName, FromTime, ToTime, AdultGBN, Gender, Price, VAT, NVAT, Jungwon, Upjang, DCType, IsAutoAssignLocker, KioskYN, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, Mon, Tue, Wed, Thu, Fri, Sat, Sun)
+		VALUES
+			(#{SiteCode}, #{GroupCode}, #{ItemName}, #{ShortName}, #{FromTime}, #{ToTime}, #{AdultGBN}, #{Gender}, #{Price}, #{vat}, #{Nvat}, #{Jungwon}, #{UpJang}, #{dcType}, 'Y', #{KioskYN}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{Mon}, #{Tue}, #{Wed}, #{Thu}, #{Fri}, #{Sat}, #{Sun})
+	</insert>
+	<update id="deleteOrderItem" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		update fs_dsitem set
+			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	pkid = #{pkid}
+	</update>
+	
+	<select id="getItemSortOrder" resultType="int">
+		select max(sortorder) 
+		from 
+			fs_dsitem 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
+	<select id="listGroupItem" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+		select 
+			a.SiteCode, a.pkid, b.GroupName, ItemName, FromTime, ToTime, ShortName, c.CodeName as 'Upjang', c.PKID 
+			, case AdultGBN when 0 then '어른' when 1 then '청소년'	when 2 then '어린이' when 3 then '경로' end as 'AdultGBN'
+			, case Gender when 1 then '남자' else '여자' end as 'Gender'
+			, case a.DCType when -1 then '' when 0 then '단체' when 1 then '감면' when 2 then 'CA' end as 'dcType'
+			, a.Price as 'Price', Jungwon , Mon ,Tue ,Wed ,Thu ,Fri , Sat , Sun , a.SortOrder 
+		from fs_dsitem a
+		left join fs_dsgroup b on a.SiteCode = b.SiteCode and a.GroupCode  = b.PKID
+		left join tblcode c on a.SiteCode = c.SiteCode and a.Upjang = c.PKID 
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and b.PKID = #{value}
+	</select>
+	
+</mapper>
