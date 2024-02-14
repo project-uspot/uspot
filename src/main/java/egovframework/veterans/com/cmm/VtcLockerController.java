@@ -359,4 +359,23 @@ public class VtcLockerController{
 		
 		return "success";
 	}
+	
+	@ResponseBody
+	@PostMapping("/useLockerPriceUpdate")
+	public String useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setAddUserPKID(users.getUserPKID());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.useLockerPriceUpdate(tbluselocker);
+		
+		return "success";
+	}
 }

@@ -49,4 +49,6 @@ public interface VtcLockerService {
 	void DepositeInsert(tbldeposite tbldeposite)throws Exception;
 	
 	tbldeposite DepositeByMemberID(tbldeposite tbldeposite)throws Exception;
+	
+	void useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception;
 }

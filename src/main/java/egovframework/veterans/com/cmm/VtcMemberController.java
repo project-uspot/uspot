@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
@@ -1336,13 +1338,29 @@ public class VtcMemberController {
 		
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
 		
+		tblCode.setCodeGroupID("24");
+		
+		String wiyakString = vtcService.codenameByCodeValue(tblCode);
+		
+		tblCode.setCodeGroupID("25");
+		
+		String julsak = vtcService.codenameByCodeValue(tblCode);
+		
 		String mleveltext = "";
 		
 		for(tblCode tblCode2 : codelist) {
 			if(tblCode2.getPkid() == member.getMLevel()) {
 				mleveltext = tblCode2.getCodeName();
 			}
-		}
+		}	
+		
+		Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(wiyakString);
+
+        int wiyak = 0;
+        while (matcher.find()) {
+            wiyak = Integer.parseInt(matcher.group());
+        }
 		
 		model.addAttribute("uselocker",uselocker);
 		model.addAttribute("lockerinfo",lockerInfo);
@@ -1350,7 +1368,9 @@ public class VtcMemberController {
 		model.addAttribute("member",member);
 		model.addAttribute("lockergrouplist",lockergrouplist);
 		model.addAttribute("mleveltext",mleveltext);
-		model.addAttribute("deposite",deposite);
+		model.addAttribute("tbldeposite",deposite);
+		model.addAttribute("wiyak",wiyak);
+		model.addAttribute("julsak",julsak);
 		
 		return "member/registration/mLockerDetailF";
 	}

@@ -89,4 +89,12 @@
 		SET CodeValue = CASE WHEN CodeName = #{CodeName} THEN 1 ELSE 0 END
 		WHERE SiteCode = #{SiteCode} AND CodeGroupID = #{CodeGroupID}
 	</update>
+	<select id="codenameByCodeValue" parameterType="egovframework.veterans.com.cmm.service.vo.tblCode" resultType="String">
+		select CodeName from tblcode
+		where 
+			SiteCode  = #{SiteCode}
+		and CodeGroupID = #{CodeGroupID}
+		and IsDelete = 'N'
+		and CodeValue = '1'
+	</select>
 </mapper>

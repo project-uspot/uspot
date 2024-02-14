@@ -283,22 +283,27 @@ public class VtcPaidController {
 	@PostMapping("/tblpaidinsert")
 	public String tblpaidinsert(tblpaid tblpaid) throws Exception {
 		
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
-			users = new Users();
+		try {
+			Users users = (Users) session.getAttribute("loginuserinfo");
+			if(users == null){
+				users = new Users();
+			}
+			System.out.println("sdlfjsdlkfjdslkfjdslkfjlkdsjfieerueiwruwe2181203821093820머미ㅏ더니ㅏ엄니ㅏ");
+			Map<String, Object> map = new HashMap<String, Object>();
+		    map.put("saleDate", tblpaid.getSaleDate());
+		    map.put("outputOrderNo", 0);
+
+		    tblpaid.setReceiptNo(String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
+		    tblpaid.setSiteCode(users.getSiteCode());
+		    tblpaid.setAddUserPKID(users.getUserPKID());
+		    tblpaid.setUpdUserPKID(users.getUserPKID());
+		    //log.debug(tblpaid.toString());
+		    VtcPaidService.tblpaidinsert(tblpaid);
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		Map<String, Object> map = new HashMap<String, Object>();
-	    map.put("saleDate", tblpaid.getSaleDate());
-	    map.put("outputOrderNo", 0);
-
-	    tblpaid.setReceiptNo(String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
-	    tblpaid.setSiteCode(users.getSiteCode());
-	    tblpaid.setAddUserPKID(users.getUserPKID());
-	    tblpaid.setUpdUserPKID(users.getUserPKID());
-	    //log.debug(tblpaid.toString());
-	    VtcPaidService.tblpaidinsert(tblpaid);
-	    
+		
 	    return "success";
 	}
 }

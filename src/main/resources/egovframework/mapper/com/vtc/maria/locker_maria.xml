@@ -241,4 +241,14 @@ and MemberID = #{MemberID}
 and LockerID = #{LockerID}
 and IsDelete = 'N'
 </select>
+<update id="useLockerPriceUpdate" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+UPDATE tbluselocker SET 
+RealPrice=#{RealPrice},
+PaidPrice=#{PaidPrice},
+Misu=#{Misu},
+UpdDate=now(),
+UpdUserPKID=#{UpdUserPKID} 
+WHERE PKID=#{PKID}
+AND SiteCode=#{SiteCode}
+</update>
 </mapper>
