@@ -44,4 +44,7 @@ public class VtcDAO extends EgovComAbstractDAO{
 	public void optionchange(tblCode tblCode)throws Exception {
 		update("frame.optionchange",tblCode);
 	}
+	public String codenameByCodeValue(tblCode tblCode) {
+		return selectOne("frame.codenameByCodeValue",tblCode);
+	}
 }

@@ -8,6 +8,8 @@ public class tbldeposite {
 	
 	private String SiteCode;
 
+	private String SaleDate;
+	
 	private String RealSaleDate;
 	
 	private int LockerID;

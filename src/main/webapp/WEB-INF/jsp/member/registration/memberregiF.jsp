@@ -1040,6 +1040,9 @@
                                                         <td class="InType align-middle white-space-nowrap text-900 fs--1 text-start">${list.inType}</td>
                                                     </tr>
                                                 </c:forEach>
+                                                <c:if test="${empty fmsc_s01}">
+                                                	<tr></tr>
+                                                </c:if>
                                             </tbody>
                                         </table>
                                     </div>
@@ -1107,6 +1110,9 @@
                                                         <td class="ReturnDate align-middle white-space-nowrap text-end">${locker.returnDate}</td>
                                                     </tr>
                                                 </c:forEach>
+                                                <c:if test="${empty lockerlist}">
+                                                	<tr></tr>
+                                                </c:if>
                                             </tbody>
                                         </table>
                                         <script type="text/javascript">

@@ -27,7 +27,7 @@
 						<h3 class="mb-3 pt-2">사물함임대정보 등록</h3>
             		</div>
             		<div class="col-auto">
-						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
+						<!-- <button class="btn btn-success" type="button" onclick="save()">저장</button> -->
 						<!-- <button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
 						<button class="btn btn-danger" type="button">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
@@ -639,7 +639,6 @@ function dateChange() {
     
     PLockerPriceChange();
 }   
-
 function PLockerPriceChange(){
    	var totalPLockerPrice;
    	
@@ -722,15 +721,6 @@ function totalChange() {
 }
 
 function save() {
-	if($('#itemname').val()==''){
-		$('#resultmessage').html('변경 할 강좌를 선택해주세요.');
-		$('.modal-footer').empty();
-		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		$('.modal-footer').append(cancelbutton);
-	    $('#modalButton').click();
-	    modalcheck = true;
-	    return false;
-	}
 	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
 		$('#resultmessage').html('반변경 차액을 결제해 주세요.');
 		$('.modal-footer').empty();
@@ -770,7 +760,7 @@ function payCash() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
+	newRow.append('<td class="paidprice align-right white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -865,7 +855,7 @@ function payDeposite() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "Deposite"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -920,6 +910,7 @@ function payDeposite() {
         	        url: "tbldepositeinsert", 
         	        dataType : 'json',
         	        data: { 
+        	        	SaleDate : getCurrentDate(),
         	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
         	        	LockerID : PrevPLockerID,
         	        	MemberID : $('#memberid').val(),

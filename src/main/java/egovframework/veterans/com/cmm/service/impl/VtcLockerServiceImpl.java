@@ -128,4 +128,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public tbldeposite DepositeByMemberID(tbldeposite tbldeposite) throws Exception {
 		return vtcLockerDAO.DepositeByMemberID(tbldeposite);
 	}
+
+	@Override
+	public void useLockerPriceUpdate(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.useLockerPriceUpdate(tbluselocker);
+	}
 }
