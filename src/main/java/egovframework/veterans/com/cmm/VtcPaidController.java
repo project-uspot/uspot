@@ -299,6 +299,7 @@ public class VtcPaidController {
 	    //log.debug(tblpaid.toString());
 	    VtcPaidService.tblpaidinsert(tblpaid);
 	    
-	    return "success";
+	    //return "success";
+	    return ""+tblpaid.getPKID();
 	}
 }

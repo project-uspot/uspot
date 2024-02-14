@@ -396,6 +396,9 @@
     	{ call up_SelectReceiptNo(#{saleDate, mode=IN, jdbcType=VARCHAR}, #{outputOrderNo, mode=OUT, jdbcType=INTEGER}) }
 	</select>
 	<insert id="tblpaidinsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+	<selectKey keyProperty="PKID" resultType="int" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
 		INSERT INTO tblpaid
 		(SiteCode, FPKID, ReceiptNo, SaleDate, 
 		RealSaleDate, SaleType, PayType, Price, 

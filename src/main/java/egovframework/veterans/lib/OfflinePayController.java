@@ -24,6 +24,7 @@ import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.lib.service.OfflinePayService;
+import egovframework.veterans.lib.service.ReceiptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +40,7 @@ public class OfflinePayController {
 	private final VtcMemberService vtcMemberService;
 	private final HttpRequester httpRequester;
 	private final VtcPaidService VtcPaidService;
+	private final ReceiptService receiptService;
 
 	public static Marker OfflinePay = MarkerFactory.getMarker("OfflinePay");
 
@@ -491,6 +493,8 @@ public class OfflinePayController {
 					}
 					
 					returnMap = OfflinePayService.insertPaid(returnMap);
+					//영수증 저장
+					ReceiptController.insertReceipt(f.getNullToSpaceStrValue(returnMap.get("paidPKID")),receiptService);
 				}
 			}catch (Exception e) {
 				log.error(OfflinePay,"ElecAssignData 저장오류:"+e.getMessage());

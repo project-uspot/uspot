@@ -125,15 +125,15 @@
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text me-3" id="basic-addon1">영수증인쇄</span>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="inlineRadio1" type="radio" name="inlineRadioOptions" value="option1" aria-describedby="basic-addon1"/>
+								<input class="form-check-input" id="inlineRadio1" type="radio" name="inlineRadioOptions" value="2" aria-describedby="basic-addon1"/>
 								<label class="form-check-label" for="inlineRadio1">2장</label>
 							</div>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="inlineRadio2" type="radio" name="inlineRadioOptions" value="option2" aria-describedby="basic-addon1"/>
+								<input class="form-check-input" id="inlineRadio2" type="radio" name="inlineRadioOptions" value="1" aria-describedby="basic-addon1"/>
 								<label class="form-check-label" for="inlineRadio2">1장</label>
 							</div>
 							<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-								<input class="form-check-input" id="inlineRadio3" type="radio" name="inlineRadioOptions" value="option3" aria-describedby="basic-addon1" checked="checked"/>
+								<input class="form-check-input" id="inlineRadio3" type="radio" name="inlineRadioOptions" value="0" aria-describedby="basic-addon1" checked="checked"/>
 								<label class="form-check-label" for="inlineRadio3">0장</label>
 							</div>
 						</div>
@@ -384,7 +384,7 @@
 						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
 					<div class="col w-30 px-1">
-						<button class="btn btn-soft-success w-100" type="button" >영수증재발행</button>
+						<button class="btn btn-soft-success w-100" type="button" disabled='disabled'>영수증재발행</button>
 					</div>
 					<div class="col w-30 px-1">
 						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
@@ -1089,6 +1089,7 @@ function fmsc_01save() {
 				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
 				url: "tblpaidinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
 				dataType : 'json',
+				async : false,
 				data: { 
 					FPKID: GroupNo,
 					SaleDate : paiddate.substr(0,10),
@@ -1110,6 +1111,7 @@ function fmsc_01save() {
 				},
 				success: function(Data){
 					console.log(Data);
+					paidPkid=Data;
 				},
 				error:function(xhr, status, error){
 					console.log("Status: " + status);
@@ -1118,11 +1120,34 @@ function fmsc_01save() {
 				}
 			});
 		}
+		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+		
+		if(inlineRadioOptions >= 1){
+		    var myWindow = window.open("${pageContext.request.contextPath}/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+		    myWindow.print();
+
+		    setTimeout(function() { 
+		        if(inlineRadioOptions == 2){
+		            myWindow.print();
+		        }
+
+		        setTimeout(function() { 
+		            myWindow.close(); 
+		            window.opener.location.reload();
+		            window.close();
+		        }, 2000); // 두 번째 인쇄 후 잠시 대기 후 창 닫기
+		    }, 2000); // 첫 번째 인쇄 후 잠시 대기
+		}else{
+			window.opener.location.reload();
+			window.close();
+		}
 	});
 
+
+
 	<%--// If all Ajax requests have completed successfully, then execute window-related statements--%>
-	window.opener.location.reload();
-	window.close();
+	//window.opener.location.reload();
+	//window.close();
 }  
 
 <%--//itemperiod 를 위한 날짜 포맷 함수--%>

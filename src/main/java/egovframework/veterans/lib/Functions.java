@@ -54,8 +54,8 @@ public class Functions {
 			(byte)0x036, (byte)0x016, (byte)0x025, (byte)0x001
 	};
 	
-	private String Encryption_Use="1";
-	private String Encryption_SEED_Use = "1";
+	private String Encryption_Use="0";
+	private String Encryption_SEED_Use = "0";
 	private String Encryption_Mode="0";
 	
 	public String getEncryption_Use() {
