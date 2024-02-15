@@ -98,10 +98,30 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 		insert("locker.DepositeInsert",tbldeposite);
 	}
 	
-	public tbldeposite DepositeByMemberID(tbldeposite tbldeposite)throws Exception{
-		return selectOne("locker.DepositeByMemberID",tbldeposite);
+	public List<tbldeposite> DepositeByMemberID(tbldeposite tbldeposite)throws Exception{
+		return selectList("locker.DepositeByMemberID",tbldeposite);
 	}
 	public void useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception{
 		update("locker.useLockerPriceUpdate",tbluselocker);
+	}
+	
+	public void UpduseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.UpduseLocker",tbluselocker);
+	}
+	
+	public void UpdPLockerBySave(tblplocker tblplocker)throws Exception{
+		update("locker.UpdPLockerBySave",tblplocker);
+	}
+	
+	public void ReturnLocker(tblplocker tblplocker)throws Exception{
+		update("locker.ReturnLocker",tblplocker);
+	}
+	
+	public void ChangeDeposite(Map<String,Object> tbldeposite)throws Exception{
+		update("locker.ChangeDeposite",tbldeposite);
+	}
+	
+	public void ReturnuseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.ReturnuseLocker",tbluselocker);
 	}
 }

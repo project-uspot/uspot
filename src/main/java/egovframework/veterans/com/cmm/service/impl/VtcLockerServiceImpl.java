@@ -125,12 +125,37 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	}
 
 	@Override
-	public tbldeposite DepositeByMemberID(tbldeposite tbldeposite) throws Exception {
+	public List<tbldeposite> DepositeByMemberID(tbldeposite tbldeposite) throws Exception {
 		return vtcLockerDAO.DepositeByMemberID(tbldeposite);
 	}
 
 	@Override
 	public void useLockerPriceUpdate(tbluselocker tbluselocker) throws Exception {
 		vtcLockerDAO.useLockerPriceUpdate(tbluselocker);
+	}
+
+	@Override
+	public void UpduseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.UpduseLocker(tbluselocker);
+	}
+
+	@Override
+	public void UpdPLockerBySave(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.UpdPLockerBySave(tblplocker);
+	}
+
+	@Override
+	public void ReturnLocker(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.ReturnLocker(tblplocker);
+	}
+
+	@Override
+	public void ChangeDeposite(Map<String, Object> tbldeposite) throws Exception {
+		vtcLockerDAO.ChangeDeposite(tbldeposite);
+	}
+
+	@Override
+	public void ReturnuseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.ReturnuseLocker(tbluselocker);
 	}
 }

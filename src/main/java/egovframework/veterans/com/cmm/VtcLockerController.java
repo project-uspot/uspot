@@ -378,4 +378,87 @@ public class VtcLockerController{
 		
 		return "success";
 	}
+	
+	@ResponseBody
+	@PostMapping("/UpduseLocker")
+	public String UpduseLocker(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(tbluselocker.getSiteCode());
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+
+		vtcLockerService.UpduseLocker(tbluselocker);
+		
+		vtcLockerService.UpdPLockerBySave(tblplocker);
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerChange")
+	public String lockerChange(tbluselocker tbluselocker,tblplocker tblplocker,
+								@RequestParam(name = "PrevPLockerID")int PrevPLockerID)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.UpduseLocker(tbluselocker);
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(tbluselocker.getSiteCode());
+		tblplocker.setState(2);
+		tblplocker.setLSaleNo(tbluselocker.getPKID());
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.UpdPLocker(tblplocker);
+		
+		tblplocker.setPLockerID(PrevPLockerID);
+		
+		vtcLockerService.ReturnLocker(tblplocker);
+		
+		Map<String,Object> tbldeposite = new HashMap<String, Object>();
+		
+		tbldeposite.put("SiteCode",users.getSiteCode());
+		tbldeposite.put("LockerID",tbluselocker.getLockerID());
+		tbldeposite.put("MemberID",tbluselocker.getMemberID());
+		tbldeposite.put("UpdUserPKID",users.getUserPKID());
+		tbldeposite.put("PrevPLockerID",PrevPLockerID);
+		
+		vtcLockerService.ChangeDeposite(tbldeposite);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerReturn")
+	public String lockerReturn(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.ReturnuseLocker(tbluselocker);
+		
+		
+		
+		return "success";
+	}
 }
