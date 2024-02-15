@@ -18,10 +18,6 @@ public class tbldeposite {
 
 	private int Deposite;
 
-	private int Misu;
-
-	private int PaidPrice;
-
 	private String IsDelete;
 
 	private String AddDate;

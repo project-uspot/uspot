@@ -914,9 +914,7 @@ function payDeposite() {
         	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
         	        	LockerID : PrevPLockerID,
         	        	MemberID : $('#memberid').val(),
-        	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
-        	        	Misu : removeCommasFromNumber($('#misuPLockerDeposite').val()),
-        	        	PaidPrice : removeCommasFromNumber($('#paidPLockerDeposite').val())
+        	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val())
         	        },
         	        success: function(success) {	
         	        	window.opener.location.reload();

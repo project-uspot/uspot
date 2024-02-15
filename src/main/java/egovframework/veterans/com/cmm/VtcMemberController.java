@@ -1331,7 +1331,7 @@ public class VtcMemberController {
 		
 		tbldeposite.setLockerID(uselocker.getLockerID());
 		
-		tbldeposite deposite = vtcLockerService.DepositeByMemberID(tbldeposite);
+		List<tbldeposite> deposite = vtcLockerService.DepositeByMemberID(tbldeposite);
 		
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");

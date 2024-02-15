@@ -28,10 +28,10 @@
             		</div>
             		<div class="col-auto">
 						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
-						<button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
+						<button class="btn btn-secondary" type="button" onclick="Return()">반납</button>
 						<button class="btn btn-danger" type="button" onclick="alldelete()">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
-						<button class="btn btn-soft-info" type="button" onclick="lockerChange()">변경</button>
+						<button class="btn btn-soft-info" type="button" onclick="Change()">변경</button>
             		</div>
         		</div>
         	</div>
@@ -116,6 +116,7 @@
 						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;" value="${lockerinfo.PLockerNo}"/>
 						<input type="hidden" id="DBPLockerID" value="${lockerinfo.PLockerID}"/>
 						<input type="hidden" id="DBPKID" value="${uselocker.PKID}"/>
+						<input type="hidden" id="DBPLockerNO" value="${lockerinfo.PLockerNo}"/>
 						<fmt:parseNumber var="DBPLockerPrice" integerOnly="true" value="${lockerinfo.PLockerPrice}"/>
 						<input type="hidden" id="DBPLockerPrice" name="DBPLockerPrice" value="${DBPLockerPrice}"/>
 						<input type="hidden" id="wiyak" name="wiyak" value="${wiyak}"/>
@@ -349,21 +350,23 @@
 									</tr>
 								</c:forEach>
 								 <c:if test="${not empty tbldeposite}">
-									 <tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite">
-									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${tbldeposite.realSaleDate}</td>
-									    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
-									    <fmt:parseNumber var="depoprice" integerOnly="true" value="${tbldeposite.deposite}"/>
-									    <td class="paidprice align-middle white-space-nowrap text-end fw-bold"><fmt:formatNumber value="${depoprice}" pattern="#,###"/></td>
-									    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
-									    <td class="paidmapsa align-middle white-space-nowrap text-center"></td>
-									    <td class="paidcardtype align-middle white-space-nowrap text-start"></td>
-									    <td class="paidassignN align-middle white-space-nowrap text-start"></td>
-									    <td class="paidcardN align-middle white-space-nowrap text-start"></td>
-									    <td class="POS align-middle white-space-nowrap text-start"></td>
-									    <td class="signpad py-2 align-middle white-space-nowrap"></td>
-									    <td class="OID py-2 align-middle white-space-nowrap"></td>
-									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
-									</tr>
+								 	<c:forEach items="${tbldeposite}" var="deposite">
+								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite">
+										    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td>
+										    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
+										    <fmt:parseNumber var="depoprice" integerOnly="true" value="${deposite.deposite}"/>
+										    <td class="paidprice align-middle white-space-nowrap text-end fw-bold"><fmt:formatNumber value="${depoprice}" pattern="#,###"/></td>
+										    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
+										    <td class="paidmapsa align-middle white-space-nowrap text-center"></td>
+										    <td class="paidcardtype align-middle white-space-nowrap text-start"></td>
+										    <td class="paidassignN align-middle white-space-nowrap text-start"></td>
+										    <td class="paidcardN align-middle white-space-nowrap text-start"></td>
+										    <td class="POS align-middle white-space-nowrap text-start"></td>
+										    <td class="signpad py-2 align-middle white-space-nowrap"></td>
+										    <td class="OID py-2 align-middle white-space-nowrap"></td>
+										    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+										</tr>
+								 	</c:forEach>
 								 </c:if>
                         	</tbody>
                     	</table>
@@ -505,7 +508,6 @@ $('.nav-item').on('click', function() {
                 		if(data[j].ClickTime != null){
                 			
                 			const clickTime = new Date(data[j].ClickTime);
-
                 			const currentTime = new Date();
 
                 			const timeDifferenceInMilliseconds = currentTime - clickTime;
@@ -778,7 +780,7 @@ function daydif() {
 
 	var totalcnt = Math.floor(totalcnt_timeDifference / (1000 * 60 * 60 * 24));
 	var usecnt = Math.floor(usecnt_timeDifference / (1000 * 60 * 60 * 24))+1;
-
+	
 	$('#totalcnt').val(totalcnt);
 	$('#usecnt').val(usecnt);
 }
@@ -792,6 +794,10 @@ function gongjeChange() {
 	var totalPLockerPrice = removeCommasFromNumber($('#totalPLockerPrice').val());
 	
 	var useprice = julsak(usecnt/totalcnt*totalPLockerPrice);
+	
+	if(useprice<0){
+		useprice = 0;
+	}
 	
 	var wiyakprice = julsak(totalPLockerPrice*(wiyak/100));
 	if(!isFinite(wiyakprice)){
@@ -818,29 +824,140 @@ function julsak(price){
 
 
 function save() {
-	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
-		$('#resultmessage').html('반변경 차액을 결제해 주세요.');
-		$('.modal-footer').empty();
-		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		$('.modal-footer').append(cancelbutton);
+	$.ajax({
+        type: "POST", 
+        url: "UpduseLocker", 
+        dataType : 'json',
+        data: { 
+        	PKID : $('#DBPKID').val(),
+        	LockerID : $('#DBPLockerID').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			Note : $('#note').val(),
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.close();
+            	window.opener.location.reload();	
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function Change() {
+	var DBPLockerID = $('#DBPLockerID').val();
+	console.log(PrevPLockerID);
+	if(PrevPLockerID == 0 || DBPLockerID == PrevPLockerID){
+		$('#resultmessage').html('변경할 사물함을 선택해주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
 	    $('#modalButton').click();
 	    modalcheck = true;
 	    return false;
-	}else{
-		fmsc_01save();	
 	}
+	$('#resultmessage').html('사물함을 변경하시겠습니까?');
+  	$('.modal-footer').empty();
+  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="lockerChange()">확인</button>';
+  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+  	$('.modal-footer').append(okaybutton);
+  	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+    return false;
 }
 
-
-//itemperiod 를 위한 날짜 포맷 함수
-function extractYearMonth(dateString) {
-  
-	const [year, month] = dateString.split('-');
-  
-	const yearMonth = year + month;
-	
-    return yearMonth;
+function lockerChange() {
+	$.ajax({
+        type: "POST", 
+        url: "lockerChange", 
+        dataType : 'json',
+        data: {
+        	PKID : $('#DBPKID').val(),
+        	<!--옛날에 고른거-->
+        	PrevPLockerID : $('#DBPLockerID').val(),
+        	<!--지금고른거-->
+        	LockerID : PrevPLockerID,
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	MemberID : $('#memberid').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			Note : $('#DBPLockerNO').val() +' -> '+$('#PLockerNo').val()
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.close();
+            	window.opener.location.reload();	
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
+
+function Return() {
+	$('#resultmessage').html('사물함을 반납하시겠습니까?');
+  	$('.modal-footer').empty();
+  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="lockerReturn()">확인</button>';
+  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+  	$('.modal-footer').append(okaybutton);
+  	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+}
+
+function lockerReturn() {
+	$.ajax({
+        type: "POST", 
+        url: "lockerReturn", 
+        dataType : 'json',
+        data: {
+        	PKID : $('#DBPKID').val(),
+        	LockerID : $('#DBPLockerID').val(),
+        	MemberID : $('#memberid').val(),
+        	ReturnDate : getCurrentDate(),
+        	IsReturn : 'Y'
+        },
+        success: function(data) {	
+        	window.opener.location.reload();
+        	window.close();
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
 //현금 결제
 function payCash() {
 	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
@@ -917,7 +1034,6 @@ function payCash() {
 	});
 }
 
-alert(PrevPLockerID);
 function payDeposite() {
 	if($('#misuPLockerDeposite').val() == 0 || $('#misuPLockerDeposite').val() == ''){
 	  	$('#resultmessage').html('받을 보증금이 0원입니다.<br>확인 후 결제해 주세요.');
@@ -928,10 +1044,12 @@ function payDeposite() {
 	    modalcheck = true;
 	    return false;
 	}
+	var misudeposite = $('#misuPLockerDeposite').val();
+	
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + misudeposite + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -971,13 +1089,11 @@ function payDeposite() {
         	        	RealSaleDate : getCurrentDateTime(),
         	        	LockerID : $('#DBPLockerID').val(),
         	        	MemberID : $('#memberid').val(),
-        	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
-        	        	Misu : removeCommasFromNumber($('#misuPLockerDeposite').val()),
-        	        	PaidPrice : removeCommasFromNumber($('#paidPLockerDeposite').val())
+        	        	Deposite : removeCommasFromNumber(misudeposite)
         	        },
         	        success: function(success) {	
         	        	window.opener.location.reload();
-        	       	 	window.location.href = 'mLockerDetailF.do?PKID='+data;
+        	       	 	//window.location.href = 'mLockerDetailF.do?PKID='+$('#DBPKID').val();
         	        },
         	        error: function(xhr, status, error) {
         	       	 console.log("Status: " + status);
