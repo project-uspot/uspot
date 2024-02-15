@@ -18,4 +18,8 @@ public class ReceiptDAO extends EgovComAbstractDAO {
 		insert("receipt.insertReceipt",sqlMap);
 	}
 
+	public Map<String, Object> getReReceipt(Map<String, Object> setSql) {
+		return selectOne("receipt.getReReceipt",setSql);
+	}
+
 }

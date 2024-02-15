@@ -45,4 +45,15 @@
 	ReceiptText = #{receiptText};
 	]]>
 	</insert>
+	
+	<select id="getReReceipt" parameterType="Map" resultType="Map">
+	<![CDATA[
+		select *
+		from tbl_receipt a
+		where a.isDelete = 'N'
+		and a.Sitecode  = #{SiteCode}
+		and a.FPKID = #{FPKID}
+		LIMIT 1;
+	]]>
+	</select>
 </mapper>

@@ -501,7 +501,7 @@ function test(ItemID,selectedDate,nextDate) {
 	        dataType : 'json',
 	        data: { 
 	        	ItemID: ItemID,
-	        	UpdDate: selectedDate,
+	        	FindDate: selectedDate,
 	        	MemberID : $("#memberid").val(),
 	        	GroupSaleNo : $("#tempSaleNo").val()
 	        },
@@ -635,7 +635,7 @@ function itemtbodyclick(clickedRow) {
 		dataType : 'json',
 		data: { 
 			ItemID: itemid,
-			UpdDate: result[0]
+			FindDate: result[0]
 		},
 		success: function(list) {
 		var priceoptionlist = $('#price');
@@ -1143,11 +1143,9 @@ function fmsc_01save() {
 		}
 	});
 
-
-
 	<%--// If all Ajax requests have completed successfully, then execute window-related statements--%>
-	//window.opener.location.reload();
-	//window.close();
+	window.opener.location.reload();
+	window.close();
 }  
 
 <%--//itemperiod 를 위한 날짜 포맷 함수--%>

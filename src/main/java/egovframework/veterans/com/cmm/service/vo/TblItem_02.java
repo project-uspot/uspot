@@ -36,4 +36,6 @@ public class TblItem_02 implements Serializable {
 
 	private String ItemID;
 	
+	private String FindDate;
+	
 }

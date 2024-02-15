@@ -24,4 +24,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 		 receiptDAO.insertReceipt(sqlMap);
 	}
 
+	@Override
+	public Map<String, Object> getReReceipt(Map<String, Object> setSql) {
+		return receiptDAO.getReReceipt(setSql);
+	}
+
 }

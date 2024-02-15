@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.lib.service.ReceiptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +29,12 @@ public class ReceiptController {
 
 	static Functions f = Functions.getInstance();
 	
+	private final HttpSession session;
 	private final ReceiptService receiptService;
 	
 	public static Marker Receipt = MarkerFactory.getMarker("Receipt");
 	
+	// TODO 영수증 발행	
 	@GetMapping(value = "/Receipt.do")
 	public String selectReceipt(HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 
@@ -154,5 +159,26 @@ public class ReceiptController {
 		sqlMap.put("receiptText",receiptText);
 		log.debug(sqlMap.toString());
 		receiptService.insertReceipt(sqlMap);
+	}
+	
+	// TODO 영수증 재발행
+	@GetMapping(value = "/ReReceipt.do")
+	public String selectReReceipt(HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+
+		Map<String,Object> setSql = new HashMap<String,Object>();
+		if (users != null) {
+			setSql.put("SiteCode",users.getSiteCode());
+		}else {
+			
+		}
+		setSql.put("FPKID",request.getParameter("PKID"));
+		Map<String,Object> receipt = receiptService.getReReceipt(setSql);
+		if(Objects.isNull(receipt)) {
+			return "redirect:/Receipt.do?PKID="+request.getParameter("PKID");
+		}
+		
+		model.addAttribute("receipt", receipt);
+		return "/receipt/reReceipt";
 	}
 }

@@ -99,4 +99,7 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public void paidchange(tblpaid tblpaid)throws Exception{
 		update("paid.paidchange",tblpaid);
 	}
+	public void tblElecAssignDataInsert(tblpaid tblpaid) {
+		insert("paid.tblElecAssignDataInsert",tblpaid);
+	}
 }

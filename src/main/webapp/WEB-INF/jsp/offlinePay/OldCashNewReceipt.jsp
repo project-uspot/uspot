@@ -248,7 +248,7 @@ function manualPay(){
 
 <%-- 결제 완료 --%>
 function save(){
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#PayType").val() + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');

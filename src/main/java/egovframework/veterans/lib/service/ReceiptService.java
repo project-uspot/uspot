@@ -9,4 +9,6 @@ public interface ReceiptService {
 
 	public void insertReceipt(Map<String, Object> sqlMap);
 
+	public Map<String, Object> getReReceipt(Map<String, Object> setSql);
+
 }

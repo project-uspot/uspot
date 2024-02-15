@@ -159,7 +159,7 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	}
 
 	@Override
-	public fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01) throws Exception {
+	public List<fmsc_s01> fmsc_s01bysaleno(fmsc_s01 fmsc_s01) throws Exception {
 		return vtcMemberDAO.fmsc_s01bysaleno(fmsc_s01);
 	}
 

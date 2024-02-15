@@ -104,10 +104,15 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list" id="itemtbody">
-                               		<tr>
+                                	<c:forEach items="${fmsc_s01List }" var="fmsc_s01" varStatus="status">
+                                	<c:set var="item" value="${itemList[status.index]}" />
+                                	<tr>
                                			<td class="code align-middle white-space-nowrap text-center fw-bold">
                                			${item.ItemCode}
+                               			<input type="hidden" id="ItemID" name="ItemID" value="${item.ItemID}">
                                			<input type="hidden" id="SaleNo" name="SaleNo" value="${fmsc_s01.saleNo}">
+                               			<input type="hidden" id="GroupSaleNo" name="GroupSaleNo" value="${fmsc_s01.groupSaleNo}">
+                               			<input type="hidden" id="InType" name="InType" value="${fmsc_s01.inType}">
                                			</td>
 									    <td class="category align-middle white-space-nowrap text-center">
 									    	<c:choose>
@@ -135,7 +140,11 @@
 									    <td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
 									    <td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2}</td>
 									    <td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)}</td>
+									    <input type="hidden" value="30" name="totalnum" id="totalnum">
+									    <input type="hidden" value="30" name="usenum" id="usenum">
+									    <%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>
 									</tr>
+                                	</c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -151,7 +160,7 @@
 		        	<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">접수일자</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="saledate" name="saledate" value="${fmsc_s01.saleDate}"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="saledate" name="saledate" value="${fmsc_s01List[0].saleDate}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n4">
@@ -172,18 +181,18 @@
 						</div>
 					</div>
 				</div>
-				<fmt:parseNumber var="DefPrice" integerOnly="true" value="${item.DefPrice}"/>
+				<%-- <fmt:parseNumber var="DefPrice" integerOnly="true" value="${item.DefPrice}"/>
 				<fmt:parseNumber var="Price1" integerOnly="true" value="${item.Price1}"/>
 				<fmt:parseNumber var="Price2" integerOnly="true" value="${item.Price2}"/>
 				<fmt:parseNumber var="Price3" integerOnly="true" value="${item.Price3}"/>
 				<fmt:parseNumber var="Price4" integerOnly="true" value="${item.Price4}"/>
-				<fmt:parseNumber var="Price5" integerOnly="true" value="${item.Price5}"/>
+				<fmt:parseNumber var="Price5" integerOnly="true" value="${item.Price5}"/> --%>
 				<div class="row">
 		        	<div class="col-auto">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="basic-addon1">강습료</span>
 							<select class="form-select" aria-label="Default select example" id="price" aria-describedby="basic-addon1" style="width: 152px; text-align: right;">
-								<c:if test="${not empty DefPrice}">
+								<%-- <c:if test="${not empty DefPrice}">
 									<option value="${DefPrice}">어른<fmt:formatNumber value="${item.DefPrice}" pattern="#,###"/></option>
 								</c:if>
 								<c:if test="${not empty Price1}">
@@ -200,14 +209,14 @@
 								</c:if>
 								<c:if test="${not empty Price5}">
 									<option value="${Price5}"><fmt:formatNumber value="${item.Price5}" pattern="#,###"/></option>								
-								</c:if>
+								</c:if> --%>
 							</select>
 						</div>
 					</div>
 					<div class="col-auto">
 						<div class="input-group input-group-sm mb-3 ms-1">
 							<span class="input-group-text" id="basic-addon1">등록개월</span>
-							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 60px;" name="regmonth" id="regmonth" value="${fmsc_s01.regMonth}"/>
+							<input class="form-control" type="number" aria-describedby="basic-addon1" min="1" style="width: 60px;" name="regmonth" id="regmonth" value="<%-- ${fmsc_s01.regMonth} --%>"/>
 						</div>
 					</div>
 					<div class="col-md-5 ms-n2" style="width: 327px;">
@@ -223,14 +232,14 @@
 					</div>
 				</div>
 				<script type="text/javascript">
-				var fmsc_s01DCID = '${fmsc_s01.DCID}';
-				$('#dcds').val(fmsc_s01DCID);
+				/* var fmsc_s01DCID = '${fmsc_s01.DCID}';
+				$('#dcds').val(fmsc_s01DCID); */
 				</script>
 				<div class="row">
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">강습기간</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" value="${fmsc_s01.fromDate}"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" value="<%-- ${fmsc_s01.fromDate} --%>"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -238,13 +247,13 @@
 					</div>
 					<div class="col-auto ms-n1">
 						<div class="input-group mb-3 input-group-sm">
-							<input class="form-control" type="date" id="todate" name="todate" value="${fmsc_s01.toDate}"/>
+							<input class="form-control" type="date" id="todate" name="todate" value="<%-- ${fmsc_s01.toDate} --%>"/>
 						</div>
 					</div>
 					<div class="col-auto">
 						<div class="input-group mb-3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">할인율/금액</span>
-							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;" value="${fmsc_s01.discountRate}"/>
+							<input class="form-control" type="number" id="dcper" name="dcper" aria-describedby="basic-addon1" min="1" readonly="readonly" style="width: 65px;" value="<%-- ${fmsc_s01.discountRate} --%>"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n3">
@@ -253,7 +262,7 @@
 					<div class="col-auto ms-n2">
 						<div class="input-group mb-3 w-auto input-group-sm">
 							<input class="form-control" type="text" id="dcpri" name="dcpri" readonly="readonly" 
-							style="width: 99px;text-align: right;" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"/>
+							style="width: 99px;text-align: right;" value="<%-- <fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/> --%>"/>
 						</div>
 					</div>
 				</div>
@@ -267,7 +276,7 @@
 		        	<div class="col-md-5" style="width: 312px;">
 		        		<div class="input-group mb-3 ms-n3 input-group-sm">
 							<span class="input-group-text" id="basic-addon1">합계</span>
-							<input class="form-control" type="text" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly" value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>"/>
+							<input class="form-control" type="text" id="sortpri" name="sortpri" aria-describedby="basic-addon1" style="text-align: right;" readonly="readonly" value="<%-- <fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/> --%>"/>
 						</div>
 		        	</div>
 		        </div>
@@ -326,14 +335,14 @@
 													<span class="input-group-text" id="basic-addon1">총매출금액</span>
 													<input class="form-control" type="text" id="totalprice" name="totalprice" 
 													aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly"
-													 value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>"/>
+													 value="<%-- <fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/> --%>"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">정원</span>
 													<input class="form-control" type="text" id="max" name="max" 
-													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.OffMax + item.OnMax}"/>
+													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="<%-- ${item.OffMax + item.OnMax} --%>"/>
 												</div>
 											</div>
 										</div>
@@ -343,14 +352,14 @@
 													<span class="input-group-text" id="basic-addon1">총결제금액</span>
 													<input class="form-control" type="text" id="tpaidprice" name="tpaidprice"
 													 aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly"
-													  value="<fmt:formatNumber value="${fmsc_s01.realPrice-fmsc_s01.misu}" pattern="#,###"/>"/>
+													  value="<%-- <fmt:formatNumber value="${fmsc_s01.realPrice-fmsc_s01.misu}" pattern="#,###"/> --%>"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">등록</span>
 													<input class="form-control" type="text" id="enter" name="enter"
-													 aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.RegCnt + item.RegCnt2}"/>
+													 aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="<%-- ${item.RegCnt + item.RegCnt2} --%>"/>
 												</div>
 											</div>
 										</div>
@@ -359,14 +368,14 @@
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">총미납금액</span>
 													<input class="form-control" type="text" id="tremainprice" name="tremainprice"
-													 aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly" value="<fmt:formatNumber value="${fmsc_s01.misu}" pattern="#,###"/>"/>
+													 aria-describedby="basic-addon1" style="width: 134px;text-align: right;" readonly="readonly" value="<%-- <fmt:formatNumber value="${fmsc_s01.misu}" pattern="#,###"/> --%>"/>
 												</div>
 											</div>
 											<div class="col-auto">
 												<div class="input-group mb-3 input-group-sm">
 													<span class="input-group-text" id="basic-addon1">잔여</span>
 													<input class="form-control" type="text" id="remain" name="remain" 
-													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)}"/>
+													aria-describedby="basic-addon1" style="width: 57px;" readonly="readonly" value="<%-- ${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)} --%>"/>
 												</div>
 											</div>
 										</div>
@@ -395,7 +404,7 @@
 				<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">강습료</span>
-						<input class="form-control" type="text" id="learnprice" name="learnprice" readonly="readonly" style="text-align: right;font-weight: 900;" value="<fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/>"/>
+						<input class="form-control" type="text" id="learnprice" name="learnprice" readonly="readonly" style="text-align: right;font-weight: 900;" value="<%-- <fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/> --%>"/>
 					</div>
 				</div>
 		    </div>
@@ -438,6 +447,7 @@
 									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
 									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
 									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									    <td class="paidPKID py-2 align-middle white-space-nowrap" style="display:none;">${paid.PKID}</td>
 									</tr>
 								</c:forEach>
                         	</tbody>
@@ -454,41 +464,43 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
 					</div>
-					<div class="col-auto ms-n6">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					</div>
-					<div class="col-auto ms-n1">
-						<button class="btn btn-phoenix-success" type="button">현금(제로페이)</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button">신용카드</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button">결제취소</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-success w-100" type="button" onclick="reReceipt()">영수증재발행</button>
 					</div>
-					<div class="col-auto ms-5">
-						<button class="btn btn-soft-info" type="button">행삭제</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
 					</div>
 				</div>
 	    	</div>
 	    </div>
+	    <form action="" name="payFrm">
+	    	<input type="hidden" name="paidCategory" value="">
+	    	<input type="hidden" name="paidPrice" value="">
+	    	<input type="hidden" name="paidAssignNo" value="">
+	    	<input type="hidden" name="SaleTime" value="">
+	    	<input type="hidden" name="OID" value="">
+	    	<input type="hidden" name="TID" value="">
+	    	<input type="hidden" name="Maeipsa" value="">
+	    	<input type="hidden" name="CardName" value="">
+	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="${fmsc_s01List[0].groupSaleNo }">
+	    	<input type="hidden" name="Insert" id="Insert" value="Y">
+	    	<input type="hidden" name="PKID" id="PKID" value="">
+	    </form>
 	</div>
 </body>
 <script type="text/javascript">
@@ -508,7 +520,211 @@ $(document).ready(function() {
 	$('#itemtbody').on('click', 'tr', function() {
 		itemtbodyclick(this);
 	});
+	
+	// 첫 번째 테이블 행 선택
+    var firstRow = $('tbody#itemtbody tr:first');
+	if (firstRow.length) {
+        itemtbodyclick(firstRow);
+    }
+	
+	<%-- 결제가 추가 되었는지 확인하는 코드 --%>
+	<%--/* var paidchk = false;
+	const targetNode = document.getElementById('paidbody');
+	const config = { childList: true, subtree: true, characterData: true, attributes: true };
+	const callback = function(mutationsList, observer) {
+	    for(let mutation of mutationsList) {
+	        if (mutation.type === 'childList') {
+	            // tr 요소가 추가되거나 제거됨
+	        	paidchk = true;
+	        } else if (mutation.type === 'attributes') {
+	            // tr 요소의 속성이 변경됨
+	        	paidchk = true;
+	        } else if (mutation.type === 'characterData') {
+	            // tr 요소의 데이터가 변경됨
+	        	paidchk = true;
+	        }
+	    }
+	};
+	const observer = new MutationObserver(callback);
+	observer.observe(targetNode, config); */--%>
 });
+
+
+
+//과거에 선택했던 행
+var previousRow = null;
+var previousPaidRow = null;
+
+//과거에 선택했던 행의 itemid
+var clickeditemid;
+
+//행을 클릭했을때 데이터를 밑에 뿌려주는 함수
+function itemtbodyclick(clickedRow) {
+	if (previousRow !== null) {
+    	$(previousRow).css('background-color', ''); // Unselect the previous row
+	}
+	
+	$(clickedRow).css('background-color', 'lightblue'); // Highlight the clicked row
+    previousRow = clickedRow; // Update the previousRow variable with the clicked row
+    var date = $(clickedRow).find('.date').text();
+    const result = parseString(date);
+    document.getElementById('fromdate').value = result[0];
+    document.getElementById('todate').value = result[1];
+    document.getElementById('regmonth').value = result[2];
+    var price = $(clickedRow).find('.price').text();
+    var itemid = $(clickedRow).find('#ItemID').val();
+    clickeditemid = itemid;
+    $.ajax({
+		type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+		url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
+		dataType : 'json',
+		data: { 
+			ItemID: itemid,
+			FindDate: result[0]
+		},
+		success: function(list) {
+		var priceoptionlist = $('#price');
+		priceoptionlist.empty();
+		$.ajax({
+			type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+			url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
+			dataType : 'json',
+			success: function(codelist) {
+						if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
+							priceoptionlist.append($('<option>', {
+								id: list.DefPrice,
+								value: codelist[0]+list.DefPrice,
+								text: codelist[0]+formatNumberWithCommas(list.DefPrice)
+							}));
+						}
+
+						if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
+							var option = $('<option>', {
+								id: list.Price1,
+								value: codelist[1] + list.Price1,
+								text: codelist[1] + formatNumberWithCommas(list.Price1)
+							});
+
+							priceoptionlist.append(option);
+
+							if ($('#yearage').text() > 13 && $('#yearage').text() < 19) {
+								option.attr('selected', 'selected');
+								$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price1));
+								sortchange(clickedRow);
+							}
+						}
+						if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
+							var option = $('<option>', {
+								id: list.Price2,
+								value: codelist[2] + list.Price2,
+								text: codelist[2] + formatNumberWithCommas(list.Price2)
+							});
+
+							priceoptionlist.append(option);
+
+							if ($('#yearage').text() >= 0 && $('#yearage').text() < 14) {
+								option.attr('selected', 'selected');
+								$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price2));
+								sortchange(clickedRow);
+							}
+						}
+						if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
+							var option = $('<option>', {
+								id: list.Price3,
+								value: codelist[3]+list.Price3,
+								text: codelist[3]+formatNumberWithCommas(list.Price3)
+							});
+							priceoptionlist.append(option);
+							if ($('#yearage').text() > 64) {
+								option.attr('selected', 'selected');
+								$(clickedRow).find('.price').text(formatNumberWithCommas(list.Price3));
+								sortchange(clickedRow);
+							}
+						}
+						if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
+							priceoptionlist.append($('<option>', {
+								id: list.Price4,
+								value: codelist[4]+list.Price4,
+								text: codelist[4]+formatNumberWithCommas(list.Price4)
+							}));
+						}
+						if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
+							priceoptionlist.append($('<option>', {
+								id: list.Price5,
+								value: codelist[5]+list.Price5,
+								text: codelist[5]+formatNumberWithCommas(list.Price5)
+							}));
+						}
+
+						//만약 강습료를 바꾸면 다른행을 선택했다가 와도 바꾼 강습료로 선택되게하는 기능
+						if ($('#price option[value="' + $('#'+clickeditemid+'pricecodechange').val() + '"]').length > 0) {
+							$('#price').val($('#'+clickeditemid+'pricecodechange').val());
+							$(clickedRow).find('.price').text($('#price option:selected').attr('id'));
+							sortchange(clickedRow);
+						}
+
+						//바뀐 강습료를 저장하기 위한 인풋 생성
+						var newHiddenInput = $('<input>').attr({
+							type: 'hidden',
+							id: itemid+'pricecodechange',
+							name: 'pricecodechange'
+						});
+
+						$(clickedRow).append(newHiddenInput);
+						//행 전환시 할인유형 바꾸기
+						$('#dcds').val($(clickedRow).find('.dccode').text());
+						//행 전환시 할인율 바꾸기
+						$('#dcper').val($(clickedRow).find('.dcpercent').text());
+						//행 전환시 할인금액 바꾸기
+						$('#dcpri').val($(clickedRow).find('.dc').text());
+						//행 전환시 합계 바꾸기
+						$('#sortpri').val($(clickedRow).find('.sort').text());
+						//행 전환시 정원 바꾸기
+						$('#max').val($(clickedRow).find('.max').text());
+						//행 전환시 등록 바꾸기
+						$('#enter').val($(clickedRow).find('.enter').text());
+						//행 전환시 잔여 바꾸기
+						$('#remain').val($(clickedRow).find('.remain').text());
+						//행 전환시 강습료 바꾸기
+						$('#learnprice').val($(clickedRow).find('.price').text());
+						//행 전환시 총일수 바꾸기
+						$('#totalday').val($(clickedRow).find('input[name="totalnum"]').val());
+						//행 전환시 사용일수 바꾸기
+						$('#useday').val($(clickedRow).find('input[name="usenum"]').val());
+						//총 금액 설정
+						totalchange();
+					},
+					error: function(xhr, status, error) {
+						console.log("Status: " + status);
+						console.log("Error: " + error);
+					}
+				});
+			},
+			error: function(xhr, status, error) {
+				console.log("Status: " + status);
+				console.log("Error: " + error);
+			}
+		});
+}
+
+function paidbodyclick(clickedRow) {
+	if (previousPaidRow !== null) {
+		$(previousPaidRow).css('background-color', ''); <%-- Unselect the previous row--%>
+	}
+
+	$(clickedRow).css('background-color', 'lightblue'); <%-- Highlight the clicked row --%>
+	previousPaidRow = clickedRow; <%-- Update the previousRow variable with the clicked row --%>
+	frm = document.payFrm;
+	frm.paidCategory.value = $(clickedRow).find('.paidcategory').text();
+	frm.paidPrice.value = $(clickedRow).find('.paidprice').text();
+	frm.paidAssignNo.value = $(clickedRow).find('.paidassignN').text();
+	frm.SaleTime.value = $(clickedRow).find('.SaleTime').text();
+	frm.TID.value = $(clickedRow).find('.TID').text();
+	frm.OID.value = $(clickedRow).find('.OID').text();
+	frm.Maeipsa.value = $(clickedRow).find('.paidmapsa').text();
+	frm.CardName.value = $(clickedRow).find('.paidcardtype').text();
+	frm.PKID.value = $(clickedRow).find('.paidPKID').text();
+}
 	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
@@ -526,9 +742,21 @@ document.addEventListener('keydown', function(event) {
 $('#price').on('change', function() {
     // 선택된 옵션의 값 가져오기
 	var selectedValue = $('#price').val();
-    $('#itemtbody').find('.price').text(formatNumberWithCommas(selectedValue));
+	var selectedprice = $('#price').find('option:selected').attr('id');
+	$('#itemtbody tr').each(function() {
+		var itemIDValue = $(this).find('input[name="ItemID"]').val();
+		if (itemIDValue === clickeditemid) {
+			<%--// 해당 행을 찾았을 때 선택된 값으로 'price' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+			$(this).find('.price').text(formatNumberWithCommas(selectedprice));
+			sortchange(this);
+			return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
+		}
+	});
+    //$('#itemtbody').find('.price').text(formatNumberWithCommas(selectedValue));
     $('#learnprice').val(formatNumberWithCommas(selectedValue));
-    sortchange();
+    <%--// 숨겨진(hidden) input의 값을 선택된 값으로 변경--%>
+	$('#'+clickeditemid+'pricecodechange').val(selectedValue);
+    //sortchange();
 });
 
 
@@ -600,34 +828,41 @@ $('#todate').on('change', function() {
 });
    
 //소계바꾸는 함수
-function sortchange(){
-	var price = removeCommasFromNumber($('#itemtbody').find('.price').text());
-	var dcpercent = parseInt($('#itemtbody').find('.dcpercent').text());
-	const regmonth = $('#regmonth').val();
+function sortchange(selectrow){
+	var price = removeCommasFromNumber($(selectrow).find('.price').text());
+	var dcpercent = parseInt($(selectrow).find('.dcpercent').text());
+	//const regmonth = $('#regmonth').val();
+	const result = parseString($(selectrow).find('.date').text());
 	var dcprice = price*(dcpercent*0.01);
 	var afterdcprice = price-dcprice;
-	$('#itemtbody').find('.dc').text(formatNumberWithCommas(dcprice*regmonth));
-	$('#itemtbody').find('.sort').text(formatNumberWithCommas(afterdcprice*regmonth));
-	$('#dcpri').val(formatNumberWithCommas(dcprice*regmonth));
-	$('#sortpri').val(formatNumberWithCommas(afterdcprice*regmonth));
+	$(selectrow).find('.dc').text(formatNumberWithCommas(dcprice*result[2]));
+	$(selectrow).find('.sort').text(formatNumberWithCommas(afterdcprice*result[2]));
+	$('#dcpri').val(formatNumberWithCommas(dcprice*result[2]));
+	$('#sortpri').val(formatNumberWithCommas(afterdcprice*result[2]));
 	totalchange();
 }
    
 //결제 내역에 있는 총 금액 변경 함수
 function totalchange(){
-	var tpaidprice = 0;
+	var totalprice = 0;<%--총매출금액--%>
+	var tpaidprice = 0;<%--총결제금--%>
+	var tremainprice = 0;<%--총미납금--%>
+
+	$('#itemtbody tr').each(function() {
+		totalprice += parseInt(removeCommasFromNumber($(this).find('.sort').text()));
+	});
 	
 	$('#paidbody tr').each(function() {
 		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
  	});
 	
-	$('#totalprice').val($('#sortpri').val());
+	$('#totalprice').val(totalprice);
 
 	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
 
-	$('#tremainprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortpri').val())-tpaidprice));
+	$('#tremainprice').val(formatNumberWithCommas(totalprice-tpaidprice));
 	
-	$('#payprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortpri').val())-tpaidprice));
+	$('#payprice').val(formatNumberWithCommas(totalprice-tpaidprice));
 }
    
 //날짜를 테이블에서 가지고와서 잘라서 보내는 함수
@@ -671,66 +906,104 @@ function save() {
 
 function fmsc_01save() {
 	var iteration = 0;
+	var GroupSaleNo = 0;
 	//itemperiod 셋팅
-	const result = parseString($('#itemtbody').find('.date').text());
-	const yearmonth = extractYearMonth(result[0]);
-	$.ajax({
-        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "fmsc_01update", // 실제 엔드포인트로 교체해야 합니다
-        dataType : 'text',
-        data: { 
-        	SaleNo : $('#itemtbody').find('input[name="SaleNo"]').val(),
-        	SaleDate : $('#saledate').val(),
-        	ItemPeriod : yearmonth,
-        	FromDate : result[0],
-        	ToDate : result[1],
-        	RFromDate : result[0],
-        	RToDate : result[1],
-        	RegMonth : result[2],
-        	DCID : $('#itemtbody').find('.dccode').text(),
-        	DiscountRate : $('#itemtbody').find('.dcpercent').text(),
-        	DCPrice : removeCommasFromNumber($('#itemtbody').find('.dc').text()),
-        	ItemPrice : removeCommasFromNumber($('#itemtbody').find('.price').text()),
-        	RealPrice : removeCommasFromNumber($('#itemtbody').find('.sort').text()),
-        	Misu : removeCommasFromNumber($('#tremainprice').val())
-        },
-        success: function(){
-        	var numberOfTR = $('#paidbody tr#new').length;
-        	if(numberOfTR>0){
-        		$('#paidbody tr#new').each(function() {
-	        		$.ajax({
-		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-		    	        dataType : 'text',
-		    	        data: { 
-		    	        	FPKID: $('#itemtbody').find('input[name="SaleNo"]').val(),
-		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-		    	        	RealSaleDate : $(this).find('.paiddate').text(),
-		    	        	SaleType : '등록',
-		    	        	PayType : $(this).find('.paidcategory').text(),
-		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-		    	        	AssignType : $(this).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : $('#itemtbody').find('input[name="SaleNo"]').val()
-		    	        },
-		    	        success: function(data){
-		    	        	iteration++;
-		    	        	if(iteration === numberOfTR){
-		    	        		window.opener.location.reload();
-		    	                window.close();
-		    	        	}
-		    	        }
-		    		});
-	        	});
-        	}else{
-        		window.opener.location.reload();
-                window.close();
-        	}
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	}); 
+	$('#itemtbody tr').each(function() {
+		var totalprice = 0;<%--총매출금액--%>
+		var tpaidprice = 0;<%--총결제금--%>
+		var misuprice = 0;<%--총미납금--%>
+		
+		GroupSaleNo = $(this).find("#GroupSaleNo").val();
+
+		$('#itemtbody tr').each(function() {
+			totalprice += parseInt(removeCommasFromNumber($(this).find('.sort').text()));
+		});
+		$('#paidbody tr').each(function() {
+			tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
+		});
+
+		misuprice = totalprice - tpaidprice;
+
+		if(isNaN(misuprice)){
+			misuprice = 0;
+		}
+
+		misuprice = roundToNearestTen(misuprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
+		
+		const result = parseString($('#itemtbody').find('.date').text());
+		const yearmonth = extractYearMonth(result[0]);
+	
+		$.ajax({
+	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+	        url: "fmsc_01update", // 실제 엔드포인트로 교체해야 합니다
+	        dataType : 'text',
+	        async : false,
+	        data: { 
+	        	SaleNo : $(this).find('input[name="SaleNo"]').val(),
+	        	SaleDate : $('#saledate').val(),
+	        	ItemPeriod : yearmonth,
+	        	FromDate : result[0],
+	        	ToDate : result[1],
+	        	RFromDate : result[0],
+	        	RToDate : result[1],
+	        	RegMonth : result[2],
+	        	DCID : $(this).find('.dccode').text(),
+	        	DiscountRate : $(this).find('.dcpercent').text(),
+	        	DCPrice : removeCommasFromNumber($(this).find('.dc').text()),
+	        	ItemPrice : removeCommasFromNumber($(this).find('.price').text()),
+	        	RealPrice : removeCommasFromNumber($(this).find('.sort').text()),
+	        	Misu : misuprice
+	        },
+	        success: function(){
+	        	
+	        },
+	        error: function(xhr, status, error) {
+	       	 	console.log("Status: " + status);
+	         	console.log("Error: " + error);
+	         	return false;
+	        }
+		}); 
+	});
+	
+	var numberOfTR = $('#paidbody tr#new').length;
+	if(numberOfTR>0){
+		$('#paidbody tr#new').each(function() {
+    		$.ajax({
+    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+    	        dataType : 'text',
+    	        data: { 
+    	        	FPKID: GroupSaleNo,
+    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+    	        	RealSaleDate : $(this).find('.paiddate').text(),
+    	        	SaleType : $("#InType").val(),
+    	        	PayType : $(this).find('.paidcategory').text(),
+    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+					AssignType : $(this).find('.paidassignType').text(),
+					Maeipsa : $(this).find('.paidmapsa').text(),
+					CardName : $(this).find('.paidcardtype').text(),
+					AssignNo : $(this).find('.paidassignN').text(),
+					Pos : $(this).find('.POS').text(),
+					SignPad : $(this).find('.signpad').text(),
+					Halbu : $(this).find('.Halbu').text(),
+					SaleTime : $(this).find('.SaleTime').text(),
+					PaidGroupSaleNo : GroupSaleNo,
+					OID : $(this).find('.OID').text(),
+					TID : $(this).find('.TID').text(),
+    	        },
+    	        success: function(data){
+    	        	iteration++;
+    	        	if(iteration === numberOfTR){
+    	        		window.opener.location.reload();
+    	                window.close();
+    	        	}
+    	        }
+    		});
+    	});
+	}else{
+		window.opener.location.reload();
+        window.close();
+	}
 }  
 
 //itemperiod 를 위한 날짜 포맷 함수
@@ -768,6 +1041,180 @@ function paycash() {
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	totalchange();
+}
+
+
+<%-- 신용카드 결제 --%>
+function paycredit(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+	
+	var GroupSaleNo = $("#GroupSaleNo").val();
+	var InType = $("#InType").val();
+
+	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+<%-- 결제 취소 --%>
+function paidCancel(){
+	var frm = document.payFrm;
+
+	if($("#tpaidprice").val() == 0){
+		$('#resultmessage').html('결제 금액이 0원입니다.<br>확인 후 결제취소해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}else if($("#tpaidprice").val() < 0){
+		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+
+	if(frm.paidCategory.value == "현금" ){
+		$("#paidbody .hover-actions-trigger").each(function() {
+			var bgColor = $(this).css("background-color");
+	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	            $(this).remove();
+	        }
+	    });
+	}else if(frm.paidCategory.value == "계좌이체" ){
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
+	}else{
+		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
+	}
+	totalchange();
+}
+
+<%-- 현금 영수증 변환--%>
+function cashReceiptChange(){
+	var frm = document.payFrm;
+
+	if($("#tpaidprice").val() == 0){
+		$('#resultmessage').html('결제 금액이 0원입니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}else if($("#tpaidprice").val() < 0){
+		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+
+	if(frm.paidCategory.value == "현금" ){
+		$("#paidbody .hover-actions-trigger").each(function() {
+			var bgColor = $(this).css("background-color");
+	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	        	console.log($(this).find(".paidprice"));
+	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
+	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	            if (myPopup === undefined || myPopup.closed) {
+	                myPopup = window.open(url, "_blank", windowFeatures);
+	            } else {
+	            	myPopup.focus();
+	            }
+	            document.addEventListener('click', function() {
+	                if (myPopup && !myPopup.closed) {
+	                    myPopup.focus();
+	                }
+	          	});
+	        }
+	    });
+	}else{
+		$('#resultmessage').html('현금결제가 아닙니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/lecture/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+<%-- 영수증 재발행 --%>
+function reReceipt(){
+	var frm = document.payFrm;
+	var myWindow = window.open("${pageContext.request.contextPath}/ReReceipt.do?PKID="+frm.PKID.value, "MsgWindow", "width=320,height=800");
+	myWindow.print();
 }
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
@@ -820,6 +1267,10 @@ function removeCommasFromNumber(formattedNumber) {
     }
 
     return numericValue;
+}
+
+function roundToNearestTen(num) {
+	return Math.round(num / 10) * 10;
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>

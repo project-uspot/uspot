@@ -298,7 +298,10 @@ public class VtcPaidController {
 	    tblpaid.setUpdUserPKID(users.getUserPKID());
 	    //log.debug(tblpaid.toString());
 	    VtcPaidService.tblpaidinsert(tblpaid);
-	    
+	    if(!tblpaid.getPayType().equals("현금")
+	    &&!tblpaid.getPayType().equals("계좌이체")) {
+	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);	
+	    }
 	    //return "success";
 	    return ""+tblpaid.getPKID();
 	}
