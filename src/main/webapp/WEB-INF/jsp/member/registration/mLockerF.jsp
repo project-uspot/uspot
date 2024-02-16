@@ -27,7 +27,7 @@
 						<h3 class="mb-3 pt-2">사물함임대정보 등록</h3>
             		</div>
             		<div class="col-auto">
-						<!-- <button class="btn btn-success" type="button" onclick="save()">저장</button> -->
+						<button class="btn btn-success" type="button" onclick="save()">저장</button>
 						<!-- <button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
 						<button class="btn btn-danger" type="button">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
@@ -344,20 +344,20 @@
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()">현금</button>
-					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">신용카드</button>
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+						<button class="btn btn-phoenix-secondary" type="button" style="width:128px;">신용카드</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-secondary" type="button" style="width:117px;">계좌입금</button>
 					</div>
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
 						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
 					</div>
-					<div class="col-auto ms-n1">
+					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
 					</div>
 					<div class="col-auto">
@@ -366,10 +366,10 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
 					</div>
-					<div class="col-auto ms-5">
-						<button class="btn btn-soft-info" type="button" onclick="deleteRow()">행삭제</button>
+					<div class="col-auto">
+						<button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button>
 					</div>
 				</div>
 				<div class="col-auto ms-n2 mt-2">
@@ -380,8 +380,8 @@
 		                      		<div class="col-auto">
 		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
 									</div>
-									<div class="col-auto ms-5">
-										<button class="btn btn-soft-danger" type="button">보증금환불</button>
+									<div class="col-auto">
+										<button class="btn btn-soft-danger" type="button" style="width:128px;">보증금환불</button>
 									</div>
 								</div>
 							</div>
@@ -721,8 +721,8 @@ function totalChange() {
 }
 
 function save() {
-	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
-		$('#resultmessage').html('반변경 차액을 결제해 주세요.');
+	if(PrevPLockerID == 0){
+		$('#resultmessage').html('사물함을 선택해주세요.');
 		$('.modal-footer').empty();
 		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 		$('.modal-footer').append(cancelbutton);
@@ -730,7 +730,50 @@ function save() {
 	    modalcheck = true;
 	    return false;
 	}else{
-		fmsc_01save();	
+		$.ajax({
+	        type: "POST", 
+	        url: "useLockerInsert",
+	        dataType : 'json',
+	        data: { 
+	        	LockerID : PrevPLockerID,
+	        	PLockerNo : $('#PLockerNo').val(),
+	        	MemberID : $('#memberid').val(),
+	        	RegDate : $('#regdate').val(),
+	        	FromDate : $('#fromdate').val(),
+	        	ToDate : $('#todate').val(),
+	        	RegMonth : $('#regmonth').val(),
+	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+	        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+	        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+	        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+				PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+				Misu : removeCommasFromNumber($('#Misu').val()),
+				IsReturn : 'N',
+				IsFlag : 0,
+				Note : $('#note').val(),
+				IsDelete : 'N'
+	        },
+	        success: function(data) {
+	        	if(data == 0){
+	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+	        		window.opener.location.reload();
+	                window.close();	
+	        	}else if(data == -1){
+	        		alert("이미 등록된 사물함입니다.");
+	                window.location.reload();
+	        	}else if(data == -2){
+	        		alert("이미 등록중인 사물함입니다.");
+	                window.location.reload();
+	        	}else{
+	        		window.opener.location.reload();
+    	       	 	window.close();
+	        	}
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
 	}
 }
 

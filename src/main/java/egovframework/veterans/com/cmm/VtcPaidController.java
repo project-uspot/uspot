@@ -281,14 +281,13 @@ public class VtcPaidController {
 	
 	@ResponseBody
 	@PostMapping("/tblpaidinsert")
-	public String tblpaidinsert(tblpaid tblpaid) throws Exception {
+	public int tblpaidinsert(tblpaid tblpaid) throws Exception {
 		
 		try {
 			Users users = (Users) session.getAttribute("loginuserinfo");
 			if(users == null){
 				users = new Users();
 			}
-			System.out.println("sdlfjsdlkfjdslkfjdslkfjlkdsjfieerueiwruwe2181203821093820머미ㅏ더니ㅏ엄니ㅏ");
 			Map<String, Object> map = new HashMap<String, Object>();
 		    map.put("saleDate", tblpaid.getSaleDate());
 		    map.put("outputOrderNo", 0);
@@ -304,6 +303,40 @@ public class VtcPaidController {
 			e.printStackTrace();
 		}
 		
-	    return "success";
+	    return tblpaid.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/OriginPKIDFind")
+	public String OriginPKIDFind(tblpaid tblpaid)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		tblpaid.setSiteCode(users.getSiteCode());
+		System.out.println(tblpaid);
+		
+		int result = VtcPaidService.OriginPKIDFind(tblpaid);
+		
+		if(result>0) {
+			return "-1";
+		}else {
+			
+			tblpaid.setPKID(tblpaid.getOriginPKID());
+			System.out.println(tblpaid);
+			
+			try {
+				int result2 = VtcPaidService.OriginPKIDFind(tblpaid);
+				
+				if(result2 == 0) {
+					return "1";
+				}
+				
+				return "-1";
+			} catch (NullPointerException e) {
+				return "1";
+			}
+		}
 	}
 }

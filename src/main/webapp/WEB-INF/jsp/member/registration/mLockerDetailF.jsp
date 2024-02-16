@@ -15,6 +15,12 @@
 
         var firstLinkId = firstLi.querySelector('a').id;
         firstLi.querySelector('a').click();
+        
+        var firstTableRow = $('#paidbody').children('tr:first');
+        
+        if (firstTableRow.length > 0) {
+            firstTableRow.click();
+        }
     });
     </script>
 </head>
@@ -24,12 +30,12 @@
             <div class="col-auto">
         		<div class="row justify-content-between">
         			<div class="col-auto">
-						<h3 class="mb-3 pt-2">사물함임대정보 등록</h3>
+						<h3 class="mb-3 pt-2">사물함임대정보 등록 및 변경</h3>
             		</div>
             		<div class="col-auto">
 						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
 						<button class="btn btn-secondary" type="button" onclick="Return()">반납</button>
-						<button class="btn btn-danger" type="button" onclick="alldelete()">삭제</button>
+						<!-- <button class="btn btn-danger" type="button" onclick="Delete()">삭제</button> -->
 						<button class="btn btn-soft-danger" type="button">영수증</button>
 						<button class="btn btn-soft-info" type="button" onclick="Change()">변경</button>
             		</div>
@@ -333,7 +339,8 @@
                         	</thead>
                         	<tbody class="list" id="paidbody">
                         		<c:forEach var="paid" items="${paidlist}">
-	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice">
+	                        		<tr class="hover-actions-trigger btn-reveal-trigger position-static old" id="PLockerPrice">
+	                        			<td class="PKID" style="display: none;">${paid.PKID}</td>
 									    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${paid.realSaleDate}</td>
 									    <td class="paidcategory align-middle white-space-nowrap text-center">${paid.payType}</td>
 									    <fmt:parseNumber var="paidprice" integerOnly="true" value="${paid.price}"/>
@@ -351,7 +358,7 @@
 								</c:forEach>
 								 <c:if test="${not empty tbldeposite}">
 								 	<c:forEach items="${tbldeposite}" var="deposite">
-								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite">
+								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static old" id="Deposite">
 										    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td>
 										    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
 										    <fmt:parseNumber var="depoprice" integerOnly="true" value="${deposite.deposite}"/>
@@ -384,20 +391,20 @@
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()">현금</button>
-					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">신용카드</button>
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+						<button class="btn btn-phoenix-secondary" type="button" style="width:128px;">신용카드</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-secondary" type="button" style="width:117px;">계좌입금</button>
 					</div>
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
 						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
 					</div>
-					<div class="col-auto ms-n1">
+					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
 					</div>
 					<div class="col-auto">
@@ -406,10 +413,10 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
 					</div>
-					<div class="col-auto ms-5">
-						<button class="btn btn-soft-info" type="button" onclick="deleteRow()">행삭제</button>
+					<div class="col-auto">
+						<button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button>
 					</div>
 				</div>
 				<div class="col-auto ms-n2 mt-2">
@@ -420,8 +427,8 @@
 		                      		<div class="col-auto">
 		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
 									</div>
-									<div class="col-auto ms-5">
-										<button class="btn btn-soft-danger" type="button">보증금환불</button>
+									<div class="col-auto">
+										<button class="btn btn-soft-danger" type="button" style="width:128px;">보증금환불</button>
 									</div>
 								</div>
 							</div>
@@ -460,15 +467,11 @@ document.addEventListener('keydown', function(event) {
    	}
 });
 	
-function alldelete(){
-	window.location.reload();
-}
 
-$(document).ready(function() {
-    $('#paidbody').on('click', 'tr', function() {
-        paidbodyclick(this);
-	});
+$('#paidbody').on('click', 'tr', function() {
+	paidbodyclick(this);
 });
+
 
 var previousRow = null;
 function paidbodyclick(clickedRow){
@@ -912,6 +915,12 @@ function lockerChange() {
         		alert("세션이 만료되었습니다.다시 로그인해주세요.");
         		window.opener.location.reload();
                 window.close();
+        	}else if(data == '-1'){
+        		alert("이미 등록된 사물함입니다.");
+                window.location.reload();
+        	}else if(data == '-2'){
+        		alert("이미 등록중인 사물함입니다.");
+                window.location.reload();
         	}else{
         		window.close();
             	window.opener.location.reload();	
@@ -943,13 +952,54 @@ function lockerReturn() {
         data: {
         	PKID : $('#DBPKID').val(),
         	LockerID : $('#DBPLockerID').val(),
-        	MemberID : $('#memberid').val(),
         	ReturnDate : getCurrentDate(),
-        	IsReturn : 'Y'
         },
         success: function(data) {	
-        	window.opener.location.reload();
-        	window.close();
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.close();
+            	window.opener.location.reload();
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function Delete() {
+	$('#resultmessage').html('해당 사물함임대정보를 삭제하시겠습니까?');
+  	$('.modal-footer').empty();
+  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="lockerDelete()">확인</button>';
+  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+  	$('.modal-footer').append(okaybutton);
+  	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+}
+
+function lockerDelete() {
+	$.ajax({
+        type: "POST", 
+        url: "lockerReturn", 
+        dataType : 'json',
+        data: {
+        	PKID : $('#DBPKID').val(),
+        	LockerID : $('#DBPLockerID').val() 
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.close();
+            	window.opener.location.reload();
+        	}
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
@@ -970,68 +1020,64 @@ function payCash() {
 	    return false;
 	}
 	var payprice = $('#payprice').val();
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
-	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
-	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-right white-space-nowrap fw-bold text-end">' + payprice + '</td>');
-	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
-	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
-	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
-	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
-	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
-	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
-	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
-	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
-	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-	
-	var tableBody = $('#paidbody');
-	tableBody.append(newRow);
-	PLockerPriceChange();
 	
 	$.ajax({
-        type: "POST", 
-        url: "useLockerPriceUpdate", 
+		type: "POST", 
+        url: "tblpaidinsert", 
         dataType : 'json',
-        data: { 
-        	PKID : $('#DBPKID').val(),
-        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
-        	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
-        	Misu : removeCommasFromNumber($('#Misu').val())
+		data: { 
+		FPKID : $('#DBPKID').val(),
+        SaleDate : getCurrentDate(),
+        RealSaleDate : getCurrentDateTime(),
+        SaleType : '사물함',
+        PayType : '현금',
+        Price : removeCommasFromNumber(payprice),
+        PaidGroupSaleNo : $('#DBPKID').val(),
         },
-        success: function(data) {
-        	if(data == '0'){
-        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
-        		window.opener.location.reload();
-                window.close();
-        	}else{
-        		$.ajax({
-                    type: "POST", 
-                    url: "tblpaidinsert", 
-                    dataType : 'json',
-                    data: { 
-                    	FPKID : $('#DBPKID').val(),
-                    	SaleDate : getCurrentDate(),
-                    	RealSaleDate : getCurrentDateTime(),
-                    	SaleType : '사물함',
-                    	PayType : '현금',
-                    	Price : removeCommasFromNumber(payprice),
-                    	PaidGroupSaleNo : $('#DBPKID').val(),
-                    },
-                    success: function(success) {	
-                    	window.opener.location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                   	 console.log("Status: " + status);
-                     console.log("Error: " + error);
-                    }
-            	});
-        	}
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	});
+        success: function(data) {	
+        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
+        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
+        	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+        	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
+        	newRow.append('<td class="paidprice align-right white-space-nowrap fw-bold text-end">' + payprice + '</td>');
+        	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+        	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+        	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+        	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+        	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+        	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+        	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+        	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+        	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+        	
+        	var tableBody = $('#paidbody');
+        	tableBody.append(newRow);
+        	PLockerPriceChange();
+        	
+        	$.ajax({
+                type: "POST", 
+                url: "useLockerPriceUpdate", 
+                dataType : 'json',
+                data: { 
+                	PKID : $('#DBPKID').val(),
+                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+                	Misu : removeCommasFromNumber($('#Misu').val())
+                },
+                success: function(success) {
+             		window.opener.location.reload();
+                },
+                error: function(xhr, status, error) {
+                	console.log("Status: " + status);
+                    console.log("Error: " + error);
+                }
+            });
+         },
+         error: function(xhr, status, error) {
+        	 console.log("Status: " + status);
+          console.log("Error: " + error);
+         }
+ 	});
 }
 
 function payDeposite() {
@@ -1125,19 +1171,24 @@ function getCurrentDateTime() {
 
 function deleteRow() {
     if (previousRow !== null) {
-    	
-    	var rowToDelete = $(previousRow).closest('tr');
+        var rowToDelete = $(previousRow).closest('tr');
         
-    	var prevRow = rowToDelete.prev('tr');
-    	
-    	rowToDelete.remove();
+        var rowClass = rowToDelete.attr('class');
+        
+        alert('Class of the row to be deleted: ' + rowClass);
+        
+        var nextRow = rowToDelete.next('tr');
+        var prevRow = rowToDelete.prev('tr');
 
-    	if (prevRow.length > 0) {
-            paidbodyclick(prevRow);
-        } else {
-            previousRow = null;
+        rowToDelete.remove();
+
+        // Update the previousRow variable
+        previousRow = nextRow.length > 0 ? nextRow : (prevRow.length > 0 ? prevRow : null);
+
+        if (previousRow !== null) {
+            paidbodyclick(previousRow);
         }
-        
+
         PLockerPriceChange();
         PLockerDepositeChange();
     }
@@ -1145,14 +1196,138 @@ function deleteRow() {
 
 function payCancel() {
     if (previousRow !== null) {
-        // Find the row with the class 'paidprice' within the previousRow
-        var paidPriceText = $(previousRow).find('.paidprice').text();
-
-        // Display the text in an alert window
-        alert('Paid Price: ' + paidPriceText);
+    	
+    	var PKID = $(previousRow).find('.PKID').text();
+    	var paidcategory = $(previousRow).find('.paidcategory').text();
+        var paidPriceText = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+        var paidassignType = '';
+        
+        if(paidcategory == '보증금'){
+        	depositeRefund();	
+        	return false;
+        }
+        
+        $.ajax({
+            type: "POST", 
+            url: "OriginPKIDFind", 
+            dataType : 'json',
+            data: { 
+            	OriginPKID : PKID
+            },
+            success: function(data) {	
+            	if(data == '0'){
+            		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+            		window.opener.location.reload();
+                    window.close();
+            	}else if(data == '-1'){
+            		$('#resultmessage').html('이미 취소된 건입니다.');
+            	  	$('.modal-footer').empty();
+            	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+            	  	$('.modal-footer').append(cancelbutton);
+            	    $('#modalButton').click();
+            	    modalcheck = true;
+            	    return false;
+            	}else{
+            		switch (paidcategory) {
+            		case '현금': paidassignType = '현금취소';
+            			break;
+            		case '보증금': paidassignType = '보증금취소';
+            			break;	
+            		case '신용승인': paidassignType = '신용취소';
+        				break;	
+            		default:
+            			break;
+            		}
+                    
+                    if (paidPriceText > 0) {
+                        paidPriceText = -paidPriceText;
+                    } else if (paidPriceText < 0) {
+                        paidPriceText = Math.abs(paidPriceText);
+                    }
+                    
+            		var paidPrice = formatNumberWithCommas(paidPriceText);
+            		
+            		$.ajax({
+                        type: "POST", 
+                        url: "tblpaidinsert", 
+                        dataType : 'json',
+                        data: { 
+                        	FPKID : $('#DBPKID').val(),
+                        	SaleDate : getCurrentDate(),
+                        	RealSaleDate : getCurrentDateTime(),
+                        	SaleType : '사물함',
+                        	PayType : paidcategory,
+                        	Price : paidPriceText,
+                        	PaidGroupSaleNo : $('#DBPKID').val(),
+                        	AssignType : paidassignType,
+                        	OriginPKID : PKID
+                        },
+                        success: function(data) {	
+                        	
+                        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice"></tr>');
+                        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
+                    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+                    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
+                    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
+                    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
+                    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+                    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+                    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+                    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+                    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+                    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+                    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+                    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+                    		
+                    		var tableBody = $('#paidbody');
+                    		tableBody.append(newRow);
+                    		PLockerPriceChange();
+                    		PLockerDepositeChange();
+                    		
+                    		$.ajax({
+                                type: "POST", 
+                                url: "useLockerPriceUpdate", 
+                                dataType : 'json',
+                                data: { 
+                                	PKID : $('#DBPKID').val(),
+                                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+                                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+                                	Misu : removeCommasFromNumber($('#Misu').val())
+                                },
+                                success: function(success) {
+                             		window.opener.location.reload();
+                                },
+                                error: function(xhr, status, error) {
+                                	console.log("Status: " + status);
+                                    console.log("Error: " + error);
+                                }
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                       	 console.log("Status: " + status);
+                         console.log("Error: " + error);
+                        }
+                	});
+            	}
+            },
+            error: function(xhr, status, error) {
+           	 console.log("Status: " + status);
+             console.log("Error: " + error);
+            }
+    	});
     } else {
-        alert('No row selected.');
+    	$('#resultmessage').html('취소할 건을 선택해주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
     }
+}
+
+function depositeRefund(){
+	alert('ㅇㄹㄴㅇㄹㅇ');
 }
 </script>
 </html>
