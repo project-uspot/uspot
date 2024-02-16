@@ -61,4 +61,6 @@ public interface VtcLockerService {
 	void ChangeDeposite(Map<String,Object> tbldeposite)throws Exception;
 	
 	void ReturnuseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	void DeleteuseLocker(tbluselocker tbluselocker)throws Exception;
 }

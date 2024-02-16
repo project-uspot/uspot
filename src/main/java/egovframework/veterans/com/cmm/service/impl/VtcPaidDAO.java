@@ -36,9 +36,7 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	}
 	public int getDCSortOrder(String siteCode) {
 		return selectOne("paid.getDCSortOrder", siteCode);
-	}
-	
-	
+	}	
 	public List<ExpenseGroup> selectExpenseGroup(String SiteCode) throws Exception {
 		return selectList("paid.selectExpenseGroup", SiteCode);
 	}
@@ -98,5 +96,9 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	
 	public void paidchange(tblpaid tblpaid)throws Exception{
 		update("paid.paidchange",tblpaid);
+	}
+	
+	public int OriginPKIDFind(tblpaid tblpaid)throws Exception{
+		return selectOne("paid.OriginPKIDFind",tblpaid);
 	}
 }

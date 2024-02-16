@@ -158,4 +158,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public void ReturnuseLocker(tbluselocker tbluselocker) throws Exception {
 		vtcLockerDAO.ReturnuseLocker(tbluselocker);
 	}
+
+	@Override
+	public void DeleteuseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.DeleteuseLocker(tbluselocker);
+	}
 }

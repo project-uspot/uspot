@@ -132,4 +132,8 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	public void paidchange(tblpaid tblpaid) throws Exception {
 		paidDAO.paidchange(tblpaid);
 	}
+	@Override
+	public int OriginPKIDFind(tblpaid tblpaid) throws Exception {
+		return paidDAO.OriginPKIDFind(tblpaid);
+	}
 }

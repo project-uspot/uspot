@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Slf4j
@@ -412,16 +415,34 @@ public class VtcLockerController{
 		if(users == null) {
 			return "0";
 		}
+		
 		tbluselocker.setSiteCode(users.getSiteCode());
 		tbluselocker.setUpdUserPKID(users.getUserPKID());
-		
-		vtcLockerService.UpduseLocker(tbluselocker);
 		
 		tblplocker.setPLockerID(tbluselocker.getLockerID());
 		tblplocker.setSiteCode(tbluselocker.getSiteCode());
 		tblplocker.setState(2);
 		tblplocker.setLSaleNo(tbluselocker.getPKID());
 		tblplocker.setUpdUserPKID(users.getUserPKID());
+		
+		//등록중이거나 등록된 사물함인지 판단하는 로직
+		tblplocker result = vtcLockerService.lockervobyplockerid(tblplocker);
+		if(result.getState() == 2) {
+			return "-1";
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime clickTime = LocalDateTime.parse(result.getClickTime(), formatter);
+
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        long minutesDifference = ChronoUnit.MINUTES.between(clickTime, currentTime);
+		
+		if(result.getClickUserPKID() != users.getUserPKID() && minutesDifference < 11) {
+			return "-2";
+		}
+		
+		vtcLockerService.UpduseLocker(tbluselocker);
 		
 		vtcLockerService.UpdPLocker(tblplocker);
 		
@@ -444,7 +465,7 @@ public class VtcLockerController{
 	
 	@ResponseBody
 	@PostMapping("/lockerReturn")
-	public String lockerReturn(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+	public String lockerReturn(tbluselocker tbluselocker)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -457,7 +478,21 @@ public class VtcLockerController{
 		
 		vtcLockerService.ReturnuseLocker(tbluselocker);
 		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerDelete")
+	public String lockerDelete(tbluselocker tbluselocker)throws Exception{
 		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
 		
 		return "success";
 	}
