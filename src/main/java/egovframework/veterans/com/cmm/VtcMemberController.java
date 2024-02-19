@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -647,6 +648,7 @@ public class VtcMemberController {
 		vtcMemberService.deletecard(tblIssueMemberCard);
 	}
 	
+	// TODO 회원등록관리 강습 신규 등록 페이지
 	@GetMapping("/miteminsertF.do")
 	public String miteminsertF(tblmember tblmember,DC dc,Model model,tblCode tblCode) throws Exception {
 		
@@ -719,9 +721,9 @@ public class VtcMemberController {
         String formattedDate = nextMonthFirstDay.format(formatter);
 		
 		if(finddate == null || finddate == "") {
-			tblItem_02.setUpdDate(formattedDate);
+			tblItem_02.setFindDate(formattedDate);
 		}else {
-			tblItem_02.setUpdDate(finddate);
+			tblItem_02.setFindDate(finddate);
 			formattedDate = finddate;
 		}
 
@@ -779,7 +781,7 @@ public class VtcMemberController {
 			LocalDate currentDate = LocalDate.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	        String currentDay = currentDate.format(formatter);
-	        tblItem_02.setUpdDate(currentDay);
+	        tblItem_02.setFindDate(currentDay);
 		}
 		
 		List<Map<String,Object>> selectItemsByFilter = vtcMemberService.selectItemsByFilter(tblItem_02);
@@ -817,27 +819,33 @@ public class VtcMemberController {
 		return fmsc_s01.getSaleNo();
 	}
 	
-	
+	// TODO 회원등록관리 강좌 수정 페이지
 	@GetMapping("/mitemselectF.do")
 	public String mitemselectF(fmsc_s01 fmsc_s01,TblItem_02 tblItem_02,tblpaid tblpaid,Model model,tblCode tblCode,DC dc,tblmember tblmember) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
-		tblItem_02.setSiteCode(result.getSiteCode());
-		tblItem_02.setUpdDate(result.getFromDate());
-		tblItem_02.setItemID(result.getItemPKID()+"");
+		tblItem_02.setSiteCode(result.get(0).getSiteCode());
+		tblItem_02.setFindDate(result.get(0).getFromDate());
 		
-		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
 		
-		tblmember.setMemberID(result.getCustCode());
+		tblpaid.setPaidGroupSaleNo(fmsc_s01.getGroupSaleNo());
+		
+		tblmember.setMemberID(result.get(0).getCustCode());
 		
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		
 		dc.setSiteCode(users.getSiteCode());
 		
-		Map<String, Object>item = vtcMemberService.mitemfindbyid(tblItem_02);
+		List<Map<String,Object>> itemList = new ArrayList<Map<String,Object>>();
+		for(fmsc_s01 fmsc : result) {
+			tblItem_02.setItemID(fmsc.getItemPKID()+"");
+			Map<String, Object>item = vtcMemberService.mitemfindbyid(tblItem_02);
+			itemList.add(item);
+		}
+		
 		List<tblpaid> paidlist = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -868,8 +876,8 @@ public class VtcMemberController {
 		model.addAttribute("dcname",dcname);
 		model.addAttribute("dclist",dcList);
 		
-		model.addAttribute("item",item);
-		model.addAttribute("fmsc_s01",result);
+		model.addAttribute("itemList",itemList);
+		model.addAttribute("fmsc_s01List",result);
 		model.addAttribute("paidlist",paidlist);
 		
 		return "member/registration/mitemselectF";
@@ -886,6 +894,7 @@ public class VtcMemberController {
 		vtcMemberService.fmsc_01update(fmsc_s01);
 	}
 	
+	// TODO 회원등록관리 강좌 재등록 페이지
 	@GetMapping("/mitemreinsertF.do")
 	public String mitemreinsertF(fmsc_s01 fmsc_s01,tblmember tblmember,DC dc,Model model,tblCode tblCode,TblItem_02 tblItem_02)throws Exception{
 		
@@ -896,13 +905,11 @@ public class VtcMemberController {
 			return "common/msg";
 		}
 
-		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
-		
-		
 		
 		String date = fmsc_s01.getRToDate();;
 
@@ -915,8 +922,7 @@ public class VtcMemberController {
         String selectedDate = datePlusOneDay.format(formatter);
         String nextDate = datePlusOneMonth.format(formatter);
         
-		
-		tblmember.setMemberID(result.getCustCode());
+		tblmember.setMemberID(result.get(0).getCustCode());
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -941,7 +947,7 @@ public class VtcMemberController {
         
 		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
 		
-		model.addAttribute("fmsc_s01",result);
+		model.addAttribute("fmsc_s01List",result);
 		model.addAttribute("member",member);
 		model.addAttribute("yearage",yearage);
 		model.addAttribute("mleveltext",mleveltext);
@@ -963,12 +969,12 @@ public class VtcMemberController {
 			return "common/msg";
 		}
 		
-		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
-		tblmember.setMemberID(result.getCustCode());
-		tblpaid.setPaidGroupSaleNo(result.getSaleNo());
+		tblmember.setMemberID(result.get(0).getCustCode());
+		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -1057,12 +1063,12 @@ public class VtcMemberController {
 								@RequestParam(name = "itemname")String itemname)throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		fmsc_s01 result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
-		tblmember.setMemberID(result.getCustCode());
-		tblpaid.setPaidGroupSaleNo(result.getSaleNo());
+		tblmember.setMemberID(result.get(0).getCustCode());
+		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -1099,7 +1105,7 @@ public class VtcMemberController {
 		model.addAttribute("itemname",itemname);
 		model.addAttribute("fmsc_s01", result);
 		model.addAttribute("paidlist",vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid));
-		model.addAttribute("itemmonth",vtcItemService.itemmonthbyitemid(result.getItemPKID()));
+		model.addAttribute("itemmonth",vtcItemService.itemmonthbyitemid(result.get(0).getItemPKID()));
 		model.addAttribute("duescheck",vtcMemberService.finddues(users.getSiteCode()));
 		model.addAttribute("gongjelist",gongjelist);
 		model.addAttribute("wiyaklist",wiyaklist);
@@ -1222,7 +1228,7 @@ public class VtcMemberController {
 		
 		log.info(member,"관리자 pkid : "+users.getUserPKID()+"강좌 번호 : "+fmsc_s01.getSaleNo()+"의 대한 휴회창");
 		
-		fmsc_s01 fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+		List<fmsc_s01> fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
 		fmsc_s03.setSiteCode(users.getSiteCode());
 		

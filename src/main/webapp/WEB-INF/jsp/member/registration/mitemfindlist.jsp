@@ -128,7 +128,7 @@
                 	            tableBody.empty();
                 	            // Iterate through the list using jQuery.each() method
                 	            $.each(list, function(index, listItem) {
-                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ',' + (listItem.OffMax + listItem.OnMax) + ',' + listItem.RegCnt + ',' + listItem.RegCnt2 + ')" onclick="findtbodyclick(this)"></tr>');
+                	                var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(' + listItem.ItemID + ',' + listItem.itemmonth + ',' + (listItem.OffMax + listItem.OnMax) + ',' + listItem.RegCnt + listItem.RegCnt3 + ',' + listItem.RegCnt2 + ')" onclick="findtbodyclick(this)"></tr>');
                 	                newRow.append('<td class="code align-middle white-space-nowrap text-end fw-semi-bold pe-7 text-1000">' + listItem.ItemCode + '</td>');
                 	                newRow.append('<td class="category align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.CategoryName + '</td>');
                 	                newRow.append('<td class="name align-middle white-space-nowrap text-start fw-bold text-700">' + listItem.JungName + '</td>');
@@ -138,11 +138,11 @@
                 	                newRow.append('<td class="day align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.DayName + '</td>');
                 	                newRow.append('<td class="member align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.DaesangName + '</td>');
                 	                newRow.append('<td class="teacher align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.SawonName + '</td>');
-                	                newRow.append('<td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.RegCnt + '</td>');
+                	                newRow.append('<td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.RegCnt + listItem.RegCnt3 + '</td>');
                 	                newRow.append('<td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.RegCnt2 + '</td>');
                 	                newRow.append('<td class="max align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + (listItem.OffMax + listItem.OnMax) + '</td>');
                 	                newRow.append('<td class="nickname align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + listItem.YakChing + '</td>');
-                	                newRow.append('<td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + (listItem.OffMax + listItem.OnMax - (listItem.RegCnt + listItem.RegCnt2)) + '</td>');
+                	                newRow.append('<td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">' + (listItem.OffMax + listItem.OnMax - (listItem.RegCnt + listItem.RegCnt2 + listItem.RegCnt3)) + '</td>');
 
                 	                tableBody.append(newRow);
                 	            });
@@ -188,7 +188,7 @@
                                 </thead>
                                 <tbody class="list" id="customer-order-table-body">
                                 	<c:forEach items="${lists}" var="list">
-	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth},${list.OffMax+list.OnMax},${list.RegCnt},${list.RegCnt2})" onclick="findtbodyclick(this)">
+	                                	<tr class="hover-actions-trigger btn-reveal-trigger position-static" ondblclick="tronclick(${list.ItemID},${list.itemmonth},${list.OffMax+list.OnMax},${list.RegCnt + list.RegCnt3},${list.RegCnt2})" onclick="findtbodyclick(this)">
 		                                    <td class="code align-middle text-end fw-semi-bold pe-7 text-1000">${list.ItemCode}</td>
 		                                    <td class="category align-middle white-space-nowrap text-start fw-bold text-700">${list.CategoryName}</td>
 		                                    <td class="name align-middle white-space-nowrap text-start fw-bold text-700">${list.JungName}</td>
@@ -198,11 +198,11 @@
 		                                    <td class="day align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DayName}</td>
 		                                    <td class="member align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.DaesangName}</td>
 		                                    <td class="teacher align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.SawonName}</td>
-		                                    <td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.RegCnt}</td>
+		                                    <td class="offline align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.RegCnt + list.RegCnt3}</td>
 		                                    <td class="online align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.RegCnt2}</td>
 		                                    <td class="max align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax}</td>
 		                                    <td class="nickname align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.YakChing}</td>
-		                                    <td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax-(list.RegCnt+list.RegCnt2)}</td>
+		                                    <td class="remain align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">${list.OffMax + list.OnMax-(list.RegCnt+list.RegCnt2 + list.RegCnt3)}</td>
 	                                	</tr>
 	                                </c:forEach>
                                 </tbody>

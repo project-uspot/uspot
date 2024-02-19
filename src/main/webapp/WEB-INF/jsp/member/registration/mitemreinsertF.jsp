@@ -368,46 +368,49 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
 					</div>
-					<div class="col-auto ms-n6">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					</div>
-					<div class="col-auto ms-n1">
-						<button class="btn btn-phoenix-success" type="button">현금(제로페이)</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button">신용카드</button>
+				<div class="row mb-1 w-100">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button">결제취소</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-success w-100" type="button" disabled='disabled'>영수증재발행</button>
 					</div>
-					<div class="col-auto ms-5">
-						<button class="btn btn-soft-info" type="button">행삭제</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
 					</div>
 				</div>
 	    	</div>
 	    </div>
+	    <form action="" name="payFrm">
+	    	<input type="hidden" name="paidCategory" value="">
+	    	<input type="hidden" name="paidPrice" value="">
+	    	<input type="hidden" name="paidAssignNo" value="">
+	    	<input type="hidden" name="SaleTime" value="">
+	    	<input type="hidden" name="OID" value="">
+	    	<input type="hidden" name="TID" value="">
+	    	<input type="hidden" name="Maeipsa" value="">
+	    	<input type="hidden" name="CardName" value="">
+	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="">
+	    	<input type="hidden" name="Insert" id="Insert" value="">
+	    </form>
 	</div>
 </body>
 <script type="text/javascript">
-test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
+<c:forEach items="${fmsc_s01List}" var="fmsc_s01">
+ test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
 $('#dcds').val(${fmsc_s01.DCID});
+</c:forEach>
 
 //숨겨진 모달 버튼
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
@@ -492,14 +495,14 @@ function test(ItemID,selectedDate,nextDate) {
 	        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
 	        dataType : 'json',
 	        data: { 
-	        	AddDate: ItemID,
-	        	UpdDate: selectedDate
+	        	ItemID: ItemID,
+	        	FindDate: selectedDate
 	        },
 	        success: function(list) {
 	        	var tableBody = $('#itemtbody'); // Get the table body element
-	        	if(document.querySelector('input[name="index"]:checked').value == 1){
+	        	/* if(document.querySelector('input[name="index"]:checked').value == 1){
 	        		tableBody.empty();
-	        	}
+	        	} */
 	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>').on('click', function() {
 	        	    itemtbodyclick(this); // Call the itemtbodyclick function when the row is clicked
 	        	});
@@ -526,24 +529,55 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<td class="dccode py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="dcpercent py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="max py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax) + '</td>');
-                newRow.append('<td class="enter py-2 align-middle white-space-nowrap">' + (list.RegCnt+list.RegCnt2) + '</td>');
-                newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2)) + '</td>');
+                newRow.append('<td class="enter py-2 align-middle white-space-nowrap">' + (list.RegCnt+list.RegCnt2 + list.RegCnt3) + '</td>');
+                newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2 + list.RegCnt3)) + '</td>');
                 newRow.append('<input type="hidden" value="30" name="totalnum" id="totalnum">');
                 newRow.append('<input type="hidden" value="30" name="usenum" id="usenum">');
                 newRow.append('<input type="hidden" value="'+list.SawonNo+'" name="EmpCode" id="EmpCode">');
                 tableBody.append(newRow);
-                $('#itemtbody').children('tr:last').click();
+                $('#itemtbody').children('tr:first').click();
 	        },
 	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
+	       		console.log("Status: " + status);
+	        	console.log("Error: " + error);
 	        }
 		});
 	}
 }
 	
 function alldelete(){
-	$('#itemtbody').empty();
+	if($("#paidbody").find('*').length > 0) {
+    	alreadycheck = true;
+		$('#resultmessage').text('결제내역이 있는 강좌는 삭제할 수 없습니다.');
+		$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+        $('#modalButton').click();
+        modalcheck = true;
+        return false;
+	}
+	$("#itemtbody .hover-actions-trigger").each(function() {
+		var bgColor = $(this).css("background-color");
+        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+        	$.ajax({
+        		type: "POST",
+        		url: "tempSaleDel",
+        		dataType : 'json',
+        		async : false,
+        		data: { 
+        			GroupSaleNo: $(this).find("#tempSaleNo").val()
+        		},
+        		success: function() {},
+        		error : function(e){
+        			console.log(e);
+        		}
+        	});
+            $(this).remove();
+        }
+    });
+	totalchange();
+	
+	/* $('#itemtbody').empty();
 	$('#paidbody').empty();
 	$('#price').empty();
 	$('#price').append('<option selected="selected" value="0">0</option>');
@@ -563,9 +597,9 @@ function alldelete(){
 	$('#tremainprice').val('');
 	$('#learnprice').val('');
 	$('#totalday').val('');
-	$('#useday').val('');
+	$('#useday').val(''); */
 	
-	test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
+	//test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
 }
 
 //과거에 선택했던 행
@@ -595,8 +629,8 @@ var clickeditemid;
        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
        dataType : 'json',
        data: { 
-       	AddDate: itemid,
-       	UpdDate: result[0]
+       	ItemID: itemid,
+       	FindDate: result[0]
        },
        success: function(list) {
        	var priceoptionlist = $('#price');
@@ -933,17 +967,40 @@ function fmsc_01save() {
 	if(numberOfTR > 1){
 		IsPackagecheck = 1;
 	}
+	var GroupNo = $("#GroupSaleNo").val();
+	var url = "fmsc_01insert_save"; <%--// 수강정보 수정(실결제시) --%>
+	if(GroupNo == ''){
+		GroupNo = 0;
+		url = "fmsc_01insert"; <%--// 수강정보 저장(현금/임의결제시) --%>
+	}
+
 	$('#itemtbody tr').each(function() {
-		var misuprice = parseInt(removeCommasFromNumber($(this).find('.sort#N').text()));
+		var totalprice = 0;<%--총매출금액--%>
+		var tpaidprice = 0;<%--총결제금--%>
+		var misuprice = 0;<%--총미납금--%>
+
+		$('#itemtbody tr').each(function() {
+			totalprice += parseInt(removeCommasFromNumber($(this).find('.sort').text()));
+		});
+		$('#paidbody tr').each(function() {
+			tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
+		});
+
+		misuprice = totalprice - tpaidprice;
+
 		if(isNaN(misuprice)){
 			misuprice = 0;
 		}
+
+		misuprice = roundToNearestTen(misuprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
+
 		const result = parseString($(this).find('.date').text());
 		const yearmonth = extractYearMonth(result[0]);
 		$.ajax({
 	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	        url: "fmsc_01insert", // 실제 엔드포인트로 교체해야 합니다
+	        url: url, // 실제 엔드포인트로 교체해야 합니다
 	        dataType : 'json',
+			async : false,
 	        data: { 
 	        	SaleDate : $('#saledate').val(),
 	        	ItemPeriod : yearmonth,
@@ -970,32 +1027,9 @@ function fmsc_01save() {
 	        	PaidPrice : 0
 	        },
 	        success: function(data) {	
-	        	var paidprice = removeCommasFromNumber($('#paidbody tr').eq(iteration).find('.paidprice').text());
-	        	var paiddate = $('#paidbody tr').eq(iteration).find('.paiddate').text();
-	        	if(paidprice != ''){
-		            $.ajax({
-		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-		    	        dataType : 'json',
-		    	        data: { 
-		    	        	FPKID: data,
-		    	        	SaleDate : paiddate.substr(0,10),
-		    	        	RealSaleDate : paiddate,
-		    	        	SaleType : '등록',
-		    	        	PayType : $('#paidbody tr').eq(iteration).find('.paidcategory').text(),
-		    	        	Price : paidprice,
-		    	        	AssignType : $('#paidbody tr').eq(iteration).find('.paidassignType').text(),
-		    	        	PaidGroupSaleNo : data
-		    	        }
-		    		});
-	        	}
-	            // 순차적으로 행을 넣기위한 ++
-	            iteration++;
-	            if (iteration === totalRows) {
-	                // If all Ajax requests have completed successfully, then execute window-related statements
-	                window.opener.location.reload();
-	                window.close();
-	            }
+	        	if(GroupNo == 0 ){
+					GroupNo = data;	
+				}
 	        },
 	        error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
@@ -1004,6 +1038,72 @@ function fmsc_01save() {
 		}); 
 	});
 	
+	$('#paidbody tr').each(function() {
+		var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
+		var paiddate = $(this).find('.paiddate').text();
+		var paidPkid = $(this).find('.PKID').text();
+		if(paidprice != '' && paidPkid == ''){
+			$.ajax({
+				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
+				url: "tblpaidinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
+				dataType : 'json',
+				async : false,
+				data: { 
+					FPKID: GroupNo,
+					SaleDate : paiddate.substr(0,10),
+					RealSaleDate : paiddate,
+					SaleType : '재등록',
+					PayType : $(this).find('.paidcategory').text(),
+					Price : paidprice,
+					AssignType : $(this).find('.paidassignType').text(),
+					Maeipsa : $(this).find('.paidmapsa').text(),
+					CardName : $(this).find('.paidcardtype').text(),
+					AssignNo : $(this).find('.paidassignN').text(),
+					Pos : $(this).find('.POS').text(),
+					SignPad : $(this).find('.signpad').text(),
+					Halbu : $(this).find('.Halbu').text(),
+					SaleTime : $(this).find('.SaleTime').text(),
+					PaidGroupSaleNo : GroupNo,
+					OID : $(this).find('.OID').text(),
+					TID : $(this).find('.TID').text(),
+				},
+				success: function(Data){
+					console.log(Data);
+					paidPkid=Data;
+				},
+				error:function(xhr, status, error){
+					console.log("Status: " + status);
+					console.log("Error: " + error);
+					return false;
+				}
+			});
+		}
+		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+		
+		if(inlineRadioOptions >= 1){
+		    var myWindow = window.open("${pageContext.request.contextPath}/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+		    myWindow.print();
+
+		    setTimeout(function() { 
+		        if(inlineRadioOptions == 2){
+		            myWindow.print();
+		        }
+
+		        setTimeout(function() { 
+		            myWindow.close(); 
+		            window.opener.location.reload();
+		            window.close();
+		        }, 2000); // 두 번째 인쇄 후 잠시 대기 후 창 닫기
+		    }, 2000); // 첫 번째 인쇄 후 잠시 대기
+		}else{
+			window.opener.location.reload();
+			window.close();
+		}
+	});
+
+	<%--// If all Ajax requests have completed successfully, then execute window-related statements--%>
+	window.opener.location.reload();
+	window.close();
 }  
 
 //itemperiod 를 위한 날짜 포맷 함수

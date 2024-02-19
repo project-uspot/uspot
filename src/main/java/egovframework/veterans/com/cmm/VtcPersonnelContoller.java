@@ -48,9 +48,9 @@ public class VtcPersonnelContoller {
 			return "redirect:login.do";
 		}
 		
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 	
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "Personnel/application/applicationlist";
 	}
@@ -216,9 +216,9 @@ public class VtcPersonnelContoller {
 			return "redirect:login.do";
 		}
 		
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 				
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "Personnel/maturity/maturitylist";
 	}
@@ -255,9 +255,9 @@ public class VtcPersonnelContoller {
 			return "redirect:login.do";
 		}
 		
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 				
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "Personnel/refund/refundpersonlist";
 	}
@@ -271,9 +271,9 @@ public class VtcPersonnelContoller {
 			return "redirect:login.do";
 		}
 		
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 				
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "Personnel/learningcurrent/learningcurrentlist";
 	}
@@ -288,9 +288,9 @@ public class VtcPersonnelContoller {
 			return "redirect:login.do";
 		}
 		
-		Sitecode sitecode = vtcService.selectSiteCode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
 		
-		model.addAttribute("sitename",sitecode.getSiteName());
+		model.addAttribute("sitename",sitecode.get(0).getSiteName());
 		
 		return "Personnel/attendance/attendancelist";
 	}

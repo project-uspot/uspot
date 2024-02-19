@@ -15,6 +15,11 @@ public class OfflinePayServiceImple implements OfflinePayService {
 	private final OfflinePayDAO offlinePayDAO;
 	
 	@Override
+	public List<Map<String, Object>> getAccountMenu(String SiteCode) {
+		return offlinePayDAO.getAccountMenu(SiteCode);
+	}
+	
+	@Override
 	public List<Map<String, Object>> getCreditCardMenu(String SiteCode) {
 		return offlinePayDAO.getCreditCardMenu(SiteCode);
 	}
@@ -22,6 +27,11 @@ public class OfflinePayServiceImple implements OfflinePayService {
 	@Override
 	public void insertElecAssignData(Map<String, Object> sqlMap) {
 		offlinePayDAO.insertElecAssignData(sqlMap);
+	}
+
+	@Override
+	public Map<String, Object> insertPaid(Map<String, Object> sqlMap) {
+		return offlinePayDAO.insertPaid(sqlMap);
 	}
 
 	@Override
@@ -52,6 +62,11 @@ public class OfflinePayServiceImple implements OfflinePayService {
 	@Override
 	public void insertPaidCancelRent(Map<String, Object> returnMap) {
 		offlinePayDAO.insertPaidCancelRent(returnMap);
+	}
+
+	@Override
+	public Map<String, Object> insertFMSC_S01(Map<String, Object> returnMap) {
+		return offlinePayDAO.insertFMSC_S01(returnMap);
 	}
 
 }

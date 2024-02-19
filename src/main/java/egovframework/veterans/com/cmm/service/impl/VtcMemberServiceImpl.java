@@ -94,19 +94,16 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 
 	@Override
 	public tblmember bigmovetblmember(String movetype) throws Exception {
-		// TODO Auto-generated method stub
 		return vtcMemberDAO.bigmovetblmember(movetype);
 	}
 
 	@Override
 	public tblmember movetblmember(String movetype) throws Exception {
-		// TODO Auto-generated method stub
 		return vtcMemberDAO.movetblmember(movetype);
 	}
 
 	@Override
 	public String endmemberid(String movetype) throws Exception {
-		// TODO Auto-generated method stub
 		return vtcMemberDAO.endmemberid(movetype);
 	}
 
@@ -162,7 +159,7 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	}
 
 	@Override
-	public fmsc_s01 fmsc_s01bysaleno(fmsc_s01 fmsc_s01) throws Exception {
+	public List<fmsc_s01> fmsc_s01bysaleno(fmsc_s01 fmsc_s01) throws Exception {
 		return vtcMemberDAO.fmsc_s01bysaleno(fmsc_s01);
 	}
 

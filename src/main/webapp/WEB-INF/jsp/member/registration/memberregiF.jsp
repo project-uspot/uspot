@@ -699,7 +699,7 @@
                             $('#modalButton').click();
                             return false;
                     	}
-                    	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
+                    	var url = 'mitemreinsertF.do?GroupSaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
@@ -735,7 +735,7 @@
                             $('#modalButton').click();
                             return false;
                     	}
-                        var url = 'mitemselectF.do?SaleNo=' + remembersaleno;
+                        var url = 'mitemselectF.do?GroupSaleNo=' + remembersaleno;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
@@ -1013,7 +1013,7 @@
                                             </thead>
                                             <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.saleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}','${list.state}')" ondblclick="mitemselectF()">
+                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.groupSaleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}','${list.state}')" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원' || list.state eq '반변경(+)' }">

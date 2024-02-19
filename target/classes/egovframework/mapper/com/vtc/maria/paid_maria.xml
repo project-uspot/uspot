@@ -427,6 +427,48 @@
 		where
 			FPKID = #{FPKID}
 	</update>
+	
+	<insert id="tblElecAssignDataInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		INSERT INTO tblelecassigndata
+		(SiteCode, PayType, AssignType, ResponseCode, Price, ValidDate, Halbu, AssignNo, CardName, Maeipsa, Msg1, Msg2, Msg3, SignPad, AssignTime, IsPos, IsConfirm, MemberID, MemberName, SaleType, FPKID, RegisterID, IsDelete, UpdDate, UpdUserPKID)
+		select
+		  #{SiteCode}
+		, #{PayType}
+		, #{AssignType}
+		, '0000'
+		, #{Price}
+		, #{ValidDate}
+		, #{Halbu}
+		, #{AssignNo}
+		, #{CardName}
+		, #{Maeipsa}
+		, '체크기'
+		, ''
+		, ''
+		, #{SignPad}
+		, #{SaleTime}
+		, ''
+		, 'Y'
+		, ''
+		, ''
+		, #{SaleType}
+		, #{PKID}
+		, 0
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' )
+		, #{userPKID}
+		from dual
+		where not EXISTS (
+			select 1 
+			from tblelecassigndata
+			where SiteCode = #{SiteCode}
+			and SaleType = #{SaleType}
+			and isDelete = 'N'
+			and AssignNo = #{AssignNo}
+			and left(AssignTime,8) = left(#{SaleTime},8)
+		);
+	</insert>
+	
 	<select id="OriginPKIDFind" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="int">
 		<choose>
 			<when test="PKID != 0">

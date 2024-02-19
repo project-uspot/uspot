@@ -9,15 +9,15 @@
 <body>
 	<div class="card ">
 		<div class="card-header ">
-			<h1>신용카드선택</h1>
+			<h1>계좌선택</h1>
 		</div>
 		<div class="card-body pb-3">
 			<div class="card">
 				<div class="card-header">
 					<div class="btn-group btn-group-lg" role="group" aria-label="First group">
 					    <button class="btn btn-secondary ms-2 fs-5" id="prevButton" type="button"><span data-feather="chevron-left"></span></button>
-					    <c:forEach items="${arrCreditCardList}" var="arrCreditCard" varStatus="loop">
-					        <button class="btn btn-secondary ms-1 groupButton" type="button" value="${arrCreditCard.Code }">${arrCreditCard.CreditName}</button>
+					    <c:forEach items="${accountList}" var="accountMap" varStatus="loop">
+					        <button class="btn btn-secondary ms-1 groupButton" type="button" value="${accountMap.PKID }">${accountMap.BankName}</button>
 					    </c:forEach>
 					    <button class="btn btn-secondary ms-2" id="nextButton" ><span data-feather="chevron-right"></span></button>
 					</div>
@@ -25,9 +25,9 @@
 				<div class="card-body">
 					<form action="">
 						<div class="input-group mb-3">
-							<span class="input-group-text" id="inputGroup-sizing-default">카드종류</span>
-							<input class="form-control" id="CardName" name="CardName" type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${param.CardName }" readonly="readonly">
-							<input id="Maeipsa" name="Maeipsa" type="hidden" value="${param.Maeipsa }">
+							<span class="input-group-text" id="inputGroup-sizing-default">은행명</span>
+							<input class="form-control" id="CardName" name="CardName" type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="readonly">
+							<input id="Maeipsa" name="Maeipsa" type="hidden">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="inputGroup-sizing-default">할부개월</span>
@@ -100,7 +100,7 @@ $('.groupButton').on('click', function() {
 function save(){
 	if($("#CardName").val() == ""){
 		$("#verticallyCenteredModalLabel").html(" 오 류 ");
-		$('#resultmessage').html('카드를 선택해주세요.');
+		$('#resultmessage').html('은행을 선택해주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -141,17 +141,27 @@ function save(){
     var month = $("#SaleDate").val().substring(4, 6);
     var day = $("#SaleDate").val().substring(6, 8);
 
-	opener.frmOffline.RealSaleDate.value = year+"-"+month+"-"+day+" "+ getCurrentTime();
-	opener.frmOffline.PayType.value = "신용카드";
-	opener.frmOffline.AssignType.value = "신용승인";
-	opener.frmOffline.Maeipsa.value = $("#Maeipsa").val();
-	opener.frmOffline.CardName.value = $("#CardName").val();
-	opener.frmOffline.AssignNo.value = $("#AssignNo").val();
-	opener.frmOffline.Pos.value = "OFFLINE";
-	opener.frmOffline.Halbu.value = $("#Halbu").val();
-	opener.frmOffline.SaleTime.value = $("#SaleDate").val();
-	opener.frmOffline.Price.value = "-"+opener.frmOffline.Price.value;
-	opener.save();
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + year+"-"+month+"-"+day+" "+ getCurrentTime() + '</td>');
+	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + "계좌이체" + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber('${param.payprice }'))) + '</td>');
+	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + "신용승인" + '</td>');
+	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + $("#Maeipsa").val() + '</td>');
+	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' + $("#CardName").val() + '</td>');
+	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + $("#AssignNo").val() + '</td>');
+	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + "OFFLINE" + '</td>');
+	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '' + '</td>');
+	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '' + '</td>');
+	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+	newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:none">' + $("#Halbu").val() + '</td>');
+	newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none">' + $("#SaleTime").val() + '</td>');
+	newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + '' + '</td>');
+	newRow.append('<td class="PKID py-2 align-middle white-space-nowrap" style="display:none">' + '' + '</td>');
+
+	$(opener.document).find('#paidbody').append(newRow);
+
+	opener.totalchange();
 	self.close();
 }
 
@@ -172,6 +182,7 @@ function getCurrentTime() {
 function closePage(){
 	self.close();
 }
+
 </script>
 <jsp:include page="/WEB-INF/jsp/include/foot.jsp"></jsp:include>
 </body>

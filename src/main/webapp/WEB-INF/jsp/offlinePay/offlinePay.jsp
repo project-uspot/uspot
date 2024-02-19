@@ -14,116 +14,106 @@
 			<div class="col-12 col-xxl-8">
 				<div class="mb-6">
 					<div class="row flex-row">
-						<div class="row">
-							<div class="col-auto">
-								<div class="card">
-									<div class="card-header">
+						<div class="card">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-auto w-50">
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="BarCodeSpan">확인번호</span>
+											<input class="form-control" id="BarCode" name="BarCode" type="text" readonly="">
+										</div>
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="HalbuSpan">할부개월</span>
+											<input class="form-control" id="Halbu" name="Halbu" type="text" readonly="" maxlength="2">
+										</div>
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="PriceSpan">결제금액</span>
+											<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
+										</div>
 										<div class="row">
-											<div class="col-auto">
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="BarCodeSpan">확인번호</span>
-													<input class="form-control" id="BarCode" name="BarCode" type="text" readonly="">
+											<div class="col card p-0">
+												<div class="card-header p-1 bg-soft">
+													<h4 class="" id="" style="text-align: center;">결제방법</h4>
 												</div>
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="HalbuSpan">할부개월</span>
-													<input class="form-control" id="Halbu" name="Halbu" type="text" readonly="" maxlength="2">
-												</div>
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="PriceSpan">결제금액</span>
-													<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
-												</div>
-												<div class="card">
-													<div class="card-header p-1 bg-soft">
-														<h4 class="" id="ZipCodespan">결제방법</h4>
-													</div>
-													<div class="card-body p-0 row">
-														<div class="m-3 mt-0 mb-0 p-1 col">
-															<div class="form-check">
-																<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" checked="checked">
-																<label class="form-check-label" for="optPay0">카드결제</label>
-															</div>
-															<div class="form-check">
-																<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" >
-																<label class="form-check-label" for="optPay1">현금영수증</label>
-															</div>
-															<div class="form-check">
-																<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2">
-																<label class="form-check-label" for="optPay2">간편결제</label>
-															</div>
-															<div class="form-check">
-																<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3">
-																<label class="form-check-label" for="optPay3">제로페이</label>
-															</div>
+												<div class="card-body p-0 align-items-center">
+													<div class="m-3 mt-0 mb-0 p-1 col">
+														<div class="form-check">
+															<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" checked="checked">
+															<label class="form-check-label" for="optPay0">카드결제</label>
 														</div>
-														<div class="p-1 col">
-															<div class="form-check">
-																<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked" disabled="disabled">
-																<label class="form-check-label" for="optType0">소비자</label>
-															</div>
-															<div class="form-check">
-																<input class="form-check-input" id="optType1" name="optType" type="radio" value="1" disabled="disabled">
-																<label class="form-check-label" for="optType1">사업자</label>
-															</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" >
+															<label class="form-check-label" for="optPay1">현금영수증</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2">
+															<label class="form-check-label" for="optPay2">간편결제</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3">
+															<label class="form-check-label" for="optPay3">제로페이</label>
 														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-auto">
-												<div class="row mt-1">
-													<div class="col-auto">
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">7</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">8</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">9</button>
-													</div>                                                                      
-												</div>                                                                          
-												<div class="row mt-1">                                                               
-													<div class="col-auto">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">4</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">5</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">6</button>
-													</div>                                                                      
-												</div>                                                                          
-												<div class="row mt-1" >                                                               
-													<div class="col-auto">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">1</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">2</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">3</button>
-													</div>
+											<div class="col card p-0">
+												<div class="card-header p-1 bg-soft">
+													<h4 class="" id="" style="text-align: center;">현금영수증 거래용도</h4>
 												</div>
-												<div class="row mt-1" >                                                               
-													<div class="col-auto">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">0</button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;"><span class="uil-backspace"></span></button>
-														<button type="button" class="btn btn-soft-primary btn-lg" name="number" style="width: 88px;">CLS</button>
+												<div class="card-body p-0 align-items-center">
+													<div class="m-3 mt-0 mb-0 p-1 col">
+														<div class="form-check">
+															<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked" disabled="disabled">
+															<label class="form-check-label" for="optType0">소비자</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optType1" name="optType" type="radio" value="1" disabled="disabled">
+															<label class="form-check-label" for="optType1">사업자</label>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="card-body">
-										<div id="msg_box">
+									<div class="col-auto w-50">
+										<div class="row mt-1 w-100">
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >7</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >8</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >9</button>
+											</div>
+										</div>
+										<div class="row mt-1 w-100">
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >4</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >5</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >6</button>
+											</div>
+										</div>
+										<div class="row mt-1 w-100" >
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >1</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >2</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >3</button>
+											</div>
+										</div>
+										<div class="row mt-1 w-100" >
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >0</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" ><span class="uil-backspace"></span></button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >CLS</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="card">
-									<div class="card-header">
-										<h4 class="input-group-text" id="ZipCodespan">서명방법</h4>
-										<div class="input-group input-group-sm mb-1">
-											<div class="form-check">
-												<input class="form-check-input" id="optSign0" name="optSign" type="radio" value="0">
-												<label class="form-check-label" for="optSign0">전자서명</label>
-											</div>
-											<div class="form-check">
-												<input class="form-check-input" id="optSign1" name="optSign" type="radio" value="1" checked="checked">
-												<label class="form-check-label" for="optSign1">직접서명</label>
-											</div>
-										</div>
+							<div class="card-body row">
+								<div class="col-md-auto ms-auto row">
+									<div class="col-auto">
+										<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
 									</div>
-									<div class="card-body">
-										<h4 class="input-group-text" id="ZipCodespan">전자서명</h4>
-    									<canvas id="signatureCanvas" style="border:1px solid #000;width:100%;height:100%;"></canvas>
+									<div class="col-auto">
+										<button class="btn btn-phoenix-primary" type="button" onclick="paid()">결제하기</button>
 									</div>
 								</div>
 							</div>
@@ -147,115 +137,14 @@
 						<input type="hidden" id="MemberID" name="MemberID" value="${param.MemberID }">
 						<input type="hidden" id="SaleNo" name="SaleNo" value="">
 						<input type="hidden" id="paidPKID" name="paidPKID" value="">
+						<input type="hidden" id="InsertYN" name="InsertYN" value="${param.Insert }">
 					</form>
-					<div class="row">
-						<div class="col-auto position-absolute" style="margin-left:750px;">
-							<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
-						</div>
-						<div class="col-auto position-absolute" style="margin-left:870px;">
-							<button class="btn btn-phoenix-primary" type="button" onclick="paid()">결제하기</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 <script type="text/javascript">
-var canvas = document.getElementById('signatureCanvas');
-var ctx = canvas.getContext('2d');
-var drawing = false;
 var myPopup;
-
-function getMousePos(evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
-}
-
-function startDrawing(evt) {
-    drawing = true;
-    ctx.beginPath();
-    var pos = getMousePos(evt);
-    ctx.moveTo(pos.x, pos.y);
-}
-
-function draw(evt) {
-    if (!drawing) return;
-    var pos = getMousePos(evt);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-}
-
-function stopDrawing() {
-    drawing = false;
-}
-
-function toggleCanvas(enabled) {
-    if (enabled) {
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        <%-- 터치 이벤트 추가 --%>
-        canvas.addEventListener('touchstart', handleTouchStart, false);
-        canvas.addEventListener('touchmove', handleTouchMove, false);
-        canvas.addEventListener('touchend', stopDrawing, false);
-        canvas.addEventListener('touchcancel', stopDrawing, false);
-
-        canvas.style.pointerEvents = 'auto';
-        canvas.style.opacity = 1;
-    } else {
-        canvas.removeEventListener('mousedown', startDrawing);
-        canvas.removeEventListener('mousemove', draw);
-        canvas.removeEventListener('mouseup', stopDrawing);
-        canvas.removeEventListener('mouseout', stopDrawing);
-
-        <%-- 터치 이벤트 제거 --%>
-        canvas.removeEventListener('touchstart', handleTouchStart, false);
-        canvas.removeEventListener('touchmove', handleTouchMove, false);
-        canvas.removeEventListener('touchend', stopDrawing, false);
-        canvas.removeEventListener('touchcancel', stopDrawing, false);
-
-        canvas.style.pointerEvents = 'none';
-        canvas.style.opacity = 0.5;
-    }
-}
-
-function handleTouchStart(e) {
-    var touch = e.touches[0];
-    var mouseEvent = new MouseEvent("mousedown", {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    canvas.dispatchEvent(mouseEvent);
-    e.preventDefault();
-}
-
-function handleTouchMove(e) {
-    var touch = e.touches[0];
-    var mouseEvent = new MouseEvent("mousemove", {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    canvas.dispatchEvent(mouseEvent);
-    e.preventDefault();
-}
-
-document.querySelectorAll('input[name="optSign"]').forEach(input => {
-    input.addEventListener('change', function() {
-        toggleCanvas(this.value === '0');
-    });
-});
-
-function initializeCanvas() {
-    var checkedRadio = document.querySelector('input[name="optSign"]:checked').value;
-    toggleCanvas(checkedRadio === '0');
-}
-
-document.addEventListener('DOMContentLoaded', initializeCanvas);
 
 function fetchData() {
 	var checkedRadio = document.querySelector('input[name="optPay"]:checked').value;
@@ -359,7 +248,7 @@ function manualPay(){
 
 <%-- 결제 완료 --%>
 function save(){
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#PayType").val() + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
@@ -380,6 +269,7 @@ function save(){
 	$(opener.document).find('#paidbody').append(newRow);
 	
 	$(opener.document).find('#GroupSaleNo').val($("#SaleNo").val());
+	$(opener.document).find('#Insert').val($("#InsertYN").val());
 
 	<%-- $(opener.document).find('#itemtbody tr').each(function() {
 		$(this).find('.sort').attr('id','Y');
@@ -468,28 +358,42 @@ function paid(){
 			MemberID : $("#MemberID").val(),
 			saleType : "${uparam}",
 			tempSaleNo : "${param.tempSaleNo}",
+			insert : $("#InsertYN").val(),
+			InType : "${param.InType}",
 		},
 		success: function(data){
 			console.log(data);
 			if(typeof data === "string"){
 				data = JSON.parse(data);
 			}
-			$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
-			$("#PayType").val(data.PayType);
-			$("#Price").val(data.Price);
-			$("#AssignType").val(data.AssignType);
-			$("#Maeipsa").val(data.CompanyName);
-			$("#CardName").val(data.CardName);
-			$("#AssignNo").val(data.AssignNo);
-			$("#Pos").val("POS");
-			$("#SignPad").val(data.SignGubun);
-			$("#Halbu").val(data.Halbu);
-			$("#SaleTime").val(data.SaleDate);
-			$("#OID").val(data.OID);
-			$("#TID").val(data.TID);
-			$("#SaleNo").val(data.SaleNo);
-			$("#paidPKID").val(data.paidPKID);
-			save();
+			if(data.responseCode == "0000"){
+				$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
+				$("#PayType").val(data.PayType);
+				$("#Price").val(data.Price);
+				$("#AssignType").val(data.AssignType);
+				$("#Maeipsa").val(data.CompanyName);
+				$("#CardName").val(data.CardName);
+				$("#AssignNo").val(data.AssignNo);
+				$("#Pos").val("POS");
+				$("#SignPad").val(data.SignGubun);
+				$("#Halbu").val(data.Halbu);
+				$("#SaleTime").val(data.SaleDate);
+				$("#OID").val(data.OID);
+				$("#TID").val(data.TID);
+				$("#SaleNo").val(data.SaleNo);
+				$("#paidPKID").val(data.paidPKID);
+				$("#InsertYN").val("Y");
+				save();
+			}else{
+				$("#verticallyCenteredModalLabel").html("거래실패");
+				$('#resultmessage').html(data.msg2);
+			  	$('.modal-footer').empty();
+			  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			  	$('.modal-footer').append(cancelbutton);
+			    $('#modalButton').click();
+			    modalcheck = true;
+			    return false;
+			}
 		},
 		error: function(xhr, status, error){
 			$("#verticallyCenteredModalLabel").html(" 오 류 ");

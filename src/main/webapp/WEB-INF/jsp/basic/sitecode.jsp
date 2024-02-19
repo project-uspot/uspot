@@ -74,60 +74,62 @@
 		  				</tr>
   					</thead>
 	  				<tbody class="list">
-		  				<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center">
-		  					<td class="SiteID align-middle white-space-nowrap pe-5">
-		  						<c:out value="${list.siteID }"></c:out>
-		  					</td>
-		  					<td class="SiteName align-middle white-space-nowrap ">
-		  						<form action="<c:url value='siteDetail.do'/>" method="post">
-									<input type="hidden" name="SiteCode" value="${list.siteCode }">
-									<input type="hidden" name=SiteID value="${list.siteID }">
-									<input class="fw-bold" type="submit" value="<c:out value="${list.siteName }"/>" style="border: 0px solid #e0e0e0; backGround-color: white;"> 
-								</form>
-		  					</td>
-		  					<td class="SiteBNo align-middle white-space-nowrap ">
-		  						<c:out value="${list.siteBNo }"></c:out>
-		  					</td>
-		  					<td class="Pname align-middle white-space-nowrap ">
-		  						<c:out value="${list.pname }"></c:out>
-		  					</td>
-		  					<td class="UpTae align-middle white-space-nowrap ">
-		  						<c:out value="${list.upTae }"></c:out>
-		  					</td>
-		  					<td class="JongMok align-middle white-space-nowrap ">
-		  						<c:out value="${list.jongMok }"></c:out>
-		  					</td>
-		  					<td class="ZipCode align-middle white-space-nowrap ">
-		  						<c:out value="${list.zipCode }"></c:out>
-		  					</td>
-		  					<td class="Address align-middle white-space-nowrap ">
-		  						<c:out value="${list.address }"></c:out>
-		  					</td>
-		  					<td class="SubAddress align-middle white-space-nowrap ">
-		  						<c:out value="${list.subAddress }"></c:out>
-		  					</td>
-		  					<td class="Phone1 align-middle white-space-nowrap ">
-		  						<c:out value="${fn:replace(list.phone1,'-','')}"></c:out>
-		  					</td>
-		  					<td class="Phone2 align-middle white-space-nowrap ">
-		  						<c:out value="${fn:replace(list.phone2,'-','')}"></c:out>
-		  					</td>
-		  					<td class="Fax align-middle white-space-nowrap ">
-		  						<c:out value="${list.fax }"></c:out>
-		  					</td>
-		  					<td class="Email align-middle white-space-nowrap ">
-		  						<c:out value="${list.email }"></c:out>
-		  					</td>
-		  					<td class="DamDangJa align-middle white-space-nowrap ">	
-		  						<c:out value="${list.damDangJa }"></c:out>
-		  					</td>
-		  					<td class="DamDangJaPhone align-middle white-space-nowrap ">
-		  						<c:out value="${list.damDangJaPhone }"></c:out>
-		  					</td>
-		  					<td class="Note align-middle white-space-nowrap ">
-		  						<c:out value="${list.note }"></c:out>
-		  					</td>
-		  				</tr>
+	  					<c:forEach items="${siteList }" var="site">
+			  				<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center">
+			  					<td class="SiteID align-middle white-space-nowrap pe-5">
+			  						<c:out value="${site.siteID }"></c:out>
+			  					</td>
+			  					<td class="SiteName align-middle white-space-nowrap ">
+			  						<form action="<c:url value='siteDetail.do'/>" method="post">
+										<input type="hidden" name="SiteCode" value="${site.siteCode }">
+										<input type="hidden" name=SiteID value="${site.siteID }">
+										<input class="fw-bold" type="submit" value="<c:out value="${site.siteName }"/>" style="border: 0px solid #e0e0e0; backGround-color: white;"> 
+									</form>
+			  					</td>
+			  					<td class="SiteBNo align-middle white-space-nowrap ">
+			  						<c:out value="${site.siteBNo }"></c:out>
+			  					</td>
+			  					<td class="Pname align-middle white-space-nowrap ">
+			  						<c:out value="${site.pname }"></c:out>
+			  					</td>
+			  					<td class="UpTae align-middle white-space-nowrap ">
+			  						<c:out value="${site.upTae }"></c:out>
+			  					</td>
+			  					<td class="JongMok align-middle white-space-nowrap ">
+			  						<c:out value="${site.jongMok }"></c:out>
+			  					</td>
+			  					<td class="ZipCode align-middle white-space-nowrap ">
+			  						<c:out value="${site.zipCode }"></c:out>
+			  					</td>
+			  					<td class="Address align-middle white-space-nowrap ">
+			  						<c:out value="${site.address }"></c:out>
+			  					</td>
+			  					<td class="SubAddress align-middle white-space-nowrap ">
+			  						<c:out value="${site.subAddress }"></c:out>
+			  					</td>
+			  					<td class="Phone1 align-middle white-space-nowrap ">
+			  						<c:out value="${fn:replace(site.phone1,'-','')}"></c:out>
+			  					</td>
+			  					<td class="Phone2 align-middle white-space-nowrap ">
+			  						<c:out value="${fn:replace(site.phone2,'-','')}"></c:out>
+			  					</td>
+			  					<td class="Fax align-middle white-space-nowrap ">
+			  						<c:out value="${site.fax }"></c:out>
+			  					</td>
+			  					<td class="Email align-middle white-space-nowrap ">
+			  						<c:out value="${site.email }"></c:out>
+			  					</td>
+			  					<td class="DamDangJa align-middle white-space-nowrap ">	
+			  						<c:out value="${site.damDangJa }"></c:out>
+			  					</td>
+			  					<td class="DamDangJaPhone align-middle white-space-nowrap ">
+			  						<c:out value="${site.damDangJaPhone }"></c:out>
+			  					</td>
+			  					<td class="Note align-middle white-space-nowrap ">
+			  						<c:out value="${site.note }"></c:out>
+			  					</td>
+			  				</tr>
+		  				</c:forEach>
 	  				</tbody>
 		  		</table>
 			</div> 

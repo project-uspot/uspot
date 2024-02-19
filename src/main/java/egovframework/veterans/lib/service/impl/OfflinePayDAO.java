@@ -9,6 +9,10 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 
 @Repository
 public class OfflinePayDAO extends EgovComAbstractDAO {
+	
+	public List<Map<String,Object>> getAccountMenu(String SiteCode){
+		return selectList("offlinePay.getAccountMenu",SiteCode);
+	}
 
 	public List<Map<String,Object>> getCreditCardMenu(String SiteCode){
 		return selectList("offlinePay.getCreditCardMenu",SiteCode);
@@ -16,6 +20,11 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 
 	public void insertElecAssignData(Map<String, Object> sqlMap) {
 		selectOne("offlinePay.insertElecAssignData",sqlMap);
+	}
+
+	public Map<String, Object> insertPaid(Map<String, Object> sqlMap) {
+		selectOne("offlinePay.insertPaid",sqlMap);
+		return sqlMap;
 	}
 
 	public Map<String, Object> insertPaidFmsc_s01(Map<String, Object> sqlMap) {
@@ -44,4 +53,11 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 	public void insertPaidCancelRent(Map<String, Object> returnMap) {
 		
 	}
+
+	public Map<String, Object> insertFMSC_S01(Map<String, Object> returnMap) {
+		Map<String,Object> result = selectOne("offlinePay.insertFMSC_S01",returnMap);
+		returnMap.putAll(result);
+		return returnMap;
+	}
+
 }

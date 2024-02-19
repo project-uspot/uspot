@@ -130,17 +130,14 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	}
 	@Override
 	public List<TblItem_01> item01list(String SiteCode) throws Exception {
-		// TODO Auto-generated method stub
 		return itemDAO.item01list(SiteCode);
 	}
 	@Override
 	public List<TblItem_02> item02list(TblItem_02 tblItem_02) throws Exception {
-		// TODO Auto-generated method stub
 		return itemDAO.item02list(tblItem_02);
 	}
 	@Override
 	public List<TblItem_03> item03list(String SiteCode) throws Exception {
-		// TODO Auto-generated method stub
 		return itemDAO.item03list(SiteCode);
 	}
 	@Override

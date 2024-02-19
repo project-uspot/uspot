@@ -9,7 +9,7 @@ import egovframework.veterans.com.cmm.service.vo.tblCode;
 public interface VtcService {
 	
 	
-	Sitecode selectSiteCode(String SiteCode) throws Exception;
+	List<Sitecode> selectSiteCode(String SiteCode) throws Exception;
 	void updateSiteCode(Sitecode sitecode) throws Exception;
 	void insertSiteCode(Sitecode sitecode) throws Exception;
 	void deleteSiteCode(Sitecode sitecode) throws Exception;
