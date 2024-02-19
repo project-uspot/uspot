@@ -289,7 +289,7 @@
 	        </div>
 		</div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;overflow: scroll;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>

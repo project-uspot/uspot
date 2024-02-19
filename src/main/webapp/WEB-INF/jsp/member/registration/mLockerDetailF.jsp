@@ -299,7 +299,7 @@
 	        </div>
 		</div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px; overflow: scroll;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
@@ -358,7 +358,7 @@
 								</c:forEach>
 								 <c:if test="${not empty tbldeposite}">
 								 	<c:forEach items="${tbldeposite}" var="deposite">
-								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static old" id="Deposite">
+								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static old deposite" id="Deposite">
 								 			<td class="PKID" style="display: none;">${deposite.PKID}</td>
 										    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td>
 										    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
@@ -421,10 +421,14 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" style="width:114px;" onclick="refundPrice()">환불</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button>
+						<button class="btn btn-soft-warning" type="button" onclick="payCancel()" style="width:127px;">결제취소</button>
+					</div>
+					<div class="col-auto">
+						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:117px;">행삭제</button> -->
+						<button class="btn btn-soft-info" type="button" onclick="" style="width:117px;">재등록</button>
 					</div>
 				</div>
 				<div class="col-auto ms-n2 mt-2">
@@ -436,7 +440,7 @@
 		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
 									</div>
 									<div class="col-auto">
-										<button class="btn btn-soft-danger" type="button" style="width:128px;">보증금환불</button>
+										<button class="btn btn-soft-danger" type="button" style="width:128px;" onclick="RefundDeposite()">보증금환불</button>
 									</div>
 								</div>
 							</div>
@@ -1129,7 +1133,7 @@ function payDeposite() {
         	        },
         	        success: function(pkid) {	
         	        	
-        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
+        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static deposite" id="Deposite"></tr>');
         	        	newRow.append('<td class="PKID" style="display: none;">' + pkid + '</td>');
         	        	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
         	        	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
@@ -1295,13 +1299,16 @@ function payCancel() {
                     		
                     		$.ajax({
                                 type: "POST", 
-                                url: "useLockerPriceUpdate", 
+                                url: "useLockerCancel", 
                                 dataType : 'json',
                                 data: { 
                                 	PKID : $('#DBPKID').val(),
+                                	LockerID : $('#DBPLockerID').val(),
                                 	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
                                 	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
-                                	Misu : removeCommasFromNumber($('#Misu').val())
+                                	Misu : removeCommasFromNumber($('#Misu').val()),
+                                	ReturnDate : getCurrentDate(),
+                                	IsFlag : 1
                                 },
                                 success: function(success) {
                              		window.opener.location.reload();
@@ -1379,7 +1386,7 @@ function depositeRefund(){
         	        },
         	        success: function(pkid) {	
         	        	
-        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
+        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static deposite" id="Deposite"></tr>');
         	        	newRow.append('<td class="PKID" style="display: none;">' + pkid + '</td>');
         	    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
         	    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
@@ -1400,23 +1407,26 @@ function depositeRefund(){
         	    		PLockerDepositeChange();
         	    		
         	    		$.ajax({
-        	                type: "POST", 
-        	                url: "useLockerPriceUpdate", 
-        	                dataType : 'json',
-        	                data: { 
-        	                	PKID : $('#DBPKID').val(),
-        	                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
-        	                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
-        	                	Misu : removeCommasFromNumber($('#Misu').val())
-        	                },
-        	                success: function(success) {
-        	             		window.opener.location.reload();
-        	                },
-        	                error: function(xhr, status, error) {
-        	                	console.log("Status: " + status);
-        	                    console.log("Error: " + error);
-        	                }
-        	            });
+                            type: "POST", 
+                            url: "useLockerCancel", 
+                            dataType : 'json',
+                            data: { 
+                            	PKID : $('#DBPKID').val(),
+                            	LockerID : $('#DBPLockerID').val(),
+                            	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+                            	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+                            	Misu : removeCommasFromNumber($('#Misu').val()),
+                            	ReturnDate : getCurrentDate(),
+                            	IsFlag : 2
+                            },
+                            success: function(success) {
+                         		window.opener.location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                            	console.log("Status: " + status);
+                                console.log("Error: " + error);
+                            }
+                        });
         	        },
         	        error: function(xhr, status, error) {
         	       	 console.log("Status: " + status);
@@ -1424,6 +1434,133 @@ function depositeRefund(){
         	        }
         		});
         	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function RefundDeposite(){
+	var rows = $('.deposite'); // select by class instead of id
+	if(rows.val() == "undefined"){
+		$('#resultmessage').html('환불 할 보증금이 없습니다.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+
+	// Initialize variables to track the maximum PKID value and the corresponding row
+	var maxPKID = -1;
+	var targetRow = null;
+
+	// Iterate through each row to find the desired row
+	rows.each(function() {
+	    var row = $(this);
+	    var paidassignType = row.find('.paidassignType').text().trim();
+	    var PKID = parseInt(row.find('.PKID').text(), 10); // Ensure base 10 for correct comparison
+
+	    // Check if the paidassignType is empty and the PKID is greater than the current maxPKID
+	    if (paidassignType === '' && PKID > maxPKID) {
+	        maxPKID = PKID;
+	        targetRow = row;
+	    }
+	});
+	targetRow.click();
+	depositeRefund();
+}
+
+function refundPrice() {
+	var paidcategory = $(previousRow).find('.paidcategory').text();
+    var paidPriceText = removeCommasFromNumber($('#gongjeprice').val());
+    var paidassignType = '';
+    
+    if(paidcategory == '보증금'){
+    	depositeRefund();	
+    	return false;
+    }
+    
+    switch (paidcategory) {
+	case '현금': paidassignType = '현금환불';
+		break;
+	case '보증금': paidassignType = '보증금환불';
+		break;	
+	case '신용승인': paidassignType = '신용취소환불';
+		break;	
+	default:
+		break;
+	}
+    
+    if (paidPriceText > 0) {
+        paidPriceText = -paidPriceText;
+    } else if (paidPriceText < 0) {
+        paidPriceText = Math.abs(paidPriceText);
+    }
+    
+	var paidPrice = formatNumberWithCommas(paidPriceText);
+	
+	$.ajax({
+        type: "POST", 
+        url: "tblpaidinsert", 
+        dataType : 'json',
+        data: { 
+        	FPKID : $('#DBPKID').val(),
+        	SaleDate : getCurrentDate(),
+        	RealSaleDate : getCurrentDateTime(),
+        	SaleType : '사물함',
+        	PayType : paidcategory,
+        	Price : paidPriceText,
+        	PaidGroupSaleNo : $('#DBPKID').val(),
+        	AssignType : paidassignType,
+        	OriginPKID : PKID
+        },
+        success: function(data) {	
+        	
+        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice"></tr>');
+        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
+    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
+    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
+    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
+    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+    		
+    		var tableBody = $('#paidbody');
+    		tableBody.append(newRow);
+    		PLockerPriceChange();
+    		PLockerDepositeChange();
+    		
+    		$.ajax({
+                type: "POST", 
+                url: "useLockerCancel", 
+                dataType : 'json',
+                data: { 
+                	PKID : $('#DBPKID').val(),
+                	LockerID : $('#DBPLockerID').val(),
+                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+                	Misu : removeCommasFromNumber($('#Misu').val()),
+                	ReturnDate : getCurrentDate(),
+                	IsFlag : 1
+                },
+                success: function(success) {
+             		window.opener.location.reload();
+                },
+                error: function(xhr, status, error) {
+                	console.log("Status: " + status);
+                    console.log("Error: " + error);
+                }
+            });
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);

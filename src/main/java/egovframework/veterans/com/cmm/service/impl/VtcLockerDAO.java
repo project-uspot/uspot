@@ -132,4 +132,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public int DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception{
 		return selectOne("locker.DepositeOriginPKIDFind",tbldeposite);
 	}
+	
+	public void CanceluseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.CanceluseLocker",tbluselocker);
+	}
 }

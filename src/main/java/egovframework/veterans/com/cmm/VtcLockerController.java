@@ -1,7 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -28,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
-import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Slf4j
@@ -529,5 +526,23 @@ public class VtcLockerController{
 				return "1";
 			}
 		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/useLockerCancel")
+	public String useLockerCancel(tbluselocker tbluselocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.CanceluseLocker(tbluselocker);
+		
+		return "success";
 	}
 }
