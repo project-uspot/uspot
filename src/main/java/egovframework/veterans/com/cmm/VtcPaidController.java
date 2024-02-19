@@ -315,7 +315,6 @@ public class VtcPaidController {
 			return "0";
 		}
 		tblpaid.setSiteCode(users.getSiteCode());
-		System.out.println(tblpaid);
 		
 		int result = VtcPaidService.OriginPKIDFind(tblpaid);
 		
@@ -324,7 +323,6 @@ public class VtcPaidController {
 		}else {
 			
 			tblpaid.setPKID(tblpaid.getOriginPKID());
-			System.out.println(tblpaid);
 			
 			try {
 				int result2 = VtcPaidService.OriginPKIDFind(tblpaid);

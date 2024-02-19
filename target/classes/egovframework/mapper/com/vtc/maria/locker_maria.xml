@@ -227,15 +227,15 @@ where
 and IsDelete = 'N'
 and SiteCode = #{SiteCode}
 </select>
-<insert id="DepositeInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+<insert id="DepositeInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" useGeneratedKeys="true" keyProperty="PKID">
 INSERT INTO tbldeposite
 (SiteCode, LockerID, MemberID, Deposite, 
 IsDelete, AddDate, 
-AddUserPKID, UpdDate, UpdUserPKID,RealSaleDate,SaleDate)
+AddUserPKID, UpdDate, UpdUserPKID,RealSaleDate,SaleDate,OriginPKID)
 values
 (#{SiteCode},#{LockerID},#{MemberID},#{Deposite}, 
 'N',now(), 
-#{AddUserPKID},now(),#{UpdUserPKID},#{RealSaleDate},#{SaleDate})
+#{AddUserPKID},now(),#{UpdUserPKID},#{RealSaleDate},#{SaleDate},#{OriginPKID})
 </insert>
 <select id="DepositeByMemberID" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
 select * from tbldeposite
@@ -319,4 +319,20 @@ and IsDelete = 'N'
 <update id="DeleteuseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
 {call lockerDelete(#{PKID},#{LockerID},#{SiteCode},#{UpdUserPKID})}
 </update>
+<select id="DepositeOriginPKIDFind" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="int">
+<choose>
+	<when test="PKID != 0">
+	select OriginPKID from tbldeposite
+	where 
+		PKID = #{PKID}
+	</when>
+	<otherwise>
+	select count(*) from tbldeposite
+	where 
+		OriginPKID = #{OriginPKID}
+	</otherwise>
+</choose>
+and SiteCode = #{SiteCode}
+and IsDelete = 'N'
+</select>
 </mapper>

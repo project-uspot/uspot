@@ -359,11 +359,19 @@
 								 <c:if test="${not empty tbldeposite}">
 								 	<c:forEach items="${tbldeposite}" var="deposite">
 								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static old" id="Deposite">
+								 			<td class="PKID" style="display: none;">${deposite.PKID}</td>
 										    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td>
 										    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
 										    <fmt:parseNumber var="depoprice" integerOnly="true" value="${deposite.deposite}"/>
 										    <td class="paidprice align-middle white-space-nowrap text-end fw-bold"><fmt:formatNumber value="${depoprice}" pattern="#,###"/></td>
-										    <td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
+										    <c:choose>
+										    	<c:when test="${deposite.originPKID != 0}">
+										    		<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">보증금환불</td>
+										    	</c:when>
+										    	<c:otherwise>
+										    		<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
+										    	</c:otherwise>
+										    </c:choose>
 										    <td class="paidmapsa align-middle white-space-nowrap text-center"></td>
 										    <td class="paidcardtype align-middle white-space-nowrap text-start"></td>
 										    <td class="paidassignN align-middle white-space-nowrap text-start"></td>
@@ -1092,24 +1100,6 @@ function payDeposite() {
 	}
 	var misudeposite = $('#misuPLockerDeposite').val();
 	
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
-	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
-	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + misudeposite + '</td>');
-	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
-	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
-	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
-	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
-	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
-	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
-	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
-	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
-	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-	
-	var tableBody = $('#paidbody');
-	tableBody.append(newRow);
-	PLockerDepositeChange();
-	
 	$.ajax({
         type: "POST", 
         url: "useLockerPriceUpdate",
@@ -1137,9 +1127,28 @@ function payDeposite() {
         	        	MemberID : $('#memberid').val(),
         	        	Deposite : removeCommasFromNumber(misudeposite)
         	        },
-        	        success: function(success) {	
+        	        success: function(pkid) {	
+        	        	
+        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
+        	        	newRow.append('<td class="PKID" style="display: none;">' + pkid + '</td>');
+        	        	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+        	        	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
+        	        	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + misudeposite + '</td>');
+        	        	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+        	        	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+        	        	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+        	        	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+        	        	newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+        	        	newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+        	        	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+        	        	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+        	        	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+        	        	
+        	        	var tableBody = $('#paidbody');
+        	        	tableBody.append(newRow);
+        	        	PLockerDepositeChange();
+        	        	
         	        	window.opener.location.reload();
-        	       	 	//window.location.href = 'mLockerDetailF.do?PKID='+$('#DBPKID').val();
         	        },
         	        error: function(xhr, status, error) {
         	       	 console.log("Status: " + status);
@@ -1327,7 +1336,100 @@ function payCancel() {
 }
 
 function depositeRefund(){
-	alert('ㅇㄹㄴㅇㄹㅇ');
+	var PKID = $(previousRow).find('.PKID').text();
+	var paidPriceText = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+	
+	$.ajax({
+        type: "POST", 
+        url: "DepositeOriginPKIDFind", 
+        dataType : 'json',
+        data: { 
+        	OriginPKID : PKID
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else if(data == '-1'){
+        		$('#resultmessage').html('이미 취소된 건입니다.');
+        	  	$('.modal-footer').empty();
+        	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+        	  	$('.modal-footer').append(cancelbutton);
+        	    $('#modalButton').click();
+        	    modalcheck = true;
+        	    return false;
+        	}else{                
+                if (paidPriceText > 0) {
+                    paidPriceText = -paidPriceText;
+                } else if (paidPriceText < 0) {
+                    paidPriceText = Math.abs(paidPriceText);
+                }
+        		$.ajax({
+        	        type: "POST", 
+        	        url: "tbldepositeinsert", 
+        	        dataType : 'json',
+        	        data: { 
+        	        	SaleDate : getCurrentDate(),
+        	        	RealSaleDate : getCurrentDateTime(),
+        	        	LockerID : $('#DBPLockerID').val(),
+        	        	MemberID : $('#memberid').val(),
+        	        	Deposite : paidPriceText,
+        	        	OriginPKID : PKID
+        	        },
+        	        success: function(pkid) {	
+        	        	
+        	        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="Deposite"></tr>');
+        	        	newRow.append('<td class="PKID" style="display: none;">' + pkid + '</td>');
+        	    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+        	    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
+        	    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(paidPriceText) + '</td>');
+        	    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">보증금환불</td>');
+        	    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+        	    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+        	    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+        	    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+        	    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+        	    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+        	    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+        	    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+        	    		
+        	    		var tableBody = $('#paidbody');
+        	    		tableBody.append(newRow);
+        	    		PLockerPriceChange();
+        	    		PLockerDepositeChange();
+        	    		
+        	    		$.ajax({
+        	                type: "POST", 
+        	                url: "useLockerPriceUpdate", 
+        	                dataType : 'json',
+        	                data: { 
+        	                	PKID : $('#DBPKID').val(),
+        	                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+        	                	Misu : removeCommasFromNumber($('#Misu').val())
+        	                },
+        	                success: function(success) {
+        	             		window.opener.location.reload();
+        	                },
+        	                error: function(xhr, status, error) {
+        	                	console.log("Status: " + status);
+        	                    console.log("Error: " + error);
+        	                }
+        	            });
+        	        },
+        	        error: function(xhr, status, error) {
+        	       	 console.log("Status: " + status);
+        	         console.log("Error: " + error);
+        	        }
+        		});
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 </script>
 </html>

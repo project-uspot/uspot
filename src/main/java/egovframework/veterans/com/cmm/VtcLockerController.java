@@ -350,7 +350,7 @@ public class VtcLockerController{
 	
 	@ResponseBody
 	@PostMapping("/tbldepositeinsert")
-	public String tbldepositeinsert(tbldeposite tbldeposite)throws Exception{
+	public int tbldepositeinsert(tbldeposite tbldeposite)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -360,7 +360,7 @@ public class VtcLockerController{
 		
 		vtcLockerService.DepositeInsert(tbldeposite);
 		
-		return "success";
+		return tbldeposite.getPKID();
 	}
 	
 	@ResponseBody
@@ -495,5 +495,39 @@ public class VtcLockerController{
 		tbluselocker.setUpdUserPKID(users.getUserPKID());
 		
 		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/DepositeOriginPKIDFind")
+	public String DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbldeposite.setSiteCode(users.getSiteCode());
+		
+		int result = vtcLockerService.DepositeOriginPKIDFind(tbldeposite);
+		
+		if(result>0) {
+			return "-1";
+		}else {
+			
+			tbldeposite.setPKID(tbldeposite.getOriginPKID());
+			
+			try {
+				int result2 = vtcLockerService.DepositeOriginPKIDFind(tbldeposite);
+				
+				if(result2 == 0) {
+					return "1";
+				}
+				
+				return "-1";
+			} catch (NullPointerException e) {
+				return "1";
+			}
+		}
 	}
 }
