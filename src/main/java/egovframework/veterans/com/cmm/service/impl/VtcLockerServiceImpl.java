@@ -168,4 +168,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public int DepositeOriginPKIDFind(tbldeposite tbldeposite) throws Exception {
 		return vtcLockerDAO.DepositeOriginPKIDFind(tbldeposite);
 	}
+
+	@Override
+	public void CanceluseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.CanceluseLocker(tbluselocker);
+	}
 }

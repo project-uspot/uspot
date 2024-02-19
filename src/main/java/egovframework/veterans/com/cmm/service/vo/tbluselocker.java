@@ -96,4 +96,8 @@ public class tbluselocker {
 
 
 	private String afterTodate;
+	
+	private int TotalCnt;
+	
+	private int UseCnt;
 }
