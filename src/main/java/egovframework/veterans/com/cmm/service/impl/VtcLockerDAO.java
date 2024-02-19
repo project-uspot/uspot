@@ -128,4 +128,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public void DeleteuseLocker(tbluselocker tbluselocker)throws Exception{
 		update("locker.DeleteuseLocker",tbluselocker);
 	}
+	
+	public int DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception{
+		return selectOne("locker.DepositeOriginPKIDFind",tbldeposite);
+	}
 }

@@ -63,4 +63,6 @@ public interface VtcLockerService {
 	void ReturnuseLocker(tbluselocker tbluselocker)throws Exception;
 	
 	void DeleteuseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	int DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception;
 }

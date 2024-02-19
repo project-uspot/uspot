@@ -27,4 +27,6 @@ public class tbldeposite {
 	private String UpdDate;
 
 	private int UpdUserPKID;
+	
+	private int OriginPKID;
 }
