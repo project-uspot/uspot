@@ -534,8 +534,8 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<td class="dccode py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="dcpercent py-2 align-middle white-space-nowrap">' + 0 + '</td>');
                 newRow.append('<td class="max py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax) + '</td>');
-                newRow.append('<td class="enter py-2 align-middle white-space-nowrap">' + (list.RegCnt+list.RegCnt2) + '</td>');
-                newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2)) + '</td>');
+                newRow.append('<td class="enter py-2 align-middle white-space-nowrap">' + (list.RegCnt+list.RegCnt2 + list.RegCnt3) + '</td>');
+                newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2 + list.RegCnt3)) + '</td>');
                 newRow.append('<input type="hidden" value="30" name="totalnum" id="totalnum">');
                 newRow.append('<input type="hidden" value="30" name="usenum" id="usenum">');
                 newRow.append('<input type="hidden" value="'+list.SawonNo+'" name="EmpCode" id="EmpCode">');

@@ -699,7 +699,7 @@
                             $('#modalButton').click();
                             return false;
                     	}
-                    	var url = 'mitemreinsertF.do?SaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
+                    	var url = 'mitemreinsertF.do?GroupSaleNo=' + remembersaleno+'&RToDate='+rememberrtodate;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);

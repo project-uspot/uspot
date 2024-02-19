@@ -385,7 +385,7 @@ function paid(){
 				$("#InsertYN").val("Y");
 				save();
 			}else{
-				$("#verticallyCenteredModalLabel").html(" 오 류 ");
+				$("#verticallyCenteredModalLabel").html("거래실패");
 				$('#resultmessage').html(data.msg2);
 			  	$('.modal-footer').empty();
 			  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';

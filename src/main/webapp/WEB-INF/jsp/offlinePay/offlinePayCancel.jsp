@@ -14,111 +14,107 @@
 			<div class="col-12 col-xxl-8">
 				<div class="mb-6">
 					<div class="row flex-row">
-						<div class="row">
-							<div class="col-auto">
-								<div class="card">
-									<div class="card-header">
+						<div class="card">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-auto w-50">
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="OIDSpan">확인번호</span>
+											<input class="form-control" id="OID" name="OID" type="text" value="${param.OID }" readonly="readonly">
+										</div>
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="SaleTimeSpan">결제일시</span>
+											<input class="form-control" id="SaleTime" name="SaleTime" type="text" value="${param.SaleTime }" readonly="readonly">
+											<input class="form-control" id="AssignNo" name="AssignNo" type="hidden" value="${param.AssignNo }">
+										</div>
+										<div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="PriceSpan">결제금액</span>
+											<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
+										</div>
 										<div class="row">
-											<div class="col-auto w-50">
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="OIDSpan">확인번호</span>
-													<input class="form-control" id="OID" name="OID" type="text" value="${param.OID }" readonly="readonly">
+											<div class="col card p-0">
+												<div class="card-header p-1 bg-soft">
+													<h4 class="" id="" style="text-align: center;">결제방법</h4>
 												</div>
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="SaleTimeSpan">결제일시</span>
-													<input class="form-control" id="SaleTime" name="SaleTime" type="text" value="${param.SaleTime }" readonly="readonly">
-													<input class="form-control" id="AssignNo" name="AssignNo" type="hidden" value="${param.AssignNo }">
-												</div>
-												<div class="input-group input-group-sm mb-1">
-													<span class="input-group-text" id="PriceSpan">결제금액</span>
-													<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
-												</div>
-												<div class="row">
-													<div class="col card p-0">
-														<div class="card-header p-1 bg-soft">
-															<h4 class="" id="" style="text-align: center;">결제방법</h4>
+												<div class="card-body p-0 align-items-center">
+													<div class="m-3 mt-0 mb-0 p-1 col">
+														<div class="form-check">
+															<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" <c:if test="${param.paidCategory eq '신용카드' }"> checked="checked"</c:if> readonly="readonly">
+															<label class="form-check-label" for="optPay0">카드결제</label>
 														</div>
-														<div class="card-body p-0 align-items-center">
-															<div class="m-3 mt-0 mb-0 p-1 col">
-																<div class="form-check">
-																	<input class="form-check-input" id="optPay0" name="optPay" type="radio" value="0" <c:if test="${param.paidCategory eq '신용카드' }"> checked="checked"</c:if> readonly="readonly">
-																	<label class="form-check-label" for="optPay0">카드결제</label>
-																</div>
-																<div class="form-check">
-																	<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" <c:if test="${param.paidCategory eq '현금영수증' }"> checked="checked"</c:if> readonly="readonly">
-																	<label class="form-check-label" for="optPay1">현금영수증</label>
-																</div>
-																<div class="form-check">
-																	<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2" <c:if test="${param.paidCategory eq '간편결제' }"> checked="checked"</c:if> readonly="readonly">
-																	<label class="form-check-label" for="optPay2">간편결제</label>
-																</div>
-																<div class="form-check">
-																	<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3" <c:if test="${param.paidCategory eq '제로페이' }"> checked="checked"</c:if> readonly="readonly">
-																	<label class="form-check-label" for="optPay3">제로페이</label>
-																</div>
-															</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay1" name="optPay" type="radio" value="1" <c:if test="${param.paidCategory eq '현금영수증' }"> checked="checked"</c:if> readonly="readonly">
+															<label class="form-check-label" for="optPay1">현금영수증</label>
 														</div>
-													</div>
-													<div class="col card p-0">
-														<div class="card-header p-1 bg-soft">
-															<h4 class="" id="" style="text-align: center;">현금영수증 거래용도</h4>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay2" name="optPay" type="radio" value="2" <c:if test="${param.paidCategory eq '간편결제' }"> checked="checked"</c:if> readonly="readonly">
+															<label class="form-check-label" for="optPay2">간편결제</label>
 														</div>
-														<div class="card-body p-0 align-items-center">
-															<div class="m-3 mt-0 mb-0 p-1 col">
-																<div class="form-check">
-																	<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked" disabled="disabled">
-																	<label class="form-check-label" for="optType0">소비자</label>
-																</div>
-																<div class="form-check">
-																	<input class="form-check-input" id="optType1" name="optType" type="radio" value="1" disabled="disabled">
-																	<label class="form-check-label" for="optType1">사업자</label>
-																</div>
-															</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optPay3" name="optPay" type="radio" value="3" <c:if test="${param.paidCategory eq '제로페이' }"> checked="checked"</c:if> readonly="readonly">
+															<label class="form-check-label" for="optPay3">제로페이</label>
 														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-auto w-50">
-												<div class="row mt-1 w-100">
-													<div class="col-auto w-100">
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">7</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">8</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">9</button>
-													</div>                                                                      
-												</div>                                                                          
-												<div class="row mt-1 w-100">                                                               
-													<div class="col-auto w-100">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">4</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">5</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">6</button>
-													</div>                                                                      
-												</div>                                                                          
-												<div class="row mt-1 w-100" >                                                               
-													<div class="col-auto w-100">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">1</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">2</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">3</button>
-													</div>
+											<div class="col card p-0">
+												<div class="card-header p-1 bg-soft">
+													<h4 class="" id="" style="text-align: center;">현금영수증 거래용도</h4>
 												</div>
-												<div class="row mt-1 w-100" >                                                               
-													<div class="col-auto w-100">                                                      
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">0</button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;"><span class="uil-backspace"></span></button>
-														<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" style="width: 88px;">CLS</button>
+												<div class="card-body p-0 align-items-center">
+													<div class="m-3 mt-0 mb-0 p-1 col">
+														<div class="form-check">
+															<input class="form-check-input" id="optType0" name="optType" type="radio" value="0" checked="checked" disabled="disabled">
+															<label class="form-check-label" for="optType0">소비자</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" id="optType1" name="optType" type="radio" value="1" disabled="disabled">
+															<label class="form-check-label" for="optType1">사업자</label>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="card-body row">
-										<div class="col-md-auto ms-auto row">
-											<div class="col-auto">
-												<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
-											</div>
-											<div class="col-auto">
-												<button class="btn btn-soft-danger" type="button" onclick="paid()">결제취소</button>
+									<div class="col-auto w-50">
+										<div class="row mt-1 w-100">
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >7</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >8</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >9</button>
 											</div>
 										</div>
+										<div class="row mt-1 w-100">
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >4</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >5</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >6</button>
+											</div>
+										</div>
+										<div class="row mt-1 w-100" >
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >1</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >2</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >3</button>
+											</div>
+										</div>
+										<div class="row mt-1 w-100" >
+											<div class="col-auto w-100">
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >0</button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" ><span class="uil-backspace"></span></button>
+												<button type="button" class="btn btn-soft-primary btn-lg w-30" name="number" >CLS</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-body row">
+								<div class="col-md-auto ms-auto row">
+									<div class="col-auto">
+										<button class="btn btn-phoenix-success" type="button" onclick="manualPay()">임의카드</button>
+									</div>
+									<div class="col-auto">
+										<button class="btn btn-soft-danger" type="button" onclick="paid()">결제취소</button>
 									</div>
 								</div>
 							</div>

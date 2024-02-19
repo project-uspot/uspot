@@ -138,8 +138,8 @@
 									    <td class="dccode py-2 align-middle white-space-nowrap">${fmsc_s01.DCID}</td>
 									    <td class="dcpercent py-2 align-middle white-space-nowrap">${fmsc_s01.discountRate}</td>
 									    <td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
-									    <td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2}</td>
-									    <td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2)}</td>
+									    <td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2 + list.RegCnt3}</td>
+									    <td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2 + list.RegCnt3)}</td>
 									    <input type="hidden" value="30" name="totalnum" id="totalnum">
 									    <input type="hidden" value="30" name="usenum" id="usenum">
 									    <%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>

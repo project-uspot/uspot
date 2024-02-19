@@ -644,6 +644,7 @@ public class VtcMemberController {
 		vtcMemberService.deletecard(tblIssueMemberCard);
 	}
 	
+	// TODO 회원등록관리 강습 신규 등록 페이지
 	@GetMapping("/miteminsertF.do")
 	public String miteminsertF(tblmember tblmember,DC dc,Model model,tblCode tblCode) throws Exception {
 		
@@ -889,6 +890,7 @@ public class VtcMemberController {
 		vtcMemberService.fmsc_01update(fmsc_s01);
 	}
 	
+	// TODO 회원등록관리 강좌 재등록 페이지
 	@GetMapping("/mitemreinsertF.do")
 	public String mitemreinsertF(fmsc_s01 fmsc_s01,tblmember tblmember,DC dc,Model model,tblCode tblCode,TblItem_02 tblItem_02)throws Exception{
 		
@@ -905,8 +907,6 @@ public class VtcMemberController {
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
 		
-		
-		
 		String date = fmsc_s01.getRToDate();;
 
         LocalDate parsedDate = LocalDate.parse(date);
@@ -918,7 +918,6 @@ public class VtcMemberController {
         String selectedDate = datePlusOneDay.format(formatter);
         String nextDate = datePlusOneMonth.format(formatter);
         
-		
 		tblmember.setMemberID(result.get(0).getCustCode());
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
@@ -944,7 +943,7 @@ public class VtcMemberController {
         
 		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
 		
-		model.addAttribute("fmsc_s01",result);
+		model.addAttribute("fmsc_s01List",result);
 		model.addAttribute("member",member);
 		model.addAttribute("yearage",yearage);
 		model.addAttribute("mleveltext",mleveltext);
