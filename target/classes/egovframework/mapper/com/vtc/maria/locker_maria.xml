@@ -128,7 +128,7 @@
 		PLockerID = #{PLockerID}
 </update>
 <select id="memberuselocker" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberuselocker">
-	select tblPLockerGroup.PLockerGroupName,tblPLockerGroup.PLockerLocation,tblPLocker.PLockerNo,RegDate,tblUseLocker.FromDate,tblUseLocker.ToDate,tblUseLocker.RegMonth 
+	select tblPLockerGroup.PLockerGroupName,tblPLockerGroup.PLockerLocation,tblPLocker.PLockerNo,RegDate,tblUseLocker.PKID,tblUseLocker.FromDate,tblUseLocker.ToDate,tblUseLocker.RegMonth 
 	,tblUseLocker.RealPrice,tblUseLocker.PaidPrice,Misu,
 	 CASE
         WHEN IsFlag = 0 and IsReturn ='Y' THEN '반납'
@@ -216,4 +216,29 @@ UPDATE tblplocker SET
 	ClickTime=NULL
 WHERE PLockerID=#{PLockerID} AND SiteCode=#{SiteCode} And IsDelete = 'N'
 </update>
+<select id="useLockerByPKID" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker" resultType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+select * from tbluselocker 
+where 
+	PKID = #{PKID}
+and IsDelete = 'N'
+and SiteCode = #{SiteCode}
+</select>
+<insert id="DepositeInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+INSERT INTO tbldeposite
+(SiteCode, LockerID, MemberID, Deposite, 
+Misu, PaidPrice, IsDelete, AddDate, 
+AddUserPKID, UpdDate, UpdUserPKID,RealSaleDate)
+values
+(#{SiteCode},#{LockerID},#{MemberID},#{Deposite}, 
+#{Misu},#{PaidPrice},'N',now(), 
+#{AddUserPKID},now(),#{UpdUserPKID},#{RealSaleDate})
+</insert>
+<select id="DepositeByMemberID" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+select * from tbldeposite
+where 
+	SiteCode = #{SiteCode}
+and MemberID = #{MemberID}
+and LockerID = #{LockerID}
+and IsDelete = 'N'
+</select>
 </mapper>

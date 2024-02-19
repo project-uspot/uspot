@@ -421,7 +421,7 @@
 	<select id="selectItemsByFilter" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="map">
 		<![CDATA[
 			CALL up_SelectItemByFilter_New(
-				#{siteCode},#{UpdDate},
+				#{siteCode},#{FindDate},
 				 CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N''',
 		]]>
 		<choose>
@@ -505,7 +505,7 @@
 		select * from fmsc_s01  
 		where
 			IsDelete  = 'N'
-		and SaleNo = #{SaleNo}
+		and Group_SaleNo = #{GroupSaleNo}
 	</select>
 	<update id="fmsc_01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 		update fmsc_s01 set

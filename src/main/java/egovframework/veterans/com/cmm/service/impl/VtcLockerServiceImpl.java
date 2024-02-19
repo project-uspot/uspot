@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 
 @Service
 @RequiredArgsConstructor
@@ -111,5 +112,20 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	@Override
 	public void UpdPLocker(tblplocker tblplocker) throws Exception {
 		vtcLockerDAO.UpdPLocker(tblplocker);
+	}
+
+	@Override
+	public tbluselocker useLockerByPKID(tbluselocker tbluselocker) throws Exception {
+		return vtcLockerDAO.useLockerByPKID(tbluselocker);
+	}
+
+	@Override
+	public void DepositeInsert(tbldeposite tbldeposite) throws Exception {
+		vtcLockerDAO.DepositeInsert(tbldeposite);
+	}
+
+	@Override
+	public tbldeposite DepositeByMemberID(tbldeposite tbldeposite) throws Exception {
+		return vtcLockerDAO.DepositeByMemberID(tbldeposite);
 	}
 }

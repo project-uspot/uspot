@@ -872,7 +872,22 @@
                     
                     function mLockerF() {
                     	var url = 'mLockerF.do?MemberID='+$('#memberID').val();
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=773";
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=805";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
+                    
+                    function mLockerDetailF() {
+                    	var url = 'mLockerDetailF.do?PKID='+prevPKID;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=805";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -953,6 +968,17 @@
 	                    rememberlevelname = levelname;
 	                    rememberstate = state;
 					}
+					
+					var lockerPrevRow = null;
+					var prevPKID = 0;
+					function useLockerOnclick(pkid,clickedRow) {
+						if (lockerPrevRow !== null) {
+					    	$(lockerPrevRow).css('background-color', '');
+					    }
+						$(clickedRow).css('background-color', 'lightblue');
+						lockerPrevRow = clickedRow;
+					    prevPKID = pkid;
+					}
                     </script>
                     <ul class="nav nav-underline" id="myTab" role="tablist">
                         <li class="nav-item"><a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">수강 및 사물함 정보</a></li>
@@ -960,6 +986,7 @@
                         <li class="nav-item"><a class="nav-link" id="propose-tab" data-bs-toggle="tab" href="#tab-propose" role="tab" aria-controls="tab-propose" aria-selected="false">출석정보</a></li>
                         <li class="nav-item"><a class="nav-link" id="consulting-tab" data-bs-toggle="tab" href="#tab-consulting" role="tab" aria-controls="tab-consulting" aria-selected="false">회원상담</a></li>
                         <li class="nav-item"><a class="nav-link" id="otherlearn-tab" data-bs-toggle="tab" href="#tab-otherlearn" role="tab" aria-controls="tab-otherlearn" aria-selected="false">타사업장수강(1년)</a></li>
+                        <li class="nav-item"><a class="nav-link" id="deposite-tab" data-bs-toggle="tab" href="#tab-deposite" role="tab" aria-controls="tab-deposite" aria-selected="false">보증금관리</a></li>
                     </ul>
                     <div class="tab-content mt-3" id="myTabContent">
                         <div class="tab-pane fade show active" id="tab-learn" role="tabpanel" aria-labelledby="learn-tab">
@@ -1050,9 +1077,9 @@
                                                     <th class="sort align-middle text-end" scope="col" data-sort="ReturnDate">반납일</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="list" id="customer-wishlist-table-body">
+                                            <tbody class="list" id="lockerBody">
                                                 <c:forEach var="locker" items="${lockerlist}">
-                                                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                                    <tr class="hover-actions-trigger btn-reveal-trigger position-static" onclick="useLockerOnclick(${locker.PKID},this)" ondblclick="mLockerDetailF()">
                                                         <td class="LockerName align-middle white-space-nowrap fs--1 text-900">[${locker.PLockerGroupName}-${locker.PLockerLocation}] ${locker.PLockerNo}</td>
                                                         <td class="RegDate align-middle text-900 fs--1 fw-semi-bold text-start">${locker.regDate}</td>
                                                         <td class="FromDate align-middle fw-bold text-900">${locker.fromDate}</td>
@@ -1082,6 +1109,9 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+                                        <script type="text/javascript">
+			                            	$('#lockerBody').children('tr:first').click();
+			                            </script>
                                     </div>
                                     <div class="row align-items-center justify-content-between py-2 pe-0 fs--1">
                                         <div class="col-auto d-flex">
@@ -1826,6 +1856,11 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-deposite" role="tabpanel" aria-labelledby="deposite-tab">
+                            <div class="mb-6">
+                                <h3 class="mb-4" style="padding-top: 3px;">보증금 관리</h3>
                             </div>
                         </div>
                     </div>
