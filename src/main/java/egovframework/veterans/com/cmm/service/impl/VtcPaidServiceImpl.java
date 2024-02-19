@@ -136,4 +136,7 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	public void tblElecAssignDataInsert(tblpaid tblpaid) {
 		paidDAO.tblElecAssignDataInsert(tblpaid);
 	}
+	public int OriginPKIDFind(tblpaid tblpaid) throws Exception {
+		return paidDAO.OriginPKIDFind(tblpaid);
+	}
 }

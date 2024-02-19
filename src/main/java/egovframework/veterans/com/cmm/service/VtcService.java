@@ -23,4 +23,6 @@ public interface VtcService {
 	List<String> listcodename(tblCode tblCode);
 	
 	void optionchange(tblCode tblCode)throws Exception;
+	
+	String codenameByCodeValue(tblCode tblCode);
 }

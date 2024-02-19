@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Slf4j
@@ -347,7 +350,7 @@ public class VtcLockerController{
 	
 	@ResponseBody
 	@PostMapping("/tbldepositeinsert")
-	public String tbldepositeinsert(tbldeposite tbldeposite)throws Exception{
+	public int tbldepositeinsert(tbldeposite tbldeposite)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -357,6 +360,174 @@ public class VtcLockerController{
 		
 		vtcLockerService.DepositeInsert(tbldeposite);
 		
+		return tbldeposite.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/useLockerPriceUpdate")
+	public String useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setAddUserPKID(users.getUserPKID());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.useLockerPriceUpdate(tbluselocker);
+		
 		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/UpduseLocker")
+	public String UpduseLocker(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(tbluselocker.getSiteCode());
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+
+		vtcLockerService.UpduseLocker(tbluselocker);
+		
+		vtcLockerService.UpdPLockerBySave(tblplocker);
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerChange")
+	public String lockerChange(tbluselocker tbluselocker,tblplocker tblplocker,
+								@RequestParam(name = "PrevPLockerID")int PrevPLockerID)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(tbluselocker.getSiteCode());
+		tblplocker.setState(2);
+		tblplocker.setLSaleNo(tbluselocker.getPKID());
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+		
+		//등록중이거나 등록된 사물함인지 판단하는 로직
+		tblplocker result = vtcLockerService.lockervobyplockerid(tblplocker);
+		if(result.getState() == 2) {
+			return "-1";
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime clickTime = LocalDateTime.parse(result.getClickTime(), formatter);
+
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        long minutesDifference = ChronoUnit.MINUTES.between(clickTime, currentTime);
+		
+		if(result.getClickUserPKID() != users.getUserPKID() && minutesDifference < 11) {
+			return "-2";
+		}
+		
+		vtcLockerService.UpduseLocker(tbluselocker);
+		
+		vtcLockerService.UpdPLocker(tblplocker);
+		
+		tblplocker.setPLockerID(PrevPLockerID);
+		
+		vtcLockerService.ReturnLocker(tblplocker);
+		
+		Map<String,Object> tbldeposite = new HashMap<String, Object>();
+		
+		tbldeposite.put("SiteCode",users.getSiteCode());
+		tbldeposite.put("LockerID",tbluselocker.getLockerID());
+		tbldeposite.put("MemberID",tbluselocker.getMemberID());
+		tbldeposite.put("UpdUserPKID",users.getUserPKID());
+		tbldeposite.put("PrevPLockerID",PrevPLockerID);
+		
+		vtcLockerService.ChangeDeposite(tbldeposite);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerReturn")
+	public String lockerReturn(tbluselocker tbluselocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.ReturnuseLocker(tbluselocker);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/lockerDelete")
+	public String lockerDelete(tbluselocker tbluselocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/DepositeOriginPKIDFind")
+	public String DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbldeposite.setSiteCode(users.getSiteCode());
+		
+		int result = vtcLockerService.DepositeOriginPKIDFind(tbldeposite);
+		
+		if(result>0) {
+			return "-1";
+		}else {
+			
+			tbldeposite.setPKID(tbldeposite.getOriginPKID());
+			
+			try {
+				int result2 = vtcLockerService.DepositeOriginPKIDFind(tbldeposite);
+				
+				if(result2 == 0) {
+					return "1";
+				}
+				
+				return "-1";
+			} catch (NullPointerException e) {
+				return "1";
+			}
+		}
 	}
 }

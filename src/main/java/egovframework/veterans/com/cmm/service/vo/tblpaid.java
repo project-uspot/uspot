@@ -102,5 +102,6 @@ public class tblpaid {
 
 
 	private String CardNo;
-
+	
+	private int OriginPKID;
 }

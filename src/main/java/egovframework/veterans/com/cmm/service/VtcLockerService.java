@@ -48,5 +48,21 @@ public interface VtcLockerService {
 	
 	void DepositeInsert(tbldeposite tbldeposite)throws Exception;
 	
-	tbldeposite DepositeByMemberID(tbldeposite tbldeposite)throws Exception;
+	List<tbldeposite> DepositeByMemberID(tbldeposite tbldeposite)throws Exception;
+	
+	void useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception;
+	
+	void UpduseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	void UpdPLockerBySave(tblplocker tblplocker)throws Exception;
+	
+	void ReturnLocker(tblplocker tblplocker)throws Exception;
+	
+	void ChangeDeposite(Map<String,Object> tbldeposite)throws Exception;
+	
+	void ReturnuseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	void DeleteuseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	int DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception;
 }

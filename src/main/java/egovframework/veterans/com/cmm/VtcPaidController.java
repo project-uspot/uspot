@@ -287,7 +287,6 @@ public class VtcPaidController {
 		if(users == null){
 			users = new Users();
 		}
-
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("saleDate", tblpaid.getSaleDate());
 	    map.put("outputOrderNo", 0);
@@ -302,7 +301,39 @@ public class VtcPaidController {
 	    &&!tblpaid.getPayType().equals("계좌이체")) {
 	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);	
 	    }
-	    //return "success";
-	    return ""+tblpaid.getPKID();
+		    //return "success";
+		return ""+tblpaid.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/OriginPKIDFind")
+	public String OriginPKIDFind(tblpaid tblpaid)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		tblpaid.setSiteCode(users.getSiteCode());
+		
+		int result = VtcPaidService.OriginPKIDFind(tblpaid);
+		
+		if(result>0) {
+			return "-1";
+		}else {
+			
+			tblpaid.setPKID(tblpaid.getOriginPKID());
+			
+			try {
+				int result2 = VtcPaidService.OriginPKIDFind(tblpaid);
+				
+				if(result2 == 0) {
+					return "1";
+				}
+				
+				return "-1";
+			} catch (NullPointerException e) {
+				return "1";
+			}
+		}
 	}
 }

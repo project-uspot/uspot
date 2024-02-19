@@ -395,10 +395,7 @@
 	<select id="callSelectReceiptNo" statementType="CALLABLE" resultType="int">
     	{ call up_SelectReceiptNo(#{saleDate, mode=IN, jdbcType=VARCHAR}, #{outputOrderNo, mode=OUT, jdbcType=INTEGER}) }
 	</select>
-	<insert id="tblpaidinsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
-	<selectKey keyProperty="PKID" resultType="int" order="AFTER">
-		SELECT LAST_INSERT_ID()
-	</selectKey>
+	<insert id="tblpaidinsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" useGeneratedKeys="true" keyProperty="PKID">
 		INSERT INTO tblpaid
 		(SiteCode, FPKID, ReceiptNo, SaleDate, 
 		RealSaleDate, SaleType, PayType, Price, 
@@ -407,7 +404,7 @@
 		SaleTime, FCardNo, Msg, PaidGroupSaleNo, 
 		OID, TID, DelDate, DelUsePKID, 
 		DelMsg, PayID, IsDelete, AddDate, 
-		AddUserPKID, UpdDate, UpdUserPKID, CardNo)
+		AddUserPKID, UpdDate, UpdUserPKID, CardNo,OriginPKID)
 		VALUES(
 		#{SiteCode},#{FPKID},#{ReceiptNo},#{SaleDate}, 
 		#{RealSaleDate}, #{SaleType}, #{PayType}, #{Price}, 
@@ -416,7 +413,7 @@
 		#{SaleTime}, #{FCardNo}, #{Msg}, #{PaidGroupSaleNo}, 
 		#{OID}, #{TID}, #{DelDate}, #{DelUsePKID}, 
 		#{DelMsg}, #{PayID}, 'N', now(), 
-		#{AddUserPKID},now(),#{UpdUserPKID},#{CardNo})
+		#{AddUserPKID},now(),#{UpdUserPKID},#{CardNo},#{OriginPKID})
 	</insert>
 	<select id="tblpaidbypaidgroupsaleno" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="egovframework.veterans.com.cmm.service.vo.tblpaid">
 		select * from tblpaid
@@ -471,4 +468,21 @@
 			and left(AssignTime,8) = left(#{SaleTime},8)
 		);
 	</insert>
+	
+	<select id="OriginPKIDFind" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="int">
+		<choose>
+			<when test="PKID != 0">
+			select OriginPKID from tblpaid
+			where 
+				PKID = #{PKID}
+			</when>
+			<otherwise>
+			select count(*) from tblpaid
+			where 
+				OriginPKID = #{OriginPKID}	
+			</otherwise>
+		</choose>
+	and SiteCode = #{SiteCode}
+	and IsDelete = 'N'
+	</select>
 </mapper>

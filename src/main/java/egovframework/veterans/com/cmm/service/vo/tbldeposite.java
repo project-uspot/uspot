@@ -8,6 +8,8 @@ public class tbldeposite {
 	
 	private String SiteCode;
 
+	private String SaleDate;
+	
 	private String RealSaleDate;
 	
 	private int LockerID;
@@ -15,10 +17,6 @@ public class tbldeposite {
 	private String MemberID;
 
 	private int Deposite;
-
-	private int Misu;
-
-	private int PaidPrice;
 
 	private String IsDelete;
 
@@ -29,4 +27,6 @@ public class tbldeposite {
 	private String UpdDate;
 
 	private int UpdUserPKID;
+	
+	private int OriginPKID;
 }
