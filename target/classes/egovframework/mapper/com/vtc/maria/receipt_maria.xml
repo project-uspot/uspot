@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="receipt">
+	<select id="getReceipt" parameterType="String" resultType="Map">
+	<![CDATA[
+		select a.PKID, d.SiteCode
+		, d.SiteName , d.SiteBNo ,d.PName , d.Address , d.SubAddress ,d.Phone1
+		, e.MemberID , e.Name , e.CellPhone
+		, c.CategoryName , c.JungName , c.LevelName , c.DayName , c.FromTime , c.ToTime , c.NVAT
+		, b.RFromDate , b.RToDate , b.RegMonth, b.dcPrice, b.ItemPrice , b.RealPrice , b.PaidPrice , b.Misu , b.SaleDate
+		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.RealPrice * 10/11) else 0 end as gonggub
+		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.RealPrice- (b.RealPrice * 10/11)) else 0 end as vat
+		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
+		, f.SawonName , f.SawonNo 
+		from tblPaid a
+		left join FMSC_S01 b on a.SiteCode = b.SiteCode and a.PaidGroupSaleNo = b.Group_SaleNo 
+		left join selectitembyitemcode c on a.SiteCode = c.SiteCode and b.ItemPKID = c.ItemID 
+		left join tblsite d on a.SiteCode = d.SiteCode 
+		left join tblmember e on b.CustCode = e.MemberID 
+		left join tblUser f on a.AddUserPKID = f.UserPKID 
+		where a.isDelete = 'N'
+		and a.PKID = #{value}
+	]]>
+	</select>
+
+	<insert id="insertReceipt" parameterType="Map">
+	<!-- <![CDATA[
+	INSERT INTO tbl_receipt (SiteCode, FPKID, SiteBNo, SaleDate, ReceiptText, MemberID, CellPhone, IsDelete)
+	SELECT #{SiteCode}, #{FPKID}, #{SiteBNo}, NOW(), #{receiptText}, #{MemberID}, #{CellPhone}, 'N'
+	FROM DUAL
+    WHERE NOT EXISTS (
+    	SELECT 1
+    	FROM tbl_receipt
+    	WHERE SiteCode = #{SiteCode}
+    	AND FPKID = #{FPKID}
+    	AND SiteBNo = #{SiteBNo}
+    	AND IsDelete = 'N'
+    );
+	]]> -->
+	<![CDATA[
+	INSERT INTO tbl_receipt (SiteCode, FPKID, SiteBNo, SaleDate, ReceiptText, MemberID, CellPhone, IsDelete)
+	values( #{SiteCode}, #{FPKID}, #{SiteBNo}, NOW(), #{receiptText}, #{MemberID}, #{CellPhone}, 'N')
+	ON DUPLICATE KEY UPDATE
+	SaleDate =  NOW(),
+	ReceiptText = #{receiptText};
+	]]>
+	</insert>
+	
+	<select id="getReReceipt" parameterType="Map" resultType="Map">
+	<![CDATA[
+		select *
+		from tbl_receipt a
+		where a.isDelete = 'N'
+		and a.Sitecode  = #{SiteCode}
+		and a.FPKID = #{FPKID}
+		LIMIT 1;
+	]]>
+	</select>
+</mapper>

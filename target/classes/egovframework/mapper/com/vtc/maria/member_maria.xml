@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="memberlist" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		
+		select * from tblmember 
+		where 
+		IsDelete = 'N'
+	</select>
+	<select id="memberlistfind" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		select * from tblmember 
+		where 
+		IsDelete = 'N'
+		<if test="Gender != -1">
+			and Gender = #{Gender}
+		</if>
+		<if test="MLevel != -1">
+			and MLevel = #{MLevel}
+		</if>
+		<if test="Type != -1">
+			and Type = #{Type}
+		</if>
+	</select>
+	<select id="maxidtblmember" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		select *,
+		CASE
+        WHEN gender = 1 THEN '남자'
+        WHEN gender = 0 THEN '여자'
+        ELSE ''
+        END AS genderText,
+        CASE
+        WHEN tblmember.Type = 12 THEN '어른'
+        WHEN tblmember.Type = 20 THEN '청소년'
+        WHEN tblmember.Type = 11 THEN '어린이'
+        WHEN tblmember.Type = 40 THEN '경로'
+        END AS TypeText,
+         CASE
+        WHEN tblmember.IF_Flag = 'Y' THEN '구민'
+        WHEN tblmember.IF_Flag = 'N' THEN '구외'
+        ELSE ''
+        END AS IFFlagText,
+        CASE
+        WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
+        WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
+        ELSE '인증안됨'
+         END AS ipinNumbertext
+   		from tblmember
+		where 
+			MemberID = 
+		(select max(MemberID) from tblmember where IsDelete = 'N')
+	</select>
+
+	<select id="fmsc_s01toselectitem" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem">
+		select SaleNo,
+ 			CASE
+		        WHEN fmsc_s01.State = 'A' THEN '현재원'
+		        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'B' THEN '만기'
+		        WHEN fmsc_s01.State = 'C' THEN '휴회중'
+		        WHEN fmsc_s01.State = 'D' THEN '휴회'
+		        WHEN fmsc_s01.State = 'E' THEN '환불대기'
+		        WHEN fmsc_s01.State = 'F0' THEN '환불'
+		        WHEN fmsc_s01.State = 'G' THEN '현재원'
+		        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
+		        WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
+		        ELSE ''
+		    END AS State,
+			SaleDate, selectitem.GroupName, selectitem.SubGroupName, selectitem.WeekName, selectitem.FromTime, selectitem.ToTime,
+			selectitem.LevelName, fmsc_s01.RFromDate, fmsc_s01.RToDate, fmsc_s01.RegMonth,
+			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice, COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType ,
+			fmsc_s01.Group_SaleNo as GroupSaleNo
+		from fmsc_s01
+		left join selectitem 
+		on fmsc_s01.ItemPKID = selectitem.ItemID
+		where CustCode = #{CustCode}
+		and fmsc_s01.isDelete = 'N'
+		order by fmsc_s01.State ,SaleDate desc
+	</select>
+
+	<select id="membertblmembertalk" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmembertalk">
+		select UserName,TalkDate ,TalkText,
+		CASE
+			WHEN IsFllowUp = 'N' THEN '미조치'
+			WHEN IsFllowUp = 'Y' THEN FllowUpText 
+		END AS FllowUpText 
+		from tblmembertalk 
+		where 
+		 IsDelete = 'N'
+		and MemberID = #{MemberID}
+	</select>
+	<select id="fmsc_s01toselectitemanothersite" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem">
+		select SaleNo,
+		 CASE
+		        WHEN fmsc_s01.State = 'A' THEN '현재원'
+		        WHEN fmsc_s01.State = 'A+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'B' THEN '만기'
+		        WHEN fmsc_s01.State = 'C' THEN '휴회중'
+		        WHEN fmsc_s01.State = 'D' THEN '휴회'
+		        WHEN fmsc_s01.State = 'E' THEN '환불대기'
+		        WHEN fmsc_s01.State = 'F0' THEN '환불'
+		        WHEN fmsc_s01.State = 'G' THEN '현재원'
+		        WHEN fmsc_s01.State = 'G+' THEN '반변경(+)'
+		        WHEN fmsc_s01.State = 'H-' THEN '반변경(-)'
+		        WHEN fmsc_s01.State = 'Y' THEN '휴회복귀'
+		        ELSE ''
+		    END AS State
+		,SaleDate,selectitem.GroupName,selectitem.SubGroupName,selectitem.WeekName,selectitem.FromTime,selectitem.ToTime,
+			selectitem.LevelName ,fmsc_s01.RFromDate,fmsc_s01.RToDate,fmsc_s01.RegMonth ,CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice,
+			COALESCE(fmsc_s01.Note, ' ') AS Note,fmsc_s01.InType,tblSite.SiteName 
+		from fmsc_s01
+				left join selectitem 
+				on fmsc_s01.ItemPKID = selectitem.ItemID
+				left join tblsite
+				on fmsc_s01.SiteCode = tblsite.SiteCode 
+				WHERE CustCode = #{CustCode}
+		  AND fmsc_s01.SiteCode != #{SiteCode}
+		  AND fmsc_s01.FromDate >= DATE_SUB(CURRENT_DATE(), INTERVAL 365 day)
+			order by fmsc_s01.State,SaleDate desc
+	</select>
+	<update id="updatemember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		update tblmember 
+		set
+			Name = #{Name},
+			SiteCode = #{SiteCode},
+			BirthDay = #{BirthDay},
+			Age = #{Age},
+			Gender = #{Gender},
+			CellPhone = #{CellPhone},
+			HomePhone = #{HomePhone},
+			<if test="EmgPhone != null">
+			EmgPhone = #{EmgPhone},
+			</if>
+			MLevel = #{MLevel},
+		    Type = #{Type},
+			DCDS = #{DCDS},
+			WebID = #{WebID},
+			BarCode = #{BarCode},
+			ZipCode = #{ZipCode},
+			SCC_CardNo = #{SCCCardNo},
+			Address = #{Address},
+			SubAddress = #{SubAddress},
+			<if test="IFFlag != null">
+			IF_Flag = #{IFFlag},
+			</if>
+			CarNo = #{CarNo},
+			YoungestBirthday = #{YoungestBirthday},
+			<if test="DCID != -1">
+			DCID = #{DCID},
+			</if>
+			Email = #{Email},
+			BankName = #{BankName},
+			BankAccount = #{BankAccount},
+			BankAccountNo = #{BankAccountNo},
+			Note = #{Note},
+			UpdUserPKID = #{UpdUserPKID},
+			UpdDate = now()
+		where
+			MemberID = #{MemberID}
+	</update>
+	<update id="deletemember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		update tblmember
+		set
+			IsDelete = 'Y',
+			UpdDate = now()
+		where
+			MemberID = #{MemberID}
+	</update>
+	
+	<select id="findmember" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+	SELECT *,
+	    CASE
+	        WHEN gender = 1 THEN '남자'
+	        WHEN gender = 0 THEN '여자'
+	        ELSE ''
+	    END AS genderText,
+	    CASE
+	        WHEN tblmember.Type = 12 THEN '어른'
+	        WHEN tblmember.Type = 20 THEN '청소년'
+	        WHEN tblmember.Type = 11 THEN '어린이'
+	        WHEN tblmember.Type = 40 THEN '경로'
+	        ELSE ''
+	    END AS TypeText,
+	    CASE
+	        WHEN tblmember.IF_Flag = 'Y' THEN '구민'
+	        WHEN tblmember.IF_Flag = 'N' THEN '구외'
+	        ELSE ''
+	    END AS IFFlagText,
+	    CASE
+	        WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
+	        WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
+	        ELSE '인증안됨'
+	    END AS ipinNumbertext
+	FROM tblmember 
+	LEFT JOIN tblsite ON tblmember.SiteCode = tblsite.SiteCode
+	WHERE
+		tblmember.IsDelete = 'N' and 
+	    (#{findcategory} = '0' AND MemberID LIKE CONCAT('%', #{findvalue}, '%'))
+	    OR
+	    (#{findcategory} = '1' AND Name LIKE CONCAT('%', #{findvalue}, '%'))
+	    OR
+	    (#{findcategory} = '2' AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4))))
+	</select>
+	<select id="tblmemberBymemberId" resultType="egovframework.veterans.com.cmm.service.vo.tblmember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		select *,
+		CASE
+        WHEN gender = 1 THEN '남자'
+        WHEN gender = 0 THEN '여자'
+        ELSE ''
+        END AS genderText,
+        CASE
+        WHEN tblmember.Type = 12 THEN '어른'
+        WHEN tblmember.Type = 20 THEN '청소년'
+        WHEN tblmember.Type = 11 THEN '어린이'
+        WHEN tblmember.Type = 40 THEN '경로'
+        END AS TypeText,
+        CASE
+        WHEN tblmember.IF_Flag = 'Y' THEN '구민'
+        WHEN tblmember.IF_Flag = 'N' THEN '구외'
+        ELSE ''
+        END AS IFFlagText,
+        CASE
+        WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
+        WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
+        ELSE '인증안됨'
+        END AS ipinNumbertext
+   		from tblmember
+   		where
+		MemberID = #{MemberID}
+		and IsDelete = 'N'
+	</select>
+	<select id="maxmemberid" resultType="String">
+		select max(MemberID)+1 from tblmember where IsDelete = 'N'
+	</select>
+	<insert id="insertmember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		insert into tblmember(
+		MemberID,SiteCode,Name,BirthDay,Age,Gender,CellPhone,HomePhone,
+		<if test="EmgPhone != null">
+			EmgPhone,
+		</if>
+		MLevel,regdate,type,
+		DCDS,WebID,BarCode,ZipCode,SCC_CardNo,Address,SubAddress,
+		<if test="IFFlag != null">
+			IF_Flag,
+		</if>
+		CarNo,YoungestBirthday,
+		<if test="DCID != -1">
+			DCID,
+		</if>
+		Email,BankName,BankAccount,BankAccountNo,AddUserPKID,AddDate)
+		values(
+		#{MemberID},#{SiteCode},#{Name},#{BirthDay},#{Age},#{Gender},#{CellPhone},#{HomePhone},
+		<if test="EmgPhone != null">
+			#{EmgPhone},
+		</if>
+		#{MLevel},#{regdate},#{type},
+		#{DCDS},#{WebID},#{BarCode},#{ZipCode},#{SCCCardNo},#{Address},#{SubAddress},
+		<if test="IFFlag != null">
+			#{IFFlag},
+		</if>
+		#{CarNo},#{YoungestBirthday},
+		<if test="DCID != -1">
+			#{DCID},
+		</if>
+		#{Email},#{BankName},#{BankAccount},#{BankAccountNo},#{AddUserPKID},now())
+	</insert>
+	<select id="bigmovetblmember" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		select *,
+		CASE
+        WHEN gender = 1 THEN '남자'
+        WHEN gender = 0 THEN '여자'
+        ELSE ''
+        END AS genderText,
+        CASE
+        WHEN tblmember.Type = 12 THEN '어른'
+        WHEN tblmember.Type = 20 THEN '청소년'
+        WHEN tblmember.Type = 11 THEN '어린이'
+        WHEN tblmember.Type = 40 THEN '경로'
+        END AS TypeText,
+         CASE
+        WHEN tblmember.IF_Flag = 'Y' THEN '구민'
+        WHEN tblmember.IF_Flag = 'N' THEN '구외'
+        ELSE ''
+        END AS IFFlagText,
+        CASE
+        WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
+        WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
+        ELSE '인증안됨'
+         END AS ipinNumbertext
+   		from tblmember
+		where 
+			MemberID = 
+		<choose>
+			<when test="_parameter.equals('plus')">
+				(select max(MemberID) from tblmember where IsDelete = 'N')
+			</when>
+			<when test="_parameter.equals('minus')">
+				(select min(MemberID) from tblmember where IsDelete = 'N')
+			</when>
+		</choose>
+	</select>
+	<select id="movetblmember" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmember">
+		select *,
+		CASE
+        WHEN gender = 1 THEN '남자'
+        WHEN gender = 0 THEN '여자'
+        ELSE ''
+        END AS genderText,
+        CASE
+        WHEN tblmember.Type = 12 THEN '어른'
+        WHEN tblmember.Type = 20 THEN '청소년'
+        WHEN tblmember.Type = 11 THEN '어린이'
+        WHEN tblmember.Type = 40 THEN '경로'
+        END AS TypeText,
+         CASE
+        WHEN tblmember.IF_Flag = 'Y' THEN '구민'
+        WHEN tblmember.IF_Flag = 'N' THEN '구외'
+        ELSE ''
+        END AS IFFlagText,
+        CASE
+        WHEN ipin_Number IS NOT NULL AND ipin_Number != ' ' THEN '인증'
+        WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
+        ELSE '인증안됨'
+         END AS ipinNumbertext
+   		from tblmember
+		where 
+			MemberID = 
+		<choose>
+			<when test="movetype = 'plus'">
+				(select max(MemberID) from tblmember where IsDelete = 'N')
+			</when>
+			<when test="movetype = 'minus'">
+				(select min(MemberID) from tblmember where IsDelete = 'N')
+			</when>
+		</choose>
+	</select>
+	<select id="endmemberid" parameterType="String" resultType="String">
+		select 
+		<choose>
+			<when test="_parameter.equals('plus')">
+				max(MemberID) 
+			</when>
+			<when test="_parameter.equals('minus')">
+				min(MemberID) 
+			</when>
+		</choose>
+		from tblmember where IsDelete = 'N'
+	</select>
+	<select id="selectmembercardbyid" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard">
+		select *,
+		CASE
+        	WHEN IsReissue = 'N' THEN '신규'
+        	WHEN IsReissue = 'Y' THEN '재발급'
+    	END AS IsReissueT
+		from tblIssueMemberCard
+		where
+			MemberID = #{MemberID}
+		and IsDelete = 'N'
+	</select>
+	<select id="membercardbypkid" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard">
+		select * from tblIssueMemberCard
+		where
+			PKID = #{PKID}	
+	</select>
+	<select id="barCodefind" parameterType="String" resultType="int">
+		select count(*) from tblIssueMemberCard
+		where
+			BarCode = #{BarCode}
+		and IsDelete = 'N'
+	</select>
+	<update id="updatecard" parameterType="egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard">
+		update tblIssueMemberCard set 
+		BarCode = #{BarCode},
+		IsReissue = #{IsReissue},
+		SuryungJa = #{SuryungJa},
+		SuryungJaPhone = #{SuryungJaPhone},
+		Relation = #{Relation},
+		Note = #{Note},
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			MemberID = #{MemberID}
+	</update>
+	<insert id="insertcard" parameterType="egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard">
+		INSERT INTO uspot_test.tblissuemembercard
+		(MemberID,
+		BarCode,
+		issueDate, 
+		IsReissue, 
+		Price, 
+		AddUserPKID, 
+		AddDate,
+		IsDelete, 
+		SuryungJa, 
+		Relation, 
+		SuryungJaPhone, 
+		Note)
+		VALUES(
+		#{MemberID},
+		#{BarCode},
+		now(),
+		#{IsReissue},
+		#{Price}, 
+		#{AddUserPKID}, 
+		now(),
+		'N',
+		#{SuryungJa},
+		#{Relation},
+		#{SuryungJaPhone},
+		#{Note})
+	</insert>
+	<update id="deletecard" parameterType="egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard">
+		update tblIssueMemberCard set 
+		IsDelete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			PKID = #{PKID}
+	</update>
+	
+	<select id="selectItemsByFilter" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem_02" resultType="map">
+		<![CDATA[
+			CALL up_SelectItemByFilter_New(
+				#{siteCode},#{FindDate},
+				 CONCAT('WHERE tblItem.SiteCode = '#{siteCode}' AND tblItem.IsUse = ''Y'' AND tblItem.IsDelete = ''N''',
+		]]>
+		<choose>
+			<when test="SubGroupName != null">
+				<![CDATA[' AND tblItem_02.SubGroupName LIKE CONCAT(''%'', '#{SubGroupName}', ''%'')',]]>
+			</when>
+			<when test="GroupName != null"> 
+				<![CDATA[' AND tblitem.ItemCode LIKE CONCAT(''%'', '#{GroupName}', ''%'')',]]>
+			</when>
+			<when test="ItemID != null">
+				<![CDATA[' AND tblItem.ItemID = '#{ItemID}'',]]>
+			</when>
+		</choose> 
+		<![CDATA[' ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
+	</select>
+	
+	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
+    	SELECT LAST_INSERT_ID()
+  	</selectKey>
+		INSERT INTO fmsc_s01
+			(SiteCode, SaleDate, ItemPeriod, CustCode, 
+			FromDate, ToDate, RFromDate, RToDate, 
+			RegMonth, DCID, DiscountRate, DCPrice, 
+			ItemPrice, RealPrice, Misu, Note, 
+			Group_SaleNo, EmpCode, IsReReg, State, 
+			UserPKID, ItemPKID, IsChangeItem, InType, 
+			prevInType, CurState, RegType, ReEndFlag, 
+			Before_SaleNo, IF_Flag, IF_DateTime, IsConfirm, 
+			UseDayCnt, TotDayCnt, IsDelete, AddDate, 
+			AddUserPKID, UpdDate, UpdUserPKID, IsPackage, PaidPrice)
+			values
+			(#{SiteCode},#{SaleDate},#{ItemPeriod},#{CustCode}, 
+			#{FromDate},#{ToDate},#{FromDate},#{ToDate}, 
+			#{RegMonth},#{DCID},#{DiscountRate},#{DCPrice}, 
+			#{ItemPrice},#{RealPrice},#{Misu},#{Note}, 
+			#{GroupSaleNo},#{EmpCode},#{IsReReg},#{State}, 
+			#{UserPKID},#{ItemPKID},0,#{InType},
+			#{prevInType},#{CurState},#{RegType},#{ReEndFlag}, 
+			#{BeforeSaleNo},#{IFFlag},#{IFDateTime},#{IsConfirm}, 
+			#{UseDayCnt},#{TotDayCnt},'N',now(), 
+			#{AddUserPKID},now(),#{UpdUserPKID},#{IsPackage},#{PaidPrice});
+	</insert>
+	<update id="fmsc_01insert_update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		<choose>
+			<when test="GroupSaleNo != 0">
+				update fmsc_s01 set Group_SaleNo = #{GroupSaleNo}
+				where SaleNo = LAST_INSERT_ID()
+			</when>
+			<otherwise>
+				update fmsc_s01 set Group_SaleNo = SaleNo
+				where SaleNo = LAST_INSERT_ID()
+			</otherwise>
+		</choose>
+	</update>
+	
+	<update id="fmsc_01insert_save" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		SaleDate = #{SaleDate},
+		ItemPeriod = #{ItemPeriod},
+		FromDate = #{FromDate},
+		ToDate = #{ToDate},
+		RFromDate = #{RFromDate},
+		RToDate = #{RToDate},
+		RegMonth = #{RegMonth},
+		DCID = #{DCID},
+		DiscountRate = #{DiscountRate},
+		DCPrice = #{DCPrice},
+		ItemPrice = #{ItemPrice},
+		RealPrice = #{RealPrice},
+		Misu = #{Misu},
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			Group_SaleNo = #{GroupSaleNo}
+		and isDelete = 'N'
+		and ItemPKID = #{ItemPKID}
+	</update>
+
+	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
+		select * from fmsc_s01  
+		where
+			IsDelete  = 'N'
+		and Group_SaleNo = #{GroupSaleNo}
+	</select>
+	<update id="fmsc_01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		SaleDate = #{SaleDate},
+		ItemPeriod = #{ItemPeriod},
+		FromDate = #{FromDate},
+		ToDate = #{ToDate},
+		RFromDate = #{RFromDate},
+		RToDate = #{RToDate},
+		RegMonth = #{RegMonth},
+		DCID = #{DCID},
+		DiscountRate = #{DiscountRate},
+		DCPrice = #{DCPrice},
+		ItemPrice = #{ItemPrice},
+		RealPrice = #{RealPrice},
+		Misu = #{Misu},
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="oldfmsc_s01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		update fmsc_s01 set
+		<if test="RFromDate != null">
+			RFromDate = #{RFromDate},
+		</if>
+		RToDate = #{RToDate},
+		State = #{State},
+		prevInType = InType,
+		<if test="InType != null">
+		InType = #{InType},
+		</if>
+		CurState = -1,
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<select id="finddues" resultType="int" parameterType="String">
+		select dues from tblduescheck
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete ='N'
+	</select>
+	<update id="dueschange" parameterType="map">
+		update tblduescheck
+		set
+			dues = #{dues},
+			UpdDate = now(),
+			UpdUserPKID = #{UpdUserPKID}
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N' 
+	</update>
+	<insert id="insertFmsc_s04" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04">
+		INSERT INTO uspot_test.fmsc_s04
+		(SiteCode, SaleNo, RegDate, CancelDate, 
+		TotalCnt, UseCnt, TotalClassPaidPrice, TotalPaidPrice, 
+		TotalMinapPrice, WiyakPrice, UsePrice, GongjePrice, 
+		ReturnPrice, Account, Bank, AccountNo, 
+		ItemMonth, RegMonth, Note, IsDelete, 
+		AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(
+		#{SiteCode},#{SaleNo},#{RegDate},#{CancelDate}, 
+		#{TotalCnt},#{UseCnt},#{TotalClassPaidPrice},#{TotalPaidPrice}, 
+		#{TotalMinapPrice},#{WiyakPrice},#{UsePrice},#{GongjePrice}, 
+		#{ReturnPrice},#{Account},#{Bank},#{AccountNo}, 
+		#{ItemMonth},#{RegMonth},#{Note},'N', 
+		now(),#{AddUserPKID},now(),#{UpdUserPKID})
+	</insert>
+	<insert id="insertFmsc_s04_01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		INSERT INTO uspot_test.fmsc_s04_01
+		(SiteCode, SaleNo, RegDate, CancelDate, 
+		TotalCnt, UseCnt, TotalClassPaidPrice, TotalPaidPrice, 
+		TotalMinapPrice, WiyakPrice, UsePrice, GongjePrice, 
+		ReturnPrice, Account, Bank, AccountNo, 
+		ORToDate, Note, IsComplete, IsDelete, 
+		AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(
+		#{SiteCode},#{SaleNo},#{RegDate},#{CancelDate}, 
+		#{TotalCnt},#{UseCnt},#{TotalClassPaidPrice},#{TotalPaidPrice}, 
+		#{TotalMinapPrice},#{WiyakPrice},#{UsePrice},#{GongjePrice}, 
+		#{ReturnPrice},#{Account},#{Bank},#{AccountNo}, 
+		#{ORToDate},#{Note},'N','N', 
+		now(),#{AddUserPKID},now(),#{UpdUserPKID})
+	</insert>
+	<update id="refundComplete" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		update fmsc_s04_01 set
+		IsComplete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="reutrnFmsc_s01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		UPDATE fmsc_s01
+		SET
+		    InType = prevInType,
+		    prevInType = '등록',
+		    CurState = 1,
+		    UpdDate = now(),
+		    UpdUserPKID = #{UpdUserPKID},
+		    State = CASE
+		        WHEN InType IN ('등록', '재등록') THEN 'A'
+		        WHEN InType = '반변경' THEN 'A+'
+		        ELSE State
+		    end
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="deleteFmsc_s04_01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s04_01">
+		update fmsc_s04_01 set
+		IsDelete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<update id="deleteFmsc_s03" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		update fmsc_s03 set
+		IsDelete = 'Y',
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	<insert id="insertFmsc_s03" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		INSERT INTO fmsc_s03
+		(SiteCode, SaleNo, RegDate, FromDate, 
+		ToDate, ReFromDate, ReToDate, ReFromCheck, 
+		Note, IsDelete, AddDate, AddUserPKID, 
+		UpdDate, UpdUserPKID)
+		VALUES
+		(#{SiteCode},#{SaleNo},#{RegDate},#{FromDate}, 
+		#{ToDate},#{ReFromDate},#{ReToDate},#{ReFromCheck}, 
+		#{Note},#{IsDelete},now(),#{AddUserPKID}, 
+		now(),#{UpdUserPKID})
+	</insert>
+	<select id="fmsc_s03BySaleNo" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s03" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s03">
+		select * from fmsc_s03
+		where
+			SiteCode = #{SiteCode}
+		and SaleNo = #{SaleNo}
+		order by AddDate desc
+	</select>
+	<update id="cancelRestFmsc_s01" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		UPDATE fmsc_s01 SET
+		RFromDate = FromDate,
+		RToDate = ToDate,
+	    InType = prevInType,
+	    prevInType = '등록',
+	    CurState = 1,
+	    UpdDate = now(),
+	    UpdUserPKID = #{UpdUserPKID},
+	    State = CASE
+	        WHEN InType IN ('등록', '재등록') THEN 'A'
+	        WHEN InType = '반변경' THEN 'A+'
+	        ELSE State
+	    end
+		where
+			SaleNo = #{SaleNo}
+	</update>
+	
+	<insert id="insertFmsc_s01_insert_temp" parameterType="Map">
+	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+	<![CDATA[
+		insert into fmsc_s01_insert_temp(SiteCode, SaleDate, CustCode, FromDate, ToDate, RegMonth, ItemPrice, Note, ItemPKID, CurState, RegType, ReEndFlag, Before_SaleNo, IsConfirm, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES(#{SiteCode}
+		, date_format(NOW(), '%Y-%m-%d' )
+		, #{MemberID}
+		, left(#{Jungsi3},10)
+		, right(#{Jungsi3},10)
+		, #{itemmonth}
+		, #{DefPrice}
+		, NULL
+		, #{ItemID}
+		, 1
+		, NULL
+		, NULL
+		, NULL
+		, NULL
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' ), #{UserPKID}
+		, NULL, 0);
+	]]>
+	</insert>
+	<update id="fmsc_01insertTemp_update" parameterType="Map">
+		<choose>
+			<when test="GroupSaleNo != null and GroupSaleNo != 0">
+				update fmsc_s01_insert_temp set GroupSaleNo = #{GroupSaleNo}
+				where SaleNo = #{SaleNo}
+			</when>
+			<otherwise>
+				update fmsc_s01_insert_temp set GroupSaleNo = SaleNo
+				where SaleNo = #{SaleNo}
+			</otherwise>
+		</choose>
+	</update>
+	<update id="fmsc_01insertTemp_delete" parameterType="Map">
+		<![CDATA[
+			update fmsc_s01_insert_temp set isDelete = 'Y', UpdUserPKID = #{UserPKID}, UpdDate = date_format(NOW(), '%Y-%m-%d %T' )
+			where SaleNo = #{tempSaleNo}
+		]]>
+	</update>
+</mapper>

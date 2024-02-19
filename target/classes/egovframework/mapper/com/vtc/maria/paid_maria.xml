@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="paid">
+	
+	<select id="selectDCType" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select 
+			SiteCode, dcid, dcname, case dcType when 'D' then '%' else '금액' end as 'dcType'
+			, Price, Rate, SortOrder, AddDCYN, ReDCNoYN , ReDCNoChkDayCnt, ApplyFamily , ApplyFamilyCnt 
+			, case PissCD 
+				when 'ReductionBscLivYnService' then '이용요금감면(기초생활수급자)'
+				when 'NaManMeritFamInfoService' then '이용요금감면(국가유공자)'
+				when 'ReductionDisabledYnService' then '이용요금감면(장애인)' end as 'PissCD'
+		from tblDC
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<select id="getDCDetail" parameterType="egovframework.veterans.com.cmm.service.vo.DC" resultType="egovframework.veterans.com.cmm.service.vo.DC">
+		select 
+			SiteCode, dcid, dcname, dcType , Price, Rate, SortOrder, AddDCYN
+			, ReDCNoYN , ReDCNoChkDayCnt, ApplyFamily , ApplyFamilyCnt , PissCD
+		from tblDC
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and DCID = #{dcid}
+	</select>
+	<update id="updateDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		update tbldc set
+			dcid = #{dcid}
+			, DCName = #{dcName}
+			, DCType = #{dcType}
+			, Rate = #{Rate}
+			, Price = #{Price} 
+			, ApplyFamily = #{ApplyFamily}
+			, ApplyFamilyCnt = #{ApplyFamilyCnt}  
+			, PissCD = #{PissCD}
+			, ReDCNoYN = #{ReDCNoYN}
+			, ReDCNoChkDayCnt = #{ReDCNoChkDayCnt}
+			, UpdDate = sysdate() 
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and dcid = #{dcid}
+	</update>
+	<insert id="insertDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		INSERT INTO uspot_test.tbldc
+			(DCID, SiteCode, DCName, Rate, DCDaesangID, ApplyFamily, ApplyFamilyCnt, AddDCYN, WebYN, IsUse, PissCD, ReDCNoYN, ReDCNoChkDayCnt, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, DCType, Price)
+		VALUES
+			(#{dcid}, #{SiteCode}, #{dcName}, #{Rate}, #{dcDaesangID}, #{ApplyFamily}, #{ApplyFamilyCnt},#{AddDCYN}, #{WebYN}, #{IsUse}, #{PissCD}, #{ReDCNoYN}, #{ReDCNoChkDayCnt}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0, #{dcType}, #{Price});
+				
+	</insert>
+	
+	<update id="deleteDC" parameterType="egovframework.veterans.com.cmm.service.vo.DC">
+		update tbldc set
+			IsDelete = 'Y'
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	dcid = #{dcid}
+	</update>
+	<select id="getDcId" resultType="int">
+		select max(dcid) 
+		from 
+			tbldc 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	<select id="getDCSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tbldc 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
+	
+	<select id="selectExpenseGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		select * from tblExpenseGroup
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<select id="getExpenseGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		select * 
+		from tblexpensegroup
+		where
+			SiteCode = #{SiteCode}
+		and ExpenseGroupID = #{ExpenseGroupID}
+		and IsDelete = 'N'
+	</select>
+	<update id="updateExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		update tblexpensegroup set
+			ExpenseGroupName = #{ExpenseGroupName}
+			,SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate  = sysdate()
+		where
+			SiteCode = #{SiteCode}
+		and ExpenseGroupID = #{ExpenseGroupID}
+	</update>
+	<insert id="insertExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		INSERT INTO tblexpensegroup
+			(SiteCode, ExpenseGroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES
+			(#{SiteCode}, #{ExpenseGroupName}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
+	</insert>
+	<update id="deleteExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+		update tblexpensegroup set
+			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	ExpenseGroupID = #{ExpenseGroupID}
+	</update>
+	<select id="getExGpSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tblexpensegroup 
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
+	<select id="selectExpense" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+		select 
+			a.SiteCode , ExpenseID, ExpenseGroupName, ExpenseName, case ExpenseType when 'I' then '수입' else '지출' end as 'ExpenseType'
+			, case NVAT when 'Y' then '포함' else '미포함' end as 'Nvat', DefPrice, a.SortOrder
+		from tblExpense a
+		left join tblExpenseGroup b on a.SiteCode = b.SiteCode and a.ExpenseGroupID = b.ExpenseGroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+	</select> 
+	<select id="getExpenseDetail" parameterType="egovframework.veterans.com.cmm.service.vo.Expense" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+		select 
+			a.SiteCode , ExpenseID, b.ExpenseGroupName, a.ExpenseName, ExpenseType 
+			, Nvat , DefPrice, a.SortOrder
+		from tblExpense a
+		left join tblExpenseGroup b on a.SiteCode = b.SiteCode and a.ExpenseGroupID = b.ExpenseGroupID
+		where
+			a.SiteCode = #{SiteCode}
+		and a.IsDelete = 'N'
+		and a.ExpenseID = #{ExpenseID}
+	</select>
+	<update id="updateExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		update tblexpense set
+			ExpenseGroupID = #{ExpenseGroupID}
+			, ExpenseName = #{ExpenseName}
+			, ExpenseType = #{ExpenseType}
+			, DefPrice = #{DefPrice}
+			, NVAT = #{Nvat}
+			, SortOrder = #{SortOrder}
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		and ExpenseID = #{ExpenseID}
+	</update>
+	<insert id="insertExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		INSERT INTO tblexpense
+			(SiteCode, ExpenseGroupID, ExpenseName, ExpenseType, DefPrice, NVAT, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
+		VALUES
+			(#{SiteCode}, #{ExpenseGroupID}, #{ExpenseName}, #{ExpenseType}, #{DefPrice}, #{Nvat}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
+	</insert>
+	<update id="deleteExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+		update tblexpense set
+			IsDelete = 'Y'
+			, UpdUserPKID = #{UpdUserPKID}
+			, UpdDate  = sysdate()
+		where 
+			SiteCode = #{SiteCode}
+		and	ExpenseID = #{ExpenseID}
+	</update>
+	<select id="getExSortOrder" resultType="int">
+		select max(SortOrder) 
+		from 
+			tblexpense
+		where 
+			SiteCode = #{SiteCode}
+	</select>
+	
+	<select id="memberexpensesale" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberexpensesale">
+		select tblexpensegroup.ExpenseGroupName,tblexpense.ExpenseName,'InOut',SaleDate,Price,DefPrice,
+		(DefPrice - Price) AS minabPrice
+		from tblexpensesale
+		left join tblexpense on tblexpensesale.ExpenseID = tblExpense.ExpenseID
+		left join tblexpensegroup on tblexpense.ExpenseGroupID = tblexpensegroup.ExpenseGroupID
+		where 
+			MemberID = #{MemberID}
+		and tblexpensesale.IsDelete = 'N'
+	</select>
+	
+	<select id="settlemnetlist" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.settlemnetlist">
+		<![CDATA[
+			SELECT
+			    x.categoryname,
+			    x.jungname,
+			    x.defprice,
+			    COALESCE(x.cashcnt, 0) AS cashcnt,
+			    COALESCE(x.cash_net, 0) AS cash_net,
+			    COALESCE(x.cash_vat, 0) AS cash_vat,
+			    COALESCE(x.cash, 0) AS cash,
+			    COALESCE(x.Bankcnt, 0) AS Bankcnt,
+			    COALESCE(x.Bank_net, 0) AS Bank_net,
+			    COALESCE(x.Bank_vat, 0) AS Bank_vat,
+			    COALESCE(x.Bank, 0) AS Bank,
+			    COALESCE(x.creditcnt, 0) AS creditcnt,
+			    COALESCE(x.credit_net, 0) AS credit_net,
+			    COALESCE(x.credit_vat, 0) AS credit_vat,
+			    COALESCE(x.credit, 0) AS credit,
+			    X.sitename,
+			    COALESCE(x.성인수량, 0) AS AdultCnt,
+			    COALESCE(청소년수량, 0) AS TeenCnt,
+			    COALESCE(유아수량, 0) AS ChildCnt
+			FROM (
+			    SELECT
+			        b.categoryname,
+			        COALESCE(b.jungname, '') || ' ' || COALESCE(b.Dayname, '') || ' ' || COALESCE(b.fromtime, '') || ' ' || COALESCE(b.levelname, '') AS jungname,
+			        case WHEN b.DefPrice = 0 THEN
+			        CASE WHEN b.Price1 = 0 THEN
+			        case WHEN b.Price2 = 0 THEN
+			        case WHEN b.Price3 = 0 THEN
+			        case WHEN b.Price4 = 0 THEN
+			        case WHEN b.Price5 = 0 THEN 0
+			            ELSE b.Price5 END
+			            ELSE b.Price4 end
+			            ELSE b.Price3 END
+			            ELSE b.Price2 END
+			            ELSE b.Price1 END
+			            ELSE b.DefPrice END AS DefPrice,
+			        a.cashcnt,
+			        case WHEN b.Nvat = 'Y' THEN ROUND((a.cash * 10) / 11, 0) ELSE 0 END AS cash_net,
+			        case WHEN b.Nvat = 'Y' THEN a.cash - ROUND((a.cash * 10) / 11, 0) ELSE 0 END AS cash_vat,
+			        a.cash,
+			        a.Bankcnt,
+			        case WHEN b.Nvat = 'Y' THEN ROUND((a.Bank * 10) / 11, 0) ELSE 0 END AS Bank_net,
+			        case WHEN b.Nvat = 'Y' THEN a.Bank - ROUND((a.Bank * 10) / 11, 0) ELSE 0 END AS Bank_vat,
+			        a.Bank,
+			        a.creditcnt,
+			        case WHEN b.Nvat = 'Y' THEN ROUND((a.credit * 10) / 11, 0) ELSE 0 END AS credit_net,
+			        case WHEN b.Nvat = 'Y' THEN a.credit - ROUND((a.credit * 10) / 11, 0) ELSE 0 END AS credit_vat,
+			        a.credit, 
+			        b.typecode, b.namecode, b.daycode, b.fromtime, b.levelcode, a.sitename,
+			        성인수량, 청소년수량, 유아수량
+			    FROM ( select b.ItemPKID,
+			            SUM(a_1.cashcnt) AS cashcnt, SUM(a_1.cash) AS cash,
+			            SUM(a_1.Bankcnt) AS Bankcnt, SUM(a_1.Bank) AS Bank,
+			            SUM(a_1.creditcnt) AS creditcnt, SUM(a_1.credit) AS credit,
+			            a_1.SiteName,
+			            SUM(CASE WHEN c.BirthDay BETWEEN CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 150 YEAR), '%Y'), '-01-01') 
+			                             AND CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 25 YEAR), '%Y'), '-12-31')
+			        		 THEN 1 ELSE 0 END) AS 성인수량,
+						SUM(CASE WHEN c.BirthDay BETWEEN CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 24 YEAR), '%Y'), '-01-01') 
+			                             AND CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 9 YEAR), '%Y'), '-12-31')
+			         		THEN 1 ELSE 0 END) AS 청소년수량,
+						SUM(CASE WHEN c.BirthDay BETWEEN CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 8 YEAR), '%Y'), '-01-01') 
+			                             AND CONCAT(DATE_FORMAT(DATE_SUB(b.saledate, INTERVAL 0 YEAR), '%Y'), '-12-31')
+			     			THEN 1 ELSE 0 END) AS 유아수량
+			        FROM ( select a.SiteCode, (SELECT SiteName FROM tblSite WHERE SiteCode = a.SiteCode) AS SiteName,
+			                SaleDate, MAX(SaleType) SaleType, PaidGroupSaleNo,
+			                SUM( case 
+			                        WHEN a.PayType Not Like '%계좌%' and a.PayType Not Like '%신용%'
+			                        THEN
+			                            case WHEN a.saletype = '환불' AND Price < 0 THEN 0 ELSE 1 END
+			                        ELSE 0
+			                    END
+			                ) AS cashcnt,
+			                SUM( case 
+			                        WHEN a.PayType Not Like '%현금%' and a.PayType Not Like '%신용%'
+			                        THEN
+			                            case WHEN a.saletype = '환불' AND Price < 0 THEN 0 ELSE 1 END
+			                        ELSE 0
+			                    END
+			                ) AS Bankcnt,
+			                SUM(CASE
+			                        WHEN a.PayType Not Like '%현금%' and a.PayType Not Like '%계좌%'
+			                        THEN
+			                            case WHEN a.saletype = '환불' AND Price < 0 THEN 0 ELSE 1 END
+			                        ELSE 0
+			                    END
+			                ) AS creditcnt,
+			                SUM(CASE
+			                        when a.PayType Not Like '%계좌%' and a.PayType Not Like '%신용%'
+			                        THEN a.Price
+			                        ELSE 0
+			                    END
+			                ) AS cash,
+			                 SUM(CASE
+			                        when a.PayType Not Like '%현금%' and a.PayType Not Like '%신용%'
+			                        THEN a.Price
+			                        ELSE 0
+			                    END
+			                ) AS Bank,
+			                SUM(CASE
+			                        WHEN a.PayType Not Like '%현금%' and a.PayType Not Like '%계좌%'
+			                        THEN a.price
+			                        ELSE 0
+			                    END
+			                ) AS credit
+			            FROM
+			                tblPaid AS a
+			            WHERE
+			                a.SiteCode IN (#{tblpaid.SiteCode})
+			                AND a.SaleType NOT IN ('배정', '배정환불', '대관', '사물함', '사물함보증금', '기타비용')
+			                AND (IsDelete = 'N')
+			                AND FPKID NOT IN (
+			                    SELECT FPKID
+			                    FROM ( select FPKID, SUM(Price) AS TOTAL
+			                        FROM
+			                            tblPaid
+			                        WHERE
+			                            SiteCode IN (#{tblpaid.SiteCode})
+			                            AND saledate BETWEEN #{startDate} and #{endDate}
+			                            AND ISDELETE = 'N'
+			                            AND saletype <> '반변경'
+			                        GROUP BY
+			                            FPKID,
+			                            SaleDate
+			                    ) AS A_2
+			                    WHERE
+			                        (TOTAL = 0)
+			                )
+			                GROUP BY
+			                    SiteCode,
+			                    SaleDate,
+			                    PaidGroupSaleNo
+			        ) AS a_1
+			        LEFT join FMSC_S01 AS b
+			            ON  a_1.SiteCode = b.SiteCode
+			            and a_1.PaidGroupSaleNo = b.saleno
+			                left join tblmember c
+			                on b.custcode   = c.memberid
+			                and c.isdelete  = 'N'
+			            where a_1.SiteCode in (#{tblpaid.SiteCode})
+			            and a_1.saledate between #{startDate} and #{endDate}
+			            GROUP BY a_1.SiteName, b.ItemPKID
+			        ) a 
+			    left join selectitembyitemcode1 b 
+			    on a.itempkid = b.pkid
+			Union All
+			select '기타비용' , max(b.ExpenseName) , b.defprice,
+			sum(x.cashcnt),
+			case when b.Nvat='Y' then round((x.cash * 10) / 11,0) else 0 end as cash_net,
+			case when b.Nvat='Y' then x.cash - round((x.cash * 10) / 11,0) else 0 end as cash_vat,
+			sum(x.Cash),
+			sum(x.Bankcnt),
+			case when b.Nvat='Y' then round((x.Bank * 10) / 11,0) else 0 end as Bank_net,
+			case when b.Nvat='Y' then x.Bank - round((x.Bank * 10) / 11,0) else 0 end as Bank_vat,
+			sum(x.Bank),
+			sum(x.creditcnt),
+			case when b.Nvat='Y' then round((x.credit * 10) / 11,0) else 0 end as credit_net,
+			case when b.Nvat='Y' then x.credit - round((x.credit * 10) / 11,0) else 0 end as credit_vat,
+			sum(x.credit),
+			10000,0,0,'',0, (SELECT SiteName FROM tblSite WHERE SiteCode = x.SiteCode) AS SiteName
+			,   0 성인수량, 0 청소년수량, 0 유아수량
+			from selectExpPaid x Right outer join SelectExp b on x.SiteCode = b.SiteCode and x.expenseid = b.expenseid
+			where x.SiteCode in (#{tblpaid.SiteCode}) and x.saledate between  #{startDate} and #{endDate}
+			group by x.SiteCode, b.ExpenseName, b.Nvat, x.cash, x.Bank, x.credit,b.defprice
+			Union All
+			select '사물함','사물함', 0,
+			SUM(cashcnt) AS cashcnt,
+			case when c.Nvat='Y' then round((SUM(cash) * 10) / 11,0) else 0 end as cash_net,
+			case when c.Nvat='Y' then SUM(cash) - round((SUM(cash) * 10) / 11,0) else 0 end as cash_vat,
+			SUM(cash) AS cash,
+			SUM(Bankcnt) AS Bankcnt,
+			case when c.Nvat='Y' then round((SUM(Bank) * 10) / 11,0) else 0 end as Bank_net,
+			case when c.Nvat='Y' then SUM(Bank) - round((SUM(Bank) * 10) / 11,0) else 0 end as Bank_vat,
+			SUM(Bank) AS Bank,
+			SUM(creditcnt) AS creditcnt,
+			case when c.Nvat='Y' then round((SUM(credit) * 10) / 11,0) else 0 end as credit_net,
+			case when c.Nvat='Y' then SUM(credit) - round((SUM(credit) * 10) / 11,0) else 0 end as credit_vat,
+			SUM(credit) AS credit,
+			10000,0,0,'',0, a.SiteName
+			,   0 성인수량, 0 청소년수량, 0 유아수량
+			FROM  (SELECT a.SiteCode,(Select SiteName From tblSite Where SiteCode = a.SiteCode) as SiteName, fpkid ,
+			CASE WHEN a.paytype Not Like '%계좌%' and a.PayType Not Like '%신용%' THEN CASE WHEN a.saletype = '사물함' and price < 0 THEN 1 ELSE 1 END ELSE 0 END AS cashcnt,
+			CASE WHEN a.paytype Not Like '%현금%' and a.PayType Not Like '%신용%' THEN CASE WHEN a.saletype = '사물함' and price < 0 THEN 1 ELSE 1 END ELSE 0 END AS Bankcnt,
+			CASE WHEN a.paytype Not Like '%현금%' and a.PayType Not Like '%계좌%' THEN CASE WHEN a.saletype = '사물함' and price < 0 THEN 1 ELSE 1 END ELSE 0 END AS creditcnt,
+			CASE WHEN a.paytype Not Like '%계좌%' and a.PayType Not Like '%신용%' THEN a.Price ELSE 0 END AS cash,
+			CASE WHEN a.paytype Not Like '%현금%' and a.PayType Not Like '%신용%' THEN a.Price ELSE 0 END AS Bank,
+			CASE WHEN a.paytype Not Like '%현금%' and a.PayType Not Like '%계좌%' THEN a.price ELSE 0 END AS credit
+			FROM  tblPaid AS a
+			WHERE SiteCode in (#{tblpaid.SiteCode}) and (SaleType = '사물함') AND (IsDelete = 'N')
+			and saledate between #{startDate} and #{endDate} ) AS a
+			left outer join tbluselocker b  on a.SiteCode = b.SiteCode and a.FPKID  = b.PKID
+			left outer join SelectPLockerInfo c on a.SiteCode = c.SiteCode and a.FPKID = c.PKID
+			where b.SiteCode in (#{tblpaid.SiteCode})  and b.memberid <> '' and c.IsDelete = 'N'
+			group by a.SiteName, c.Nvat, a.cash, a.credit, a.Bank
+			) x
+			order by X.sitename, x.typecode, x.namecode, x.daycode, x.fromtime, x.levelcode
+		]]>
+	</select>
+	<select id="callSelectReceiptNo" statementType="CALLABLE" resultType="int">
+    	{ call up_SelectReceiptNo(#{saleDate, mode=IN, jdbcType=VARCHAR}, #{outputOrderNo, mode=OUT, jdbcType=INTEGER}) }
+	</select>
+	<insert id="tblpaidinsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+	<selectKey keyProperty="PKID" resultType="int" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+		INSERT INTO tblpaid
+		(SiteCode, FPKID, ReceiptNo, SaleDate, 
+		RealSaleDate, SaleType, PayType, Price, 
+		AssignType, Maeipsa, CardName, AssignNo, 
+		Pos, SignPad, Halbu, ValidDate, 
+		SaleTime, FCardNo, Msg, PaidGroupSaleNo, 
+		OID, TID, DelDate, DelUsePKID, 
+		DelMsg, PayID, IsDelete, AddDate, 
+		AddUserPKID, UpdDate, UpdUserPKID, CardNo)
+		VALUES(
+		#{SiteCode},#{FPKID},#{ReceiptNo},#{SaleDate}, 
+		#{RealSaleDate}, #{SaleType}, #{PayType}, #{Price}, 
+		#{AssignType}, #{Maeipsa}, #{CardName}, #{AssignNo}, 
+		#{Pos}, #{SignPad}, #{Halbu}, #{ValidDate}, 
+		#{SaleTime}, #{FCardNo}, #{Msg}, #{PaidGroupSaleNo}, 
+		#{OID}, #{TID}, #{DelDate}, #{DelUsePKID}, 
+		#{DelMsg}, #{PayID}, 'N', now(), 
+		#{AddUserPKID},now(),#{UpdUserPKID},#{CardNo})
+	</insert>
+	<select id="tblpaidbypaidgroupsaleno" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		select * from tblpaid
+		where
+			IsDelete = 'N'
+		and PaidGroupSaleNo = #{PaidGroupSaleNo}
+	</select>
+	<update id="paidchange" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		update tblpaid set
+		PaidGroupSaleNo = #{PaidGroupSaleNo}
+		where
+			FPKID = #{FPKID}
+	</update>
+	
+	<insert id="tblElecAssignDataInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		INSERT INTO tblelecassigndata
+		(SiteCode, PayType, AssignType, ResponseCode, Price, ValidDate, Halbu, AssignNo, CardName, Maeipsa, Msg1, Msg2, Msg3, SignPad, AssignTime, IsPos, IsConfirm, MemberID, MemberName, SaleType, FPKID, RegisterID, IsDelete, UpdDate, UpdUserPKID)
+		select
+		  #{SiteCode}
+		, #{PayType}
+		, #{AssignType}
+		, '0000'
+		, #{Price}
+		, #{ValidDate}
+		, #{Halbu}
+		, #{AssignNo}
+		, #{CardName}
+		, #{Maeipsa}
+		, '체크기'
+		, ''
+		, ''
+		, #{SignPad}
+		, #{SaleTime}
+		, ''
+		, 'Y'
+		, ''
+		, ''
+		, #{SaleType}
+		, #{PKID}
+		, 0
+		, 'N'
+		, date_format(NOW(), '%Y-%m-%d %T' )
+		, #{userPKID}
+		from dual
+		where not EXISTS (
+			select 1 
+			from tblelecassigndata
+			where SiteCode = #{SiteCode}
+			and SaleType = #{SaleType}
+			and isDelete = 'N'
+			and AssignNo = #{AssignNo}
+			and left(AssignTime,8) = left(#{SaleTime},8)
+		);
+	</insert>
+</mapper>
