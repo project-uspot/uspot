@@ -160,7 +160,7 @@ public class VtcMemberController {
 			if (DCIDcheck == null) {
 				updatetblmember.setDCID(-1);
 			}
-			//log.debug(updatetblmember.getName());
+
 			updatetblmember.setUpdUserPKID(users.getUserPKID());
 			//updatetblmember.setName(f.fixEncoding(updatetblmember.getName()));
 
