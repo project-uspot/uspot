@@ -173,4 +173,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public void CanceluseLocker(tbluselocker tbluselocker) throws Exception {
 		vtcLockerDAO.CanceluseLocker(tbluselocker);
 	}
+
+	@Override
+	public void refundUseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.refundUseLocker(tbluselocker);
+	}
 }

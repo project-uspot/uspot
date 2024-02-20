@@ -48,6 +48,8 @@
 									<div class="input-group input-group-sm">
 										<span class="input-group-text" id="basic-addon1">회원번호</span>
 										<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
+										<input type="hidden" id="sitecode" value="${member.siteCode}">
+										<input type="hidden" id="GroupSaleNo">
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -289,13 +291,13 @@
 	        </div>
 		</div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;overflow: scroll;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
 	        		</c:forEach>
 				</ul>
-				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;">
+				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;height:415px;">
 					<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<div class="tab-pane fade" id="tab-${lockergroup.PLockerGroupID}">
 	        			</div>
@@ -347,15 +349,15 @@
 						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-phoenix-secondary" type="button" style="width:128px;">신용카드</button>
+						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">현금 외 결제</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button" style="width:117px;">계좌입금</button>
+						<button class="btn btn-soft-secondary" type="button" style="width:117px;" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
@@ -366,10 +368,7 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button>
+						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button> -->
 					</div>
 				</div>
 				<div class="col-auto ms-n2 mt-2">
@@ -396,6 +395,8 @@
 //숨겨진 모달 버튼
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
+
+var myPopup;
 
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
@@ -480,27 +481,27 @@ $('.nav-item').on('click', function() {
                 			if(timeDifferenceInMinutes<11){
                 				if(PrevPLockerID == data[j].PLockerID){
                         			contentHtml += '<td><button class="btn btn-outline-success" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
-            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}else{
                         			contentHtml += '<td><button class="btn btn-outline-success" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
-            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}
                 			}else{
                 				if(PrevPLockerID == data[j].PLockerID){
                         			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
-            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}else{
                         			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
-            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}
                 			}
                 		}else{
                 			if(PrevPLockerID == data[j].PLockerID){
                     			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
-        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                     		}else{
                     			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
-        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                     		}
                 		}
                 	}
@@ -511,15 +512,15 @@ $('.nav-item').on('click', function() {
                 		'<b>시작일 :</b><em>'+data[j].FromDate+'</em><br>'+
                 		'<b>종료일 :</b><em>'+data[j].ToDate+'</em><br>"'+
                 		'data-bs-html="true">'+
-	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 3){
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
-	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 4){
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
-	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                     
                 }
@@ -667,7 +668,7 @@ function PLockerPriceChange(){
    	
    	$('#misuPLockerPrice').val(formatNumberWithCommas(misuPLockerPrice));
    	
-   	totalChange();
+   	totalChange1();
 }
 
 function PLockerDepositeChange() {
@@ -691,10 +692,10 @@ function PLockerDepositeChange() {
    	
    	$('#misuPLockerDeposite').val(formatNumberWithCommas(misuPLockerDeposite));
 	
-	totalChange();
+	totalChange1();
 }
 
-function totalChange() {
+function totalChange1() {
 	
 	var totalPLockerPrice = removeCommasFromNumber($('#totalPLockerPrice').val());
 	var totalPLockerDeposite = removeCommasFromNumber($('#totalPLockerDeposite').val());
@@ -859,6 +860,7 @@ function payCash() {
         	        dataType : 'json',
         	        data: { 
         	        	FPKID : data,
+        	        	SiteCode : $('#sitecode').val(),
         	        	SaleDate : $('#regdate').val(),
         	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
         	        	SaleType : '사물함',
@@ -976,6 +978,99 @@ function payDeposite() {
         }
 	});
 }
+
+<%-- 신용카드 결제 --%>
+function paycredit() {
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+
+	var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+PrevPLockerID;
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+function totalchange() {
+	$('#paidbody tr#new').attr('id','PLockerPrice');
+	PLockerPriceChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "UpduseLocker", 
+        dataType : 'json',
+        data: { 
+        	PKID : $('#GroupSaleNo').val(),
+        	LockerID : PrevPLockerID,
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			Note : $('#note').val(),
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.opener.location.reload();
+        		window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/locker/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
 function getCurrentDateTime() {

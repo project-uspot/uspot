@@ -71,6 +71,12 @@
 		]]>
 	</select>
 	
+	<select id="insertPaidLocker" parameterType="Map" resultType="Map">
+		<![CDATA[
+			{call SP_InsertuseLocker(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID})}	
+		]]>
+	</select>
+	
 	<select id="insertPaid" statementType="CALLABLE" parameterType="Map">
 		<![CDATA[
 			{call SP_InsertPaid( #{SiteCode, mode=IN}, #{PayType, mode=IN}, #{AssignType, mode=IN}, #{responseCode, mode=IN}, #{Price, mode=IN}, #{CardNo, mode=IN}

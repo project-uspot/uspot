@@ -136,4 +136,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public void CanceluseLocker(tbluselocker tbluselocker)throws Exception{
 		update("locker.CanceluseLocker",tbluselocker);
 	}
+	
+	public void refundUseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.refundUseLocker",tbluselocker);
+	}
 }

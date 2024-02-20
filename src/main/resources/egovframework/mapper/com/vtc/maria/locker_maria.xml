@@ -271,6 +271,8 @@ Misu=#{Misu},
 Note=#{Note},
 UpdDate=now(), 
 UpdUserPKID=#{UpdUserPKID}
+ClickUserPKID = null,
+ClickTime = null
 WHERE 
 	PKID=#{PKID}
 AND SiteCode=#{SiteCode}
@@ -341,5 +343,9 @@ and IsDelete = 'N'
 
 <update id="CanceluseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
 {call SP_LockerCancel(#{PKID},#{SiteCode},#{LockerID},#{RealPrice},#{PaidPrice},#{Misu},#{ReturnDate},#{IsFlag},#{UpdUserPKID})}
+</update>
+
+<update id="refundUseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+{call SP_LockerRefund(#{PKID},#{SiteCode},#{LockerID},#{ReturnDate},#{Use_Price},#{WiyakPrice},#{GongjePrice},#{TotalCnt},#{UseCnt},#{UpdUserPKID})}
 </update>
 </mapper>
