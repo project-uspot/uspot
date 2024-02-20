@@ -128,4 +128,6 @@ public class fmsc_s01{
 	private double PaidPrice;
 	
 	private int tblState;
+	
+	private int tempSaleNo;
 }

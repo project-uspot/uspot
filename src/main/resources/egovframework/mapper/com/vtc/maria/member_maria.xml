@@ -148,6 +148,9 @@
 			<if test="DCID != -1">
 			DCID = #{DCID},
 			</if>
+			<if test="piscCd != ''">
+			pisc_cd = #{piscCd},
+			</if>
 			Email = #{Email},
 			BankName = #{BankName},
 			BankAccount = #{BankAccount},
@@ -438,10 +441,7 @@
 		<![CDATA[' ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
 	</select>
 	
-	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
-	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
-    	SELECT LAST_INSERT_ID()
-  	</selectKey>
+	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" useGeneratedKeys="true" keyProperty="SaleNo">
 		INSERT INTO fmsc_s01
 			(SiteCode, SaleDate, ItemPeriod, CustCode, 
 			FromDate, ToDate, RFromDate, RToDate, 
@@ -469,11 +469,13 @@
 		<choose>
 			<when test="GroupSaleNo != 0">
 				update fmsc_s01 set Group_SaleNo = #{GroupSaleNo}
-				where SaleNo = LAST_INSERT_ID()
+				<!-- where SaleNo = LAST_INSERT_ID() -->
+				where SaleNo = #{SaleNo};
 			</when>
 			<otherwise>
 				update fmsc_s01 set Group_SaleNo = SaleNo
-				where SaleNo = LAST_INSERT_ID()
+				<!-- where SaleNo = LAST_INSERT_ID() -->
+				where SaleNo = #{SaleNo};
 			</otherwise>
 		</choose>
 	</update>

@@ -10,9 +10,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -415,4 +417,40 @@ public class Functions {
 
 		return json;
 	}
+	
+	//가능한 인코딩 리스트
+	private static final List<String> POSSIBLE_ENCODINGS = Arrays.asList("UTF-8", "EUC-KR", "ISO-8859-1", "windows-1252");
+
+    public static String fixEncoding(String brokenString) {
+        for (String encoding : POSSIBLE_ENCODINGS) {
+            try {
+                // 깨진 문자열을 바이트 배열로 변환
+                byte[] bytes = brokenString.getBytes(encoding);
+
+                // 다른 인코딩으로 시도하여 문자열로 변환
+                for (String tryEncoding : POSSIBLE_ENCODINGS) {
+                    try {
+                        String fixedString = new String(bytes, tryEncoding);
+                        // 여기서 추가 검증 로직을 추가할 수 있음
+                        // 예: 정규 표현식으로 한글이 포함되어 있는지 검사
+                        log.debug(encoding+"->"+tryEncoding+":"+fixedString);
+                        if (isLikelyValidKorean(fixedString)) {
+                            return fixedString; // 유효한 한글 문자열이 확인되면 반환
+                        }
+                    } catch (Exception e) {
+                        // 변환 실패 시 다음 인코딩 시도
+                    }
+                }
+            } catch (Exception e) {
+                // 초기 바이트 변환 실패 시 다음 인코딩 시도
+            }
+        }
+        return null; // 적절한 변환을 찾지 못함
+    }
+
+    // 문자열이 유효한 한글을 포함하고 있는지 간단한 검증
+    // 이 함수는 더 정교한 검증 로직으로 대체될 수 있습니다.
+    private static boolean isLikelyValidKorean(String text) {
+        return text.matches(".*[가-힣]+.*");
+    }
 }

@@ -160,7 +160,14 @@
 							<select class="form-select" id="dcds" aria-label="Default select example" aria-describedby="basic-addon1">
 								<option selected="selected" value="0" id="0"></option>
 								<c:forEach var="dc" items="${dclist}">
-									<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
+								<c:choose>
+									<c:when test="${dc.dcid == dcid }">
+										<option id="${dc.rate}" value="${dc.dcid}" selected="selected">${dc.dcName}</option>
+									</c:when>
+									<c:otherwise>
+										<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
+									</c:otherwise>
+								</c:choose>
                                 </c:forEach>
 							</select>
 						</div>
@@ -423,6 +430,7 @@ function handleKeyPress(event) {
 		finditem();
  	}
 }
+
 var myPopup;	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
@@ -542,6 +550,7 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<input type="hidden" value="'+list.SaleNo+'" name="tempSaleNo" id="tempSaleNo">');
                 tableBody.append(newRow);
                 $('#itemtbody').children('tr:last').click();
+                $('#dcds').change();
 	        },
 	        error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
@@ -810,6 +819,8 @@ function itemtbodyclick(clickedRow) {
    	    $('#itemtbody').on('click', 'tr', function() {
    			itemtbodyclick(this);
 	    });
+   	    
+   	    $("#dcid").val(${dcid});
    	});
 
 	function paidbodyclick(clickedRow) {

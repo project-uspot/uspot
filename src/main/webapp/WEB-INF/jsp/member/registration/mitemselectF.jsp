@@ -842,8 +842,9 @@ function sortchange(selectrow){
 	totalchange();
 }
    
-//결제 내역에 있는 총 금액 변경 함수
+<%--//결제 내역에 있는 총 금액 변경 함수--%>
 function totalchange(){
+
 	var totalprice = 0;<%--총매출금액--%>
 	var tpaidprice = 0;<%--총결제금--%>
 	var tremainprice = 0;<%--총미납금--%>
@@ -864,14 +865,14 @@ function totalchange(){
 	
 	$('#payprice').val(formatNumberWithCommas(totalprice-tpaidprice));
 }
-   
-//날짜를 테이블에서 가지고와서 잘라서 보내는 함수
+
+<%--//날짜를 테이블에서 가지고와서 잘라서 보내는 함수--%>
 function parseString(inputString) {
 	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
 	const matches = inputString.match(regex);
 
 	if (!matches || matches.length !== 4) {
-		return null; // 입력 형식이 잘못된 경우 처리
+		return null; <%--// 입력 형식이 잘못된 경우 처리--%>
 	}
 	const startDate = matches[1];
 	const endDate = matches[2];
@@ -880,7 +881,7 @@ function parseString(inputString) {
 	return [startDate, endDate, numberOfMonths.toString()];
 }
    
-   //date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
+<%--//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수--%>
 function formatDate(date) {
 	const yyyy = date.getFullYear();
 	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
@@ -1006,16 +1007,16 @@ function fmsc_01save() {
 	}
 }  
 
-//itemperiod 를 위한 날짜 포맷 함수
+<%--//itemperiod 를 위한 날짜 포맷 함수--%>
 function extractYearMonth(dateString) {
 	const [year, month] = dateString.split('-');
 	const yearMonth = year + month;
-    return yearMonth;
+	return yearMonth;
 }
   
-//현금 결제
+<%--//현금 결제--%>
 function paycash() {
-	if(removeCommasFromNumber($('#tremainprice').val()) == 0 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -1217,7 +1218,7 @@ function reReceipt(){
 	myWindow.print();
 }
 
-//paid 의 결제 일자를 넣기 위한 현재날짜 포맷
+<%--//paid 의 결제 일자를 넣기 위한 현재날짜 포맷--%>
 function getCurrentDateTime() {
 	var today = new Date();
 
@@ -1231,42 +1232,42 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
-//금액에 , 를 붙혀서 return 해주는 함수
+<%--//금액에 , 를 붙혀서 return 해주는 함수--%>
 function formatNumberWithCommas(amount) {
-    // Check if the input is a valid number
-    if (isNaN(amount)) {
-        return "Invalid input";
-    }
+	<%--// Check if the input is a valid number--%>
+	if (isNaN(amount)) {
+		return "Invalid input";
+	}
 
-    // Convert the number to a string
-    let amountStr = amount.toString();
+	<%--// Convert the number to a string--%>
+	let amountStr = amount.toString();
 
-    // Split the string into integer and decimal parts
-    let parts = amountStr.split('.');
+	<%--// Split the string into integer and decimal parts--%>
+	let parts = amountStr.split('.');
 
-    // Add commas to the integer part
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	<%--// Add commas to the integer part--%>
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-    // Join the integer and decimal parts back together
-    let formattedAmount = parts.join('.');
+	<%--// Join the integer and decimal parts back together--%>
+	let formattedAmount = parts.join('.');
 
-    return formattedAmount;
+	return formattedAmount;
 }
 
-//금액에 붙은 , 를 지워주는 함수
+<%--//금액에 붙은 , 를 지워주는 함수--%>
 function removeCommasFromNumber(formattedNumber) {
-    // Remove commas from the string
-    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+	<%--// Remove commas from the string--%>
+	let numberWithoutCommas = formattedNumber.replace(/,/g, '');
 
-    // Convert the string to a number
-    let numericValue = parseFloat(numberWithoutCommas);
+	<%--// Convert the string to a number--%>
+	let numericValue = parseFloat(numberWithoutCommas);
 
-    // Check if the conversion was successful
-    if (isNaN(numericValue)) {
-        return "Invalid input";
-    }
+	<%--// Check if the conversion was successful--%>
+	if (isNaN(numericValue)) {
+		return "Invalid input";
+	}
 
-    return numericValue;
+	return numericValue;
 }
 
 function roundToNearestTen(num) {

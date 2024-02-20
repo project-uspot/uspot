@@ -49,6 +49,7 @@ import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.tbluselocker;
+import egovframework.veterans.lib.Functions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +66,8 @@ public class VtcMemberController {
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
 	private final VtcItemService vtcItemService;
+	
+	public static Functions f = Functions.getInstance();
 
 	public static Marker member = MarkerFactory.getMarker("member");
 	
@@ -157,43 +160,13 @@ public class VtcMemberController {
 			if (DCIDcheck == null) {
 				updatetblmember.setDCID(-1);
 			}
-
+			//log.debug(updatetblmember.getName());
 			updatetblmember.setUpdUserPKID(users.getUserPKID());
+			//updatetblmember.setName(f.fixEncoding(updatetblmember.getName()));
 
 			vtcMemberService.updatemember(updatetblmember);
 
-			tblmember tblmember = vtcMemberService.tblmemberBymemberId(updatetblmember);
-
-			fmsc_s01 fmsc_s01 = new fmsc_s01();
-			fmsc_s01.setCustCode(tblmember.getMemberID());
-			fmsc_s01.setSiteCode(tblmember.getSiteCode());
-			tblCode tblCode = new tblCode();
-			tblCode.setSiteCode(users.getSiteCode());
-			tblCode.setCodeGroupID("6");
-			dc.setSiteCode(users.getSiteCode());
-			List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-			List<memberuselocker> memberuselocker = vtcSamulhamService.memberuselocker(tblmember.getMemberID());
-			List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
-			List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
-			List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
-					.fmsc_s01toselectitemanothersite(fmsc_s01);
-			List<tblCode> codelist = vtcService.listTblCode(tblCode);
-			List<DC> dcList = vtcDCService.dclist(dc);
-			List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
-			List<Sitecode> SiteList = vtcService.listSiteName();
-
-			model.addAttribute("dclist", dcList);
-			model.addAttribute("tblmember", tblmember);
-			model.addAttribute("codelist", codelist);
-			model.addAttribute("fmsc_s01", fmsc_s01toselectitem);
-			model.addAttribute("lockerlist", memberuselocker);
-			model.addAttribute("paidlist", memberexpensesale);
-			model.addAttribute("talklist", tblmembertalks);
-			model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
-			model.addAttribute("pissdclist", pissdclist);
-			model.addAttribute("sitelist", SiteList);
-
-			return "member/registration/memberregiF";
+			return "redirect:memberfind?MemberID="+updatetblmember.getMemberID();
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -64,5 +64,7 @@ public class DC implements Serializable{
 	private String ReDCNoYN;
 	
 	private int ReDCNoChkDayCnt; 
-	
+
+	/* 즉시감면코드 */
+	private String PiscCD;
 }
