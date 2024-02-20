@@ -545,4 +545,21 @@ public class VtcLockerController{
 		
 		return "success";
 	}
+	
+	@ResponseBody
+	@PostMapping("/refundUseLocker")
+	public String refundUseLocker(tbluselocker tbluselocker)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.refundUseLocker(tbluselocker);
+		
+		return "success";
+	}
 }

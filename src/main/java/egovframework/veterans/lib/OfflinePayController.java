@@ -484,6 +484,8 @@ public class OfflinePayController {
 						break;
 					case "사물함":
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
+						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
+						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
 						break;
 					case "대관":
 						returnMap = OfflinePayService.insertPaidRent(returnMap);
