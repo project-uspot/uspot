@@ -375,7 +375,7 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
@@ -386,7 +386,7 @@
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
@@ -546,20 +546,25 @@ function test(ItemID,selectedDate,nextDate) {
                 newRow.append('<td class="remain py-2 align-middle white-space-nowrap">' + (list.OffMax + list.OnMax - (list.RegCnt + list.RegCnt2 + list.RegCnt3)) + '</td>');
                 newRow.append('<input type="hidden" value="30" name="totalnum" id="totalnum">');
                 newRow.append('<input type="hidden" value="30" name="usenum" id="usenum">');
-                newRow.append('<input type="hidden" value="'+list.SawonNo+'" name="EmpCode" id="EmpCode">');
+                newRow.append('<input type="hidden" value="'+list.DamDangUserPKID+'" name="DamDangUserPKID" id="DamDangUserPKID">');
                 newRow.append('<input type="hidden" value="'+list.SaleNo+'" name="tempSaleNo" id="tempSaleNo">');
                 tableBody.append(newRow);
                 $('#itemtbody').children('tr:last').click();
-                $('#dcds').change();
+                if(list.DcNoChk != 'Y'){
+                	$('#dcds').change();
+                }else{
+                	$('#dcds').val(0);
+                	$('#dcds').change();	
+                }
 	        },
 	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
+				console.log("Status: " + status);
+				console.log("Error: " + error);
 	        }
 		});
 	}
 }
-	
+
 function alldelete(){
 	if($("#paidbody").find('*').length > 0) {
     	alreadycheck = true;
@@ -820,7 +825,8 @@ function itemtbodyclick(clickedRow) {
    			itemtbodyclick(this);
 	    });
    	    
-   	    $("#dcid").val(${dcid});
+   	    var defulstDCID = '${dcid}';
+   	    $("#dcid").val(defulstDCID);
    	});
 
 	function paidbodyclick(clickedRow) {
@@ -1044,6 +1050,7 @@ function fmsc_01save() {
 		}
 
 		misuprice = roundToNearestTen(misuprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
+		tpaidprice = roundToNearestTen(tpaidprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
 
 		const result = parseString($(this).find('.date').text());
 		const yearmonth = extractYearMonth(result[0]);
@@ -1053,6 +1060,7 @@ function fmsc_01save() {
 			dataType : 'json',
 			async : false,
 			data: { 
+				SiteCode : "${user.SiteCode}",
 				SaleDate : $('#saledate').val(),
 				ItemPeriod : yearmonth,
 				CustCode : $('#memberid').val(),
@@ -1066,8 +1074,9 @@ function fmsc_01save() {
 				DCPrice : removeCommasFromNumber($(this).find('.dc').text()),
 				ItemPrice : removeCommasFromNumber($(this).find('.price').text()),
 				RealPrice : removeCommasFromNumber($(this).find('.sort').text()),
+	        	PaidPrice : tpaidprice,
 				Misu : misuprice,
-				EmpCode : $(this).find('input[name="EmpCode"]').val(),
+				EmpCode : $(this).find('input[name="DamDangUserPKID"]').val(),
 				IsReReg : '0',
 				State : 'G',
 				ItemPKID : $(this).find('input[name="ItemID"]').val(),
@@ -1095,13 +1104,14 @@ function fmsc_01save() {
 		var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
 		var paiddate = $(this).find('.paiddate').text();
 		var paidPkid = $(this).find('.PKID').text();
-		if(paidprice != '' && paidPkid == ''){
+		if(paidprice != '' && paidPkid == ''){<%-- 결제금액이 존재하고 tblpaid 저장 안 했을 경우만 --%>
 			$.ajax({
 				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
 				url: "tblpaidinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
 				dataType : 'json',
 				async : false,
 				data: { 
+					SiteCode : "${user.SiteCode}",
 					FPKID: GroupNo,
 					SaleDate : paiddate.substr(0,10),
 					RealSaleDate : paiddate,
@@ -1134,7 +1144,7 @@ function fmsc_01save() {
 		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
 		
 		if(inlineRadioOptions >= 1){
-		    var myWindow = window.open("${pageContext.request.contextPath}/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+		    var myWindow = window.open("${pageContext.request.contextPath}/lecture/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
 		    myWindow.print();
 
 		    setTimeout(function() { 

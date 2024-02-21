@@ -293,7 +293,7 @@ public class VtcPaidController {
 	    map.put("outputOrderNo", 0);
 
 	    tblpaid.setReceiptNo(String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
-	    tblpaid.setSiteCode(users.getSiteCode());
+	    //tblpaid.setSiteCode(users.getSiteCode());
 	    tblpaid.setAddUserPKID(users.getUserPKID());
 	    tblpaid.setUpdUserPKID(users.getUserPKID());
 	    //log.debug(tblpaid.toString());

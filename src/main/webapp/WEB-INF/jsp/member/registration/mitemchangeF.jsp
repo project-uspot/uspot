@@ -176,11 +176,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-10">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">판매금액</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" 
 						value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						<span class="input-group-text" id="basic-addon1">결제금액</span>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldPaidprice" name="oldPaidprice" 
+						value="<fmt:formatNumber value="${fmsc_s01.paidPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-md-10">
@@ -363,7 +366,7 @@
 	    	</div>
 	    </div>
 	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
-	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 285px;">
+	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 275px;">
 	    		<div class="col-auto">
 	    			<div class="row">
 	    				<div class="col-auto">
@@ -386,35 +389,26 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+				<div class="row mb-1 w-100 ms-1">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
 					</div>
-					<div class="col-auto ms-n6">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button">신용카드</button>
-					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row">
-					
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button">결제취소</button>
+				<div class="row mb-1 w-100 ms-1">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-info" type="button">행삭제</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-success w-100" type="button" disabled='disabled'>영수증재발행</button>
+					</div>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
 					</div>
 				</div>
 	    	</div>
@@ -493,8 +487,8 @@ function test(ItemID,selectedDate,nextDate) {
         url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 
-        	AddDate: ItemID,
-        	UpdDate: selectedDate
+        	ItemID: ItemID,
+        	FindDate: selectedDate
         },
         success: function(list) {
         		var olddcid = $('#olddcname').attr('name');
@@ -568,15 +562,24 @@ function test(ItemID,selectedDate,nextDate) {
 		   		            }));
 		   	        	}
 		   	        	
-		   	        	$('#dcds option').each(function() {
-		   	             // Check if the current option's value is equal to olddcpriceValue
-							if ($(this).val() === olddcid) {
-								// If it matches, set the 'selected' attribute
-    							$(this).attr('selected', 'selected');
-    							$('#dcper').val($(this).attr('id'));
-							}
-		   	         	});
-		   	        	
+		   	        	if(list.DcNoChk != 'Y'){
+		   	        		$('#dcds option').each(function() {
+			   	             // Check if the current option's value is equal to olddcpriceValue
+								if ($(this).val() === olddcid) {
+									// If it matches, set the 'selected' attribute
+	    							$(this).attr('selected', 'selected');
+	    							$('#dcper').val($(this).attr('id'));
+								}
+			   	         	});
+		   	        	}else{
+		   	        		$('#dcds option').each(function() {
+								if ($(this).val() === '') {
+	    							$(this).attr('selected', 'selected');
+	    							$('#dcper').val($(this).attr('id'));
+								}
+			   	         	});
+		   	        	}
+
 		   	        	sortchange();
 		   	        },
 		   	        error: function(xhr, status, error) {
@@ -655,6 +658,8 @@ function totalchange(){
 	$('#paidbody tr').each(function() {
 		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
  	});
+
+	tpaidprice = parseInt(removeCommasFromNumber($("#oldPaidprice").val()));
 	
 	$('#totalprice').val(formatNumberWithCommas(totalprice));
 	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));

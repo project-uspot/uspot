@@ -11,12 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -142,10 +139,11 @@ public class VtcMemberController {
 		return "member/registration/memberregiF";
 	}
 
+	// TODO 회원등록관리 회원수정 프로세스
 	@GetMapping(value = "membershipUpdate")
 	public String membershipUpdate(Model model, tblmember updatetblmember, DC dc,
 			@RequestParam(name = "emgPhonecheck", required = false) String emgPhonecheck,
-			@RequestParam(name = "IFFlagcheck", required = false) String IFFlagcheck,
+			@RequestParam(name = "inliveCheck", required = false) String inliveCheck,
 			@RequestParam(name = "DCIDcheck", required = false) String DCIDcheck) {
 
 		try {
@@ -154,8 +152,8 @@ public class VtcMemberController {
 			if (emgPhonecheck == null) {
 				updatetblmember.setEmgPhone(null);
 			}
-			if (IFFlagcheck == null) {
-				updatetblmember.setIFFlag(null);
+			if (inliveCheck == null) {
+				updatetblmember.setInlive(null);
 			}
 			if (DCIDcheck == null) {
 				updatetblmember.setDCID(-1);
@@ -279,6 +277,7 @@ public class VtcMemberController {
 
 	}
 
+	// TODO 회원등록관리 회원조회 페이지
 	@GetMapping("findlist")
 	public String findlist(Model model, @RequestParam(name = "findvalue") String findvalue,
 			@RequestParam(name = "findcategory") String findcategory) throws Exception {
@@ -296,6 +295,7 @@ public class VtcMemberController {
 		return "member/registration/memberfindlist";
 	}
 
+	// TODO 회원등록관리 회원조회 프로세스
 	@GetMapping("/memberfind")
 	public String memberfindF(Model model, DC dc, tblmember memberid) throws Exception {
 
@@ -318,13 +318,12 @@ public class VtcMemberController {
 		List<memberuselocker> memberuselocker = vtcSamulhamService.memberuselocker(tblmember.getMemberID());
 		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
-				.fmsc_s01toselectitemanothersite(fmsc_s01);
+		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
 		List<DC> dcList = vtcDCService.dclist(dc);
 		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
 		List<Sitecode> SiteList = vtcService.listSiteName();
-
+	
 		model.addAttribute("dclist", dcList);
 		model.addAttribute("tblmember", tblmember);
 		model.addAttribute("codelist", codelist);
@@ -370,10 +369,11 @@ public class VtcMemberController {
 	}
 	
 	//포스트 매핑시 한글깨짐 해결하면 개천재
-	@GetMapping(value = "memberinsertP", produces = "text/plain;charset=UTF-8")
+	// TODO 회원등록관리 회원등록 프로세스
+	@PostMapping(value = "memberinsertP", produces = "text/plain;charset=UTF-8")
 	public String memebrinsert(tblmember tblmember, Model model,
 			@RequestParam(name = "emgPhonecheck", required = false) String emgPhonecheck,
-			@RequestParam(name = "IFFlagcheck", required = false) String IFFlagcheck,
+			@RequestParam(name = "inliveCheck", required = false) String inliveCheck,
 			@RequestParam(name = "DCIDcheck", required = false) String DCIDcheck,
 			@RequestParam(name = "rejectgbncheck", required = false) String rejectgbncheck,
 			@RequestParam(name = "remailcheck", required = false) String remailcheck,
@@ -422,8 +422,8 @@ public class VtcMemberController {
 		if (emgPhonecheck == null) {
 			tblmember.setEmgPhone(null);
 		}
-		if (IFFlagcheck == null) {
-			tblmember.setIFFlag(null);
+		if (inliveCheck == null) {
+			tblmember.setInlive(null);
 		}
 		if (DCIDcheck == null) {
 			tblmember.setDCID(-1);
@@ -442,7 +442,7 @@ public class VtcMemberController {
 		}
 		
 		tblmember.setAddUserPKID(users.getAddUserPKID());
-		log.info(member,"관리자 pkid : "+users.getUserPKID()+", 회원 번호 : "+tblmember.getMemberID()+"의 대한 회원등록 처리");
+		log.info(member,"관리자 pkid : "+users.getUserPKID()+", 회원 번호 : "+tblmember.getMemberID()+", 회원 성함 : "+tblmember.getName()+"의 대한 회원등록 처리");
 		vtcMemberService.insertmember(tblmember);
 
 		model.addAttribute("script", "redirect");
@@ -637,6 +637,7 @@ public class VtcMemberController {
 		
 		String mleveltext = "";
 		String dcname = "";
+		int dcid = 0;
 		
 		for(tblCode tblCode2 : codelist) {
 			if(tblCode2.getPkid() == member.getMLevel()) {
@@ -645,8 +646,13 @@ public class VtcMemberController {
 		}
 		
 		for(DC dc2 : dcList) {
-			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
-				dcname = dc2.getDcName();
+			/*
+			 * if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) { dcname =
+			 * dc2.getDcName(); }
+			 */
+			if(String.valueOf(dc2.getPissCD()).equals(member.getPiscCd()) ) {
+				 dcname = dc2.getDcName();
+				 dcid = dc2.getDcid();
 			}
 		}
 		
@@ -658,11 +664,13 @@ public class VtcMemberController {
 		model.addAttribute("yearage",yearage);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
+		model.addAttribute("dcid",dcid);
 		model.addAttribute("dclist",dcList);
 		
 		return "member/registration/miteminsertF";
 	}
 	
+	// TODO 회원등록관리 강좌조회 페이지
 	@GetMapping("/mitemfindlist")
 	public String mitemfindlist(TblItem_02 tblItem_02,Model model,
 				@RequestParam(name = "findstring")String findstring,
@@ -762,8 +770,11 @@ public class VtcMemberController {
 	@PostMapping("/fmsc_01insert")
 	public int  fmsc_01insert(fmsc_s01 fmsc_s01) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
-		fmsc_s01.setSiteCode(users.getSiteCode());
+		if(users == null){
+			users = new Users();
+		}
+
+		//fmsc_s01.setSiteCode(users.getSiteCode());
 		fmsc_s01.setUserPKID(users.getUserPKID());
 		fmsc_s01.setAddUserPKID(users.getAddUserPKID());
 		fmsc_s01.setUpdUserPKID(users.getAddUserPKID());
@@ -777,8 +788,11 @@ public class VtcMemberController {
 	@PostMapping("/fmsc_01insert_save")
 	public int  fmsc_01insert_save(fmsc_s01 fmsc_s01) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		
-		fmsc_s01.setSiteCode(users.getSiteCode());
+		if(users == null){
+			users = new Users();
+		}
+
+		//fmsc_s01.setSiteCode(users.getSiteCode());
 		fmsc_s01.setUserPKID(users.getUserPKID());
 		fmsc_s01.setAddUserPKID(users.getAddUserPKID());
 		fmsc_s01.setUpdUserPKID(users.getAddUserPKID());
@@ -899,6 +913,7 @@ public class VtcMemberController {
 		
 		String mleveltext = "";
 		String dcname = "";
+		int dcid = 0;
 		
 		for(tblCode tblCode2 : codelist) {
 			if(tblCode2.getPkid() == member.getMLevel()) {
@@ -907,8 +922,9 @@ public class VtcMemberController {
 		}
 		
 		for(DC dc2 : dcList) {
-			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+			if(String.valueOf(dc2.getPiscCD()).equals(member.getPiscCd()) ) {
 				dcname = dc2.getDcName();
+				dcid = dc2.getDcid();
 			}
 		}
 		
@@ -921,6 +937,7 @@ public class VtcMemberController {
 		model.addAttribute("yearage",yearage);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
+		model.addAttribute("dcid",dcid);
 		model.addAttribute("dclist",dcList);
 		model.addAttribute("selectedDate",selectedDate);
 		model.addAttribute("nextDate",nextDate);
@@ -928,6 +945,7 @@ public class VtcMemberController {
 		return "member/registration/mitemreinsertF";
 	}
 	
+	// TODO 회원등록관리 강좌 반변경 페이지
 	@GetMapping("/mitemchangeF.do")
 	public String mitemchangeF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
 								@RequestParam(name = "itemname")String itemname)throws Exception {
@@ -942,9 +960,12 @@ public class VtcMemberController {
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
-		tblmember.setMemberID(result.get(0).getCustCode());
-		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
-		
+		for(fmsc_s01 fmsc: result) {
+			tblmember.setMemberID(fmsc.getCustCode());
+			tblpaid.setPaidGroupSaleNo(fmsc.getGroupSaleNo());
+			model.addAttribute("fmsc_s01", fmsc);
+		}
+
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
 		List<DC> dcList = vtcDCService.dclist(dc);
@@ -952,6 +973,7 @@ public class VtcMemberController {
 		
 		String mleveltext = "";
 		String dcname = "";
+		int dcid = 0;
 		
 		for(tblCode tblCode2 : codelist) {
 			if(tblCode2.getPkid() == member.getMLevel()) {
@@ -960,21 +982,23 @@ public class VtcMemberController {
 		}
 		
 		for(DC dc2 : dcList) {
-			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
+			if(String.valueOf(dc2.getPiscCD()).equals(member.getPiscCd()) ) {
 				dcname = dc2.getDcName();
+				dcid = dc2.getDcid();
 			}
 		}
 
 		LocalDate currentDate = LocalDate.now();
-        
-		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+2;
-		
+
+		int yearage = (currentDate.getYear() - Integer.parseInt(member.getBirthDay().substring(0,4)))+1;
+
 		model.addAttribute("member",member);
 		model.addAttribute("mleveltext",mleveltext);
 		model.addAttribute("dcname",dcname);
+		model.addAttribute("dcid",dcid);
 		model.addAttribute("dclist",dcList);
 		model.addAttribute("itemname",URLDecoder.decode(itemname, "UTF-8"));
-		model.addAttribute("fmsc_s01", result);
+		
 		model.addAttribute("paidlist",paidlist);
 		model.addAttribute("yearage",yearage);
 		

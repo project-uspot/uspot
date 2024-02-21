@@ -370,7 +370,7 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
@@ -381,7 +381,7 @@
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
@@ -409,10 +409,6 @@
 	</div>
 </body>
 <script type="text/javascript">
-<c:forEach items="${fmsc_s01List}" var="fmsc_s01">
- test(${fmsc_s01.itemPKID},'${selectedDate}','${nextDate}');
-$('#dcds').val(${fmsc_s01.DCID});
-</c:forEach>
 
 $(document).ready(function() {
     $('#paidbody').on('click', 'tr', function() {
@@ -1103,6 +1099,7 @@ function fmsc_01save() {
 				dataType : 'json',
 				async : false,
 				data: { 
+					SiteCode : "",
 					FPKID: GroupNo,
 					SaleDate : paiddate.substr(0,10),
 					RealSaleDate : paiddate,
@@ -1135,7 +1132,7 @@ function fmsc_01save() {
 		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
 		
 		if(inlineRadioOptions >= 1){
-		    var myWindow = window.open("${pageContext.request.contextPath}/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+		    var myWindow = window.open("${pageContext.request.contextPath}/lecture/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
 		    myWindow.print();
 
 		    setTimeout(function() { 

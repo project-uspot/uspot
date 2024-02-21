@@ -494,7 +494,15 @@ public class OfflinePayController {
 					
 					returnMap = OfflinePayService.insertPaid(returnMap);
 					//영수증 저장
-					ReceiptController.insertReceipt(f.getNullToSpaceStrValue(returnMap.get("paidPKID")),receiptService);
+					switch (saleType) {
+					case "강습":
+						ReceiptController.insertReceiptItem(f.getNullToSpaceStrValue(returnMap.get("paidPKID")),receiptService);
+						break;
+					case "사물함":
+						break;
+					case "대관":
+						break;
+					}
 				}
 			}catch (Exception e) {
 				log.error(OfflinePay,"ElecAssignData 저장오류:"+e.getMessage());

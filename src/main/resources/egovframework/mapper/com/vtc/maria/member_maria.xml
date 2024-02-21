@@ -68,7 +68,8 @@
 		    END AS State,
 			SaleDate, selectitem.GroupName, selectitem.SubGroupName, selectitem.WeekName, selectitem.FromTime, selectitem.ToTime,
 			selectitem.LevelName, fmsc_s01.RFromDate, fmsc_s01.RToDate, fmsc_s01.RegMonth,
-			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice, COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType ,
+			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice,
+			COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType , fmsc_s01.PaidPrice,
 			fmsc_s01.Group_SaleNo as GroupSaleNo
 		from fmsc_s01
 		left join selectitem 
@@ -140,8 +141,8 @@
 			SCC_CardNo = #{SCCCardNo},
 			Address = #{Address},
 			SubAddress = #{SubAddress},
-			<if test="IFFlag != null">
-			IF_Flag = #{IFFlag},
+			<if test="inlive != null">
+			inlive = #{inlive},
 			</if>
 			CarNo = #{CarNo},
 			YoungestBirthday = #{YoungestBirthday},
@@ -494,6 +495,7 @@
 		DCPrice = #{DCPrice},
 		ItemPrice = #{ItemPrice},
 		RealPrice = #{RealPrice},
+		PaidPrice = #{PaidPrice},
 		Misu = #{Misu},
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}
@@ -523,6 +525,7 @@
 		DCPrice = #{DCPrice},
 		ItemPrice = #{ItemPrice},
 		RealPrice = #{RealPrice},
+		PaidPrice = #{PaidPrice},
 		Misu = #{Misu},
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}
