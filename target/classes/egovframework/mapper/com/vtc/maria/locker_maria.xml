@@ -212,9 +212,9 @@ UPDATE tblplocker SET
 	MemberID=#{MemberID}, 
 	UpdDate=now(), 
 	UpdUserPKID=#{UpdUserPKID}, 
-	updchk='up_update', 
-	ClickUserPKID=NULL, 
-	ClickTime=NULL
+	updchk='up_update',
+	ClickUserPKID = null,
+	ClickTime = null
 WHERE 
 	PLockerID=#{PLockerID} 
 AND SiteCode=#{SiteCode} 
@@ -271,20 +271,25 @@ Misu=#{Misu},
 Note=#{Note},
 UpdDate=now(), 
 UpdUserPKID=#{UpdUserPKID}
-ClickUserPKID = null,
-ClickTime = null
 WHERE 
 	PKID=#{PKID}
 AND SiteCode=#{SiteCode}
 </update>
 <update id="UpdPLockerBySave" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
 UPDATE tblplocker SET 
+<if test="lSaleNo != 0">
+	lSaleNo=#{lSaleNo}, 
+</if>
+State=#{State}, 
 FromDate=#{FromDate}, 
 ToDate=#{ToDate}, 
 RegMonth=#{RegMonth}, 
+MemberID=#{MemberID}, 
 UpdDate=now(), 
 UpdUserPKID=#{UpdUserPKID}, 
-updchk='up_update'
+updchk='up_update',
+ClickUserPKID=NULL, 
+ClickTime=NULL
 WHERE 
 	PLockerID=#{PLockerID} 
 AND SiteCode=#{SiteCode}

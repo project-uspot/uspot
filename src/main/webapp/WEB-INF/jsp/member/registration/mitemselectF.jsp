@@ -448,6 +448,7 @@
 									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
 									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
 									    <td class="paidPKID py-2 align-middle white-space-nowrap" style="display:none;">${paid.PKID}</td>
+									    <td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none;">${paid.saleTime}</td>
 									</tr>
 								</c:forEach>
                         	</tbody>

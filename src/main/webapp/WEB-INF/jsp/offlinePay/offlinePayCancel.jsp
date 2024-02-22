@@ -316,7 +316,8 @@ function paid(){
 			optPay : document.querySelector('input[name="optPay"]:checked').value,
 			optType : document.querySelector('input[name="optType"]:checked').value,
 			MemberID : $("#MemberID").val(),
-			saleType : "${uparam}"
+			saleType : "${uparam}",
+			pkid : '${param.pkid}'
 		},
 		success: function(data){
 			console.log(data);

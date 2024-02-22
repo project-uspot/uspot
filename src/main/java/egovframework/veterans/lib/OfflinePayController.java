@@ -636,7 +636,7 @@ public class OfflinePayController {
 		switch(uparam) {
 		case "card":
 			payType = "신용카드";
-			acType = "신용승인";
+			acType = "신용취소";
 			msg = msg + "D4";// 1. 전문 구분 신용승인 D1 / 신용취소 D4
 			msg = msg + "^";// 2. 현금영수증 거래용도
 			msg = msg + "^"+Price;// 3. 금액
@@ -723,7 +723,7 @@ public class OfflinePayController {
 			payType = "간편결제";
 			acType = "신용취소";
 
-			msg = msg + "D1";// 1. 전문 구분 간편결제 승인(바코드리딩 + 승인) D1 / 간편결제 취소(거래고유번호 취소) D4
+			msg = msg + "D4";// 1. 전문 구분 간편결제 승인(바코드리딩 + 승인) D1 / 간편결제 취소(거래고유번호 취소) D4
 			msg = msg + "^";// 2. 현금영수증 거래용도 00:개인, 01: 사업자
 			msg = msg + "^"+Price;// 3. 금액
 			msg = msg + "^"+Halbu;// 4. 할부
@@ -899,7 +899,10 @@ public class OfflinePayController {
 						OfflinePayService.insertPaidCancelFmsc_s01(returnMap);
 						break;
 					case "사물함":
-						OfflinePayService.insertPaidCancelLocker(returnMap);
+						/*
+						 * returnMap.put("pkid",request.getParameter("pkid"));
+						 * OfflinePayService.insertPaidCancelLocker(returnMap);
+						 */
 						break;
 					case "대관":
 						OfflinePayService.insertPaidCancelRent(returnMap);
@@ -913,6 +916,7 @@ public class OfflinePayController {
 			}
 
 			returnStr = f.MapToJson(returnMap);
+			System.out.println(resultMap);
 			return returnMap;
 		}else {
 			String rMsg = resultMap.get("MSG"); // 실패 사유 메시지
