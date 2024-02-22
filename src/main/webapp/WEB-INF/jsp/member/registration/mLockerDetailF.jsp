@@ -55,6 +55,7 @@
 										<span class="input-group-text" id="basic-addon1">회원번호</span>
 										<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
 										<input type="hidden" id="sitecode" value="${member.siteCode}">
+										<input type="hidden" id="GroupSaleNo">
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -356,6 +357,8 @@
 									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
 									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
 									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									    <td class="TID py-2 align-middle white-space-nowrap" style="display:none;">${paid.TID}</td>
+									    <td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none;">${paid.saleTime}</td>
 									</tr>
 								</c:forEach>
 								 <c:if test="${not empty tbldeposite}">
@@ -411,10 +414,10 @@
 						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-phoenix-secondary" type="button" style="width:128px;">신용카드</button>
+						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">현금 외 결제</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button" style="width:117px;">계좌입금</button>
+						<button class="btn btn-soft-secondary" type="button" style="width:117px;" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
 				<div class="row mb-1">
@@ -426,7 +429,7 @@
 							<div class="col-auto">
 						</c:otherwise>
 					</c:choose>
-						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
+						<button class="btn btn-soft-info" type="button" onclick="" style="width:114px;">재등록</button>
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
@@ -439,7 +442,7 @@
 							<div class="col-auto">
 						</c:otherwise>
 					</c:choose>
-						<button class="btn btn-soft-success" type="button">현.영재발행</button>
+						<button class="btn btn-soft-success" type="button" style="width:118px;">현.영발행</button>
 					</div>
 				</div>
 				<c:choose>
@@ -456,10 +459,7 @@
 					<div class="col-auto">
 						<button class="btn btn-soft-warning" type="button" onclick="payCancel()" style="width:127px;">결제취소</button>
 					</div>
-					<div class="col-auto">
 						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:117px;">행삭제</button> -->
-						<button class="btn btn-soft-info" type="button" onclick="" style="width:117px;">재등록</button>
-					</div>
 				</div>
 				<c:choose>
 					<c:when test="${uselocker.isFlag != 0}">
@@ -489,6 +489,7 @@
 	</div>
 </body>
 <script type="text/javascript">
+var myPopup;
 //숨겨진 모달 버튼
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
@@ -764,7 +765,7 @@ function PriceChange(){
    	
    	$('#misuPLockerPrice').val(formatNumberWithCommas(misuPLockerPrice));
    	
-   	totalChange();
+   	totalChange1();
 }
 
 PLockerDepositeChange();
@@ -789,10 +790,10 @@ function PLockerDepositeChange() {
    	
    	$('#misuPLockerDeposite').val(formatNumberWithCommas(misuPLockerDeposite));
 	
-	totalChange();
+	totalChange1();
 }
 
-function totalChange() {
+function totalChange1() {
 	
 	var totalPLockerPrice = removeCommasFromNumber($('#totalPLockerPrice').val());
 	var totalPLockerDeposite = removeCommasFromNumber($('#totalPLockerDeposite').val());
@@ -887,6 +888,7 @@ function save() {
         	FromDate : $('#fromdate').val(),
         	ToDate : $('#todate').val(),
         	RegMonth : $('#regmonth').val(),
+        	MemberID : $('#memberid').val(),
         	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
         	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
         	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
@@ -1200,6 +1202,148 @@ function payDeposite() {
 	});
 }
 
+<%-- 신용카드 결제 --%>
+function paycredit() {
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+
+	var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$('#DBPLockerID').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+function totalchange(){
+	if($('#GroupSaleNo').val() == ''){
+		alert('dd');
+		if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
+			alert('dd');
+			alert($(previousRow).find('.PKID').text());	
+		}else{
+			accountChange();	
+		}
+	}else{
+		UpduseLocker();	
+	}
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/locker/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+function accountChange() {
+	$.ajax({
+        type: "POST", 
+        url: "tblpaidinsert", 
+        dataType : 'json',
+        data: { 
+        	FPKID : $('#DBPKID').val(),
+        	SiteCode : $('#sitecode').val(),
+        	SaleDate : $('#regdate').val(),
+        	RealSaleDate : $('#paidbody tr#new').find('.paiddate').text(),
+        	SaleType : '사물함',
+        	PayType : $('#paidbody tr#new').find('.paidcategory').text(),
+        	Price : removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text()),
+        	AssignType : $('#paidbody tr#new').find('.paidassignType').text(), 
+        	Maeipsa : $('#paidbody tr#new').find('.paidmapsa').text(), 
+        	CardName : $('#paidbody tr#new').find('.paidcardtype').text(),
+			AssignNo : $('#paidbody tr#new').find('.paidassignN').text(),
+			Pos : $('#paidbody tr#new').find('.POS').text(),
+			SignPad : $('#paidbody tr#new').find('.signpad').text(),
+			Halbu : $('#paidbody tr#new').find('.Halbu').text(),
+			SaleTime : $('#paidbody tr#new').find('.SaleTime').text(),
+        	PaidGroupSaleNo : $('#DBPKID').val(),
+        	OID : $('#paidbody tr#new').find('.OID').text(),
+			TID : $('#paidbody tr#new').find('.TID').text()
+        },
+        success: function(success) {	
+        	UpduseLocker();
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function UpduseLocker() {
+	$('#paidbody tr#new').attr('id','PLockerPrice');
+	PLockerPriceChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "UpduseLocker", 
+        dataType : 'json',
+        data: { 
+        	PKID : $('#DBPKID').val(),
+        	LockerID : $('#DBPLockerID').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	MemberID : $('#memberid').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			Note : $('#note').val()
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        		window.opener.location.reload();
+        		//window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
 function getCurrentDateTime() {
 	var today = new Date();
@@ -1243,10 +1387,15 @@ function payCancel() {
     if (previousRow !== null) {
     	
     	var PKID = $(previousRow).find('.PKID').text();
-    	var paidcategory = $(previousRow).find('.paidcategory').text();
+    	var paidcategory = $(previousRow).find('.paidcategory').text(); 
         var paidPriceText = removeCommasFromNumber($(previousRow).find('.paidprice').text());
         var paidassignType = '';
-        
+        var paidcardtype = $(previousRow).find('.paidcardtype').text();
+        var paidmapsa = $(previousRow).find('.paidmapsa').text();
+        var paidassignN = $(previousRow).find('.paidassignN').text();
+        var SaleTime = $(previousRow).find('.SaleTime').text();
+        var OID = $(previousRow).find('.OID').text();
+        var TID = $(previousRow).find('.TID').text();
         if(paidcategory == '보증금'){
         	depositeRefund();	
         	return false;
@@ -1284,6 +1433,38 @@ function payCancel() {
             			break;
             		}
                     
+            		if(paidcategory == "계좌이체"){
+            			var url = "${pageContext.request.contextPath}/locker/AccountCancel.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
+            			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+            		    if (myPopup === undefined || myPopup.closed) {
+            		        myPopup = window.open(url, "_blank", windowFeatures);
+            		    } else {
+            		    	myPopup.focus();
+            		    }
+            		    document.addEventListener('click', function() {
+            		        if (myPopup && !myPopup.closed) {
+            		            myPopup.focus();
+            		        }
+            		  	});
+            		    
+            		    return false;
+            		}else{
+            			var url = "${pageContext.request.contextPath}/locker/CancelPaid.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
+            			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+            		    if (myPopup === undefined || myPopup.closed) {
+            		        myPopup = window.open(url, "_blank", windowFeatures);
+            		    } else {
+            		    	myPopup.focus();
+            		    }
+            		    document.addEventListener('click', function() {
+            		        if (myPopup && !myPopup.closed) {
+            		            myPopup.focus();
+            		        }
+            		  	});
+            		    
+            		    return false;
+            		}
+            		
                     if (paidPriceText > 0) {
                         paidPriceText = -paidPriceText;
                     } else if (paidPriceText < 0) {

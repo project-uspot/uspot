@@ -141,7 +141,7 @@ function save(){
     var month = $("#SaleDate").val().substring(4, 6);
     var day = $("#SaleDate").val().substring(6, 8);
 
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + year+"-"+month+"-"+day+" "+ getCurrentTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + "계좌이체" + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber('${param.payprice }'))) + '</td>');
@@ -160,9 +160,16 @@ function save(){
 	newRow.append('<td class="PKID py-2 align-middle white-space-nowrap" style="display:none">' + '' + '</td>');
 
 	$(opener.document).find('#paidbody').append(newRow);
-
-	opener.totalchange();
-	self.close();
+	
+	var uparam = '${uparam}';
+	
+	if(uparam == 'locker'){
+		opener.accountChange();
+	}else{
+		opener.totalchange();
+	}
+	opener.focus();
+	self.close();	
 }
 
 function getCurrentTime() {

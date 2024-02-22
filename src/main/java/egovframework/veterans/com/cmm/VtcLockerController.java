@@ -394,6 +394,8 @@ public class VtcLockerController{
 		
 		tblplocker.setPLockerID(tbluselocker.getLockerID());
 		tblplocker.setSiteCode(tbluselocker.getSiteCode());
+		tblplocker.setState(2);
+		tblplocker.setLSaleNo(tbluselocker.getPKID());
 		tblplocker.setUpdUserPKID(users.getUserPKID());
 
 		vtcLockerService.UpduseLocker(tbluselocker);

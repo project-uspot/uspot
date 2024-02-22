@@ -1009,40 +1009,45 @@ function totalchange() {
 	$('#paidbody tr#new').attr('id','PLockerPrice');
 	PLockerPriceChange();
 	
-	$.ajax({
-        type: "POST", 
-        url: "UpduseLocker", 
-        dataType : 'json',
-        data: { 
-        	PKID : $('#GroupSaleNo').val(),
-        	LockerID : PrevPLockerID,
-        	RegDate : $('#regdate').val(),
-        	FromDate : $('#fromdate').val(),
-        	ToDate : $('#todate').val(),
-        	RegMonth : $('#regmonth').val(),
-        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
-        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
-        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
-        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
-			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
-			Misu : removeCommasFromNumber($('#Misu').val()),
-			Note : $('#note').val(),
-        },
-        success: function(data) {	
-        	if(data == '0'){
-        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
-        		window.opener.location.reload();
-                window.close();
-        	}else{
-        		window.opener.location.reload();
-        		window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
-        	}
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	});
+	if($('#GroupSaleNo').val() == ''){
+		accountChange();
+	}else{
+		$.ajax({
+	        type: "POST", 
+	        url: "UpduseLocker", 
+	        dataType : 'json',
+	        data: { 
+	        	PKID : $('#GroupSaleNo').val(),
+	        	LockerID : PrevPLockerID,
+	        	RegDate : $('#regdate').val(),
+	        	FromDate : $('#fromdate').val(),
+	        	ToDate : $('#todate').val(),
+	        	RegMonth : $('#regmonth').val(),
+	        	MemberID : $('#memberid').val(),
+	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+	        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
+	        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+	        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+				PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+				Misu : removeCommasFromNumber($('#Misu').val()),
+				Note : $('#note').val(),
+	        },
+	        success: function(data) {	
+	        	if(data == '0'){
+	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+	        		window.opener.location.reload();
+	                window.close();
+	        	}else{
+	        		window.opener.location.reload();
+	        		window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
+	        	}
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
+	}
 }
 
 <%-- 계좌입금 --%>
@@ -1069,6 +1074,87 @@ function payAccount(){
             myPopup.focus();
         }
   	});
+}
+
+function accountChange() {
+	$('#paidbody tr#new').attr('id','PLockerPrice');
+	PLockerPriceChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "useLockerInsert",
+        dataType : 'json',
+        data: { 
+        	LockerID : PrevPLockerID,
+        	PLockerNo : $('#PLockerNo').val(),
+        	MemberID : $('#memberid').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			IsReturn : 'N',
+			IsFlag : 0,
+			Note : $('#note').val(),
+			IsDelete : 'N'
+        },
+        success: function(data) {
+        	if(data == 0){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();	
+        	}else if(data == -1){
+        		alert("이미 등록된 사물함입니다.");
+                window.location.reload();
+        	}else if(data == -2){
+        		alert("이미 등록중인 사물함입니다.");
+                window.location.reload();
+        	}else{
+        		$.ajax({
+        	        type: "POST", 
+        	        url: "tblpaidinsert", 
+        	        dataType : 'json',
+        	        data: { 
+        	        	FPKID : data,
+        	        	SiteCode : $('#sitecode').val(),
+        	        	SaleDate : $('#regdate').val(),
+        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
+        	        	SaleType : '사물함',
+        	        	PayType : $('#paidbody tr').find('.paidcategory').text(),
+        	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
+        	        	AssignType : $('#paidbody tr').find('.paidassignType').text(), 
+        	        	Maeipsa : $('#paidbody tr').find('.paidmapsa').text(), 
+        	        	CardName : $('#paidbody tr').find('.paidcardtype').text(),
+    					AssignNo : $('#paidbody tr').find('.paidassignN').text(),
+    					Pos : $('#paidbody tr').find('.POS').text(),
+    					SignPad : $('#paidbody tr').find('.signpad').text(),
+    					Halbu : $('#paidbody tr').find('.Halbu').text(),
+    					SaleTime : $('#paidbody tr').find('.SaleTime').text(),
+        	        	PaidGroupSaleNo : data,
+        	        	OID : $('#paidbody tr').find('.OID').text(),
+    					TID : $('#paidbody tr').find('.TID').text()
+        	        },
+        	        success: function(success) {	
+        	        	window.opener.location.reload();
+        	       	 	window.location.href = 'mLockerDetailF.do?PKID='+data;
+        	        },
+        	        error: function(xhr, status, error) {
+        	       	 console.log("Status: " + status);
+        	         console.log("Error: " + error);
+        	        }
+        		});
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
 

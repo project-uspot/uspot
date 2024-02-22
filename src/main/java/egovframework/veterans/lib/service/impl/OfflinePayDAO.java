@@ -48,7 +48,7 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 	}
 
 	public void insertPaidCancelLocker(Map<String, Object> returnMap) {
-		
+		update("offlinePay.insertPaidCancelLocker",returnMap);
 	}
 
 	public void insertPaidCancelRent(Map<String, Object> returnMap) {
