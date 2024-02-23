@@ -136,7 +136,7 @@
 						<input type="hidden" id="FCardNo" name="FCardNo" value="">
 						<input type="hidden" id="MemberID" name="MemberID" value="${param.MemberID }">
 						<input type="hidden" id="SaleNo" name="SaleNo" value="">
-						<input type="hidden" id="paidPKID" name="paidPKID" value="">
+						<input type="hidden" id="paidPKID" name="paidPKID" value="${param.tempSaleNo}">
 						<input type="hidden" id="InsertYN" name="InsertYN" value="${param.Insert }">
 					</form>
 				</div>
