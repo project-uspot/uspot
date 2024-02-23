@@ -287,6 +287,7 @@ public class VtcPaidController {
 		if(users == null){
 			users = new Users();
 		}
+		System.out.println("sdfsdfsdfdsfsdfsdfdfs");
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("saleDate", tblpaid.getSaleDate());
 	    map.put("outputOrderNo", 0);
@@ -335,5 +336,23 @@ public class VtcPaidController {
 				return "1";
 			}
 		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/ReceiptInsert")
+	public String ReceiptInsert(tblpaid tblpaid)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tblpaid.setSiteCode(users.getSiteCode());
+		tblpaid.setUpdUserPKID(users.getUserPKID());
+		
+		VtcPaidService.ReceiptInsert(tblpaid);
+		System.out.println(tblpaid);
+		
+		return "success";
 	}
 }

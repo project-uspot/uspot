@@ -442,17 +442,10 @@
 							<div class="col-auto">
 						</c:otherwise>
 					</c:choose>
-						<button class="btn btn-soft-success" type="button" style="width:118px;">현.영발행</button>
+						<button class="btn btn-soft-success" type="button" style="width:118px;" onclick="cashReceiptChange()">현.영발행</button>
 					</div>
 				</div>
-				<c:choose>
-					<c:when test="${uselocker.isFlag != 0}">
-						<div class="row" style="display: none;">
-					</c:when>
-					<c:otherwise>
-						<div class="row">
-					</c:otherwise>
-				</c:choose>
+				<div class="row">
 					<div class="col-auto">
 						<button class="btn btn-soft-danger" type="button" style="width:114px;" onclick="refundPrice()">환불</button>
 					</div>
@@ -610,12 +603,9 @@ $('.nav-item').on('click', function() {
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
 	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
-                    
                 }
-
                 contentHtml += '</tr>';
             }
-
             contentHtml += '</table>';
             $(tab_id).html(contentHtml);
             
@@ -1230,16 +1220,80 @@ function paycredit() {
 
 function totalchange(){
 	if($('#GroupSaleNo').val() == ''){
-		alert('dd');
 		if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
-			alert('dd');
-			alert($(previousRow).find('.PKID').text());	
+			CancelInsert();
+		}else if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
+			ReceiptInsert();
 		}else{
-			accountChange();	
+			accountChange();
 		}
+	}else if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
+		CancelInsert();
+	}else if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
+		ReceiptInsert();
 	}else{
 		UpduseLocker();	
 	}
+}
+
+function CancelInsert() {
+	$.ajax({
+        type: "POST", 
+        url: "tblpaidinsert", 
+        dataType : 'json',
+        data: { 
+        	FPKID : $('#DBPKID').val(),
+        	SiteCode : $('#sitecode').val(),
+        	SaleDate : getCurrentDate(),
+        	RealSaleDate : $('#paidbody tr#new').find('.paiddate').text(),
+        	SaleType : '사물함',
+        	PayType : $('#paidbody tr#new').find('.paidcategory').text(),
+        	Price : removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text()),
+        	AssignType : $('#paidbody tr#new').find('.paidassignType').text(), 
+        	Maeipsa : $('#paidbody tr#new').find('.paidmapsa').text(), 
+        	CardName : $('#paidbody tr#new').find('.paidcardtype').text(),
+			AssignNo : $('#paidbody tr#new').find('.paidassignN').text(),
+			Pos : $('#paidbody tr#new').find('.POS').text(),
+			SignPad : $('#paidbody tr#new').find('.signpad').text(),
+			Halbu : $('#paidbody tr#new').find('.Halbu').text(),
+			SaleTime : $('#paidbody tr#new').find('.SaleTime').text(),
+        	PaidGroupSaleNo : $('#DBPKID').val(),
+        	OID : $('#paidbody tr#new').find('.OID').text(),
+			TID : $('#paidbody tr#new').find('.TID').text(),
+			OriginPKID : $(previousRow).find('.PKID').text()
+        },
+        success: function(success) {	
+        	
+        	$('#paidbody tr#new').attr('id','PLockerPrice');
+        	PLockerPriceChange();
+        	
+        	$.ajax({
+                type: "POST", 
+                url: "useLockerCancel", 
+                dataType : 'json',
+                data: { 
+                	PKID : $('#DBPKID').val(),
+                	LockerID : $('#DBPLockerID').val(),
+                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+                	Misu : removeCommasFromNumber($('#Misu').val()),
+                	ReturnDate : getCurrentDate(),
+                	IsFlag : 1
+                },
+                success: function(success) {
+             		window.opener.location.reload();
+                },
+                error: function(xhr, status, error) {
+                	console.log("Status: " + status);
+                    console.log("Error: " + error);
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
 <%-- 계좌입금 --%>
@@ -1294,6 +1348,76 @@ function accountChange() {
 			TID : $('#paidbody tr#new').find('.TID').text()
         },
         success: function(success) {	
+        	$('#paidbody tr#new').find('.PKID').text(success);
+        	UpduseLocker();
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+<%-- 현금 영수증 변환--%>
+function cashReceiptChange(){
+	var paidcategory = $(previousRow).find('.paidcategory').text();
+	var paidprice = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+	var paidassignType = $(previousRow).find('.paidassignType').text();
+	
+	if(paidprice < 0){
+		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+	if(paidcategory == "현금"){
+		if(paidassignType == ''){
+			var url = "${pageContext.request.contextPath}/locker/ChangeReceipt.do?payprice=" + paidprice +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$('#DBPLockerID').val();
+        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+            if (myPopup === undefined || myPopup.closed) {
+                myPopup = window.open(url, "_blank", windowFeatures);
+            } else {
+            	myPopup.focus();
+            }
+            document.addEventListener('click', function() {
+                if (myPopup && !myPopup.closed) {
+                    myPopup.focus();
+                }
+          	});	
+		}else{
+			$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인해주세요.');
+			$('.modal-footer').empty();
+			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			$('.modal-footer').append(cancelbutton);
+			$('#modalButton').click();
+			modalcheck = true;
+			return false;
+		}
+	}else{
+		$('#resultmessage').html('현금결제가 아닙니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+}
+
+function ReceiptInsert() {
+	console.log($(previousRow).find('.PKID').text());
+	console.log($('#paidbody tr#new').find('.PKID').text());
+	$.ajax({
+        type: "POST", 
+        url: "ReceiptInsert", 
+        dataType : 'json',
+        data: { 
+        	PKID : $(previousRow).find('.PKID').text()
+        },
+        success: function(success) {
         	UpduseLocker();
         },
         error: function(xhr, status, error) {
@@ -1401,6 +1525,16 @@ function payCancel() {
         	return false;
         }
         
+        if($(previousRow).find('.paidassignType').text().indexOf('취소') !== -1){
+        	$('#resultmessage').html('이미 취소된 건입니다.');
+    	  	$('.modal-footer').empty();
+    	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+    	  	$('.modal-footer').append(cancelbutton);
+    	    $('#modalButton').click();
+    	    modalcheck = true;
+    	    return false;
+        }
+        
         $.ajax({
             type: "POST", 
             url: "OriginPKIDFind", 
@@ -1448,7 +1582,7 @@ function payCancel() {
             		  	});
             		    
             		    return false;
-            		}else{
+            		}else if(paidcategory != '현금'){
             			var url = "${pageContext.request.contextPath}/locker/CancelPaid.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
             			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
             		    if (myPopup === undefined || myPopup.closed) {
@@ -1812,6 +1946,20 @@ function refundCash(){
         }
 	});
 	
+}
+function refundCredit() {
+	var url = "${pageContext.request.contextPath}/locker/CancelPaid.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
 }
 </script>
 </html>

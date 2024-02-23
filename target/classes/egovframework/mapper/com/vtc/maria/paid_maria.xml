@@ -456,7 +456,7 @@
 		, 0
 		, 'N'
 		, date_format(NOW(), '%Y-%m-%d %T' )
-		, #{userPKID}
+		, #{AddUserPKID}
 		from dual
 		where not EXISTS (
 			select 1 
@@ -485,4 +485,14 @@
 	and SiteCode = #{SiteCode}
 	and IsDelete = 'N'
 	</select>
+	<update id="ReceiptInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		update tblpaid set 
+		IsDelete = 'Y',
+		UpdUserPKID = #{UpdUserPKID},
+		UpdDate = now()
+		where
+			SiteCode = #{SiteCode}
+		and PKID = #{PKID}
+		and IsDelete = 'N'
+	</update>
 </mapper>

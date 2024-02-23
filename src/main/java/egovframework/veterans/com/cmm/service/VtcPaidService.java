@@ -42,4 +42,5 @@ public interface VtcPaidService {
 	void paidchange(tblpaid tblpaid)throws Exception;
 	void tblElecAssignDataInsert(tblpaid tblpaid);
 	int OriginPKIDFind(tblpaid tblpaid)throws Exception;
+	void ReceiptInsert(tblpaid tblpaid)throws Exception;
 }

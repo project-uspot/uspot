@@ -103,4 +103,8 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public int OriginPKIDFind(tblpaid tblpaid)throws Exception{
 		return selectOne("paid.OriginPKIDFind",tblpaid);
 	}
+	
+	public void ReceiptInsert(tblpaid tblpaid)throws Exception{
+		update("paid.ReceiptInsert",tblpaid);
+	}
 }
