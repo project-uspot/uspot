@@ -37,6 +37,7 @@ public class fmsc_s01{
 
 	private int DCID;
 
+	private String DCName;
 
 	private int DiscountRate;
 
@@ -128,4 +129,6 @@ public class fmsc_s01{
 	private double PaidPrice;
 	
 	private int tblState;
+	
+	private int tempSaleNo;
 }

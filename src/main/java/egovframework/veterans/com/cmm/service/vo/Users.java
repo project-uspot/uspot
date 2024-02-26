@@ -13,10 +13,10 @@ public class Users implements Serializable{
 	/* 사업장이름 */
 	private String SiteName;
 	
-	private int UserPKID;
+	private int UserPKID = 0;
 	
 	/* 사업장코드 */
-	private String SiteCode;
+	private String SiteCode = "";
 	
 	/* 사원번호 */
 	private String SawonNo;

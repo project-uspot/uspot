@@ -164,6 +164,11 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	}
 
 	@Override
+	public List<Map<String,Object>> selectRefund(Map<String, Object> setSql) throws Exception {
+		return vtcMemberDAO.selectRefund(setSql);
+	}
+
+	@Override
 	public void fmsc_01update(fmsc_s01 fmsc_s01) throws Exception {
 		vtcMemberDAO.fmsc_01update(fmsc_s01);
 	}

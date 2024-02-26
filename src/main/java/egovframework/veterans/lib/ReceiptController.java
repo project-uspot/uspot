@@ -16,6 +16,7 @@ import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.lib.service.ReceiptService;
@@ -35,16 +36,22 @@ public class ReceiptController {
 	public static Marker Receipt = MarkerFactory.getMarker("Receipt");
 	
 	// TODO 영수증 발행	
-	@GetMapping(value = "/Receipt.do")
-	public String selectReceipt(HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+	@GetMapping(value = "/{uparam}/Receipt.do")
+	public String selectReceipt(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 
-		List<Map<String,Object>> receiptList = receiptService.getReceipt(request.getParameter("PKID"));
-		insertReceipt(request.getParameter("PKID"),receiptService);
-		model.addAttribute("receiptList", receiptList);
-		return "/receipt/receipt";
+		switch (uparam) {
+		case "lecture":
+			List<Map<String,Object>> receiptList = receiptService.getReceipt(request.getParameter("PKID"));
+			insertReceiptItem(request.getParameter("PKID"),receiptService);
+			model.addAttribute("receiptList", receiptList);
+			return "/receipt/receipt";
+		default:
+			break;
+		}
+		return null;
 	}
 
-	public static void insertReceipt(String PKID, ReceiptService receiptService) throws Exception {
+	public static void insertReceiptItem(String PKID, ReceiptService receiptService) throws Exception {
 		String receiptText = "";
 		List<Map<String,Object>> receiptList = receiptService.getReceipt(PKID);
 		
@@ -162,8 +169,8 @@ public class ReceiptController {
 	}
 	
 	// TODO 영수증 재발행
-	@GetMapping(value = "/ReReceipt.do")
-	public String selectReReceipt(HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
+	@GetMapping(value = "/{uparam}/ReReceipt.do")
+	public String selectReReceipt(@PathVariable String uparam, HttpServletRequest request, HttpServletResponse response,ModelMap model) throws Exception{
 		Users users = (Users) session.getAttribute("loginuserinfo");
 
 		Map<String,Object> setSql = new HashMap<String,Object>();
@@ -172,12 +179,18 @@ public class ReceiptController {
 		}else {
 			
 		}
-		setSql.put("FPKID",request.getParameter("PKID"));
-		Map<String,Object> receipt = receiptService.getReReceipt(setSql);
-		if(Objects.isNull(receipt)) {
-			return "redirect:/Receipt.do?PKID="+request.getParameter("PKID");
+		Map<String,Object> receipt = new HashMap<String,Object>();
+		switch (uparam) {
+		case "lecture":
+			setSql.put("FPKID",request.getParameter("PKID"));
+			receipt = receiptService.getReReceipt(setSql);
+			if(Objects.isNull(receipt)) {
+				return "redirect:/lecture/Receipt.do?PKID="+request.getParameter("PKID");
+			}
+		default:
+			break;
 		}
-		
+				
 		model.addAttribute("receipt", receipt);
 		return "/receipt/reReceipt";
 	}

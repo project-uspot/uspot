@@ -34,11 +34,11 @@
             var originalSCCCardNo = $('#SCCCardNo').val();
             var originalAddress = $('#Address').val();
             var originalSubAddress = $('#SubAddress').val();
-            var originalIFFlagText = $('#IFFlagText').val();
-            var originalIFFlag = $('#IFFlag').val();
+            var originalinliveText = $('#inliveText').val();
+            var originalinlive = $('#inlive').val();
             var originalCarNo = $('#carNo').val();
             var originalYoungestBirthday = $('#youngestBirthday').val();
-            var originalDCID = $('#DCID').val();
+            var originalDCID = $('#piscCd').val();
             var originalEmail = $('#email').val();
             var originalBankName = $('#bankName').val();
             var originalBankAccount = $('#bankAccount').val();
@@ -68,11 +68,11 @@
                 var SCCCardNoField = $('#SCCCardNo');
                 var addressField = $('#Address');
                 var subAddressField = $('#SubAddress');
-                var IFFlagField = $('#IFFlag');
-                var IFFlagcheck = $('#IFFlagcheck');
+                var inliveField = $('#inlive');
+                var inliveCheck = $('#inliveCheck');
                 var carNoField = $('#carNo');
                 var youngestBirthdayField = $('#youngestBirthday');
-                var DCIDField = $('#DCID');
+                var DCIDField = $('#piscCd');
                 var DCIDcheck = $('#DCIDcheck');
                 var emailField = $('#email');
                 var bankNameField = $('#bankName');
@@ -118,8 +118,8 @@
                     SCCCardNoField.removeAttr('readonly');
                     ZipCodespan.attr('onclick', 'execDaumPostcode()');
                     subAddressField.removeAttr('readonly');
-                    IFFlagField.removeAttr('disabled');
-                    IFFlagcheck.removeAttr('disabled');
+                    inliveField.removeAttr('disabled');
+                    inliveCheck.removeAttr('disabled');
                     carNoField.removeAttr('readonly');
                     youngestBirthdayField.removeAttr('readonly');
                     DCIDField.removeAttr('disabled');
@@ -173,9 +173,9 @@
 
                     subAddressField.attr('readonly', 'readonly').val(originalSubAddress);
 
-                    IFFlagField.attr('disabled', 'disabled').val(originalIFFlag);
+                    inliveField.attr('disabled', 'disabled').val(originalinlive);
 
-                    IFFlagcheck.attr('disabled', 'disabled').prop("checked", false);
+                    inliveCheck.attr('disabled', 'disabled').prop("checked", false);
 
                     carNoField.attr('readonly', 'readonly').val(originalCarNo);
 
@@ -540,12 +540,12 @@
                                             <br>
                                             <div class="row g-5 mb-3">
                                                 <div class="col-sm-6 col-md-3" style="width: 142px;">
-                                                    <h5 class="text-800">거주구분<input class="form-check-input" id="IFFlagcheck" type="checkbox" name="IFFlagcheck" style="margin-top: -1px;" disabled="disabled" />
-                                                        <label class="form-check-label text-9000" for="IFFlagcheck">갱신</label></h5>
-                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled="disabled" id="IFFlag" name="IFFlag">
-                                                        <option selected="selected" value="${tblmember.IFFlag}">${tblmember.IFFlagText}</option>
-                                                        <option value="Y">구민</option>
-                                                        <option value="N">구외</option>
+                                                    <h5 class="text-800">거주구분<input class="form-check-input" id="inliveCheck" type="checkbox" name="inliveCheck" style="margin-top: -1px;" disabled="disabled" />
+                                                        <label class="form-check-label text-9000" for="inliveCheck">갱신</label></h5>
+                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled="disabled" id="inlive" name="inlive">
+                                                        <%-- <option selected="selected" value="${tblmember.IFFlag}">${tblmember.IFFlagText}</option> --%>
+                                                        <option value="Y" <c:if test="${tblmember.inlive eq 'Y' }">selected="selected"</c:if> >구민</option>
+                                                        <option value="N" <c:if test="${tblmember.inlive ne 'Y' }">selected="selected"</c:if> >구외</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4">
@@ -565,16 +565,17 @@
                                                     할인유형 (<input class="form-check-input" id="DCIDcheck" type="checkbox" name="DCIDcheck" style="margin-top: -1px;" disabled="disabled" />
                                                     <label class="form-check-label text-900 fs-0" for="DCIDcheck">갱신</label>)
                                                 </h5>
-                                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled="disabled" id="DCID" name="DCID">
-                                                    <option selected="selected" value="${tblmember.DCID}">
-                                                        <c:forEach var="pissdc" items="${pissdclist}">
-                                                            <c:if test="${tblmember.DCID == pissdc.dcid}">
-                                                                ${pissdc.dcName}
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </option>
+                                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled="disabled" id="piscCd" name="piscCd">
+                                                	<option value=""></option>
                                                     <c:forEach var="pissdc" items="${pissdclist}">
-                                                        <option value="${pissdc.dcid}">${pissdc.dcName}</option>
+                                                    <c:choose>
+                                                    	<c:when test="${tblmember.piscCd eq pissdc.piscCD}">
+                                                    		<option selected="selected" value="${pissdc.piscCD}">${pissdc.dcName}</option>
+                                                    	</c:when>
+                                                    	<c:otherwise>
+                                                    		<option value="${pissdc.piscCD}">${pissdc.dcName}</option>
+                                                    	</c:otherwise>
+                                                    </c:choose>
                                                     </c:forEach>
                                                 </select>
                                                 <font color="red" size="1">
@@ -655,6 +656,7 @@
                     var rememberweekname = '';
                     var rememberlevelname = '';
 					var rememberstate = '';
+
                     function miteminsertF(memberID) {
                         var url = 'miteminsertF.do?MemberID=' + memberID;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
@@ -780,10 +782,10 @@
                             $('#modalButton').click();
                             return false;
                     	}
-                    	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
-                    	
-                    	var url = 'mitemchangeF.do?SaleNo=' + remembersaleno+'&itemname='+encodeURIComponent(itemname);
-                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=590";
+                    	//var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
+                    	var SaleNo = previousRow.dataset.saleNo;
+                    	var url = 'mitemchangeF.do?GroupSaleNo=' + remembersaleno+"&SaleNo="+SaleNo;
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1290,height=740";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
                         } else {
@@ -818,8 +820,9 @@
                             $('#modalButton').click();
                             return false;
                     	}
-                    	var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
-                    	var url = 'mitemrefundF.do?SaleNo=' + remembersaleno+'&itemname='+itemname;
+                    	//var itemname = '['+remembergroupname+']'+remembersubname+' '+rememberweekname+' '+rememberlevelname;
+                    	var SaleNo = previousRow.dataset.saleNo;
+                    	var url = 'mitemrefundF.do?GroupSaleNo=' + remembersaleno+"&SaleNo="+SaleNo;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1600,height=744";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
@@ -1013,7 +1016,7 @@
                                             </thead>
                                             <tbody class="list" id="learntbody">
                                                 <c:forEach var="list" items="${fmsc_s01}">
-                                                    <tr class="learntable" onclick="fmsc_s01onclick('${list.RToDate}',${list.groupSaleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}','${list.state}')" ondblclick="mitemselectF()">
+                                                    <tr class="learntable" data-sale-no="${list.saleNo}" onclick="fmsc_s01onclick('${list.RToDate}',${list.groupSaleNo},this,'${list.groupName}','${list.subGroupName}','${list.weekName}','${list.levelName}','${list.state}')" ondblclick="mitemselectF()">
                                                         <td class="State align-middle white-space-nowrap text-1200 fs--2 text-start">
                                                             <c:choose>
                                                                 <c:when test="${list.state eq '현재원' || list.state eq '반변경(+)' }">
@@ -1035,7 +1038,7 @@
                                                         <td class="LevelName align-middle white-space-nowrap text-900 fs--1 text-start">${list.levelName}</td>
                                                         <td class="Date align-middle white-space-nowrap text-900 fs--1 text-start">${list.RFromDate} ~ ${list.RToDate}</td>
                                                         <td class="Regmonth align-middle white-space-nowrap text-700 fs--1 text-center">${list.regmonth}</td>
-                                                        <td class="RealPrice align-middle white-space-nowrap text-700 fs--1 text-end"><fmt:formatNumber value="${list.realPrice}" pattern="#,###"/></td>
+                                                        <td class="RealPrice align-middle white-space-nowrap text-700 fs--1 text-end"><fmt:formatNumber value="${list.paidPrice}" pattern="#,###"/></td>
                                                         <td class="Note align-middle white-space-nowrap text-900 fs--1 text-start">${list.note}</td>
                                                         <td class="InType align-middle white-space-nowrap text-900 fs--1 text-start">${list.inType}</td>
                                                     </tr>

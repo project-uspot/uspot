@@ -30,6 +30,8 @@ public class fmsc_s01toselectitem {
 	private int Regmonth;
 	
 	private int RealPrice;
+
+	private int PaidPrice;
 	
 	private String Note;
 	

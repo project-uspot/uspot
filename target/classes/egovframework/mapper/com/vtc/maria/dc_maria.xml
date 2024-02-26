@@ -8,11 +8,12 @@
 		and IsDelete = 'N'
 	</select>
 	<select id="dclistBypissId" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.DC">
-		select * from tbldc
+		<!-- select * from tbldc
 		where 
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
 		and PissCD is not null
-		and PissCD != ''
+		and PissCD != '' -->
+		select * from tbldc_service
 	</select>
 </mapper>

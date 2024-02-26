@@ -7,99 +7,67 @@ public class tblpaid {
 
 	private int PKID;
 
-
 	private String SiteCode;
 
-
-	private int FPKID;
-
+	private int FPKID = 0;
 
 	private String ReceiptNo;
 
-
 	private String SaleDate;
-
 
 	private String RealSaleDate;
 
-
 	private String SaleType;
-
 
 	private String PayType;
 
-
 	private double Price;
-
 
 	private String AssignType;
 
-
 	private String Maeipsa;
-
 
 	private String CardName;
 
-
 	private String AssignNo;
-
 
 	private String Pos;
 
-
-	private String SignPad;
-
+	private String SignPad = "N";
 
 	private String Halbu;
 
-
 	private String ValidDate;
-
 
 	private String SaleTime;
 
-
 	private String FCardNo;
-
 
 	private String Msg;
 
-
 	private int PaidGroupSaleNo;
-
 
 	private String OID;
 
-
 	private String TID;
-
 
 	private String DelDate;
 
-
 	private int DelUsePKID;
-
 
 	private String DelMsg;
 
-
 	private String PayID;
 
-
-	private String IsDelete;
-
+	private String IsDelete = "N";
 
 	private String AddDate;
 
-
-	private int AddUserPKID;
-
+	private int AddUserPKID = 0;
 
 	private String UpdDate;
 
-
-	private int UpdUserPKID;
-
+	private int UpdUserPKID = 0;
 
 	private String CardNo;
 	

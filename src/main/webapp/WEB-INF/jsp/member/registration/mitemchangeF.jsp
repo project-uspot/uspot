@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>반변경정보 등록 및 변경</title>
+    <title>수강정보 등록 및 변경</title>
     <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
@@ -52,10 +52,87 @@
                             <button class="btn btn-danger" type="button" onclick="alldelete()">삭제(D)</button>
                     	</div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					<div class="border-top border-bottom border-200" id="customerOrdersTable" style="width:1200px; height: 150px;overflow-y: scroll;"
+						data-list='{"valueNames":["code","category","item","name","day","time","level","member","teacher","date","price","dc","sort","dccode","dcpercent","max","enter","remain"],"page":6,"pagination":true}'>
+						<div class="table-responsive scrollbar">
+							<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+								<thead>
+									<tr>
+										<th class="sort align-middle" scope="col" data-sort="code">코드</th>
+										<th class="sort align-middle" scope="col" data-sort="category">구분</th>
+										<th class="sort align-middle" scope="col" data-sort="item">종목</th>
+										<th class="sort align-middle" scope="col" data-sort="name">강습반명</th>
+										<th class="sort align-middle" scope="col" data-sort="day">요일</th>
+										<th class="sort align-middle" scope="col" data-sort="time">시간</th>
+										<th class="sort align-middle" scope="col" data-sort="level">단계</th>
+										<th class="sort align-middle" scope="col" data-sort="member">대상</th>
+										<th class="sort align-middle" scope="col" data-sort="teacher">강사</th>
+										<th class="sort align-middle" scope="col" data-sort="date">수강기간</th>
+										<th class="sort align-middle" scope="col" data-sort="price">회비</th>
+										<th class="sort align-middle" scope="col" data-sort="dc">할인</th>
+										<th class="sort align-middle" scope="col" data-sort="sort">소계</th>
+										<th class="sort align-middle" scope="col" data-sort="dccode">할인코드</th>
+										<th class="sort align-middle" scope="col" data-sort="dcpercent">할인율</th>
+										<th class="sort align-middle" scope="col" data-sort="max">정원</th>
+										<th class="sort align-middle" scope="col" data-sort="enter">등록</th>
+										<th class="sort align-middle" scope="col" data-sort="remain">잔여</th>
+									</tr>
+								</thead>
+								<tbody class="list" id="itemtbody">
+									<c:forEach items="${fmsc_s01List }" var="fmsc_s01" varStatus="status">
+										<c:set var="item" value="${itemList[status.index]}" />
+										<c:if test="${fmsc_s01.curState == 1 }">
+										<tr>
+											<td class="code align-middle white-space-nowrap text-center fw-bold">
+												${item.ItemCode}
+												<input type="hidden" id="ItemID" name="ItemID" value="${item.ItemID}">
+												<input type="hidden" id="SaleNo" name="SaleNo" value="${fmsc_s01.saleNo}">
+												<input type="hidden" id="GroupSaleNo" name="GroupSaleNo" value="${fmsc_s01.groupSaleNo}">
+												<input type="hidden" id="InType" name="InType" value="${fmsc_s01.inType}">
+											</td>
+											<td class="category align-middle white-space-nowrap text-center">
+												<c:choose>
+													<c:when test="${item.Type eq 'G'}">
+														일반
+													</c:when>
+													<c:when test="${item.Type eq 'S'}">
+														특강
+													</c:when>
+												</c:choose>
+											</td>
+											<td class="item align-middle white-space-nowrap text-start fw-bold text-700">${item.CategoryName}</td>
+											<td class="name align-middle white-space-nowrap text-900 fs--1 text-start">${item.JungName}</td>
+											<td class="day align-middle white-space-nowrap text-center">${item.DayName}</td>
+											<td class="time align-middle white-space-nowrap text-start">${item.FromTime}</td>
+											<td class="level align-middle white-space-nowrap text-start">${item.LevelName}</td>
+											<td class="member align-middle white-space-nowrap text-start">${item.DaesangName}</td>
+											<td class="teacher align-middle white-space-nowrap text-start">${item.SawonName}</td>
+											<td class="date py-2 align-middle white-space-nowrap">${fmsc_s01.fromDate}~${fmsc_s01.toDate}(${fmsc_s01.regMonth})</td>
+											<td class="price py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/></td>
+											<td class="dc py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/></td>
+											<td class="sort py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/></td>
+											<td class="dccode py-2 align-middle white-space-nowrap">${fmsc_s01.DCID}</td>
+											<td class="dcpercent py-2 align-middle white-space-nowrap">${fmsc_s01.discountRate}</td>
+											<td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
+											<td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2 + list.RegCnt3}</td>
+											<td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2 + list.RegCnt3)}</td>
+											<td class="paidPrice py-2 align-middle white-space-nowrap text-end" style="display:none;">${fmsc_s01.paidPrice}</td>
+											<td class="dcname py-2 align-middle white-space-nowrap text-end" style="display:none;">${fmsc_s01.DCName}</td>
+											<input type="hidden" value="30" name="totalnum" id="totalnum">
+											<input type="hidden" value="30" name="usenum" id="usenum">
+											<input type="hidden" value="${fmsc_s01.saleDate }" name="SaleDate" id="SaleDate">
+											<%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>
+										</tr>
+										</c:if>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
     <div class="row">
 	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 240px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 330px;">
@@ -109,14 +186,15 @@
 	            <div class="col-md-10">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">강습반</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemname" name="olditemname" value="${itemname}" readonly="readonly"/>
-						<input type="hidden" id="saleno" name="saleno" value="${fmsc_s01.saleNo}">
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemname" name="olditemname" value="<%-- ${itemname} --%>" readonly="readonly"/>
+						<input type="hidden" id="saleno" name="saleno" value="<%-- ${fmsc_s01.saleNo} --%>">
+						<input type="hidden" id="itemPKID" name="itemPKID" value="<%-- ${fmsc_s01.itemPKID} --%>">
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">등록일자</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldsaledate" name="oldsaledate" value="${fmsc_s01.saleDate}" readonly="readonly"/>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldsaledate" name="oldsaledate" value="<%-- ${fmsc_s01.saleDate} --%>" readonly="readonly"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -124,7 +202,7 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">강습기간</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldfromdate" name="oldfromdate" style="width: 110px;" value="${fmsc_s01.fromDate}" readonly="readonly"/>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldfromdate" name="oldfromdate" style="width: 110px;" value="<%-- ${fmsc_s01.fromDate} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto mt-1 mx-n4">
@@ -132,12 +210,12 @@
 						</div>
 						<div class="col-auto ms-n1">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="oldtodate" name="oldtodate" style="width: 115px;" value="${fmsc_s01.toDate}" readonly="readonly"/>
+								<input class="form-control" type="text" id="oldtodate" name="oldtodate" style="width: 115px;" value="<%-- ${fmsc_s01.toDate} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n3">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="oldregmonth" name="oldregmonth" style="width: 50px;" value="${fmsc_s01.regMonth}" readonly="readonly"/>
+								<input class="form-control" type="text" id="oldregmonth" name="oldregmonth" style="width: 50px;" value="<%-- ${fmsc_s01.regMonth} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n2 mt-2">
@@ -149,7 +227,7 @@
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">강습료</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemprice" name="olditemprice" 
-						value="<fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						value="<%-- <fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/> --%>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -157,30 +235,25 @@
 						<div class="col-md-5">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">할인</span>
-								<input class="form-control" type="text"  id="olddcprice" name="olddcprice" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"  
+								<input class="form-control" type="text"  id="olddcprice" name="olddcprice" value="<%-- <fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/> --%>"  
 								readonly="readonly" style="text-align: right;"/>
 							</div>
 						</div>
-						<c:set var="dcname"></c:set>
-						<c:set var="dcid" value="0"></c:set>
-						<c:forEach var="dc" items="${dclist}">
-	                        <c:if test="${dc.dcid == fmsc_s01.DCID}">
-	                            <c:set var="dcname" value="${dc.dcName}"></c:set>
-	                            <c:set var="dcid" value="${dc.dcid}"></c:set>
-	                        </c:if>
-						</c:forEach>
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="olddcname" name="${dcid}" value="${dcname}" readonly="readonly"/>
+								<input class="form-control" type="text" id="olddcname" name="<%-- ${dcid} --%>" value="<%-- ${dcname} --%>" readonly="readonly"/>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-10">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">판매금액</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldprice" name="oldprice" 
-						value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						value="<%-- <fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/> --%>" readonly="readonly" style="text-align: right;"/>
+						<span class="input-group-text" id="basic-addon1">결제금액</span>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="oldPaidprice" name="oldPaidprice" 
+						value="<%-- <fmt:formatNumber value="${fmsc_s01.paidPrice}" pattern="#,###"/> --%>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-md-10">
@@ -363,7 +436,7 @@
 	    	</div>
 	    </div>
 	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
-	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 285px;">
+	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 275px;">
 	    		<div class="col-auto">
 	    			<div class="row">
 	    				<div class="col-auto">
@@ -386,39 +459,42 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
+				<div class="row mb-1 w-100 ms-1">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">현금영수증(간편결제)</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
 					</div>
-					<div class="col-auto ms-n6">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현.영발행</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button">신용카드</button>
-					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-soft-success" type="button">영수증재발행</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row">
-					
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button">결제취소</button>
+				<div class="row mb-1 w-100 ms-1">
+					<div class="col w-30 px-1">
+						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-info" type="button">행삭제</button>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-success w-100" type="button" disabled='disabled'>영수증재발행</button>
+					</div>
+					<div class="col w-30 px-1">
+						<button class="btn btn-soft-danger w-100" type="button"  onclick="paidCancel()">결제취소</button>
 					</div>
 				</div>
 	    	</div>
 	    </div>
+	    <form action="" name="payFrm">
+	    	<input type="hidden" name="paidCategory" value="">
+	    	<input type="hidden" name="paidPrice" value="">
+	    	<input type="hidden" name="paidAssignNo" value="">
+	    	<input type="hidden" name="SaleTime" value="">
+	    	<input type="hidden" name="OID" value="">
+	    	<input type="hidden" name="TID" value="">
+	    	<input type="hidden" name="Maeipsa" value="">
+	    	<input type="hidden" name="CardName" value="">
+	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="${fmsc_s01.groupSaleNo }">
+	    	<input type="hidden" name="Insert" id="Insert" value="Y">
+	    </form>
 	</div>
 </body>
 <script type="text/javascript">
@@ -426,40 +502,100 @@
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
 
-// Get today's date
 var today = new Date();
-
-// Format the date as "YYYY-MM-DD" which is the required format for the date input
 var formattedDate = today.toISOString().split('T')[0];
-
-// Set the value of the input field to today's date
 document.getElementById('saledate').value = formattedDate;
 
-//어른 어린이 등을 저장하는 변수 생성
 var codelist;
+var myPopup;
 
-//엔터시에 검색하는 기능
+$(document).ready(function() {
+	$('#paidbody').on('click', 'tr', function() {
+		paidbodyclick(this);
+	});
+
+	$('#itemtbody').on('click', 'tr', function() {
+		itemtbodyclick(this);
+	});
+	
+	$('tbody#itemtbody tr').each(function(){
+		if($(this).find("#SaleNo").val() == "${param.SaleNo}"){
+			itemtbodyclick(this);	
+		}
+	});
+});
+
+<%--//엔터시에 검색하는 기능 --%>
 function handleKeyPress(event) {
 	if (event.key === "Enter") {
 		finditem();
  	}
 }
+
+<%--//과거에 선택했던 행--%>
+var previousRow = null;
+var previousPaidRow = null;
+
+<%--//과거에 선택했던 행의 itemid--%>
+var clickeditemid;
+
+<%--//행을 클릭했을때 데이터를 밑에 뿌려주는 함수--%>
+function itemtbodyclick(clickedRow) {
+	if (previousRow !== null) {
+    	$(previousRow).css('background-color', ''); // Unselect the previous row
+	}
+	
+	$(clickedRow).css('background-color', 'lightblue'); // Highlight the clicked row
+    previousRow = clickedRow; // Update the previousRow variable with the clicked row
+    var date = $(clickedRow).find('.date').text();
+    const result = parseString(date);
+    document.getElementById('oldfromdate').value = result[0];
+    document.getElementById('oldtodate').value = result[1];
+    document.getElementById('oldregmonth').value = result[2];
+    var price = $(clickedRow).find('.price').text();
+    var itemid = $(clickedRow).find('#ItemID').val();
+    clickeditemid = itemid;
+
+    var itemname = '['+$(clickedRow).find('.item').text()+']'+$(clickedRow).find('.name').text()+' '+$(clickedRow).find('.day').text()+' '+$(clickedRow).find('.level').text();
+    $("#olditemname").val(itemname);
+    $("#saleno").val($(clickedRow).find('#SaleNo').val());
+    $("#itemPKID").val(itemid);
+
+	$("#oldsaledate").val($(clickedRow).find('#SaleDate').val());
+	$("#olditemprice").val($(clickedRow).find('.price').text());
+	$("#olddcprice").val($(clickedRow).find('.dc').text());
+	$("#olddcname").val($(clickedRow).find('.dcname').text());
+	$("#olddcname").attr("name",$(clickedRow).find('.dccode').text());
+	$("#oldprice").val($(clickedRow).find('.sort').text());
+	$("#oldPaidprice").val($(clickedRow).find('.paidPrice').text());
+	if($("#sortprice").val() != ""){
+		totalchange();	
+	}
+}
+
+function paidbodyclick(clickedRow) {
+	if (previousPaidRow !== null) {
+		$(previousPaidRow).css('background-color', ''); <%-- Unselect the previous row--%>
+	}
+
+	$(clickedRow).css('background-color', 'lightblue'); <%-- Highlight the clicked row --%>
+	previousPaidRow = clickedRow; <%-- Update the previousRow variable with the clicked row --%>
+	frm = document.payFrm;
+	frm.paidCategory.value = $(clickedRow).find('.paidcategory').text();
+	frm.paidPrice.value = $(clickedRow).find('.paidprice').text();
+	frm.paidAssignNo.value = $(clickedRow).find('.paidassignN').text();
+	frm.SaleTime.value = $(clickedRow).find('.SaleTime').text();
+	frm.TID.value = $(clickedRow).find('.TID').text();
+	frm.OID.value = $(clickedRow).find('.OID').text();
+	frm.Maeipsa.value = $(clickedRow).find('.paidmapsa').text();
+	frm.CardName.value = $(clickedRow).find('.paidcardtype').text();
+	frm.PKID.value = $(clickedRow).find('.paidPKID').text();
+}
 	
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
-		if($('#itemtbody tr').length > 0){
-			$('#resultmessage').html('강습정보가 존재합니다.<br>정말 나가시겠습니까?');
-			$('.modal-footer').empty();
-			var okaybutton = '<button class="btn btn-primary" type="button" onclick="window.close();">확인</button>';
-			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-			$('.modal-footer').append(okaybutton);
-			$('.modal-footer').append(cancelbutton);
-		    $('#modalButton').click();
-		    modalcheck = true;
-		} else{
-			window.close();
-		}
+    	window.close();
    	}
    	else if (event.key === 'Escape' && modalcheck) {
    		setTimeout(() => {
@@ -467,8 +603,8 @@ document.addEventListener('keydown', function(event) {
    	    }, 500);
    	}
 });
-	
-//검색하고 검색결과를 팝업으로 여는 함수
+  
+<%--//검색하고 검색결과를 팝업으로 여는 함수--%>
 function finditem() {
 	var findstring = document.getElementById('findstring').value;
 	var oldfromdate = document.getElementById('oldfromdate').value;
@@ -486,138 +622,151 @@ function finditem() {
     window.open(url, "_blank", windowFeatures);
 }
 	
-// 검색 하고나서 선택된 값을 테이블에 추가하는 함수
+<%--// 검색 하고나서 선택된 값을 테이블에 추가하는 함수 --%>
 function test(ItemID,selectedDate,nextDate) {
-	$.ajax({
-        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-        url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
-        dataType : 'json',
-        data: { 
-        	AddDate: ItemID,
-        	UpdDate: selectedDate
-        },
-        success: function(list) {
-        		var olddcid = $('#olddcname').attr('name');
-				$('#itemname').val('['+list.CategoryName+']'+list.JungName+' '+list.DayName+' '+list.LevelName);
-				$('#empcode').val(list.DamDangUserPKID);
-		       	$('#itemid').val(list.ItemID);
-				
-				var priceoptionlist = $('#price');
-		       	priceoptionlist.empty();
-		       	$.ajax({
-		   	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-		   	        url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
-		   	        dataType : 'json',
-		   	        success: function(codelist) {
-		   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.DefPrice,
-		   		                value: codelist[0]+list.DefPrice,
-		   		                text: codelist[0]+formatNumberWithCommas(list.DefPrice)
-		   		            }));
-		   	        	}
-		   	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price1,
-		   	        	        value: codelist[1] + list.Price1,
-		   	        	        text: codelist[1]+formatNumberWithCommas(list.Price1)
-		   	        	    });
-
-		   	        	    priceoptionlist.append(option);
-
-		   	        	    if ($('#yearage').val() > 13 && $('#yearage').val() < 19) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price2,
-		   	        	        value: codelist[2] + list.Price2,
-		   	        	        text: codelist[2]+formatNumberWithCommas(list.Price2)
-		   	        	    });
-
-		   	        	    priceoptionlist.append(option);
-
-		   	        	    if ($('#yearage').val() >= 0 && $('#yearage').val() < 14) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
-		   	        	    var option = $('<option>', {
-		   	        	    	id: list.Price3,
-		   	        	    	value: codelist[3]+list.Price3,
-		   		                text: codelist[3]+formatNumberWithCommas(list.Price3)
-		   	        	    });
-		   	        	    priceoptionlist.append(option);
-		   	        	    if ($('#yearage').val() > 64) {
-		   	        	        option.attr('selected', 'selected');
-		   	        	    }
-		   	        	}
-		   	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price4,
-		   		                value: codelist[4]+list.Price4,
-		   		                text: codelist[4]+formatNumberWithCommas(list.Price4)
-		   		            }));
-		   	        	}
-		   	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
-		   	        		priceoptionlist.append($('<option>', {
-		   	        			id: list.Price5,
-		   		                value: codelist[5]+list.Price5,
-		   		                text: codelist[5]+formatNumberWithCommas(list.Price5)
-		   		            }));
-		   	        	}
-		   	        	
-		   	        	$('#dcds option').each(function() {
-		   	             // Check if the current option's value is equal to olddcpriceValue
-							if ($(this).val() === olddcid) {
-								// If it matches, set the 'selected' attribute
-    							$(this).attr('selected', 'selected');
-    							$('#dcper').val($(this).attr('id'));
-							}
-		   	         	});
-		   	        	
-		   	        	sortchange();
-		   	        },
-		   	        error: function(xhr, status, error) {
-		   	       	 console.log("Status: " + status);
-		   	         console.log("Error: " + error);
-		   	        }
-		   		});
-				
-		       	$('#regmonth').val($('#oldregmonth').val());
-		       	if($('#oldfromdate').val()< formattedDate){
-		       		$('#fromdate').val(formattedDate);
-		       	}else{
-		       		$('#fromdate').val($('#oldfromdate').val());
-		       	}		       	
-		       	$('#todate').val($('#oldtodate').val());
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	});
-}
+	if(ItemID == $("#itemPKID").val()){
+   		$('#resultmessage').text('동일한 강좌입니다.');
+   		$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+        $('#modalButton').click();
+        modalcheck = true;
+		return false;
+	}else{
+		$.ajax({
+	        type: "POST",
+	        url: "mitemfindbyid",
+	        dataType : 'json',
+	        data: { 
+	        	ItemID: ItemID,
+	        	FindDate: selectedDate
+	        },
+	        success: function(list) {
+	        		var olddcid = $('#olddcname').attr('name');
+					$('#itemname').val('['+list.CategoryName+']'+list.JungName+' '+list.DayName+' '+list.LevelName);
+					$('#empcode').val(list.DamDangUserPKID);
+			       	$('#itemid').val(list.ItemID);
+					
+					var priceoptionlist = $('#price');
+			       	priceoptionlist.empty();
+			       	$.ajax({
+			   	        type: "POST",
+			   	        url: "tblcodelist",
+			   	        dataType : 'json',
+			   	        success: function(codelist) {
+			   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
+			   	        		priceoptionlist.append($('<option>', {
+			   	        			id: list.DefPrice,
+			   		                value: codelist[0]+list.DefPrice,
+			   		                text: codelist[0]+formatNumberWithCommas(list.DefPrice)
+			   		            }));
+			   	        	}
+			   	        	if (list.Price1 != 0 && list.Price1 != '' && list.Price1 != null) {
+			   	        	    var option = $('<option>', {
+			   	        	    	id: list.Price1,
+			   	        	        value: codelist[1] + list.Price1,
+			   	        	        text: codelist[1]+formatNumberWithCommas(list.Price1)
+			   	        	    });
 	
-function alldelete(){
-	window.location.reload();
+			   	        	    priceoptionlist.append(option);
+	
+			   	        	    if ($('#yearage').val() > 13 && $('#yearage').val() < 19) {
+			   	        	        option.attr('selected', 'selected');
+			   	        	    }
+			   	        	}
+			   	        	if (list.Price2 != 0 && list.Price2 != '' && list.Price2 != null) {
+			   	        	    var option = $('<option>', {
+			   	        	    	id: list.Price2,
+			   	        	        value: codelist[2] + list.Price2,
+			   	        	        text: codelist[2]+formatNumberWithCommas(list.Price2)
+			   	        	    });
+	
+			   	        	    priceoptionlist.append(option);
+	
+			   	        	    if ($('#yearage').val() >= 0 && $('#yearage').val() < 14) {
+			   	        	        option.attr('selected', 'selected');
+			   	        	    }
+			   	        	}
+			   	        	if (list.Price3 != 0 && list.Price3 != '' && list.Price3 != null) {
+			   	        	    var option = $('<option>', {
+			   	        	    	id: list.Price3,
+			   	        	    	value: codelist[3]+list.Price3,
+			   		                text: codelist[3]+formatNumberWithCommas(list.Price3)
+			   	        	    });
+			   	        	    priceoptionlist.append(option);
+			   	        	    if ($('#yearage').val() > 64) {
+			   	        	        option.attr('selected', 'selected');
+			   	        	    }
+			   	        	}
+			   	        	if(list.Price4 != 0 && list.Price4 != '' && list.Price4 != null){
+			   	        		priceoptionlist.append($('<option>', {
+			   	        			id: list.Price4,
+			   		                value: codelist[4]+list.Price4,
+			   		                text: codelist[4]+formatNumberWithCommas(list.Price4)
+			   		            }));
+			   	        	}
+			   	        	if(list.Price5 != 0 && list.Price5 != '' && list.Price5 != null){
+			   	        		priceoptionlist.append($('<option>', {
+			   	        			id: list.Price5,
+			   		                value: codelist[5]+list.Price5,
+			   		                text: codelist[5]+formatNumberWithCommas(list.Price5)
+			   		            }));
+			   	        	}
+			   	        	
+			   	        	if(list.DcNoChk != 'Y'){
+			   	        		$('#dcds option').each(function() {
+									if ($(this).val() === olddcid) {
+		    							$(this).attr('selected', 'selected');
+		    							$('#dcper').val($(this).attr('id'));
+									}
+				   	         	});
+			   	        	}else{
+			   	        		$('#dcds option').each(function() {
+									if ($(this).val() === '') {
+		    							$(this).attr('selected', 'selected');
+		    							$('#dcper').val($(this).attr('id'));
+									}
+				   	         	});
+			   	        	}
+	
+			   	        	sortchange();
+			   	        },
+			   	        error: function(xhr, status, error) {
+			   	       	 console.log("Status: " + status);
+			   	         console.log("Error: " + error);
+			   	        }
+			   		});
+					
+			       	$('#regmonth').val($('#oldregmonth').val());
+			       	if($('#oldfromdate').val()< formattedDate){
+			       		$('#fromdate').val(formattedDate);
+			       	}else{
+			       		$('#fromdate').val($('#oldfromdate').val());
+			       	}		       	
+			       	$('#todate').val($('#oldtodate').val());
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
+	}
 }
-  
-//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
+
+<%--//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수--%>
 $('#price').on('change', function() {
-	sortchange();	
+	sortchange();
 });
    
-   //할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수
+<%--//할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수--%>
 $('#dcds').on('change', function() {
     var selectedpercent = $('#dcds').find('option:selected').attr('id'); // 선택된 옵션의 id 값을 가져오기
     $('#dcper').val(selectedpercent);
     sortchange();
 });
-
+   
 $('#regmonth, #fromdate').on('change', function() {
-  
+	  
     var selectedValue = $('#regmonth').val();
     var fromdate = $('#fromdate').val();
     
@@ -631,8 +780,8 @@ $('#regmonth, #fromdate').on('change', function() {
     
     $('#todate').val(formattedDateString);
 });
-   
-//소계바꾸는 함수
+
+<%--//소계바꾸는 함수--%>
 function sortchange(){
 	var regmonth = $('#regmonth').val();
 	var price = $('#price option:selected').attr('id');
@@ -646,30 +795,45 @@ function sortchange(){
    	totalchange();
 }
    
-//결제 내역에 있는 총 금액 변경 함수
+<%--//결제 내역에 있는 총 금액 변경 함수--%>
 function totalchange(){
-	var totalprice = removeCommasFromNumber($('#sortprice').val());	
-	
-	var tpaidprice = 0;
-	
+
+	var totalprice = 0;<%--총매출금액--%>
+	var tpaidprice = 0;<%--총결제금--%>
+	var tremainprice = 0;<%--총미납금--%>
+	var tchangeprice = 0;<%--변경강습금액--%>
+	var toldPaidprice = 0;<%--변경될강습금액--%>
+
+	$('#itemtbody tr').each(function() {
+		totalprice += parseInt(removeCommasFromNumber($(this).find('.sort').text()));
+	});
+
 	$('#paidbody tr').each(function() {
 		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
  	});
-	
+
+	tchangeprice = removeCommasFromNumber($('#sortprice').val());
+	toldPaidprice = removeCommasFromNumber($('#oldPaidprice').val());
+	totalprice = totalprice - toldPaidprice + tchangeprice;
+
 	$('#totalprice').val(formatNumberWithCommas(totalprice));
+
 	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
-	$('#tremainprice').val(formatNumberWithCommas(totalprice-tpaidprice));	
-	$('#changeprice').val(formatNumberWithCommas(removeCommasFromNumber($('#sortprice').val())-removeCommasFromNumber($('#oldprice').val())));
-	$('#payprice').val(formatNumberWithCommas(totalprice-tpaidprice));	
+
+	$('#tremainprice').val(formatNumberWithCommas(totalprice-tpaidprice));
+
+	$('#changeprice').val(formatNumberWithCommas(tchangeprice-toldPaidprice));
+
+	$('#payprice').val(formatNumberWithCommas(tchangeprice-toldPaidprice));
 }
-   
-//날짜를 테이블에서 가지고와서 잘라서 보내는 함수
+
+<%--//날짜를 테이블에서 가지고와서 잘라서 보내는 함수--%>
 function parseString(inputString) {
 	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
 	const matches = inputString.match(regex);
 
 	if (!matches || matches.length !== 4) {
-		return null; // 입력 형식이 잘못된 경우 처리
+		return null; <%--// 입력 형식이 잘못된 경우 처리--%>
 	}
 	const startDate = matches[1];
 	const endDate = matches[2];
@@ -678,14 +842,13 @@ function parseString(inputString) {
 	return [startDate, endDate, numberOfMonths.toString()];
 }
    
-//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
+<%--//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수--%>
 function formatDate(date) {
 	const yyyy = date.getFullYear();
 	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
 	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
 	return yyyy+'-'+mm+'-'+dd;
 }
-
 
 function save() {
 	if($('#itemname').val()==''){
@@ -698,9 +861,11 @@ function save() {
 	    return false;
 	}
 	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
-		$('#resultmessage').html('반변경 차액을 결제해 주세요.');
+		$('#resultmessage').html('미납금액이 존재합니다.<br>미납금액정산 없이 저장하시겠습니까?');
 		$('.modal-footer').empty();
+		var okaybutton = '<button class="btn btn-primary" type="button" onclick="fmsc_01save()">확인</button>';
 		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(okaybutton);
 		$('.modal-footer').append(cancelbutton);
 	    $('#modalButton').click();
 	    modalcheck = true;
@@ -711,89 +876,133 @@ function save() {
 }
 
 function fmsc_01save() {
-		var iteration = 0;
-		const yearmonth = extractYearMonth($('#fromdate').val());
-		$.ajax({
-	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	        url: "classchange", // 실제 엔드포인트로 교체해야 합니다
-	        dataType : 'json',
-	        data: { 
-	        	SaleNo : $('#saleno').val(),
-	        	SaleDate : $('#saledate').val(),
-	        	ItemPeriod : yearmonth,
-	        	CustCode : $('#memberid').val(),
-	        	FromDate : $('#fromdate').val(),
-	        	ToDate : $('#todate').val(),
-	        	RFromDate : $('#fromdate').val(),
-	        	RToDate : $('#todate').val(),
-	        	RegMonth : $('#regmonth').val(),
-	        	DCID : $('#dcds').val(),
-	        	DiscountRate : $('#dcper').val(),
-	        	DCPrice : removeCommasFromNumber($('#dcprice').val()),
-	        	ItemPrice : $('#price option:selected').attr('id'),
-	        	RealPrice : removeCommasFromNumber($('#sortprice').val()),
-	        	Misu : removeCommasFromNumber($('#tremainprice').val()),
-	        	EmpCode : $('#empcode').val(),
-	        	IsReReg : '0',
-	        	State : 'G+',
-	        	ItemPKID : $('#itemid').val(),
-	        	InType : '반변경',
-	        	prevInType : '등록',
-	        	CurState : 1,
-	        	PaidPrice : 0
-	        },
-	        success: function(data) {	
-	        	var numberOfTR = $('#paidbody tr#new').length;
-	        	if(numberOfTR>0){
-	        		$('#paidbody tr#new').each(function() {
-		        		$.ajax({
-			    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-			    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-			    	        dataType : 'text',
-			    	        data: { 
-			    	        	FPKID: data,
-			    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-			    	        	RealSaleDate : $(this).find('.paiddate').text(),
-			    	        	SaleType : '반변경',
-			    	        	PayType : $(this).find('.paidcategory').text(),
-			    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-			    	        	AssignType : $(this).find('.paidassignType').text(),
-			    	        	PaidGroupSaleNo : data
-			    	        },
-			    	        success: function(data){
-			    	        	iteration++;
-			    	        	if(iteration === numberOfTR){
-			    	        		window.opener.location.reload();
-			    	                window.close();
-			    	        	}
-			    	        }
-			    		});
-		        	});
-	        	}else{
-	        		window.opener.location.reload();
-	                window.close();
-	        	}
-	        },
-	        error: function(xhr, status, error) {
+	var tpaidprice = 0;<%--총결제금--%>
+	$('#paidbody tr#new').each(function() {
+		tpaidprice += parseInt(removeCommasFromNumber($(this).find('.paidprice').text()));
+	});
+	tpaidprice += parseInt(removeCommasFromNumber($("#oldPaidprice").val()));
+
+	var iteration = 0;
+	const yearmonth = extractYearMonth($('#fromdate').val());
+
+	$.ajax({
+        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        url: "classchange", // 실제 엔드포인트로 교체해야 합니다
+        dataType : 'json',
+		async : false,
+        data: { 
+        	SaleNo : $('#saleno').val(),
+        	SaleDate : $('#saledate').val(),
+        	ItemPeriod : yearmonth,
+        	CustCode : $('#memberid').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RFromDate : $('#fromdate').val(),
+        	RToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	DCID : $('#dcds').val(),
+        	DiscountRate : parseInt($('#dcper').val())||0,
+        	DCPrice : removeCommasFromNumber($('#dcprice').val()),
+        	ItemPrice : $('#price option:selected').attr('id'),
+        	RealPrice : removeCommasFromNumber($('#sortprice').val()),
+        	PaidPrice : tpaidprice,
+        	Misu : removeCommasFromNumber($('#tremainprice').val()),
+        	EmpCode : $('#empcode').val(),
+        	IsReReg : '0',
+        	State : 'G+',
+        	ItemPKID : $('#itemid').val(),
+        	InType : '반변경',
+        	prevInType : '등록',
+        	CurState : 1,
+        	GroupSaleNo : $("#GroupSaleNo").val(),
+        },
+        success: function(data) {	
+	        	
+        },
+        error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
 	         console.log("Error: " + error);
-	        }
-		}); 
+	         return false;
+        }
+	}); 
+	
+	var numberOfTR = $('#paidbody tr#new').length;
+	if(numberOfTR>0){
+		$('#paidbody tr#new').each(function() {
+    		$.ajax({
+    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+    	        dataType : 'json',
+				async : false,
+    	        data: { 
+    	        	SiteCode : "${loginuserinfo.siteCode}",
+    	        	FPKID: $("#GroupSaleNo").val(),
+    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+    	        	RealSaleDate : $(this).find('.paiddate').text(),
+    	        	SaleType : "반변경",
+    	        	PayType : $(this).find('.paidcategory').text(),
+    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+					AssignType : $(this).find('.paidassignType').text(),
+					Maeipsa : $(this).find('.paidmapsa').text(),
+					CardName : $(this).find('.paidcardtype').text(),
+					AssignNo : $(this).find('.paidassignN').text(),
+					Pos : $(this).find('.POS').text(),
+					SignPad : $(this).find('.signpad').text(),
+					Halbu : $(this).find('.Halbu').text(),
+					SaleTime : $(this).find('.SaleTime').text(),
+					PaidGroupSaleNo : $("#GroupSaleNo").val(),
+					OID : $(this).find('.OID').text(),
+					TID : $(this).find('.TID').text(),
+    	        },
+    	        success: function(data){
+					console.log(Data);
+					paidPkid=Data;
+    	        },
+    	        error:function(xhr, status, error){
+					console.log("Status: " + status);
+					console.log("Error: " + error);
+					return false;
+				}
+    		});
+
+    		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+
+    		if(inlineRadioOptions >= 1){
+    		    var myWindow = window.open("${pageContext.request.contextPath}/lecture/Receipt.do?PKID="+paidPkid+"&Type=Change", "MsgWindow", "width=320,height=800");
+    		    myWindow.print();
+
+    		    setTimeout(function() { 
+    		        if(inlineRadioOptions == 2){
+    		            myWindow.print();
+    		        }
+
+    		        setTimeout(function() { 
+    		            myWindow.close(); 
+    		            window.opener.location.reload();
+    		            window.close();
+    		        }, 2000); // 두 번째 인쇄 후 잠시 대기 후 창 닫기
+    		    }, 2000); // 첫 번째 인쇄 후 잠시 대기
+    		}else{
+    			window.opener.location.reload();
+    			window.close();
+    		}
+    	});
+	}else{
+		window.opener.location.reload();
+        window.close();
+	}
 }  
 
-//itemperiod 를 위한 날짜 포맷 함수
+<%--//itemperiod 를 위한 날짜 포맷 함수--%>
 function extractYearMonth(dateString) {
-  
 	const [year, month] = dateString.split('-');
-  
 	const yearMonth = year + month;
-	
-    return yearMonth;
+	return yearMonth;
 }
   
-//현금 결제
+<%--//현금 결제--%>
 function paycash() {
-	if($('#tremainprice').val() == 0 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -805,7 +1014,7 @@ function paycash() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#payprice').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#tremainprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -815,14 +1024,187 @@ function paycash() {
 	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
 	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-	
-	// Get the tbody element with ID 'paidbody' and append the new row
+		
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	totalchange();
 }
 
-//paid 의 결제 일자를 넣기 위한 현재날짜 포맷
+
+<%-- 신용카드 결제 --%>
+function paycredit(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+	
+	var GroupSaleNo = $("#GroupSaleNo").val();
+	var InType = "반변경";
+
+	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+<%-- 결제 취소 --%>
+function paidCancel(){
+	var frm = document.payFrm;
+
+	if($("#tpaidprice").val() == 0){
+		$('#resultmessage').html('결제 금액이 0원입니다.<br>확인 후 결제취소해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}else if($("#tpaidprice").val() < 0){
+		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+
+	if(frm.paidCategory.value == "현금" ){
+		$("#paidbody .hover-actions-trigger").each(function() {
+			var bgColor = $(this).css("background-color");
+	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	            $(this).remove();
+	        }
+	    });
+	}else if(frm.paidCategory.value == "계좌이체" ){
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
+	}else{
+		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
+	}
+	totalchange();
+}
+
+<%-- 현금 영수증 변환--%>
+function cashReceiptChange(){
+	var frm = document.payFrm;
+
+	if($("#tpaidprice").val() == 0){
+		$('#resultmessage').html('결제 금액이 0원입니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}else if($("#tpaidprice").val() < 0){
+		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+
+	if(frm.paidCategory.value == "현금" ){
+		$("#paidbody .hover-actions-trigger").each(function() {
+			var bgColor = $(this).css("background-color");
+	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	        	console.log($(this).find(".paidprice"));
+	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
+	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+	            if (myPopup === undefined || myPopup.closed) {
+	                myPopup = window.open(url, "_blank", windowFeatures);
+	            } else {
+	            	myPopup.focus();
+	            }
+	            document.addEventListener('click', function() {
+	                if (myPopup && !myPopup.closed) {
+	                    myPopup.focus();
+	                }
+	          	});
+	        }
+	    });
+	}else{
+		$('#resultmessage').html('현금결제가 아닙니다.<br>확인해주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+		$('.modal-footer').empty();
+		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		$('.modal-footer').append(cancelbutton);
+		$('#modalButton').click();
+		modalcheck = true;
+		return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/lecture/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+<%-- 영수증 재발행 --%>
+function reReceipt(){
+	var frm = document.payFrm;
+	var myWindow = window.open("${pageContext.request.contextPath}/lecture/ReReceipt.do?PKID="+frm.PKID.value, "MsgWindow", "width=320,height=800");
+	myWindow.print();
+}
+
+<%--//paid 의 결제 일자를 넣기 위한 현재날짜 포맷--%>
 function getCurrentDateTime() {
 	var today = new Date();
 
@@ -836,48 +1218,51 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
-//금액에 , 를 붙혀서 return 해주는 함수
+<%--//금액에 , 를 붙혀서 return 해주는 함수--%>
 function formatNumberWithCommas(amount) {
-    // Check if the input is a valid number
-    if (isNaN(amount)) {
-        return "Invalid input";
-    }
+	<%--// Check if the input is a valid number--%>
+	if (isNaN(amount)) {
+		return "Invalid input";
+	}
 
-    // Convert the number to a string
-    let amountStr = amount.toString();
+	<%--// Convert the number to a string--%>
+	let amountStr = amount.toString();
 
-    // Split the string into integer and decimal parts
-    let parts = amountStr.split('.');
+	<%--// Split the string into integer and decimal parts--%>
+	let parts = amountStr.split('.');
 
-    // Add commas to the integer part
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	<%--// Add commas to the integer part--%>
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-    // Join the integer and decimal parts back together
-    let formattedAmount = parts.join('.');
+	<%--// Join the integer and decimal parts back together--%>
+	let formattedAmount = parts.join('.');
 
-    return formattedAmount;
+	return formattedAmount;
 }
 
-//금액에 붙은 , 를 지워주는 함수
+<%--//금액에 붙은 , 를 지워주는 함수--%>
 function removeCommasFromNumber(formattedNumber) {
-    // Remove commas from the string
-    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+	<%--// Remove commas from the string--%>
+	let numberWithoutCommas = formattedNumber.replace(/,/g, '');
 
-    // Convert the string to a number
-    let numericValue = parseFloat(numberWithoutCommas);
+	<%--// Convert the string to a number--%>
+	let numericValue = parseFloat(numberWithoutCommas);
 
-    // Check if the conversion was successful
-    if (isNaN(numericValue)) {
-        return "Invalid input";
-    }
+	<%--// Check if the conversion was successful--%>
+	if (isNaN(numericValue)) {
+		return "Invalid input";
+	}
 
-    return numericValue;
+	return numericValue;
+}
+
+function roundToNearestTen(num) {
+	return Math.round(num / 10) * 10;
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/list.js/list.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>

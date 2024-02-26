@@ -68,7 +68,8 @@
 		    END AS State,
 			SaleDate, selectitem.GroupName, selectitem.SubGroupName, selectitem.WeekName, selectitem.FromTime, selectitem.ToTime,
 			selectitem.LevelName, fmsc_s01.RFromDate, fmsc_s01.RToDate, fmsc_s01.RegMonth,
-			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice, COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType ,
+			CASE WHEN fmsc_s01.State = 'F0' THEN 0 ELSE fmsc_s01.RealPrice END AS RealPrice,
+			COALESCE(fmsc_s01.Note, ' ') AS Note, fmsc_s01.InType , fmsc_s01.PaidPrice,
 			fmsc_s01.Group_SaleNo as GroupSaleNo
 		from fmsc_s01
 		left join selectitem 
@@ -140,13 +141,16 @@
 			SCC_CardNo = #{SCCCardNo},
 			Address = #{Address},
 			SubAddress = #{SubAddress},
-			<if test="IFFlag != null">
-			IF_Flag = #{IFFlag},
+			<if test="inlive != null">
+			inlive = #{inlive},
 			</if>
 			CarNo = #{CarNo},
 			YoungestBirthday = #{YoungestBirthday},
 			<if test="DCID != -1">
 			DCID = #{DCID},
+			</if>
+			<if test="piscCd != ''">
+			pisc_cd = #{piscCd},
 			</if>
 			Email = #{Email},
 			BankName = #{BankName},
@@ -194,12 +198,18 @@
 	FROM tblmember 
 	LEFT JOIN tblsite ON tblmember.SiteCode = tblsite.SiteCode
 	WHERE
-		tblmember.IsDelete = 'N' and 
-	    (#{findcategory} = '0' AND MemberID LIKE CONCAT('%', #{findvalue}, '%'))
-	    OR
-	    (#{findcategory} = '1' AND Name LIKE CONCAT('%', #{findvalue}, '%'))
-	    OR
-	    (#{findcategory} = '2' AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4))))
+		tblmember.IsDelete = 'N'
+	<choose>
+		<when test="findcategory == 0">
+		AND (Name LIKE CONCAT('%', #{findvalue}, '%') OR MemberID LIKE CONCAT('%', #{findvalue}, '%'))
+		</when>
+		<when test="findcategory == 1">
+		AND Name LIKE CONCAT('%', #{findvalue}, '%')
+		</when>
+		<when test="findcategory == 2">
+		AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4)))
+		</when>
+	</choose>
 	</select>
 	<select id="tblmemberBymemberId" resultType="egovframework.veterans.com.cmm.service.vo.tblmember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
 		select *,
@@ -224,6 +234,7 @@
         WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
         ELSE '인증안됨'
         END AS ipinNumbertext
+        ,(select CodeName from tblCode where CodeGroupID = 6 and CodeValue = tblmember.MLevel) as MlevelText
    		from tblmember
    		where
 		MemberID = #{MemberID}
@@ -438,10 +449,7 @@
 		<![CDATA[' ORDER BY CAST(ITEMCODE AS UNSIGNED) ASC'))]]>
 	</select>
 	
-	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
-	<selectKey keyProperty="SaleNo" resultType="int" order="AFTER">
-    	SELECT LAST_INSERT_ID()
-  	</selectKey>
+	<insert id="fmsc_01insert" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" useGeneratedKeys="true" keyProperty="SaleNo">
 		INSERT INTO fmsc_s01
 			(SiteCode, SaleDate, ItemPeriod, CustCode, 
 			FromDate, ToDate, RFromDate, RToDate, 
@@ -469,11 +477,13 @@
 		<choose>
 			<when test="GroupSaleNo != 0">
 				update fmsc_s01 set Group_SaleNo = #{GroupSaleNo}
-				where SaleNo = LAST_INSERT_ID()
+				<!-- where SaleNo = LAST_INSERT_ID() -->
+				where SaleNo = #{SaleNo};
 			</when>
 			<otherwise>
 				update fmsc_s01 set Group_SaleNo = SaleNo
-				where SaleNo = LAST_INSERT_ID()
+				<!-- where SaleNo = LAST_INSERT_ID() -->
+				where SaleNo = #{SaleNo};
 			</otherwise>
 		</choose>
 	</update>
@@ -492,6 +502,7 @@
 		DCPrice = #{DCPrice},
 		ItemPrice = #{ItemPrice},
 		RealPrice = #{RealPrice},
+		PaidPrice = #{PaidPrice},
 		Misu = #{Misu},
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}
@@ -502,11 +513,23 @@
 	</update>
 
 	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
-		select * from fmsc_s01  
+		select a.* ,b.DCName
+		from fmsc_s01 a
+		left join tbldc b on a.sitecode = b.sitecode and a.dcid = b.dcid  
 		where
+<<<<<<< HEAD
+			a.IsDelete  = 'N'
+		and a.Group_SaleNo = #{GroupSaleNo}
+=======
 			IsDelete  = 'N'
 		and Group_SaleNo = #{GroupSaleNo}
+>>>>>>> refs/remotes/origin/develop
 	</select>
+	
+	<select id="selectRefund" parameterType="Map" resultType="Map">
+		{call SP_SelectRefundPrice(#{SiteCode},#{GroupSaleNo},#{ReFundDate})}
+	</select>
+
 	<update id="fmsc_01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 		update fmsc_s01 set
 		SaleDate = #{SaleDate},
@@ -521,6 +544,7 @@
 		DCPrice = #{DCPrice},
 		ItemPrice = #{ItemPrice},
 		RealPrice = #{RealPrice},
+		PaidPrice = #{PaidPrice},
 		Misu = #{Misu},
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}

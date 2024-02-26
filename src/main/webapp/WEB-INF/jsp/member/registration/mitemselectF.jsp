@@ -106,6 +106,7 @@
                                 <tbody class="list" id="itemtbody">
                                 	<c:forEach items="${fmsc_s01List }" var="fmsc_s01" varStatus="status">
                                 	<c:set var="item" value="${itemList[status.index]}" />
+                                	<c:if test="${fmsc_s01.curState == 1 }">
                                 	<tr>
                                			<td class="code align-middle white-space-nowrap text-center fw-bold">
                                			${item.ItemCode}
@@ -144,6 +145,7 @@
 									    <input type="hidden" value="30" name="usenum" id="usenum">
 									    <%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>
 									</tr>
+									</c:if>
                                 	</c:forEach>
                                 </tbody>
                             </table>
@@ -465,7 +467,7 @@
 						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
@@ -476,7 +478,7 @@
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
-				<div class="row mb-1 w-100">
+				<div class="row mb-1 w-100 ms-1">
 					<div class="col w-30 px-1">
 						<button class="btn btn-phoenix-info w-100" type="button"  onclick="cashReceiptChange()">현.영발행</button>
 					</div>
@@ -579,6 +581,7 @@ function itemtbodyclick(clickedRow) {
 		type: "POST", // 또는 "POST", 서버 설정에 따라 다름
 		url: "mitemfindbyid", // 실제 엔드포인트로 교체해야 합니다
 		dataType : 'json',
+		async : false,
 		data: { 
 			ItemID: itemid,
 			FindDate: result[0]
@@ -590,6 +593,7 @@ function itemtbodyclick(clickedRow) {
 			type: "POST", // 또는 "POST", 서버 설정에 따라 다름
 			url: "tblcodelist", // 실제 엔드포인트로 교체해야 합니다
 			dataType : 'json',
+    		async : false,
 			success: function(codelist) {
 						if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
 							priceoptionlist.append($('<option>', {
@@ -698,12 +702,14 @@ function itemtbodyclick(clickedRow) {
 					error: function(xhr, status, error) {
 						console.log("Status: " + status);
 						console.log("Error: " + error);
+						return false;
 					}
 				});
 			},
 			error: function(xhr, status, error) {
 				console.log("Status: " + status);
 				console.log("Error: " + error);
+				return false;
 			}
 		});
 }
@@ -739,9 +745,10 @@ document.addEventListener('keydown', function(event) {
    	}
 });
   
-//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
+
+<%--//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수--%>
 $('#price').on('change', function() {
-    // 선택된 옵션의 값 가져오기
+	<%--// 선택된 옵션의 값 가져오기--%>
 	var selectedValue = $('#price').val();
 	var selectedprice = $('#price').find('option:selected').attr('id');
 	$('#itemtbody tr').each(function() {
@@ -753,86 +760,99 @@ $('#price').on('change', function() {
 			return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
 		}
 	});
-    //$('#itemtbody').find('.price').text(formatNumberWithCommas(selectedValue));
-    $('#learnprice').val(formatNumberWithCommas(selectedValue));
-    <%--// 숨겨진(hidden) input의 값을 선택된 값으로 변경--%>
+	$('#learnprice').val(formatNumberWithCommas(selectedprice));
+	<%--// 숨겨진(hidden) input의 값을 선택된 값으로 변경--%>
 	$('#'+clickeditemid+'pricecodechange').val(selectedValue);
-    //sortchange();
-});
-
-
-   
-//할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수
-$('#dcds').on('change', function() {
-    var selectedID = $(this).val(); // 선택된 값 가져오기
-    var selectedpercent = $(this).find('option:selected').attr('id'); // 선택된 옵션의 id 값을 가져오기
-    // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-    $('#itemtbody').find('.dccode').text(selectedID);
-    // 선택된 값으로 'dcpercent' 클래스를 가진 td에 내용을 넣어줍니다.
-    $('#itemtbody').find('.dcpercent').text(selectedpercent);
-    $('#dcper').val(selectedpercent);
-    sortchange();
 });
    
-   
+<%--//할인유형을 선택하면 그 행의 할인코드 칸을 바꾸는 함수--%>
+  	$('#dcds').on('change', function() {
+   	var selectedID = $(this).val(); // 선택된 값 가져오기
+   	var selectedpercent = $(this).find('option:selected').attr('id'); // 선택된 옵션의 id 값을 가져오기
+   	<%--// '#itemtbody' 내의 tr 요소들을 순회하며 특정 조건을 검사합니다.--%>
+   	$('#itemtbody tr').each(function() {
+   		var itemIDValue = $(this).find('input[name="ItemID"]').val();
+       	if (itemIDValue === clickeditemid) {
+           	<%--// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+           	$(this).find('.dccode').text(selectedID);
+           	<%--// 선택된 값으로 'dcpercent' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+           	$(this).find('.dcpercent').text(selectedpercent);
+
+           	$('#dcper').val(selectedpercent);
+           	sortchange(this);
+           	return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
+       	}
+   	});
+});
    
 $('#regmonth').on('change', function() {
-    // 선택된 옵션의 값 가져오기
-    var selectedValue = $('#regmonth').val();
+	<%--// 선택된 옵션의 값 가져오기--%>
+	var selectedValue = $('#regmonth').val();
+	$('#itemtbody tr').each(function() {
+		var itemIDValue = $(this).find('input[name="ItemID"]').val();
+		if (itemIDValue === clickeditemid) {
+			<%--// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+			const result = parseString($(this).find('.date').text());
 
-   	// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-   	const result = parseString($('#itemtbody').find('.date').text());
-   
-   	const formattedDate = new Date(result[0]);
-   	var monthsToAdd = parseInt(selectedValue);
-    formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
-    formattedDate.setDate(formattedDate.getDate()-1);
-    const formattedDateString = formatDate(formattedDate);
-    $('#todate').val(formattedDateString);
-   
- 	const revalue = result[0]+'~'+formattedDateString+'('+selectedValue+')';
+			const formattedDate = new Date(result[0]);
+			var monthsToAdd = parseInt(selectedValue);
+			formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
+			formattedDate.setDate(formattedDate.getDate()-1);
+			const formattedDateString = formatDate(formattedDate);
+			$('#todate').val(formattedDateString);
 
- 	$('#itemtbody').find('.date').text(revalue);
- 	sortchange();
+			const revalue = result[0]+'~'+formattedDateString+'('+selectedValue+')';
+
+			$(this).find('.date').text(revalue);
+			sortchange(this);
+			return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
+		}
+	});
 });
-   
-   
    
 $('#fromdate').on('change', function() {
-	// 선택된 옵션의 값 가져오기
+	<%--// 선택된 옵션의 값 가져오기--%>
 	var selectedValue = $('#fromdate').val();
-	
-	// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-	const result = parseString($('#itemtbody').find('.date').text());
-	   
-	const formattedDate = new Date(selectedValue);
-	var monthsToAdd = parseInt(result[2], 10);
-	formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
-	formattedDate.setDate(formattedDate.getDate()-1);
-	const formattedDateString = formatDate(formattedDate);
-	$('#todate').val(formattedDateString);
-	   
-	const revalue = selectedValue+'~'+formattedDateString+'('+result[2]+')';
-	$('#itemtbody').find('.date').text(revalue);
+	$('#itemtbody tr').each(function() {
+		var itemIDValue = $(this).find('input[name="ItemID"]').val();
+		if (itemIDValue === clickeditemid) {
+			<%--// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+			const result = parseString($(this).find('.date').text());
+
+			const formattedDate = new Date(selectedValue);
+			var monthsToAdd = parseInt(result[2], 10);
+			formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
+			formattedDate.setDate(formattedDate.getDate()-1);
+			const formattedDateString = formatDate(formattedDate);
+			$('#todate').val(formattedDateString);
+
+			const revalue = selectedValue+'~'+formattedDateString+'('+result[2]+')';
+			$(this).find('.date').text(revalue);
+			return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
+		}
+	});
 });
-   
-   
    
 $('#todate').on('change', function() {
-    // 선택된 옵션의 값 가져오기
+	<%--// 선택된 옵션의 값 가져오기--%>
 	var selectedValue = $('#todate').val();
-    // 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.
-	const result = parseString($('#itemtbody').find('.date').text());
-         
-    const revalue = result[0]+'~'+selectedValue+'('+result[2]+')';
-    $('#itemtbody').find('.date').text(revalue);
+	$('#itemtbody tr').each(function() {
+		var itemIDValue = $(this).find('input[name="ItemID"]').val();
+		if (itemIDValue === clickeditemid) {
+			<%--// 해당 행을 찾았을 때 선택된 값으로 'dccode' 클래스를 가진 td에 내용을 넣어줍니다.--%>
+			const result = parseString($(this).find('.date').text());
+
+			const revalue = result[0]+'~'+selectedValue+'('+result[2]+')';
+			$(this).find('.date').text(revalue);
+			return false; <%--// 원하는 행을 찾았으므로 each 루프를 종료합니다.--%>
+		}
+	});
 });
    
-//소계바꾸는 함수
+<%--//소계바꾸는 함수--%>
 function sortchange(selectrow){
 	var price = removeCommasFromNumber($(selectrow).find('.price').text());
 	var dcpercent = parseInt($(selectrow).find('.dcpercent').text());
-	//const regmonth = $('#regmonth').val();
 	const result = parseString($(selectrow).find('.date').text());
 	var dcprice = price*(dcpercent*0.01);
 	var afterdcprice = price-dcprice;
@@ -843,8 +863,9 @@ function sortchange(selectrow){
 	totalchange();
 }
    
-//결제 내역에 있는 총 금액 변경 함수
+<%--//결제 내역에 있는 총 금액 변경 함수--%>
 function totalchange(){
+
 	var totalprice = 0;<%--총매출금액--%>
 	var tpaidprice = 0;<%--총결제금--%>
 	var tremainprice = 0;<%--총미납금--%>
@@ -865,14 +886,14 @@ function totalchange(){
 	
 	$('#payprice').val(formatNumberWithCommas(totalprice-tpaidprice));
 }
-   
-//날짜를 테이블에서 가지고와서 잘라서 보내는 함수
+
+<%--//날짜를 테이블에서 가지고와서 잘라서 보내는 함수--%>
 function parseString(inputString) {
 	const regex = /(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})\((\d+)\)/;
 	const matches = inputString.match(regex);
 
 	if (!matches || matches.length !== 4) {
-		return null; // 입력 형식이 잘못된 경우 처리
+		return null; <%--// 입력 형식이 잘못된 경우 처리--%>
 	}
 	const startDate = matches[1];
 	const endDate = matches[2];
@@ -881,7 +902,7 @@ function parseString(inputString) {
 	return [startDate, endDate, numberOfMonths.toString()];
 }
    
-   //date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수
+<%--//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수--%>
 function formatDate(date) {
 	const yyyy = date.getFullYear();
 	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
@@ -930,6 +951,7 @@ function fmsc_01save() {
 		}
 
 		misuprice = roundToNearestTen(misuprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
+		tpaidprice = roundToNearestTen(tpaidprice*(parseInt(removeCommasFromNumber($(this).find('.sort').text()))/totalprice));
 		
 		const result = parseString($('#itemtbody').find('.date').text());
 		const yearmonth = extractYearMonth(result[0]);
@@ -953,6 +975,7 @@ function fmsc_01save() {
 	        	DCPrice : removeCommasFromNumber($(this).find('.dc').text()),
 	        	ItemPrice : removeCommasFromNumber($(this).find('.price').text()),
 	        	RealPrice : removeCommasFromNumber($(this).find('.sort').text()),
+	        	PaidPrice : tpaidprice,
 	        	Misu : misuprice
 	        },
 	        success: function(){
@@ -972,8 +995,10 @@ function fmsc_01save() {
     		$.ajax({
     	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
     	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-    	        dataType : 'text',
+    	        dataType : 'json',
+				async : false,
     	        data: { 
+    	        	SiteCode : "${loginuserinfo.siteCode}",
     	        	FPKID: GroupSaleNo,
     	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
     	        	RealSaleDate : $(this).find('.paiddate').text(),
@@ -993,13 +1018,32 @@ function fmsc_01save() {
 					TID : $(this).find('.TID').text(),
     	        },
     	        success: function(data){
-    	        	iteration++;
-    	        	if(iteration === numberOfTR){
-    	        		window.opener.location.reload();
-    	                window.close();
-    	        	}
+					console.log(Data);
+					paidPkid=Data;
     	        }
     		});
+    		
+    		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+    		
+    		if(inlineRadioOptions >= 1){
+    		    var myWindow = window.open("${pageContext.request.contextPath}/lecture/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+    		    myWindow.print();
+
+    		    setTimeout(function() { 
+    		        if(inlineRadioOptions == 2){
+    		            myWindow.print();
+    		        }
+
+    		        setTimeout(function() { 
+    		            myWindow.close(); 
+    		            window.opener.location.reload();
+    		            window.close();
+    		        }, 2000); // 두 번째 인쇄 후 잠시 대기 후 창 닫기
+    		    }, 2000); // 첫 번째 인쇄 후 잠시 대기
+    		}else{
+    			window.opener.location.reload();
+    			window.close();
+    		}
     	});
 	}else{
 		window.opener.location.reload();
@@ -1007,16 +1051,16 @@ function fmsc_01save() {
 	}
 }  
 
-//itemperiod 를 위한 날짜 포맷 함수
+<%--//itemperiod 를 위한 날짜 포맷 함수--%>
 function extractYearMonth(dateString) {
 	const [year, month] = dateString.split('-');
 	const yearMonth = year + month;
-    return yearMonth;
+	return yearMonth;
 }
   
-//현금 결제
+<%--//현금 결제--%>
 function paycash() {
-	if(removeCommasFromNumber($('#tremainprice').val()) == 0 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -1214,11 +1258,11 @@ function payAccount(){
 <%-- 영수증 재발행 --%>
 function reReceipt(){
 	var frm = document.payFrm;
-	var myWindow = window.open("${pageContext.request.contextPath}/ReReceipt.do?PKID="+frm.PKID.value, "MsgWindow", "width=320,height=800");
+	var myWindow = window.open("${pageContext.request.contextPath}/lecture/ReReceipt.do?PKID="+frm.PKID.value, "MsgWindow", "width=320,height=800");
 	myWindow.print();
 }
 
-//paid 의 결제 일자를 넣기 위한 현재날짜 포맷
+<%--//paid 의 결제 일자를 넣기 위한 현재날짜 포맷--%>
 function getCurrentDateTime() {
 	var today = new Date();
 
@@ -1232,42 +1276,42 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
-//금액에 , 를 붙혀서 return 해주는 함수
+<%--//금액에 , 를 붙혀서 return 해주는 함수--%>
 function formatNumberWithCommas(amount) {
-    // Check if the input is a valid number
-    if (isNaN(amount)) {
-        return "Invalid input";
-    }
+	<%--// Check if the input is a valid number--%>
+	if (isNaN(amount)) {
+		return "Invalid input";
+	}
 
-    // Convert the number to a string
-    let amountStr = amount.toString();
+	<%--// Convert the number to a string--%>
+	let amountStr = amount.toString();
 
-    // Split the string into integer and decimal parts
-    let parts = amountStr.split('.');
+	<%--// Split the string into integer and decimal parts--%>
+	let parts = amountStr.split('.');
 
-    // Add commas to the integer part
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	<%--// Add commas to the integer part--%>
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-    // Join the integer and decimal parts back together
-    let formattedAmount = parts.join('.');
+	<%--// Join the integer and decimal parts back together--%>
+	let formattedAmount = parts.join('.');
 
-    return formattedAmount;
+	return formattedAmount;
 }
 
-//금액에 붙은 , 를 지워주는 함수
+<%--//금액에 붙은 , 를 지워주는 함수--%>
 function removeCommasFromNumber(formattedNumber) {
-    // Remove commas from the string
-    let numberWithoutCommas = formattedNumber.replace(/,/g, '');
+	<%--// Remove commas from the string--%>
+	let numberWithoutCommas = formattedNumber.replace(/,/g, '');
 
-    // Convert the string to a number
-    let numericValue = parseFloat(numberWithoutCommas);
+	<%--// Convert the string to a number--%>
+	let numericValue = parseFloat(numberWithoutCommas);
 
-    // Check if the conversion was successful
-    if (isNaN(numericValue)) {
-        return "Invalid input";
-    }
+	<%--// Check if the conversion was successful--%>
+	if (isNaN(numericValue)) {
+		return "Invalid input";
+	}
 
-    return numericValue;
+	return numericValue;
 }
 
 function roundToNearestTen(num) {
