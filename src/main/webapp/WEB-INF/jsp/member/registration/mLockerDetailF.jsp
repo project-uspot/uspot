@@ -1223,14 +1223,22 @@ function totalchange(){
 		if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
 			CancelInsert();
 		}else if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
-			ReceiptInsert();
+			if($('#paidbody tr#new').find('.paidassignType').text() == '현금취소'){
+				CancelInsert();
+			}else{
+				ReceiptInsert();	
+			}
 		}else{
 			accountChange();
 		}
 	}else if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
 		CancelInsert();
 	}else if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
-		ReceiptInsert();
+		if($('#paidbody tr#new').find('.paidassignType').text() == '현금취소'){
+			CancelInsert();
+		}else{
+			ReceiptInsert();	
+		}
 	}else{
 		UpduseLocker();	
 	}
@@ -1407,24 +1415,36 @@ function cashReceiptChange(){
 	}
 }
 
+var prevbuttonText = '';
+$("button").click(function() {
+    var buttonText = $(this).text();
+    prevbuttonText = buttonText;
+});
+
 function ReceiptInsert() {
-	console.log($(previousRow).find('.PKID').text());
-	console.log($('#paidbody tr#new').find('.PKID').text());
-	$.ajax({
-        type: "POST", 
-        url: "ReceiptInsert", 
-        dataType : 'json',
-        data: { 
-        	PKID : $(previousRow).find('.PKID').text()
-        },
-        success: function(success) {
-        	UpduseLocker();
-        },
-        error: function(xhr, status, error) {
-       	 console.log("Status: " + status);
-         console.log("Error: " + error);
-        }
-	});
+	if(prevbuttonText == '현.영발행'){
+		$.ajax({
+	        type: "POST", 
+	        url: "ReceiptInsert", 
+	        dataType : 'json',
+	        data: { 
+	        	PKID : $(previousRow).find('.PKID').text()
+	        },
+	        success: function(success) {
+	        	UpduseLocker();
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
+	}else{
+		UpduseLocker();
+	}
+}
+
+function ReceiptCancel() {
+	alert('dd');
 }
 
 function UpduseLocker() {
@@ -1527,6 +1547,16 @@ function payCancel() {
         
         if($(previousRow).find('.paidassignType').text().indexOf('취소') !== -1){
         	$('#resultmessage').html('이미 취소된 건입니다.');
+    	  	$('.modal-footer').empty();
+    	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+    	  	$('.modal-footer').append(cancelbutton);
+    	    $('#modalButton').click();
+    	    modalcheck = true;
+    	    return false;
+        }
+        
+        if($(previousRow).find('.paidassignType').text().indexOf('환불') !== -1){
+        	$('#resultmessage').html('이미 환불된 건입니다.');
     	  	$('.modal-footer').empty();
     	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
     	  	$('.modal-footer').append(cancelbutton);
