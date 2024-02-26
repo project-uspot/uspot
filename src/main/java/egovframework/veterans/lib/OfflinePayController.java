@@ -483,6 +483,8 @@ public class OfflinePayController {
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
 						break;
 					case "사물함":
+						int recheck = Integer.parseInt(request.getParameter("recheck"));
+						returnMap.put("recheck",recheck);
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));

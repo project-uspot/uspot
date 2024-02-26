@@ -91,3 +91,14 @@ function TformatDate(date) {
 	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
 	return yyyy+'-'+mm+'-'+dd;
 }
+
+function plusDay(date,plusday){
+
+	var fromDate = new Date(date);
+
+	fromDate.setDate(fromDate.getDate() + plusday);
+
+	var toDateValue = fromDate.toISOString().slice(0, 10);
+
+	return toDateValue;
+}

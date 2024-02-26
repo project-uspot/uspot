@@ -344,7 +344,10 @@ function paid(){
 		}
 		urlParam = "zero";
 	}
-
+	var recheck = '${param.recheck}';
+	if(recheck != 1){
+		recheck = 0;
+	}
 	$.ajax({
 		type : 'POST',
 		url : '${pageContext.request.contextPath}/'+urlParam+'/paidReg',
@@ -361,6 +364,7 @@ function paid(){
 			tempSaleNo : "${param.tempSaleNo}",
 			insert : $("#InsertYN").val(),
 			InType : "${param.InType}",
+			recheck : recheck
 		},
 		success: function(data){
 			console.log(data);

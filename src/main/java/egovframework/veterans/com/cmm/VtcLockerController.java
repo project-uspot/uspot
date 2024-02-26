@@ -564,4 +564,32 @@ public class VtcLockerController{
 		
 		return "success";
 	}
+	
+	@ResponseBody
+	@PostMapping("/useLockerReInsert")
+	public int useLockerReInsert(tbluselocker tbluselocker,tblplocker tblplocker)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return 0;
+		}
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setAddUserPKID(users.getUserPKID());
+		tbluselocker.setUpdUserPKID(users.getUserPKID());
+		
+		tblplocker.setPLockerID(tbluselocker.getLockerID());
+		tblplocker.setSiteCode(users.getSiteCode());
+		tblplocker.setState(2);
+		tblplocker.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.useLockerInsert(tbluselocker);
+		
+		tblplocker.setLSaleNo(tbluselocker.getPKID());
+		
+		vtcLockerService.UpdPLocker(tblplocker);
+		
+		return tbluselocker.getPKID();
+	}
 }

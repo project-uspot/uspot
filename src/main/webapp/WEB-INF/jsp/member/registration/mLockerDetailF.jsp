@@ -403,7 +403,7 @@
 					</div>
 				</div>
 				<c:choose>
-					<c:when test="${uselocker.isFlag != 0}">
+					<c:when test="${uselocker.isFlag != 0 || uselocker.isReturn eq 'Y'}">
 						<div class="row mb-1" style="display: none;">
 					</c:when>
 					<c:otherwise>
@@ -414,7 +414,7 @@
 						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">현금 외 결제</button>
+						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">신용카드</button>
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-soft-secondary" type="button" style="width:117px;" onclick="payAccount()">계좌입금</button>
@@ -422,20 +422,20 @@
 				</div>
 				<div class="row mb-1">
 					<c:choose>
-						<c:when test="${uselocker.isFlag != 0}">
+						<c:when test="${uselocker.isFlag != 0 || uselocker.isReturn eq 'Y'}">
 							<div class="col-auto" style="display: none;">
 						</c:when>
 						<c:otherwise>
 							<div class="col-auto">
 						</c:otherwise>
 					</c:choose>
-						<button class="btn btn-soft-info" type="button" onclick="" style="width:114px;">재등록</button>
+						<button class="btn btn-soft-info" type="button" onclick="mLockerReInsertF()" style="width:114px;">재등록</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
+						<button class="btn btn-phoenix-success" type="button" onclick="reReceipt()">영수증재발행</button>
 					</div>
 					<c:choose>
-						<c:when test="${uselocker.isFlag != 0}">
+						<c:when test="${uselocker.isFlag != 0 || uselocker.isReturn eq 'Y'}">
 							<div class="col-auto" style="display: none;">
 						</c:when>
 						<c:otherwise>
@@ -450,12 +450,12 @@
 						<button class="btn btn-soft-danger" type="button" style="width:114px;" onclick="refundPrice()">환불</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-warning" type="button" onclick="payCancel()" style="width:127px;">결제취소</button>
+						<button class="btn btn-soft-warning" type="button" onclick="Cancel()" style="width:127px;">결제취소</button>
 					</div>
 						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:117px;">행삭제</button> -->
 				</div>
 				<c:choose>
-					<c:when test="${uselocker.isFlag != 0}">
+					<c:when test="${uselocker.isFlag != 0 || uselocker.isReturn eq 'Y'}">
 						<div class="col-auto ms-n2 mt-2" style="display: none;">
 					</c:when>
 					<c:otherwise>
@@ -1290,6 +1290,7 @@ function CancelInsert() {
                 },
                 success: function(success) {
              		window.opener.location.reload();
+             		window.location.reload();
                 },
                 error: function(xhr, status, error) {
                 	console.log("Status: " + status);
@@ -1525,6 +1526,17 @@ function deleteRow() {
         PLockerPriceChange();
         PLockerDepositeChange();
     }
+}
+
+function Cancel() {
+	$('#resultmessage').html('결제 취소하시겠습니까?');
+  	$('.modal-footer').empty();
+  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="payCancel()">예</button>';
+  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">아니오</button>';
+  	$('.modal-footer').append(okaybutton);
+  	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
 }
 
 function payCancel() {
@@ -1990,6 +2002,17 @@ function refundCredit() {
             myPopup.focus();
         }
   	});
+}
+
+function mLockerReInsertF() {
+	location.href = 'mLockerReInsertF.do?MemberID='+$('#memberid').val()+'&PLockerID='+$('#DBPLockerID').val()+'&PKID='+$('#DBPKID').val();
+}
+
+<%-- 영수증 재발행 --%>
+function reReceipt(){
+	var PKID = $(previousRow).find('.PKID').text();
+	var myWindow = window.open("${pageContext.request.contextPath}/locker/ReReceipt.do?PKID="+PKID, "MsgWindow", "width=320,height=800");
+	myWindow.print();
 }
 </script>
 </html>
