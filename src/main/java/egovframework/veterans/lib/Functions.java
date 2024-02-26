@@ -419,9 +419,18 @@ public class Functions {
 	}
 	
 	//가능한 인코딩 리스트
-	private static final List<String> POSSIBLE_ENCODINGS = Arrays.asList("UTF-8", "EUC-KR", "ISO-8859-1", "windows-1252");
+	private static final List<String> POSSIBLE_ENCODINGS = Arrays.asList("ISO-8859-1", "UTF-8", "EUC-KR", "windows-1252");
 
     public static String fixEncoding(String brokenString) {
+    	try {
+    		byte[] bytes = brokenString.getBytes("ISO-8859-1");
+    		String fixedString = new String(bytes, "UTF-8");
+    		if(fixedString.matches(".*[가-힣]+.*")) {
+    			return fixedString;
+    		}
+    	}catch (Exception e) {
+    		
+    	}
         for (String encoding : POSSIBLE_ENCODINGS) {
             try {
                 // 깨진 문자열을 바이트 배열로 변환
@@ -445,12 +454,13 @@ public class Functions {
                 // 초기 바이트 변환 실패 시 다음 인코딩 시도
             }
         }
-        return null; // 적절한 변환을 찾지 못함
+        return brokenString; // 적절한 변환을 찾지 못함
     }
 
     // 문자열이 유효한 한글을 포함하고 있는지 간단한 검증
     // 이 함수는 더 정교한 검증 로직으로 대체될 수 있습니다.
     private static boolean isLikelyValidKorean(String text) {
-        return text.matches(".*[가-힣]+.*");
+        //return text.matches(".*[가-힣]+.*");
+    	return text.matches("^[가-힣A-Za-z0-9\\s\\-\\_\\.\\(\\)]{1,100}$");
     }
 }

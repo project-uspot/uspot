@@ -375,7 +375,7 @@
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
 					<div class="col w-30 px-1">
-						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">신용카드</button>
 					</div>
 					<div class="col w-30 px-1">
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>

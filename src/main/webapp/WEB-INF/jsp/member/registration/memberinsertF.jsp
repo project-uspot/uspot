@@ -17,7 +17,7 @@
 </head>
 <body>
         <div class="mb-9">
-        <form action="memberinsertP" method="get" accept-charset="UTF-8" id="myForm">
+        <form action="memberinsertP" method="POST" accept-charset="UTF-8" id="myForm">
 			<div class="row align-items-center justify-content-between g-3 mb-4">
 				<div class="col-auto">
 					<h2 class="mb-0">회원등록관리</h2>

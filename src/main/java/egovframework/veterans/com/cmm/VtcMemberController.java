@@ -145,7 +145,7 @@ public class VtcMemberController {
 	}
 
 	// TODO 회원등록관리 회원수정 프로세스
-	@GetMapping(value = "membershipUpdate")
+	@PostMapping(value = "membershipUpdate", produces = "text/plain;charset=UTF-8" )
 	public String membershipUpdate(Model model, tblmember updatetblmember, DC dc,
 			@RequestParam(name = "emgPhonecheck", required = false) String emgPhonecheck,
 			@RequestParam(name = "inliveCheck", required = false) String inliveCheck,
@@ -165,7 +165,11 @@ public class VtcMemberController {
 			}
 
 			updatetblmember.setUpdUserPKID(users.getUserPKID());
-			//updatetblmember.setName(f.fixEncoding(updatetblmember.getName()));
+			updatetblmember.setName(f.fixEncoding(updatetblmember.getName()));
+			updatetblmember.setAddress(f.fixEncoding(updatetblmember.getAddress()));
+			updatetblmember.setSubAddress(f.fixEncoding(updatetblmember.getSubAddress()));
+			updatetblmember.setCarNo(f.fixEncoding(updatetblmember.getCarNo()));
+			updatetblmember.setNote(f.fixEncoding(updatetblmember.getNote()));
 
 			vtcMemberService.updatemember(updatetblmember);
 
@@ -390,7 +394,12 @@ public class VtcMemberController {
 
 			return "redirect:login.do";
 		}
-
+		tblmember.setName(f.fixEncoding(tblmember.getName()));
+		tblmember.setAddress(f.fixEncoding(tblmember.getAddress()));
+		tblmember.setSubAddress(f.fixEncoding(tblmember.getSubAddress()));
+		tblmember.setCarNo(f.fixEncoding(tblmember.getCarNo()));
+		tblmember.setNote(f.fixEncoding(tblmember.getNote()));
+		
 		if (tblmember.getName().length() < 2) {
 
 			model.addAttribute("script", "back");
