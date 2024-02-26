@@ -65,7 +65,9 @@ public interface VtcMemberService {
 	void fmsc_01insert_save(fmsc_s01 fmsc_s01)throws Exception;
 
 	List<fmsc_s01> fmsc_s01bysaleno(fmsc_s01 fmsc_s01)throws Exception;
-	
+
+	List<Map<String, Object>> selectRefund(Map<String, Object> setSql) throws Exception;
+
 	void fmsc_01update(fmsc_s01 fmsc_s01)throws Exception;
 	
 	void oldfmsc_s01update(fmsc_s01 fmsc_s01)throws Exception;
@@ -95,4 +97,5 @@ public interface VtcMemberService {
 	void insertFmsc_s01_insert_temp(Map<String, Object> list) throws Exception;
 
 	void fmsc_01insertTemp_delete(Map<String, Object> setSql);
+
 }

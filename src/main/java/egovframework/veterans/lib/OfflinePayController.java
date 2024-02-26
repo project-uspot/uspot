@@ -491,7 +491,7 @@ public class OfflinePayController {
 					default:
 						break;
 					}
-					
+
 					returnMap = OfflinePayService.insertPaid(returnMap);
 					//영수증 저장
 					switch (saleType) {

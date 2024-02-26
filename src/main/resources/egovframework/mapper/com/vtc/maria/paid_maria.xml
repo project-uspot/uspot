@@ -459,7 +459,7 @@
 		, 0
 		, 'N'
 		, date_format(NOW(), '%Y-%m-%d %T' )
-		, #{userPKID}
+		, #{addUserPKID}
 		from dual
 		where not EXISTS (
 			select 1 

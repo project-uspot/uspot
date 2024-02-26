@@ -106,6 +106,7 @@
                                 <tbody class="list" id="itemtbody">
                                 	<c:forEach items="${fmsc_s01List }" var="fmsc_s01" varStatus="status">
                                 	<c:set var="item" value="${itemList[status.index]}" />
+                                	<c:if test="${fmsc_s01.curState == 1 }">
                                 	<tr>
                                			<td class="code align-middle white-space-nowrap text-center fw-bold">
                                			${item.ItemCode}
@@ -144,6 +145,7 @@
 									    <input type="hidden" value="30" name="usenum" id="usenum">
 									    <%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>
 									</tr>
+									</c:if>
                                 	</c:forEach>
                                 </tbody>
                             </table>
@@ -448,6 +450,7 @@
 									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
 									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
 									    <td class="paidPKID py-2 align-middle white-space-nowrap" style="display:none;">${paid.PKID}</td>
+									    <td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none;">${paid.saleTime}</td>
 									</tr>
 								</c:forEach>
                         	</tbody>
@@ -995,6 +998,7 @@ function fmsc_01save() {
     	        dataType : 'json',
 				async : false,
     	        data: { 
+    	        	SiteCode : "${loginuserinfo.siteCode}",
     	        	FPKID: GroupSaleNo,
     	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
     	        	RealSaleDate : $(this).find('.paiddate').text(),

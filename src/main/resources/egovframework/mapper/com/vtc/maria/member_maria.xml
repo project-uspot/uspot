@@ -198,12 +198,18 @@
 	FROM tblmember 
 	LEFT JOIN tblsite ON tblmember.SiteCode = tblsite.SiteCode
 	WHERE
-		tblmember.IsDelete = 'N' and 
-	    (#{findcategory} = '0' AND MemberID LIKE CONCAT('%', #{findvalue}, '%'))
-	    OR
-	    (#{findcategory} = '1' AND Name LIKE CONCAT('%', #{findvalue}, '%'))
-	    OR
-	    (#{findcategory} = '2' AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4))))
+		tblmember.IsDelete = 'N'
+	<choose>
+		<when test="findcategory == 0">
+		AND (Name LIKE CONCAT('%', #{findvalue}, '%') OR MemberID LIKE CONCAT('%', #{findvalue}, '%'))
+		</when>
+		<when test="findcategory == 1">
+		AND Name LIKE CONCAT('%', #{findvalue}, '%')
+		</when>
+		<when test="findcategory == 2">
+		AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4)))
+		</when>
+	</choose>
 	</select>
 	<select id="tblmemberBymemberId" resultType="egovframework.veterans.com.cmm.service.vo.tblmember" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember">
 		select *,
@@ -228,6 +234,7 @@
         WHEN Parents_Ipin_Number IS NOT NULL AND Parents_Ipin_Number != ' ' THEN '인증'
         ELSE '인증안됨'
         END AS ipinNumbertext
+        ,(select CodeName from tblCode where CodeGroupID = 6 and CodeValue = tblmember.MLevel) as MlevelText
    		from tblmember
    		where
 		MemberID = #{MemberID}
@@ -506,11 +513,18 @@
 	</update>
 
 	<select id="fmsc_s01bysaleno" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01" resultType="egovframework.veterans.com.cmm.service.vo.fmsc_s01"> 
-		select * from fmsc_s01  
+		select a.* ,b.DCName
+		from fmsc_s01 a
+		left join tbldc b on a.sitecode = b.sitecode and a.dcid = b.dcid  
 		where
-			IsDelete  = 'N'
-		and Group_SaleNo = #{GroupSaleNo}
+			a.IsDelete  = 'N'
+		and a.Group_SaleNo = #{GroupSaleNo}
 	</select>
+	
+	<select id="selectRefund" parameterType="Map" resultType="Map">
+		{call SP_SelectRefundPrice(#{SiteCode},#{GroupSaleNo},#{ReFundDate})}
+	</select>
+
 	<update id="fmsc_01update" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
 		update fmsc_s01 set
 		SaleDate = #{SaleDate},

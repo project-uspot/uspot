@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -947,8 +948,7 @@ public class VtcMemberController {
 	
 	// TODO 회원등록관리 강좌 반변경 페이지
 	@GetMapping("/mitemchangeF.do")
-	public String mitemchangeF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
-								@RequestParam(name = "itemname")String itemname)throws Exception {
+	public String mitemchangeF(fmsc_s01 fmsc_s01,TblItem_02 tblItem_02,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model)throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if (users == null) {
 			model.addAttribute("msg", "로그아웃 되었습니다.");
@@ -957,13 +957,27 @@ public class VtcMemberController {
 		}
 		
 		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+
+		tblItem_02.setSiteCode(result.get(0).getSiteCode());
+		tblItem_02.setFindDate(result.get(0).getFromDate());
+
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
-		for(fmsc_s01 fmsc: result) {
-			tblmember.setMemberID(fmsc.getCustCode());
-			tblpaid.setPaidGroupSaleNo(fmsc.getGroupSaleNo());
-			model.addAttribute("fmsc_s01", fmsc);
+		tblmember.setMemberID(result.get(0).getCustCode());
+		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
+		/*
+		 * int cntFmsc = 0; for(fmsc_s01 fmsc: result) { if(fmsc_s01.getSaleNo() ==
+		 * fmsc.getSaleNo()) { tblmember.setMemberID(fmsc.getCustCode());
+		 * tblpaid.setPaidGroupSaleNo(fmsc.getGroupSaleNo());
+		 * model.addAttribute("fmsc_s01", fmsc); } cntFmsc++; }
+		 * model.addAttribute("cntFmsc", cntFmsc);
+		 */
+		List<Map<String,Object>> itemList = new ArrayList<Map<String,Object>>();
+		for(fmsc_s01 fmsc : result) {
+			tblItem_02.setItemID(fmsc.getItemPKID()+"");
+			Map<String, Object>item = vtcMemberService.mitemfindbyid(tblItem_02);
+			itemList.add(item);
 		}
 
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
@@ -980,7 +994,7 @@ public class VtcMemberController {
 				mleveltext = tblCode2.getCodeName();
 			}
 		}
-		
+
 		for(DC dc2 : dcList) {
 			if(String.valueOf(dc2.getPiscCD()).equals(member.getPiscCd()) ) {
 				dcname = dc2.getDcName();
@@ -997,8 +1011,10 @@ public class VtcMemberController {
 		model.addAttribute("dcname",dcname);
 		model.addAttribute("dcid",dcid);
 		model.addAttribute("dclist",dcList);
-		model.addAttribute("itemname",URLDecoder.decode(itemname, "UTF-8"));
+		//model.addAttribute("itemname",URLDecoder.decode(itemname, "UTF-8"));
 		
+		model.addAttribute("itemList",itemList);
+		model.addAttribute("fmsc_s01List", result);
 		model.addAttribute("paidlist",paidlist);
 		model.addAttribute("yearage",yearage);
 		
@@ -1051,37 +1067,54 @@ public class VtcMemberController {
 		return fmsc_s01.getSaleNo();
 	}
 	
+	// TODO 회원등록관리 강습 환불페이지
 	@GetMapping("/mitemrefundF.do")
-	public String mitemrefundF(fmsc_s01 fmsc_s01,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model,
-								@RequestParam(name = "itemname")String itemname)throws Exception {
+	public String mitemrefundF(fmsc_s01 fmsc_s01,TblItem_02 tblItem_02,tblmember tblmember,tblCode tblCode,DC dc,tblpaid tblpaid,Model model)throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 		
 		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
+
+		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
+		List<tblpaid> paidList = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
+
+		tblItem_02.setSiteCode(result.get(0).getSiteCode());
+		tblItem_02.setFindDate(result.get(0).getFromDate());
+		List<Map<String,Object>> itemList = new ArrayList<Map<String,Object>>();
+		for(fmsc_s01 fmsc : result) {
+			tblItem_02.setItemID(fmsc.getItemPKID()+"");
+			Map<String, Object>item = vtcMemberService.mitemfindbyid(tblItem_02);
+			itemList.add(item);
+		}
+
+		tblmember.setMemberID(result.get(0).getCustCode());
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
-		dc.setSiteCode(users.getSiteCode());
-		tblmember.setMemberID(result.get(0).getCustCode());
-		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
-		
-		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+
+		dc.setSiteCode(users.getSiteCode());
 		List<DC> dcList = vtcDCService.dclist(dc);
 		
-		String mleveltext = "";
-		String dcname = "";
+		Map<String,Object> setSql = new HashMap<String,Object>();
+		setSql.put("SiteCode",result.get(0).getSiteCode());
+		setSql.put("GroupSaleNo",result.get(0).getGroupSaleNo());
+		setSql.put("ReFundDate",f.formatDate(new Date(), "yMd"));
+		List<Map<String,Object>> refundList = vtcMemberService.selectRefund(setSql);
+		//String mleveltext = "";
+		//String dcname = "";
+		//int dcid = 0;
 		
-		for(tblCode tblCode2 : codelist) {
-			if(tblCode2.getPkid() == member.getMLevel()) {
-				mleveltext = tblCode2.getCodeName();
-			}
-		}
-		
-		for(DC dc2 : dcList) {
-			if(String.valueOf(dc2.getDcid()).equals(member.getDCDS()) ) {
-				dcname = dc2.getDcName();
-			}
-		}
-		
+		/*
+		 * for(tblCode tblCode2 : codelist) { if(tblCode2.getPkid() ==
+		 * member.getMLevel()) { mleveltext = tblCode2.getCodeName(); } }
+		 */
+
 		tblCode.setCodeGroupID("22");
 		List<tblCode> gongjelist = vtcService.listTblCode(tblCode);
 		
@@ -1092,14 +1125,18 @@ public class VtcMemberController {
 		List<tblCode> julsaklist = vtcService.listTblCode(tblCode);
         
 		model.addAttribute("member",member);
-		model.addAttribute("mleveltext",mleveltext);
-		model.addAttribute("dcname",dcname);
+		//model.addAttribute("mleveltext",mleveltext);
+		//model.addAttribute("dcname",dcname);
+		//model.addAttribute("dcid",dcid);
 		model.addAttribute("dclist",dcList);
-		model.addAttribute("itemname",itemname);
-		model.addAttribute("fmsc_s01", result);
-		model.addAttribute("paidlist",vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid));
-		model.addAttribute("itemmonth",vtcItemService.itemmonthbyitemid(result.get(0).getItemPKID()));
-		model.addAttribute("duescheck",vtcMemberService.finddues(users.getSiteCode()));
+		/* model.addAttribute("itemname",itemname); */
+		model.addAttribute("itemList",itemList);
+		model.addAttribute("fmsc_s01List", result);
+		model.addAttribute("refundList", refundList);
+		
+		model.addAttribute("paidlist",paidList);
+		//model.addAttribute("itemmonth",vtcItemService.itemmonthbyitemid(result.get(0).getItemPKID()));
+		model.addAttribute("duescheck",vtcMemberService.finddues(users.getSiteCode()));// 환불옵션
 		model.addAttribute("gongjelist",gongjelist);
 		model.addAttribute("wiyaklist",wiyaklist);
 		model.addAttribute("julsaklist",julsaklist);

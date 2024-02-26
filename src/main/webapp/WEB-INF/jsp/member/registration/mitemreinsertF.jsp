@@ -1050,6 +1050,7 @@ function fmsc_01save() {
 			dataType : 'json',
 			async : false,
 	        data: { 
+	        	SiteCode : "${loginuserinfo.siteCode}",
 	        	SaleDate : $('#saledate').val(),
 	        	ItemPeriod : yearmonth,
 	        	CustCode : $('#memberid').val(),
@@ -1099,7 +1100,7 @@ function fmsc_01save() {
 				dataType : 'json',
 				async : false,
 				data: { 
-					SiteCode : "",
+					SiteCode : "${loginuserinfo.siteCode}",
 					FPKID: GroupNo,
 					SaleDate : paiddate.substr(0,10),
 					RealSaleDate : paiddate,

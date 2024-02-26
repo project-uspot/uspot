@@ -37,6 +37,7 @@ public class fmsc_s01{
 
 	private int DCID;
 
+	private String DCName;
 
 	private int DiscountRate;
 

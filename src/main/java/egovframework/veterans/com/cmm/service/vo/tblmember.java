@@ -195,4 +195,6 @@ public class tblmember {
 	private String IFFlagText;
 	
 	private String ipinNumbertext;
+	
+	private String MlevelText;
 }

@@ -124,6 +124,10 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 		return selectList("member.fmsc_s01bysaleno",fmsc_s01);
 	}
 	
+	public List<Map<String,Object>> selectRefund(Map<String, Object> setSql)throws Exception{
+		return selectList("member.selectRefund",setSql);
+	}
+	
 	public void fmsc_01update(fmsc_s01 fmsc_s01)throws Exception{
 		update("member.fmsc_01update",fmsc_s01);
 	}

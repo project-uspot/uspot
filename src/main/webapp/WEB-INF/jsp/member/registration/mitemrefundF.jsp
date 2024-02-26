@@ -87,6 +87,123 @@
 	                    	</div>
                         </div>
                     </div>
+                    <div class="border-top border-bottom border-200" id="customerOrdersTable" style="height: 150px;overflow-y: scroll;"
+						data-list='{"valueNames":["code","category","item","name","day","time","level","member","teacher","date","price","dc","sort","dccode","dcpercent","max","enter","remain"],"page":6,"pagination":true}'>
+						<div class="table-responsive scrollbar">
+							<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+								<thead>
+									<tr>
+										<th class="sort align-middle" scope="col" data-sort="code">코드</th>
+										<th class="sort align-middle" scope="col" data-sort="category">구분</th>
+										<th class="sort align-middle" scope="col" data-sort="item">종목</th>
+										<th class="sort align-middle" scope="col" data-sort="name">강습반명</th>
+										<th class="sort align-middle" scope="col" data-sort="day">요일</th>
+										<th class="sort align-middle" scope="col" data-sort="time">시간</th>
+										<th class="sort align-middle" scope="col" data-sort="level">단계</th>
+										<th class="sort align-middle" scope="col" data-sort="member">대상</th>
+										<th class="sort align-middle" scope="col" data-sort="teacher">강사</th>
+										<th class="sort align-middle" scope="col" data-sort="date">수강기간</th>
+										<th class="sort align-middle" scope="col" data-sort="price">회비</th>
+										<th class="sort align-middle" scope="col" data-sort="dc">할인</th>
+										<th class="sort align-middle" scope="col" data-sort="sort">소계</th>
+										<th class="sort align-middle" scope="col" data-sort="dccode">할인코드</th>
+										<th class="sort align-middle" scope="col" data-sort="dcpercent">할인율</th>
+										<th class="sort align-middle" scope="col" data-sort="max">정원</th>
+										<th class="sort align-middle" scope="col" data-sort="enter">등록</th>
+										<th class="sort align-middle" scope="col" data-sort="remain">잔여</th>
+									</tr>
+								</thead>
+								<tbody class="list" id="itemtbody">
+									<c:forEach items="${fmsc_s01List }" var="fmsc_s01" varStatus="status">
+										<c:set var="item" value="${itemList[status.index]}" />
+										<c:if test="${fmsc_s01.curState == 1 }">
+										<tr>
+											<td class="code align-middle white-space-nowrap text-center fw-bold">
+												${item.ItemCode}
+												<input type="hidden" id="ItemID" name="ItemID" value="${item.ItemID}">
+												<input type="hidden" id="SaleNo" name="SaleNo" value="${fmsc_s01.saleNo}">
+												<input type="hidden" id="GroupSaleNo" name="GroupSaleNo" value="${fmsc_s01.groupSaleNo}">
+												<input type="hidden" id="InType" name="InType" value="${fmsc_s01.inType}">
+											</td>
+											<td class="category align-middle white-space-nowrap text-center">
+												<c:choose>
+													<c:when test="${item.Type eq 'G'}">
+														일반
+													</c:when>
+													<c:when test="${item.Type eq 'S'}">
+														특강
+													</c:when>
+												</c:choose>
+											</td>
+											<td class="item align-middle white-space-nowrap text-start fw-bold text-700">${item.CategoryName}</td>
+											<td class="name align-middle white-space-nowrap text-900 fs--1 text-start">${item.JungName}</td>
+											<td class="day align-middle white-space-nowrap text-center">${item.DayName}</td>
+											<td class="time align-middle white-space-nowrap text-start">${item.FromTime}</td>
+											<td class="level align-middle white-space-nowrap text-start">${item.LevelName}</td>
+											<td class="member align-middle white-space-nowrap text-start">${item.DaesangName}</td>
+											<td class="teacher align-middle white-space-nowrap text-start">${item.SawonName}</td>
+											<td class="date py-2 align-middle white-space-nowrap">${fmsc_s01.fromDate}~${fmsc_s01.toDate}(${fmsc_s01.regMonth})</td>
+											<td class="price py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/></td>
+											<td class="dc py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/></td>
+											<td class="sort py-2 align-middle white-space-nowrap text-end"><fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/></td>
+											<td class="dccode py-2 align-middle white-space-nowrap">${fmsc_s01.DCID}</td>
+											<td class="dcpercent py-2 align-middle white-space-nowrap">${fmsc_s01.discountRate}</td>
+											<td class="max py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax}</td>
+											<td class="enter py-2 align-middle white-space-nowrap">${item.RegCnt + item.RegCnt2 + list.RegCnt3}</td>
+											<td class="remain py-2 align-middle white-space-nowrap">${item.OffMax + item.OnMax - (item.RegCnt + item.RegCnt2 + list.RegCnt3)}</td>
+											<td class="paidPrice py-2 align-middle white-space-nowrap text-end" style="display:none;"><fmt:formatNumber value="${fmsc_s01.paidPrice}" pattern="#,###"/></td>
+											<td class="dcname py-2 align-middle white-space-nowrap text-end" style="display:none;">${fmsc_s01.DCName}</td>
+											<td class="itemMonth py-2 align-middle white-space-nowrap text-end" style="display:none;">${item.itemmonth}</td>
+											<input type="hidden" value="30" name="totalnum" id="totalnum">
+											<input type="hidden" value="30" name="usenum" id="usenum">
+											<input type="hidden" value="${fmsc_s01.saleDate }" name="SaleDate" id="SaleDate">
+											<%-- <input type="hidden" value="${fmsc_s01.SawonNo }" name="EmpCode" id="EmpCode"> --%>
+										</tr>
+										</c:if>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="border-top border-bottom border-200" id="customerOrdersTable" style="height: 150px;overflow-y: scroll;"
+						data-list='{"valueNames":["code","category","item","name","day","time","level","member","teacher","date","price","dc","sort","dccode","dcpercent","max","enter","remain"],"page":6,"pagination":true}'>
+						<div class="table-responsive scrollbar">
+							<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+								<thead>
+									<tr>
+										<th class="sort align-middle" scope="col" data-sort="item">종목</th>
+										<th class="sort align-middle" scope="col" data-sort="name">강습반명</th>
+										<th class="sort align-middle" scope="col" data-sort="day">요일</th>
+										<th class="sort align-middle" scope="col" data-sort="time">시간</th>
+										<th class="sort align-middle" scope="col" data-sort="level">단계</th>
+										<th class="sort align-middle" scope="col" data-sort="totalCnt">총일수</th>
+										<th class="sort align-middle" scope="col" data-sort="useCnt">사용일수</th>
+										<th class="sort align-middle" scope="col" data-sort="wiyakPrice">위약금</th>
+										<th class="sort align-middle" scope="col" data-sort="usePrice">사용금액</th>
+										<th class="sort align-middle" scope="col" data-sort="gongjePrice">공제합계</th>
+										<th class="sort align-middle" scope="col" data-sort="returnPrice">반환금액</th>
+									</tr>
+								</thead>
+								<tbody class="list" id="refundtbody">
+								<c:forEach items="${refundList }" var="refund">
+								<tr class="${refund.SaleNo }">
+									<td class="item align-middle white-space-nowrap fw-bold text-700 text-center">${refund.CategoryName}</td>
+									<td class="name align-middle white-space-nowrap text-900 fs--1 text-center">${refund.JungName}</td>
+									<td class="day align-middle white-space-nowrap text-center">${refund.DayName}</td>
+									<td class="time align-middle white-space-nowrap text-center">${refund.FromTime}</td>
+									<td class="level align-middle white-space-nowrap text-center">${refund.LevelName}</td>
+									<td class="totalCnt align-middle white-space-nowrap text-center">${refund.totalCnt}</td>
+									<td class="useCnt align-middle white-space-nowrap text-center">${refund.dayCnt}</td>
+									<td class="wiyakPrice align-middle white-space-nowrap text-end"><fmt:formatNumber value="${refund.WiyakPrice}" pattern="#,###"/></td>
+									<td class="usePrice align-middle white-space-nowrap text-end"><fmt:formatNumber value="${refund.UsePrice}" pattern="#,###"/></td>
+									<td class="gongjePrice align-middle white-space-nowrap text-end"><fmt:formatNumber value="${refund.GongjePrice}" pattern="#,###"/></td>
+									<td class="returnPrice align-middle white-space-nowrap text-end"><fmt:formatNumber value="${refund.RefundPrice}" pattern="#,###"/></td>
+								</tr>
+								</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
                 </div>
             </div>
         </div>
@@ -138,14 +255,14 @@
 	            <div class="col-md-10">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">강습반</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemname" name="olditemname" value="${itemname}" readonly="readonly"/>
-						<input type="hidden" id="saleno" name="saleno" value="${fmsc_s01.saleNo}">
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="olditemname" name="olditemname" value="<%-- ${itemname} --%>" readonly="readonly"/>
+						<input type="hidden" id="saleno" name="saleno" value="<%-- ${fmsc_s01.saleNo} --%>">
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">등록일자</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="saledate" name="saledate" value="${fmsc_s01.saleDate}" readonly="readonly"/>
+						<input class="form-control" type="text" aria-describedby="basic-addon1" id="saledate" name="saledate" value="<%-- ${fmsc_s01.saleDate} --%>" readonly="readonly"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -153,7 +270,7 @@
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">강습기간</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 110px;" value="${fmsc_s01.fromDate}" readonly="readonly"/>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 110px;" value="<%-- ${fmsc_s01.fromDate} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto mt-1 mx-n4">
@@ -161,12 +278,12 @@
 						</div>
 						<div class="col-auto ms-n1">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="todate" name="todate" style="width: 115px;" value="${fmsc_s01.toDate}" readonly="readonly"/>
+								<input class="form-control" type="text" id="todate" name="todate" style="width: 115px;" value="<%-- ${fmsc_s01.toDate} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n3">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="regmonth" name="regmonth" style="width: 50px;" value="${fmsc_s01.regMonth}" readonly="readonly"/>
+								<input class="form-control" type="text" id="regmonth" name="regmonth" style="width: 50px;" value="<%-- ${fmsc_s01.regMonth} --%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="col-auto ms-n2 mt-2">
@@ -178,7 +295,7 @@
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">A.강습료</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="itemprice" name="itemprice" 
-						value="<fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						value="<%-- <fmt:formatNumber value="${fmsc_s01.itemPrice}" pattern="#,###"/> --%>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-auto">
@@ -186,21 +303,13 @@
 						<div class="col-md-5">
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1">B.할인</span>
-								<input class="form-control" type="text"  id="dcprice" name="dcprice" value="<fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/>"  
+								<input class="form-control" type="text"  id="dcprice" name="dcprice" value="<%-- <fmt:formatNumber value="${fmsc_s01.DCPrice}" pattern="#,###"/> --%>"  
 								readonly="readonly" style="text-align: right;"/>
 							</div>
 						</div>
-						<c:set var="dcname"></c:set>
-						<c:set var="dcid" value="0"></c:set>
-						<c:forEach var="dc" items="${dclist}">
-	                        <c:if test="${dc.dcid == fmsc_s01.DCID}">
-	                            <c:set var="dcname" value="${dc.dcName}"></c:set>
-	                            <c:set var="dcid" value="${dc.dcid}"></c:set>
-	                        </c:if>
-						</c:forEach>
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
-								<input class="form-control" type="text" id="olddcname" name="${dcid}" value="${dcname}" readonly="readonly"/>
+								<input class="form-control" type="text" id="olddcname" name="<%-- ${dcid} --%>" value="<%-- ${dcname} --%>" readonly="readonly"/>
 							</div>
 						</div>
 					</div>
@@ -209,7 +318,7 @@
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" id="basic-addon1">C.판매금액</span>
 						<input class="form-control" type="text" aria-describedby="basic-addon1" id="realprice" name="realprice"
-						 value="<fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/>" readonly="readonly" style="text-align: right;"/>
+						 value="<%-- <fmt:formatNumber value="${fmsc_s01.realPrice}" pattern="#,###"/> --%>" readonly="readonly" style="text-align: right;"/>
 					</div>
 				</div>
 				<div class="col-md-5">
@@ -223,7 +332,7 @@
 						<div class="col-md-5">
 							<div class="input-group input-group-sm" style="width: 193px;">
 								<span class="input-group-text" id="basic-addon1">E.기본개월</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="itemmonth" name="itemmonth" readonly="readonly" value="${itemmonth}" style="text-align: center;"/>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="itemmonth" name="itemmonth" readonly="readonly" value="<%-- ${itemmonth} --%>" style="text-align: center;"/>
 							</div>
 						</div>
 						<div class="col-auto">
@@ -237,21 +346,11 @@
 													<div class="col-auto ms-n3">
 														<div class="input-group input-group-sm" style="width: 232px;">
 															<div class="form-check form-check-inline" aria-describedby="basic-addon1">
-																<c:if test="${duescheck == 1}">
-																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="0" aria-describedby="basic-addon1"/>
-																</c:if>
-																<c:if test="${duescheck == 0}">
-																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="0" aria-describedby="basic-addon1" checked="checked"/>
-																</c:if>
+																<input class="form-check-input" id="dues1" type="radio" name="dues" value="0" aria-describedby="basic-addon1" <c:if test="${duescheck == 0}">checked="checked"</c:if> />
 																<label class="form-check-label" for="dues1">납입회비</label>
 															</div>
 															<div class="form-check form-check-inline ms-n3" aria-describedby="basic-addon1">
-																<c:if test="${duescheck == 0}">
-																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="1" aria-describedby="basic-addon1"/>
-																</c:if>
-																<c:if test="${duescheck == 1}">
-																	<input class="form-check-input" id="dues1" type="radio" name="dues" value="1" aria-describedby="basic-addon1" checked="checked"/>
-																</c:if>
+																<input class="form-check-input" id="dues1" type="radio" name="dues" value="1" aria-describedby="basic-addon1" <c:if test="${duescheck == 1}">checked="checked"</c:if>/>
 																<label class="form-check-label" for="dues1">표준회비</label>
 															</div>
 														</div>
@@ -310,7 +409,7 @@
 	        </div>
 	    </div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 562px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 490px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 425px;">
 	        	<div class="row">
 	        		<div class="col-auto">
 						<div class="input-group input-group-sm">
@@ -348,17 +447,9 @@
 								<span class="input-group-text" id="basic-addon1" style="width: 122px;">1_1.전월할인</span>
 								<c:set var="dcrate"></c:set>
 								<select class="form-select" id="prevdc" name="prevdc" style="width: 152px; text-align: right;" disabled="disabled">
-									<option selected="selected" id="0" value="0"></option>
+									<option id="0" value="0"></option>
 									<c:forEach var="dc" items="${dclist}">
-										<c:choose>
-											<c:when test="${dc.dcid == dcid}">
-												<option id="${dc.rate}" value="${dc.dcid}" selected="selected">${dc.dcName}</option>
-												<c:set var="dcrate" value="${dc.rate}"></c:set>
-											</c:when>
-											<c:otherwise>
-												<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
-											</c:otherwise>
-										</c:choose>
+										<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
                                 	</c:forEach>
 								</select>
 							</div>
@@ -400,16 +491,9 @@
 							<div class="input-group input-group-sm">
 								<span class="input-group-text" id="basic-addon1" style="width: 122px;">2_1.(당월)할인</span>
 								<select class="form-select" id="currentdc" name="currentdc" style="width: 152px; text-align: right;" disabled="disabled">
-									<option selected="selected" id="0" value="0"></option>
+									<option id="0" value="0"></option>
 									<c:forEach var="dc" items="${dclist}">
-										<c:choose>
-											<c:when test="${dc.dcid == dcid}">
-												<option id="${dc.rate}" value="${dc.dcid}" selected="selected">${dc.dcName}</option>
-											</c:when>
-											<c:otherwise>
-												<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
-											</c:otherwise>
-										</c:choose>
+										<option id="${dc.rate}" value="${dc.dcid}">${dc.dcName}</option>
                                 	</c:forEach>
 								</select>
 							</div>
@@ -507,7 +591,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-auto">
+				<!-- <div class="col-auto">
 					<div class="row">
 						<div class="col-auto">
 							<div class="input-group input-group-sm">
@@ -528,25 +612,18 @@
 						<span class="input-group-text" id="basic-addon1">계좌번호</span>
 						<input class="form-control" type="text" id="accountno" name="accountno" style="width: 111px;"/>
 					</div>
-				</div>
+				</div> -->
 	        </div>
 	    </div>
-	    <div class="card border border-primary" style="width: 308px;height: 444px;">
+	    <div class="card border border-primary" style="width: 308px;height: 425px;">
 	    	<div class="card-body my-n3 mx-n5">
 	      		<div class="col-auto">
 	      			<div class="form-check">
-	      				<input class="form-check-input" id="category1" type="radio" name="category" onclick="return(false);" checked="checked"/>
+	      				<input class="form-check-input" id="category1" type="radio" name="category" onclick="return(false);"/>
 						<label class="form-check-label" for="category1">기본개월 종목</label>
 					</div>
 					<div class="form-check">
-						<c:choose>
-	      					<c:when test="${fmsc_s01.regMonth>1 && itemmonth == 1}">
-	      						<input class="form-check-input" id="category2" type="radio" name="category" onclick="return(false);" checked="checked"/>
-	      					</c:when>
-	      					<c:otherwise>
-	      						<input class="form-check-input" id="category2" type="radio" name="category" onclick="return(false);"/>
-	      					</c:otherwise>
-	      				</c:choose>
+  						<input class="form-check-input" id="category2" type="radio" name="category" onclick="return(false);"/>
 						<label class="form-check-label" for="category2">기본1개월종목 2개월 이상(표준회비)</label>
 					</div>
 	      		</div>
@@ -645,6 +722,22 @@
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
 
+$(document).ready(function() {
+	$('#paidbody').on('click', 'tr', function() {
+		paidbodyclick(this);
+	});
+
+	$('#itemtbody').on('click', 'tr', function() {
+		itemtbodyclick(this);
+	});
+	
+	$('tbody#itemtbody tr').each(function(){
+		if($(this).find("#SaleNo").val() == "${param.SaleNo}"){
+			itemtbodyclick(this);	
+		}
+	});
+});
+
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
@@ -658,7 +751,65 @@ document.addEventListener('keydown', function(event) {
 });
 
 function alldelete(){
-	window.location.reload();
+	//window.location.reload();
+}
+
+<%--//과거에 선택했던 행--%>
+var previousRow = null;
+var previousPaidRow = null;
+
+<%--//과거에 선택했던 행의 itemid--%>
+var clickeditemid;
+
+<%--//행을 클릭했을때 데이터를 밑에 뿌려주는 함수--%>
+function itemtbodyclick(clickedRow) {
+	if (previousRow !== null) {
+    	$(previousRow).css('background-color', ''); // Unselect the previous row
+	}
+	
+	$(clickedRow).css('background-color', 'lightblue'); // Highlight the clicked row
+    previousRow = clickedRow; // Update the previousRow variable with the clicked row
+    var date = $(clickedRow).find('.date').text();
+    const result = parseString(date);
+    document.getElementById('fromdate').value = result[0];
+    document.getElementById('todate').value = result[1];
+    document.getElementById('regmonth').value = result[2];
+    var price = $(clickedRow).find('.price').text();
+    var itemid = $(clickedRow).find('#ItemID').val();
+    clickeditemid = itemid;
+
+    var itemname = '['+$(clickedRow).find('.item').text()+']'+$(clickedRow).find('.name').text()+' '+$(clickedRow).find('.day').text()+' '+$(clickedRow).find('.level').text();
+    $("#olditemname").val(itemname);
+    $("#saleno").val($(clickedRow).find('#SaleNo').val());
+    $("#itemPKID").val(itemid);
+
+	$("#saledate").val($(clickedRow).find('#SaleDate').val());
+	$("#itemprice").val($(clickedRow).find('.price').text());
+	$("#dcprice").val($(clickedRow).find('.dc').text());
+	$("#olddcname").val($(clickedRow).find('.dcname').text());
+	$("#olddcname").attr("name",$(clickedRow).find('.dccode').text());
+	$("#realprice").val($(clickedRow).find('.sort').text());
+	$("#tpaidprice").val($(clickedRow).find('.paidPrice').text());
+	$("#itemmonth").val($(clickedRow).find('.itemMonth').text());
+
+	$('tbody#refundtbody tr.'+$(clickedRow).find('#SaleNo').val()).each(function(){
+		$("#totalcnt").val($(this).find('.totalCnt').text());
+		$("#usecnt").val($(this).find('.useCnt').text());
+		if(result[2] > 1){
+			$("#prevdc").val($(clickedRow).find('.dccode').text());
+			$("#totaldcper").val($(clickedRow).find('.dcpercent').text());
+			$("#totaldcprice").val(parseInt($(clickedRow).find('.dc').text())/parseInt(result[2]));
+			$("#currentdc").val($(clickedRow).find('.dccode').text());
+			$("#currentdcper").val($(clickedRow).find('.dcpercent').text());
+			$("#currentdcprice").val(parseInt($(clickedRow).find('.dc').text())/parseInt(result[2]));
+		}else{
+			$("#currentdc").val($(clickedRow).find('.dccode').text());
+			$("#currentdcper").val($(clickedRow).find('.dcpercent').text());
+			$("#currentdcprice").val(parseInt($(clickedRow).find('.dc').text()));
+		}
+		
+	});
+	$('#regdate').change();
 }
 
 var tpaidprice = 0;
@@ -669,17 +820,11 @@ $('#paidbody tr').each(function() {
 
 $('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
 
-
-// Get today's date
 var today = new Date();
 
-// Format the date as "YYYY-MM-DD" which is the required format for the date input
 var formattedDate = today.toISOString().split('T')[0];
 
-// Set the value of the input field to today's date
 $('#regdate, #canceldate').val(formattedDate);
-//어른 어린이 등을 저장하는 변수 생성
-
 
 function optionchange(data) {
     $.ajax({

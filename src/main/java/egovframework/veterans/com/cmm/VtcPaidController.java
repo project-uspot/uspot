@@ -300,7 +300,7 @@ public class VtcPaidController {
 	    VtcPaidService.tblpaidinsert(tblpaid);
 	    if(!tblpaid.getPayType().equals("현금")
 	    &&!tblpaid.getPayType().equals("계좌이체")) {
-	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);	
+	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);
 	    }
 	    //return "success";
 	    return ""+tblpaid.getPKID();

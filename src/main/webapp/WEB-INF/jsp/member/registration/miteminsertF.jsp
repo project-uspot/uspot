@@ -421,7 +421,18 @@ $('body').append(buttonHTML);
 //어른 어린이 등을 저장하는 변수 생성
 var codelist;
 
-var myPopup;
+$(document).ready(function() {
+    $('#paidbody').on('click', 'tr', function() {
+        paidbodyclick(this);
+    });
+
+    $('#itemtbody').on('click', 'tr', function() {
+		itemtbodyclick(this);
+   });
+    
+    var defulstDCID = '${dcid}';
+    $("#dcid").val(defulstDCID);
+});
 
 //엔터시에 검색하는 기능
 document.getElementById('saledate').value = new Date().toISOString().substring(0, 10);;
@@ -431,7 +442,7 @@ function handleKeyPress(event) {
  	}
 }
 
-var myPopup;	
+var myPopup;
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Escape' && !modalcheck) {
@@ -815,20 +826,6 @@ function itemtbodyclick(clickedRow) {
     	});
 	});
 
-
-   	$(document).ready(function() {
-   	    $('#paidbody').on('click', 'tr', function() {
-   	        paidbodyclick(this);
-   	    });
-
-   	    $('#itemtbody').on('click', 'tr', function() {
-   			itemtbodyclick(this);
-	    });
-   	    
-   	    var defulstDCID = '${dcid}';
-   	    $("#dcid").val(defulstDCID);
-   	});
-
 	function paidbodyclick(clickedRow) {
 		if (previousPaidRow !== null) {
 			$(previousPaidRow).css('background-color', ''); <%-- Unselect the previous row--%>
@@ -1060,7 +1057,7 @@ function fmsc_01save() {
 			dataType : 'json',
 			async : false,
 			data: { 
-				SiteCode : "${user.SiteCode}",
+				SiteCode : "${loginuserinfo.siteCode}",
 				SaleDate : $('#saledate').val(),
 				ItemPeriod : yearmonth,
 				CustCode : $('#memberid').val(),
@@ -1084,7 +1081,6 @@ function fmsc_01save() {
 				prevInType : '등록',
 				CurState : 1,
 				IsPackage : IsPackagecheck,
-				PaidPrice : 0,
 				GroupSaleNo : GroupNo
 			},
 			success: function(data) {
@@ -1111,7 +1107,7 @@ function fmsc_01save() {
 				dataType : 'json',
 				async : false,
 				data: { 
-					SiteCode : "${user.SiteCode}",
+					SiteCode : "${loginuserinfo.siteCode}",
 					FPKID: GroupNo,
 					SaleDate : paiddate.substr(0,10),
 					RealSaleDate : paiddate,
