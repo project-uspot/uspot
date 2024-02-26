@@ -41,4 +41,6 @@ public interface VtcPaidService {
 	List<tblpaid> tblpaidbypaidgroupsaleno(tblpaid tblpaid)throws Exception;
 	void paidchange(tblpaid tblpaid)throws Exception;
 	void tblElecAssignDataInsert(tblpaid tblpaid);
+	int OriginPKIDFind(tblpaid tblpaid)throws Exception;
+	void ReceiptInsert(tblpaid tblpaid)throws Exception;
 }

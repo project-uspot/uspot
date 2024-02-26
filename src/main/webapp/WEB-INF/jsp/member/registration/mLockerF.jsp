@@ -27,7 +27,7 @@
 						<h3 class="mb-3 pt-2">사물함임대정보 등록</h3>
             		</div>
             		<div class="col-auto">
-						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
+						<button class="btn btn-success" type="button" onclick="save()">저장</button>
 						<!-- <button class="btn btn-secondary" type="button" onclick="lockerReturn()">반납</button>
 						<button class="btn btn-danger" type="button">삭제</button>
 						<button class="btn btn-soft-danger" type="button">영수증</button>
@@ -39,75 +39,83 @@
     </div>
     <div class="row">
 	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 495px;">
-	        	<div class="row">
-	        		<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">회원번호</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">회원성명</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
-						</div>
-					</div>
-	        	</div>
-	        	<div class="row">
-	        		<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">회원구분</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
-						</div>
-					</div>
-	        	</div>
-	        	<div class="row">
-	        		<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">회원종류</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
-						</div>
-					</div>
-	        	</div>
-	        	<div class="row">
-	        		<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">휴대전화</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">일반전화</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
-						</div>
-					</div>
-	        	</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
-						<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 525px;">
+	        	<div class="col-auto mt-2">
+					<div class="card border border-primary mt-2">
+				    	<div class="card-body my-n3">
+				        	<div class="row">
+				        		<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">회원번호</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
+										<input type="hidden" id="sitecode" value="${member.siteCode}">
+										<input type="hidden" id="GroupSaleNo">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">회원성명</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
+									</div>
+								</div>
+				        	</div>
+				        	<div class="row">
+				        		<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">회원구분</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
+									</div>
+								</div>
+				        	</div>
+				        	<div class="row">
+				        		<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">회원종류</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
+									</div>
+								</div>
+				        	</div>
+				        	<div class="row">
+				        		<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">휴대전화</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-text" id="basic-addon1">일반전화</span>
+										<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
+									</div>
+								</div>
+				        	</div>
+							<div class="col-auto">
+								<div class="input-group input-group-sm">
+									<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
+									<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
+								</div>
+							</div>
+				    	</div>
 					</div>
 				</div>
 				<div class="cal-auto">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" style="width: 85px;">사물함</span>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;font-weight: 900;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;font-weight: 900;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
 				<div class="row">
@@ -128,7 +136,7 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">사용기간</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;font-weight: 900;"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -136,12 +144,12 @@
 					</div>
 					<div class="col-auto ms-n1">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="date" id="todate" name="todate" style="width: 130px;"/>
+							<input class="form-control" type="date" id="todate" name="todate" style="width: 130px;font-weight: 900;"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;" min="1"/>
+							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;font-weight: 900;" min="1"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3 mt-2">
@@ -283,13 +291,13 @@
 	        </div>
 		</div>
 	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 495px;">
+	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<li class="nav-item"><a class="nav-link" id="${lockergroup.PLockerGroupID}-tab" data-bs-toggle="tab" href="#tab-${lockergroup.PLockerGroupID}" role="tab" itemid="${lockergroup.PLockerGroupID}" title="${lockergroup.danCnt}">${lockergroup.PLockerGroupName}/${lockergroup.PLockerLocation}</a></li>
 	        		</c:forEach>
 				</ul>
-				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;">
+				<div class="tab-content mt-3" id="myTabContent" style="overflow: auto;height:415px;">
 					<c:forEach var="lockergroup" items="${lockergrouplist}">
 	        			<div class="tab-pane fade" id="tab-${lockergroup.PLockerGroupID}">
 	        			</div>
@@ -297,9 +305,6 @@
 				</div>
 	        </div>
 	    </div>
-	    <script type="text/javascript">
-	    	
-	    </script>
 	</div>
     <div class="row">
 	    <div class="card w-60 h-50">
@@ -341,20 +346,20 @@
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()">현금</button>
-					</div>
-					<div class="col-auto ms-4">
-						<button class="btn btn-phoenix-secondary" type="button">신용카드</button>
+						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button">계좌입금</button>
+						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">현금 외 결제</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-soft-secondary" type="button" style="width:117px;" onclick="payAccount()">계좌입금</button>
 					</div>
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-phoenix-info" type="button">현금영수증</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
 					</div>
-					<div class="col-auto ms-n1">
+					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
 					</div>
 					<div class="col-auto">
@@ -363,10 +368,7 @@
 				</div>
 				<div class="row">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()">결제취소</button>
-					</div>
-					<div class="col-auto ms-5">
-						<button class="btn btn-soft-info" type="button" onclick="deleteRow()">행삭제</button>
+						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button> -->
 					</div>
 				</div>
 				<div class="col-auto ms-n2 mt-2">
@@ -377,8 +379,8 @@
 		                      		<div class="col-auto">
 		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
 									</div>
-									<div class="col-auto ms-5">
-										<button class="btn btn-soft-danger" type="button">보증금환불</button>
+									<div class="col-auto">
+										<button class="btn btn-soft-danger" type="button" style="width:128px;">보증금환불</button>
 									</div>
 								</div>
 							</div>
@@ -393,6 +395,8 @@
 //숨겨진 모달 버튼
 var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
 $('body').append(buttonHTML);
+
+var myPopup;
 
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
@@ -464,25 +468,59 @@ $('.nav-item').on('click', function() {
 
                 for (var j = i; j < data.length; j += n) {
                 	if(data[j].State == 1){
-                		contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+')">'+
-	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                		
+                		if(data[j].ClickTime != null){
+                			
+                			const clickTime = new Date(data[j].ClickTime);
+
+                			const currentTime = new Date();
+
+                			const timeDifferenceInMilliseconds = currentTime - clickTime;
+                			const timeDifferenceInMinutes = Math.floor(timeDifferenceInMilliseconds / (1000 * 60));
+							
+                			if(timeDifferenceInMinutes<11){
+                				if(PrevPLockerID == data[j].PLockerID){
+                        			contentHtml += '<td><button class="btn btn-outline-success" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                        		}else{
+                        			contentHtml += '<td><button class="btn btn-outline-success" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                        		}
+                			}else{
+                				if(PrevPLockerID == data[j].PLockerID){
+                        			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                        		}else{
+                        			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+            	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                        		}
+                			}
+                		}else{
+                			if(PrevPLockerID == data[j].PLockerID){
+                    			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                    		}else{
+                    			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+        	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                    		}
+                		}
                 	}
                 	else if(data[j].State == 2){
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="left" '+
-                		'title="&lt;b&gt;회원번호 :&lt;/b&gt; &lt;em&gt;'+data[j].MemberID+'&lt;/em&gt; &lt;br&gt;'+
-                		' &lt;b&gt;회원명 :&lt;/b&gt; &lt;em&gt;'+data[j].Name+'&lt;/em&gt; &lt;br&gt; '+
-                		' &lt;b&gt;생년원일 :&lt;/b&gt; &lt;em&gt;'+data[j].BirthDay+'&lt;/em&gt; &lt;br&gt; '+
-                		' &lt;b&gt;휴대전화 :&lt;/b&gt; &lt;em&gt;'+data[j].CellPhone+'&lt;/em&gt; &lt;br&gt;" '+
-                		' data-bs-html="true">'+
-	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+                		'title="<b>회원번호 :</b><em>'+data[j].MemberID+'</em><br>'+
+                		'<b>회원명 :</b><em>'+data[j].Name+'</em><br>'+
+                		'<b>시작일 :</b><em>'+data[j].FromDate+'</em><br>'+
+                		'<b>종료일 :</b><em>'+data[j].ToDate+'</em><br>"'+
+                		'data-bs-html="true">'+
+	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 3){
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
-	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 4){
                 		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
-	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 16px;">' + data[j].PLockerNo + '</div></div></button></td>';
+	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                     
                 }
@@ -496,6 +534,9 @@ $('.nav-item').on('click', function() {
             $(function(){
                 $('[data-bs-toggle="tooltip"]').tooltip();
             });
+            
+            var PrevClick = document.getElementById('PrevClick');
+            PrevButton = PrevClick;
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
@@ -523,7 +564,8 @@ function NoBooking(message) {
 }
 
 var PrevPLockerID = 0;
-function StartBooking(plockerid) {
+var PrevButton = null;
+function StartBooking(plockerid,NowButton) {
 	$.ajax({
         type: "POST", 
         url: "StartBooking", 
@@ -548,7 +590,17 @@ function StartBooking(plockerid) {
         		return false;
         	}else{
         		PrevPLockerID = plockerid;
-	        	
+        		if (PrevButton !== null) {
+			    	$(PrevButton).css('background-color', '');
+			    	$(PrevButton).removeClass('btn-outline-success');
+			    	$(PrevButton).addClass('btn-outline-primary');
+			    	$('button').filter(function() {
+			            return $(this).css('background-color') === 'chartreuse';
+			        }).css('background-color', '');
+			    }
+        		$(NowButton).css('background-color', 'chartreuse');
+        		PrevButton = NowButton;
+        		
 	        	$('#PLockerGroupName').val(data.PLockerGroupName);
 	        	$('#PLockerLocation').val(data.PLockerLocation);
 	        	$('#PLockerNo').val(data.PLockerNo);
@@ -568,11 +620,6 @@ function StartBooking(plockerid) {
 	});
 }
 
-//강습료를 수정할때 바뀐 강습료의 값을 저장하는 함수
-$('#price').on('change', function() {
-	sortchange();	
-});
-
 $('#regmonth, #fromdate').on('change', function() {
 	dateChange();
 });
@@ -587,13 +634,12 @@ function dateChange() {
     formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
     formattedDate.setDate(formattedDate.getDate()-1);
     
-    const formattedDateString = formatDate(formattedDate,'yMd');
+    const formattedDateString = TformatDate(formattedDate);
     
     $('#todate').val(formattedDateString);
     
     PLockerPriceChange();
 }   
-
 function PLockerPriceChange(){
    	var totalPLockerPrice;
    	
@@ -622,9 +668,9 @@ function PLockerPriceChange(){
    	
    	$('#misuPLockerPrice').val(formatNumberWithCommas(misuPLockerPrice));
    	
-   	totalChange();
+   	totalChange1();
 }
-   
+
 function PLockerDepositeChange() {
 	var PLockerDeposite = removeCommasFromNumber($('#PLockerDeposite').val());
 	
@@ -646,10 +692,10 @@ function PLockerDepositeChange() {
    	
    	$('#misuPLockerDeposite').val(formatNumberWithCommas(misuPLockerDeposite));
 	
-	totalChange();
+	totalChange1();
 }
 
-function totalChange() {
+function totalChange1() {
 	
 	var totalPLockerPrice = removeCommasFromNumber($('#totalPLockerPrice').val());
 	var totalPLockerDeposite = removeCommasFromNumber($('#totalPLockerDeposite').val());
@@ -676,17 +722,8 @@ function totalChange() {
 }
 
 function save() {
-	if($('#itemname').val()==''){
-		$('#resultmessage').html('변경 할 강좌를 선택해주세요.');
-		$('.modal-footer').empty();
-		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-		$('.modal-footer').append(cancelbutton);
-	    $('#modalButton').click();
-	    modalcheck = true;
-	    return false;
-	}
-	if(removeCommasFromNumber($('#tremainprice').val()) != 0){
-		$('#resultmessage').html('반변경 차액을 결제해 주세요.');
+	if(PrevPLockerID == 0){
+		$('#resultmessage').html('사물함을 선택해주세요.');
 		$('.modal-footer').empty();
 		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 		$('.modal-footer').append(cancelbutton);
@@ -694,7 +731,50 @@ function save() {
 	    modalcheck = true;
 	    return false;
 	}else{
-		fmsc_01save();	
+		$.ajax({
+	        type: "POST", 
+	        url: "useLockerInsert",
+	        dataType : 'json',
+	        data: { 
+	        	LockerID : PrevPLockerID,
+	        	PLockerNo : $('#PLockerNo').val(),
+	        	MemberID : $('#memberid').val(),
+	        	RegDate : $('#regdate').val(),
+	        	FromDate : $('#fromdate').val(),
+	        	ToDate : $('#todate').val(),
+	        	RegMonth : $('#regmonth').val(),
+	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+	        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+	        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+	        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+				PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+				Misu : removeCommasFromNumber($('#Misu').val()),
+				IsReturn : 'N',
+				IsFlag : 0,
+				Note : $('#note').val(),
+				IsDelete : 'N'
+	        },
+	        success: function(data) {
+	        	if(data == 0){
+	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+	        		window.opener.location.reload();
+	                window.close();	
+	        	}else if(data == -1){
+	        		alert("이미 등록된 사물함입니다.");
+	                window.location.reload();
+	        	}else if(data == -2){
+	        		alert("이미 등록중인 사물함입니다.");
+	                window.location.reload();
+	        	}else{
+	        		window.opener.location.reload();
+    	       	 	window.close();
+	        	}
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
 	}
 }
 
@@ -724,7 +804,7 @@ function payCash() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "PLockerPrice"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
+	newRow.append('<td class="paidprice align-right white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -780,15 +860,17 @@ function payCash() {
         	        dataType : 'json',
         	        data: { 
         	        	FPKID : data,
+        	        	SiteCode : $('#sitecode').val(),
         	        	SaleDate : $('#regdate').val(),
-        	        	RealSaleDate : $('#paidbody tr').eq(iteration).find('.paiddate').text(),
+        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
         	        	SaleType : '사물함',
-        	        	PayType : $('#paidbody tr').eq(iteration).find('.paidcategory').text(),
-        	        	Price : removeCommasFromNumber($('#paidbody tr').eq(iteration).find('.paidprice').text()),
+        	        	PayType : $('#paidbody tr').find('.paidcategory').text(),
+        	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
         	        	PaidGroupSaleNo : data
         	        },
         	        success: function(success) {	
-        	       	 	window.location.href = ''
+        	        	window.opener.location.reload();
+        	       	 	window.location.href = 'mLockerDetailF.do?PKID='+data;
         	        },
         	        error: function(xhr, status, error) {
         	       	 console.log("Status: " + status);
@@ -818,7 +900,7 @@ function payDeposite() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "Deposite"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap fw-bold text-end">' + $('#totalPLockerDeposite').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -832,7 +914,249 @@ function payDeposite() {
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	PLockerDepositeChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "useLockerInsert",
+        dataType : 'json',
+        data: { 
+        	LockerID : PrevPLockerID,
+        	PLockerNo : $('#PLockerNo').val(),
+        	MemberID : $('#memberid').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			IsReturn : 'N',
+			IsFlag : 0,
+			Note : $('#note').val(),
+			IsDelete : 'N'
+        },
+        success: function(data) {
+        	if(data == 0){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();	
+        	}else if(data == -1){
+        		alert("이미 등록된 사물함입니다.");
+                window.location.reload();
+        	}else if(data == -2){
+        		alert("이미 등록중인 사물함입니다.");
+                window.location.reload();
+        	}else{
+        		$.ajax({
+        	        type: "POST", 
+        	        url: "tbldepositeinsert", 
+        	        dataType : 'json',
+        	        data: { 
+        	        	SaleDate : getCurrentDate(),
+        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
+        	        	LockerID : PrevPLockerID,
+        	        	MemberID : $('#memberid').val(),
+        	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val())
+        	        },
+        	        success: function(success) {	
+        	        	window.opener.location.reload();
+        	       	 	window.location.href = 'mLockerDetailF.do?PKID='+data;
+        	        },
+        	        error: function(xhr, status, error) {
+        	       	 console.log("Status: " + status);
+        	         console.log("Error: " + error);
+        	        }
+        		});
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
+
+<%-- 신용카드 결제 --%>
+function paycredit() {
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+
+	var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+PrevPLockerID;
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+function totalchange() {
+	$('#paidbody tr#new').attr('id','PLockerPrice');
+	PLockerPriceChange();
+	
+	if($('#GroupSaleNo').val() == ''){
+		accountChange();
+	}else{
+		$.ajax({
+	        type: "POST", 
+	        url: "UpduseLocker", 
+	        dataType : 'json',
+	        data: { 
+	        	PKID : $('#GroupSaleNo').val(),
+	        	LockerID : PrevPLockerID,
+	        	RegDate : $('#regdate').val(),
+	        	FromDate : $('#fromdate').val(),
+	        	ToDate : $('#todate').val(),
+	        	RegMonth : $('#regmonth').val(),
+	        	MemberID : $('#memberid').val(),
+	        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+	        	UsePrice : removeCommasFromNumber($('#PLockerPrice').val()),
+	        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+	        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+				PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+				Misu : removeCommasFromNumber($('#Misu').val()),
+				Note : $('#note').val(),
+	        },
+	        success: function(data) {	
+	        	if(data == '0'){
+	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+	        		window.opener.location.reload();
+	                window.close();
+	        	}else{
+	        		window.opener.location.reload();
+	        		window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
+	        	}
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
+	}
+}
+
+<%-- 계좌입금 --%>
+function payAccount(){
+	if($('#misuPLockerPrice').val() == 0 || $('#misuPLockerPrice').val() == ''){
+	  	$('#resultmessage').html('받을 임대료가 0원입니다.<br>확인 후 결제해 주세요.');
+	  	$('.modal-footer').empty();
+	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+	  	$('.modal-footer').append(cancelbutton);
+	    $('#modalButton').click();
+	    modalcheck = true;
+	    return false;
+	}
+ 	
+	var url = "${pageContext.request.contextPath}/locker/Account.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val();
+	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
+
+function accountChange() {
+	$('#paidbody tr#new').attr('id','PLockerPrice');
+	PLockerPriceChange();
+	
+	$.ajax({
+        type: "POST", 
+        url: "useLockerInsert",
+        dataType : 'json',
+        data: { 
+        	LockerID : PrevPLockerID,
+        	PLockerNo : $('#PLockerNo').val(),
+        	MemberID : $('#memberid').val(),
+        	RegDate : $('#regdate').val(),
+        	FromDate : $('#fromdate').val(),
+        	ToDate : $('#todate').val(),
+        	RegMonth : $('#regmonth').val(),
+        	Deposite : removeCommasFromNumber($('#PLockerDeposite').val()),
+        	UsePrice : removeCommasFromNumber($('#totalPLockerPrice').val()),
+        	TotalPrice : removeCommasFromNumber($('#RealPrice').val()),
+        	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+			PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+			Misu : removeCommasFromNumber($('#Misu').val()),
+			IsReturn : 'N',
+			IsFlag : 0,
+			Note : $('#note').val(),
+			IsDelete : 'N'
+        },
+        success: function(data) {
+        	if(data == 0){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();	
+        	}else if(data == -1){
+        		alert("이미 등록된 사물함입니다.");
+                window.location.reload();
+        	}else if(data == -2){
+        		alert("이미 등록중인 사물함입니다.");
+                window.location.reload();
+        	}else{
+        		$.ajax({
+        	        type: "POST", 
+        	        url: "tblpaidinsert", 
+        	        dataType : 'json',
+        	        data: { 
+        	        	FPKID : data,
+        	        	SiteCode : $('#sitecode').val(),
+        	        	SaleDate : $('#regdate').val(),
+        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
+        	        	SaleType : '사물함',
+        	        	PayType : $('#paidbody tr').find('.paidcategory').text(),
+        	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
+        	        	AssignType : $('#paidbody tr').find('.paidassignType').text(), 
+        	        	Maeipsa : $('#paidbody tr').find('.paidmapsa').text(), 
+        	        	CardName : $('#paidbody tr').find('.paidcardtype').text(),
+    					AssignNo : $('#paidbody tr').find('.paidassignN').text(),
+    					Pos : $('#paidbody tr').find('.POS').text(),
+    					SignPad : $('#paidbody tr').find('.signpad').text(),
+    					Halbu : $('#paidbody tr').find('.Halbu').text(),
+    					SaleTime : $('#paidbody tr').find('.SaleTime').text(),
+        	        	PaidGroupSaleNo : data,
+        	        	OID : $('#paidbody tr').find('.OID').text(),
+    					TID : $('#paidbody tr').find('.TID').text()
+        	        },
+        	        success: function(success) {	
+        	        	window.opener.location.reload();
+        	       	 	window.location.href = 'mLockerDetailF.do?PKID='+data;
+        	        },
+        	        error: function(xhr, status, error) {
+        	       	 console.log("Status: " + status);
+        	         console.log("Error: " + error);
+        	        }
+        		});
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
 function getCurrentDateTime() {

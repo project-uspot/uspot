@@ -70,5 +70,6 @@ public class tblpaid {
 	private int UpdUserPKID = 0;
 
 	private String CardNo;
-
+	
+	private int OriginPKID;
 }

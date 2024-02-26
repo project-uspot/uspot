@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 
 @Service
 @RequiredArgsConstructor
@@ -111,5 +112,70 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	@Override
 	public void UpdPLocker(tblplocker tblplocker) throws Exception {
 		vtcLockerDAO.UpdPLocker(tblplocker);
+	}
+
+	@Override
+	public tbluselocker useLockerByPKID(tbluselocker tbluselocker) throws Exception {
+		return vtcLockerDAO.useLockerByPKID(tbluselocker);
+	}
+
+	@Override
+	public void DepositeInsert(tbldeposite tbldeposite) throws Exception {
+		vtcLockerDAO.DepositeInsert(tbldeposite);
+	}
+
+	@Override
+	public List<tbldeposite> DepositeByMemberID(tbldeposite tbldeposite) throws Exception {
+		return vtcLockerDAO.DepositeByMemberID(tbldeposite);
+	}
+
+	@Override
+	public void useLockerPriceUpdate(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.useLockerPriceUpdate(tbluselocker);
+	}
+
+	@Override
+	public void UpduseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.UpduseLocker(tbluselocker);
+	}
+
+	@Override
+	public void UpdPLockerBySave(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.UpdPLockerBySave(tblplocker);
+	}
+
+	@Override
+	public void ReturnLocker(tblplocker tblplocker) throws Exception {
+		vtcLockerDAO.ReturnLocker(tblplocker);
+	}
+
+	@Override
+	public void ChangeDeposite(Map<String, Object> tbldeposite) throws Exception {
+		vtcLockerDAO.ChangeDeposite(tbldeposite);
+	}
+
+	@Override
+	public void ReturnuseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.ReturnuseLocker(tbluselocker);
+	}
+
+	@Override
+	public void DeleteuseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.DeleteuseLocker(tbluselocker);
+	}
+
+	@Override
+	public int DepositeOriginPKIDFind(tbldeposite tbldeposite) throws Exception {
+		return vtcLockerDAO.DepositeOriginPKIDFind(tbldeposite);
+	}
+
+	@Override
+	public void CanceluseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.CanceluseLocker(tbluselocker);
+	}
+
+	@Override
+	public void refundUseLocker(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.refundUseLocker(tbluselocker);
 	}
 }

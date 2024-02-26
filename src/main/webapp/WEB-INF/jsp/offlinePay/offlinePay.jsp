@@ -28,7 +28,7 @@
 										</div>
 										<div class="input-group input-group-sm mb-1">
 											<span class="input-group-text" id="PriceSpan">결제금액</span>
-											<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice }" readonly="readonly">
+											<input class="form-control" id="Price" name="Price" type="text" value="${param.payprice}" readonly="readonly">
 										</div>
 										<div class="row">
 											<div class="col card p-0">
@@ -275,6 +275,7 @@ function save(){
 		$(this).find('.sort').attr('id','Y');
 	}); --%>
 
+	opener.focus();
 	opener.totalchange();
 	self.close();
 }

@@ -33,7 +33,8 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 	}
 
 	public Map<String, Object> insertPaidLocker(Map<String, Object> sqlMap) {
-		selectOne("offlinePay.insertPaidLocker",sqlMap);
+		Map<String,Object> result = selectOne("offlinePay.insertPaidLocker",sqlMap);
+		sqlMap.putAll(result);
 		return sqlMap;
 	}
 
@@ -47,7 +48,7 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 	}
 
 	public void insertPaidCancelLocker(Map<String, Object> returnMap) {
-		
+		update("offlinePay.insertPaidCancelLocker",returnMap);
 	}
 
 	public void insertPaidCancelRent(Map<String, Object> returnMap) {

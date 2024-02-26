@@ -105,6 +105,7 @@
 	where
 	    SiteCode = #{SiteCode}
 	and PLockerID = #{PLockerID}
+	and IsDelete = 'N'
 </select>
 <update id="lockercodeupdate" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
 	update tblplocker set
@@ -128,7 +129,7 @@
 		PLockerID = #{PLockerID}
 </update>
 <select id="memberuselocker" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberuselocker">
-	select tblPLockerGroup.PLockerGroupName,tblPLockerGroup.PLockerLocation,tblPLocker.PLockerNo,RegDate,tblUseLocker.FromDate,tblUseLocker.ToDate,tblUseLocker.RegMonth 
+	select tblPLockerGroup.PLockerGroupName,tblPLockerGroup.PLockerLocation,tblPLocker.PLockerNo,RegDate,tblUseLocker.PKID,tblUseLocker.FromDate,tblUseLocker.ToDate,tblUseLocker.RegMonth 
 	,tblUseLocker.RealPrice,tblUseLocker.PaidPrice,Misu,
 	 CASE
         WHEN IsFlag = 0 and IsReturn ='Y' THEN '반납'
@@ -211,9 +212,145 @@ UPDATE tblplocker SET
 	MemberID=#{MemberID}, 
 	UpdDate=now(), 
 	UpdUserPKID=#{UpdUserPKID}, 
-	updchk='up_update', 
-	ClickUserPKID=NULL, 
-	ClickTime=NULL
-WHERE PLockerID=#{PLockerID} AND SiteCode=#{SiteCode} And IsDelete = 'N'
+	updchk='up_update',
+	ClickUserPKID = null,
+	ClickTime = null
+WHERE 
+	PLockerID=#{PLockerID} 
+AND SiteCode=#{SiteCode} 
+And IsDelete = 'N'
+</update>
+<select id="useLockerByPKID" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker" resultType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+select * from tbluselocker 
+where 
+	PKID = #{PKID}
+and IsDelete = 'N'
+and SiteCode = #{SiteCode}
+</select>
+<insert id="DepositeInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" useGeneratedKeys="true" keyProperty="PKID">
+INSERT INTO tbldeposite
+(SiteCode, LockerID, MemberID, Deposite, 
+IsDelete, AddDate, 
+AddUserPKID, UpdDate, UpdUserPKID,RealSaleDate,SaleDate,OriginPKID)
+values
+(#{SiteCode},#{LockerID},#{MemberID},#{Deposite}, 
+'N',now(), 
+#{AddUserPKID},now(),#{UpdUserPKID},#{RealSaleDate},#{SaleDate},#{OriginPKID})
+</insert>
+<select id="DepositeByMemberID" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+select * from tbldeposite
+where 
+	SiteCode = #{SiteCode}
+and MemberID = #{MemberID}
+and LockerID = #{LockerID}
+and IsDelete = 'N'
+</select>
+<update id="useLockerPriceUpdate" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+UPDATE tbluselocker SET 
+RealPrice=#{RealPrice},
+PaidPrice=#{PaidPrice},
+Misu=#{Misu},
+UpdDate=now(),
+UpdUserPKID=#{UpdUserPKID} 
+WHERE PKID=#{PKID}
+AND SiteCode=#{SiteCode}
+</update>
+<update id="UpduseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+UPDATE tbluselocker SET  
+LockerID = #{LockerID},
+RegDate=#{RegDate}, 
+FromDate=#{FromDate}, 
+ToDate=#{ToDate}, 
+RegMonth=#{RegMonth}, 
+Deposite=#{Deposite}, 
+UsePrice=#{UsePrice}, 
+TotalPrice=#{TotalPrice}, 
+RealPrice=#{RealPrice}, 
+PaidPrice=#{PaidPrice}, 
+Misu=#{Misu},
+Note=#{Note},
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}
+WHERE 
+	PKID=#{PKID}
+AND SiteCode=#{SiteCode}
+</update>
+<update id="UpdPLockerBySave" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+UPDATE tblplocker SET 
+<if test="lSaleNo != 0">
+	lSaleNo=#{lSaleNo}, 
+</if>
+State=#{State}, 
+FromDate=#{FromDate}, 
+ToDate=#{ToDate}, 
+RegMonth=#{RegMonth}, 
+MemberID=#{MemberID}, 
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}, 
+updchk='up_update',
+ClickUserPKID=NULL, 
+ClickTime=NULL
+WHERE 
+	PLockerID=#{PLockerID} 
+AND SiteCode=#{SiteCode}
+</update>
+<update id="ReturnLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
+UPDATE tblplocker SET 
+State=1, 
+lSaleNo=NULL, 
+FromDate=NULL, 
+ToDate=NULL, 
+RegMonth=NULL, 
+MemberID=NULL, 
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}, 
+updchk='up_update'
+WHERE 
+	PLockerID=#{PLockerID} 
+AND SiteCode=#{SiteCode}
+</update>
+<update id="ChangeDeposite" parameterType="map">
+UPDATE tbldeposite SET 
+LockerID=#{LockerID}, 
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}
+WHERE 
+	LockerID=#{PrevPLockerID}
+and SiteCode = #{SiteCode}
+and MemberID = #{MemberID}
+and IsDelete = 'N'
+</update>
+
+<update id="ReturnuseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+{call SP_LockerReturn(#{PKID},#{LockerID},#{SiteCode},#{ReturnDate},#{UpdUserPKID})}
+</update>
+
+<update id="DeleteuseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+{call SP_LockerDelete(#{PKID},#{LockerID},#{SiteCode},#{UpdUserPKID})}
+</update>
+
+<select id="DepositeOriginPKIDFind" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="int">
+<choose>
+	<when test="PKID != 0">
+	select OriginPKID from tbldeposite
+	where 
+		PKID = #{PKID}
+	</when>
+	<otherwise>
+	select count(*) from tbldeposite
+	where 
+		OriginPKID = #{OriginPKID}
+	</otherwise>
+</choose>
+and SiteCode = #{SiteCode}
+and IsDelete = 'N'
+</select>
+
+<update id="CanceluseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+{call SP_LockerCancel(#{PKID},#{SiteCode},#{LockerID},#{RealPrice},#{PaidPrice},#{Misu},#{ReturnDate},#{IsFlag},#{UpdUserPKID})}
+</update>
+
+<update id="refundUseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+{call SP_LockerRefund(#{PKID},#{SiteCode},#{LockerID},#{ReturnDate},#{Use_Price},#{WiyakPrice},#{GongjePrice},#{TotalCnt},#{UseCnt},#{UpdUserPKID})}
 </update>
 </mapper>

@@ -10,6 +10,7 @@ import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
+import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Repository
@@ -87,5 +88,56 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public void UpdPLocker(tblplocker tblplocker)throws Exception{
 		update("locker.UpdPLocker",tblplocker);
+	}
+	
+	public tbluselocker useLockerByPKID(tbluselocker tbluselocker)throws Exception{
+		return selectOne("locker.useLockerByPKID",tbluselocker);
+	}
+	
+	public void DepositeInsert(tbldeposite tbldeposite)throws Exception{
+		insert("locker.DepositeInsert",tbldeposite);
+	}
+	
+	public List<tbldeposite> DepositeByMemberID(tbldeposite tbldeposite)throws Exception{
+		return selectList("locker.DepositeByMemberID",tbldeposite);
+	}
+	public void useLockerPriceUpdate(tbluselocker tbluselocker)throws Exception{
+		update("locker.useLockerPriceUpdate",tbluselocker);
+	}
+	
+	public void UpduseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.UpduseLocker",tbluselocker);
+	}
+	
+	public void UpdPLockerBySave(tblplocker tblplocker)throws Exception{
+		update("locker.UpdPLockerBySave",tblplocker);
+	}
+	
+	public void ReturnLocker(tblplocker tblplocker)throws Exception{
+		update("locker.ReturnLocker",tblplocker);
+	}
+	
+	public void ChangeDeposite(Map<String,Object> tbldeposite)throws Exception{
+		update("locker.ChangeDeposite",tbldeposite);
+	}
+	
+	public void ReturnuseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.ReturnuseLocker",tbluselocker);
+	}
+	
+	public void DeleteuseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.DeleteuseLocker",tbluselocker);
+	}
+	
+	public int DepositeOriginPKIDFind(tbldeposite tbldeposite)throws Exception{
+		return selectOne("locker.DepositeOriginPKIDFind",tbldeposite);
+	}
+	
+	public void CanceluseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.CanceluseLocker",tbluselocker);
+	}
+	
+	public void refundUseLocker(tbluselocker tbluselocker)throws Exception{
+		update("locker.refundUseLocker",tbluselocker);
 	}
 }

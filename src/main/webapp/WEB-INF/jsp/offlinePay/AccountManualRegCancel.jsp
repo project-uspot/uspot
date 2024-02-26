@@ -141,11 +141,11 @@ function save(){
     var month = $("#SaleDate").val().substring(4, 6);
     var day = $("#SaleDate").val().substring(6, 8);
 
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + year+"-"+month+"-"+day+" "+ getCurrentTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + "계좌이체" + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber('-${param.payprice }'))) + '</td>');
-	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + "신용승인" + '</td>');
+	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + "신용취소" + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + $("#Maeipsa").val() + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' + $("#CardName").val() + '</td>');
 	newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + $("#AssignNo").val() + '</td>');

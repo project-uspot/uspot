@@ -84,3 +84,10 @@ function onlyNumber(input) {
     // Update the input value
     input.value = value;
 }
+
+function TformatDate(date) {
+	const yyyy = date.getFullYear();
+	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
+	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
+	return yyyy+'-'+mm+'-'+dd;
+}
