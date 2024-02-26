@@ -73,7 +73,7 @@
 	
 	<select id="insertPaidLocker" parameterType="Map" resultType="Map">
 		<![CDATA[
-			{call SP_InsertuseLocker(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID})}	
+			{call SP_InsertuseLocker(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID},#{recheck})}	
 		]]>
 	</select>
 	
@@ -85,6 +85,7 @@
 			, #{tempSaleNo, mode=IN}, #{ReceiptNo, mode=IN}, #{paidPKID, mode=OUT, jdbcType=INTEGER} )}
 		]]>
 	</select>
+	
 	<update id="insertPaidCancelLocker" parameterType="map">
 		update tblpaid set OriginPKID = #{pkid}
 		where 

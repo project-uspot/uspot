@@ -113,22 +113,25 @@
 				<div class="cal-auto">
 					<div class="input-group input-group-sm">
 						<span class="input-group-text" style="width: 85px;">사물함</span>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;font-weight: 900;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;font-weight: 900;"/>
-						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerGroupName" name="PLockerGroupName" style="text-align: center;font-weight: 900;" value="${lockerinfo.PLockerGroupName}"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerLocation" name="PLockerLocation" style="text-align: center;font-weight: 900;" value="${lockerinfo.PLockerLocation}"/>
+						<input class="form-control" type="text" readonly="readonly" id="PLockerNo" name="PLockerNo" style="text-align: right;font-weight: 900;" value="${lockerinfo.PLockerNo}"/>
+						<input type="hidden" id="PLockerID" value="${param.PLockerID}">
 					</div>
 				</div>
 				<div class="row">
 	        		<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">보증금</span>
-							<input class="form-control" type="text" id="PLockerDeposite" name="PLockerDeposite" style="text-align: right;" readonly="readonly"/>
+							<fmt:formatNumber value="${lockerinfo.PLockerDeposite}" pattern="#,###" var="depositeprice"/>
+							<input class="form-control" type="text" id="PLockerDeposite" name="PLockerDeposite" style="text-align: right;" readonly="readonly" value="${depositeprice}"/>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1" style="width: 85px;">임대료</span>
-							<input class="form-control" type="text" id="PLockerPrice" name="PLockerPrice" style="text-align: right;" readonly="readonly"/>
+							<fmt:formatNumber value="${lockerinfo.PLockerPrice}" pattern="#,###" var="usePrice"/>
+							<input class="form-control" type="text" id="PLockerPrice" name="PLockerPrice" style="text-align: right;" readonly="readonly" value="${usePrice}"/>
 						</div>
 					</div>
 	        	</div>
@@ -136,7 +139,7 @@
 					<div class="col-auto">
 						<div class="input-group input-group-sm">
 							<span class="input-group-text" id="basic-addon1">사용기간</span>
-							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;font-weight: 900;"/>
+							<input class="form-control" type="date" aria-describedby="basic-addon1" id="fromdate" name="fromdate" style="width: 130px;font-weight: 900;" value="${lockerinfo.ToDate}"/>
 						</div>
 					</div>
 					<div class="col-auto mt-1 mx-n4">
@@ -149,7 +152,7 @@
 					</div>
 					<div class="col-auto ms-n3">
 						<div class="input-group input-group-sm">
-							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;font-weight: 900;" min="1"/>
+							<input class="form-control" type="number" id="regmonth" name="regmonth" style="width: 64px;font-weight: 900;" min="1" value="${lockerinfo.PLockerMonth}"/>
 						</div>
 					</div>
 					<div class="col-auto ms-n3 mt-2">
@@ -330,6 +333,33 @@
 	                            </tr>
                         	</thead>
                         	<tbody class="list" id="paidbody">
+                        		<c:if test="${not empty tbldeposite}">
+								 	<c:forEach items="${tbldeposite}" var="deposite">
+								 		<tr class="hover-actions-trigger btn-reveal-trigger position-static old deposite" id="Deposite">
+								 			<td class="PKID" style="display: none;">${deposite.PKID}</td>
+										    <td class="paiddate align-middle white-space-nowrap text-center fw-bold">${deposite.realSaleDate}</td>
+										    <td class="paidcategory align-middle white-space-nowrap text-center">보증금</td>
+										    <fmt:parseNumber var="depoprice" integerOnly="true" value="${deposite.deposite}"/>
+										    <td class="paidprice align-middle white-space-nowrap text-end fw-bold"><fmt:formatNumber value="${depoprice}" pattern="#,###"/></td>
+										    <c:choose>
+										    	<c:when test="${deposite.originPKID != 0}">
+										    		<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">보증금환불</td>
+										    	</c:when>
+										    	<c:otherwise>
+										    		<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start"></td>
+										    	</c:otherwise>
+										    </c:choose>
+										    <td class="paidmapsa align-middle white-space-nowrap text-center"></td>
+										    <td class="paidcardtype align-middle white-space-nowrap text-start"></td>
+										    <td class="paidassignN align-middle white-space-nowrap text-start"></td>
+										    <td class="paidcardN align-middle white-space-nowrap text-start"></td>
+										    <td class="POS align-middle white-space-nowrap text-start"></td>
+										    <td class="signpad py-2 align-middle white-space-nowrap"></td>
+										    <td class="OID py-2 align-middle white-space-nowrap"></td>
+										    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+										</tr>
+								 	</c:forEach>
+								 </c:if>
                         	</tbody>
                     	</table>
                     </div>
@@ -357,13 +387,13 @@
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;" disabled="disabled">결제취소</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
+						<button class="btn btn-phoenix-success" type="button" disabled="disabled">영수증재발행</button>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-soft-success" type="button">현.영재발행</button>
+						<button class="btn btn-soft-success" type="button" disabled="disabled">현.영재발행</button>
 					</div>
 				</div>
 				<div class="row">
@@ -377,10 +407,10 @@
 				      		<div class="col-auto ms-n3">
 		                   		<div class="row">
 		                      		<div class="col-auto">
-		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()">보증금결제</button>
+		                      			<button class="btn btn-soft-success" type="button" onclick="payDeposite()" disabled="disabled">보증금결제</button>
 									</div>
 									<div class="col-auto">
-										<button class="btn btn-soft-danger" type="button" style="width:128px;">보증금환불</button>
+										<button class="btn btn-soft-danger" type="button" style="width:128px;" disabled="disabled">보증금환불</button>
 									</div>
 								</div>
 							</div>
@@ -424,9 +454,6 @@ document.addEventListener('keydown', function(event) {
 function alldelete(){
 	window.location.reload();
 }
-
-$('#fromdate,#todate,#regdate').val(getCurrentDate());
-
 
 $(document).ready(function() {
     $('#paidbody').on('click', 'tr', function() {
@@ -480,27 +507,27 @@ $('.nav-item').on('click', function() {
 							
                 			if(timeDifferenceInMinutes<11){
                 				if(PrevPLockerID == data[j].PLockerID){
-                        			contentHtml += '<td><button class="btn btn-outline-success" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+                        			contentHtml += '<td><button class="btn btn-outline-success" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick" disabled="disabled">'+
             	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}else{
-                        			contentHtml += '<td><button class="btn btn-outline-success" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+                        			contentHtml += '<td><button class="btn btn-outline-success" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" disabled="disabled">'+
             	                    '<div style="display: flex;" class="mx-n2"><span class="uil-ellipsis-h fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}
                 			}else{
                 				if(PrevPLockerID == data[j].PLockerID){
-                        			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+                        			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick" disabled="disabled">'+
             	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}else{
-                        			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+                        			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" disabled="disabled">'+
             	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                         		}
                 			}
                 		}else{
                 			if(PrevPLockerID == data[j].PLockerID){
-                    			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick">'+
+                    			contentHtml += '<td><button class="btn btn-outline-primary" style="background-color: chartreuse;" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" id="PrevClick" disabled="disabled">'+
         	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                     		}else{
-                    			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)">'+
+                    			contentHtml += '<td><button class="btn btn-outline-primary" type="button" onclick="StartBooking('+data[j].PLockerID+',this)" disabled="disabled">'+
         	                    '<div style="display: flex;" class="mx-n2"><span class="uil-key-skeleton fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                     		}
                 		}
@@ -511,15 +538,15 @@ $('.nav-item').on('click', function() {
                 		'<b>회원명 :</b><em>'+data[j].Name+'</em><br>'+
                 		'<b>시작일 :</b><em>'+data[j].FromDate+'</em><br>'+
                 		'<b>종료일 :</b><em>'+data[j].ToDate+'</em><br>"'+
-                		'data-bs-html="true">'+
+                		'data-bs-html="true" disabled="disabled">'+
 	                    '<div style="display: flex;" class="mx-n2" id="'+data[j].PLockerID+'content"><span class="uil-lock-alt fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 3){
-                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger">'+
+                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-danger" disabled="disabled">'+
 	                    '<div style="display: flex;" class="mx-n2"><span class="uil-wrench fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                 	else if(data[j].State == 4){
-                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning">'+
+                		contentHtml += '<td><button type="button" onclick="NoBooking('+data[j].State+')" id="" class="btn btn-outline-warning" disabled="disabled">'+
 	                    '<div style="display: flex;" class="mx-n2"><span class="uil-lock-slash fs-1"></span>&ensp;<div class="mt-1" style="width: 24px;">' + data[j].PLockerNo + '</div></div></button></td>';
                 	}
                     
@@ -563,8 +590,10 @@ function NoBooking(message) {
     modalcheck = true;
 }
 
-var PrevPLockerID = 0;
+var PrevPLockerID = $('#PLockerID').val();
 var PrevButton = null;
+DBPLockerPrice = removeCommasFromNumber($('#PLockerPrice').val());
+var DBregmonth = $('#regmonth').val();
 function StartBooking(plockerid,NowButton) {
 	$.ajax({
         type: "POST", 
@@ -620,6 +649,11 @@ function StartBooking(plockerid,NowButton) {
 	});
 }
 
+$('#regdate').val(getCurrentDate());
+$('#fromdate').val(plusDay($('#fromdate').val(),1));
+dateChange();
+
+
 $('#regmonth, #fromdate').on('change', function() {
 	dateChange();
 });
@@ -639,6 +673,7 @@ function dateChange() {
     $('#todate').val(formattedDateString);
     
     PLockerPriceChange();
+    PLockerDepositeChange();
 }   
 function PLockerPriceChange(){
    	var totalPLockerPrice;
@@ -731,6 +766,7 @@ function save() {
 	    modalcheck = true;
 	    return false;
 	}else{
+		PrevLockerReturn();
 		$.ajax({
 	        type: "POST", 
 	        url: "useLockerInsert",
@@ -818,10 +854,10 @@ function payCash() {
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	PLockerPriceChange();
-	
+	PrevLockerReturn();
 	$.ajax({
         type: "POST", 
-        url: "useLockerInsert",
+        url: "useLockerReInsert",
         dataType : 'json',
         data: { 
         	LockerID : PrevPLockerID,
@@ -862,10 +898,10 @@ function payCash() {
         	        	FPKID : data,
         	        	SiteCode : $('#sitecode').val(),
         	        	SaleDate : $('#regdate').val(),
-        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
+        	        	RealSaleDate : $('#paidbody tr#PLockerPrice').find('.paiddate').text(),
         	        	SaleType : '사물함',
-        	        	PayType : $('#paidbody tr').find('.paidcategory').text(),
-        	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
+        	        	PayType : $('#paidbody tr#PLockerPrice').find('.paidcategory').text(),
+        	        	Price : removeCommasFromNumber($('#paidbody tr#PLockerPrice').find('.paidprice').text()),
         	        	PaidGroupSaleNo : data
         	        },
         	        success: function(success) {	
@@ -917,7 +953,7 @@ function payDeposite() {
 	
 	$.ajax({
         type: "POST", 
-        url: "useLockerInsert",
+        url: "useLockerReInsert",
         dataType : 'json',
         data: { 
         	LockerID : PrevPLockerID,
@@ -991,7 +1027,7 @@ function paycredit() {
 	    return false;
 	}
 
-	var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+PrevPLockerID;
+	var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+PrevPLockerID+'&recheck=1';
 	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
     if (myPopup === undefined || myPopup.closed) {
         myPopup = window.open(url, "_blank", windowFeatures);
@@ -1012,6 +1048,7 @@ function totalchange() {
 	if($('#GroupSaleNo').val() == ''){
 		accountChange();
 	}else{
+		PrevLockerReturn();
 		$.ajax({
 	        type: "POST", 
 	        url: "UpduseLocker", 
@@ -1079,10 +1116,10 @@ function payAccount(){
 function accountChange() {
 	$('#paidbody tr#new').attr('id','PLockerPrice');
 	PLockerPriceChange();
-	
+	PrevLockerReturn();
 	$.ajax({
         type: "POST", 
-        url: "useLockerInsert",
+        url: "useLockerReInsert",
         dataType : 'json',
         data: { 
         	LockerID : PrevPLockerID,
@@ -1123,21 +1160,21 @@ function accountChange() {
         	        	FPKID : data,
         	        	SiteCode : $('#sitecode').val(),
         	        	SaleDate : $('#regdate').val(),
-        	        	RealSaleDate : $('#paidbody tr').find('.paiddate').text(),
+        	        	RealSaleDate : $('#paidbody tr#PLockerPrice').find('.paiddate').text(),
         	        	SaleType : '사물함',
-        	        	PayType : $('#paidbody tr').find('.paidcategory').text(),
+        	        	PayType : $('#paidbody tr#PLockerPrice').find('.paidcategory').text(),
         	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
-        	        	AssignType : $('#paidbody tr').find('.paidassignType').text(), 
-        	        	Maeipsa : $('#paidbody tr').find('.paidmapsa').text(), 
-        	        	CardName : $('#paidbody tr').find('.paidcardtype').text(),
-    					AssignNo : $('#paidbody tr').find('.paidassignN').text(),
-    					Pos : $('#paidbody tr').find('.POS').text(),
-    					SignPad : $('#paidbody tr').find('.signpad').text(),
-    					Halbu : $('#paidbody tr').find('.Halbu').text(),
-    					SaleTime : $('#paidbody tr').find('.SaleTime').text(),
+        	        	AssignType : $('#paidbody tr#PLockerPrice').find('.paidassignType').text(), 
+        	        	Maeipsa : $('#paidbody tr#PLockerPrice').find('.paidmapsa').text(), 
+        	        	CardName : $('#paidbody tr#PLockerPrice').find('.paidcardtype').text(),
+    					AssignNo : $('#paidbody tr#PLockerPrice').find('.paidassignN').text(),
+    					Pos : $('#paidbody tr#PLockerPrice').find('.POS').text(),
+    					SignPad : $('#paidbody tr#PLockerPrice').find('.signpad').text(),
+    					Halbu : $('#paidbody tr#PLockerPrice').find('.Halbu').text(),
+    					SaleTime : $('#paidbody tr#PLockerPrice').find('.SaleTime').text(),
         	        	PaidGroupSaleNo : data,
-        	        	OID : $('#paidbody tr').find('.OID').text(),
-    					TID : $('#paidbody tr').find('.TID').text()
+        	        	OID : $('#paidbody tr#PLockerPrice').find('.OID').text(),
+    					TID : $('#paidbody tr#PLockerPrice').find('.TID').text()
         	        },
         	        success: function(success) {	
         	        	window.opener.location.reload();
@@ -1157,6 +1194,30 @@ function accountChange() {
 	});
 }
 
+function PrevLockerReturn() {
+	$.ajax({
+        type: "POST", 
+        url: "lockerReturn", 
+        dataType : 'json',
+        data: {
+        	PKID : '${param.PKID}',
+        	LockerID : '${param.PLockerID}',
+        	ReturnDate : getCurrentDate(),
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+        	}else{
+        	}
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
 
 //paid 의 결제 일자를 넣기 위한 현재날짜 포맷
 function getCurrentDateTime() {
@@ -1189,18 +1250,6 @@ function deleteRow() {
         
         PLockerPriceChange();
         PLockerDepositeChange();
-    }
-}
-
-function payCancel() {
-    if (previousRow !== null) {
-        // Find the row with the class 'paidprice' within the previousRow
-        var paidPriceText = $(previousRow).find('.paidprice').text();
-
-        // Display the text in an alert window
-        alert('Paid Price: ' + paidPriceText);
-    } else {
-        alert('No row selected.');
     }
 }
 </script>

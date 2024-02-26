@@ -1,6 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import java.net.URLDecoder;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
@@ -1316,6 +1315,11 @@ public class VtcMemberController {
 	public String mLockerF(tblmember tblmember,tblCode tblCode,Model model) throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
 		List<tblplockergroup> lockergrouplist = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
@@ -1344,6 +1348,11 @@ public class VtcMemberController {
 	public String mLockerSelectF(tblmember tblmember,tbluselocker tbluselocker,tblCode tblCode,tblpaid tblpaid,tblplocker tblplocker,tbldeposite tbldeposite,Model model)throws Exception{
 		
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 		
 		tbluselocker.setSiteCode(users.getSiteCode());
 		
@@ -1413,5 +1422,52 @@ public class VtcMemberController {
 		model.addAttribute("julsak",julsak);
 		
 		return "member/registration/mLockerDetailF";
+	}
+	
+	@GetMapping("/mLockerReInsertF.do")
+	public String mLockerReInsertF(tblmember tblmember,tblCode tblCode,tblplocker tblplocker,tbldeposite tbldeposite,Model model) throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		List<tblplockergroup> lockergrouplist = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblplocker.setSiteCode(users.getSiteCode());
+		
+		Map<String, Object>lockerInfo = vtcLockerService.PLockerJoinGroupByID(tblplocker);
+		
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		
+		String mleveltext = "";
+		
+		for(tblCode tblCode2 : codelist) {
+			if(tblCode2.getPkid() == member.getMLevel()) {
+				mleveltext = tblCode2.getCodeName();
+			}
+		}
+		
+		tbldeposite.setSiteCode(users.getSiteCode());
+		
+		tbldeposite.setMemberID(member.getMemberID());
+		
+		tbldeposite.setLockerID(tblplocker.getPLockerID());
+		
+		List<tbldeposite> deposite = vtcLockerService.DepositeByMemberID(tbldeposite);
+		
+		model.addAttribute("lockergrouplist",lockergrouplist);
+		model.addAttribute("lockerinfo",lockerInfo);
+		model.addAttribute("tbldeposite",deposite);
+		model.addAttribute("member",member);
+		model.addAttribute("mleveltext",mleveltext);
+		
+		return "member/registration/mLockerReInsertF";
 	}
 }

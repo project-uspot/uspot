@@ -517,13 +517,8 @@
 		from fmsc_s01 a
 		left join tbldc b on a.sitecode = b.sitecode and a.dcid = b.dcid  
 		where
-<<<<<<< HEAD
 			a.IsDelete  = 'N'
 		and a.Group_SaleNo = #{GroupSaleNo}
-=======
-			IsDelete  = 'N'
-		and Group_SaleNo = #{GroupSaleNo}
->>>>>>> refs/remotes/origin/develop
 	</select>
 	
 	<select id="selectRefund" parameterType="Map" resultType="Map">
