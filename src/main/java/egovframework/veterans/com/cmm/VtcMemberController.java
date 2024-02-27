@@ -118,16 +118,19 @@ public class VtcMemberController {
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
+		tbldeposite tbldeposite = new tbldeposite();
+		tbldeposite.setSiteCode(users.getSiteCode());
+		tbldeposite.setMemberID(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
 		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
 		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
-				.fmsc_s01toselectitemanothersite(fmsc_s01);
+		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
 		List<DC> dcList = vtcDCService.dclist(dc);
 		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
 		List<Sitecode> SiteList = vtcService.listSiteName();
+		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
 
 		model.addAttribute("dclist", dcList);
 		model.addAttribute("tblmember", tblmember);
@@ -139,6 +142,113 @@ public class VtcMemberController {
 		model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
 		model.addAttribute("pissdclist", pissdclist);
 		model.addAttribute("sitelist", SiteList);
+		model.addAttribute("depositeList",depositeList);
+
+		return "member/registration/memberregiF";
+	}
+	
+	@GetMapping("memberfindone")
+	public String memberfindone(Model model, DC dc, tblmember tblmember,
+			@RequestParam(name = "findvalue") String findvalue, @RequestParam(name = "findcategory") int findcategory)
+			throws Exception {
+
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+
+			return "redirect:login.do";
+		}
+
+		Map<String, Object> find = new HashMap<>();
+
+		find.put("findvalue", findvalue);
+		find.put("findcategory", findcategory);
+
+		List<tblmember> findlist = vtcMemberService.findmember(find);
+
+		tblmember = findlist.get(0);
+
+		fmsc_s01 fmsc_s01 = new fmsc_s01();
+		fmsc_s01.setCustCode(tblmember.getMemberID());
+		fmsc_s01.setSiteCode(tblmember.getSiteCode());
+		tblCode tblCode = new tblCode();
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		dc.setSiteCode(users.getSiteCode());
+		tbldeposite tbldeposite = new tbldeposite();
+		tbldeposite.setSiteCode(users.getSiteCode());
+		tbldeposite.setMemberID(tblmember.getMemberID());
+		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
+		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
+		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
+				.fmsc_s01toselectitemanothersite(fmsc_s01);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
+		List<Sitecode> SiteList = vtcService.listSiteName();
+		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+
+		model.addAttribute("dclist", dcList);
+		model.addAttribute("tblmember", tblmember);
+		model.addAttribute("codelist", codelist);
+		model.addAttribute("fmsc_s01", fmsc_s01toselectitem);
+		model.addAttribute("lockerlist", memberuselocker);
+		model.addAttribute("paidlist", memberexpensesale);
+		model.addAttribute("talklist", tblmembertalks);
+		model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
+		model.addAttribute("pissdclist", pissdclist);
+		model.addAttribute("sitelist", SiteList);
+		model.addAttribute("depositeList",depositeList);
+
+		return "member/registration/memberregiF";
+
+	}
+	
+	// TODO 회원등록관리 회원조회 프로세스
+	@GetMapping("/memberfind")
+	public String memberfindF(Model model, DC dc, tblmember memberid) throws Exception {
+
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+
+			return "redirect:login.do";
+		}
+
+		tblmember tblmember = vtcMemberService.tblmemberBymemberId(memberid);
+
+		fmsc_s01 fmsc_s01 = new fmsc_s01();
+		fmsc_s01.setCustCode(tblmember.getMemberID());
+		fmsc_s01.setSiteCode(tblmember.getSiteCode());
+		tblCode tblCode = new tblCode();
+		tblCode.setSiteCode(users.getSiteCode());
+		tblCode.setCodeGroupID("6");
+		dc.setSiteCode(users.getSiteCode());
+		tbldeposite tbldeposite = new tbldeposite();
+		tbldeposite.setSiteCode(users.getSiteCode());
+		tbldeposite.setMemberID(tblmember.getMemberID());
+		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
+		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
+		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
+		List<tblCode> codelist = vtcService.listTblCode(tblCode);
+		List<DC> dcList = vtcDCService.dclist(dc);
+		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
+		List<Sitecode> SiteList = vtcService.listSiteName();
+		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+	
+		model.addAttribute("dclist", dcList);
+		model.addAttribute("tblmember", tblmember);
+		model.addAttribute("codelist", codelist);
+		model.addAttribute("fmsc_s01", fmsc_s01toselectitem);
+		model.addAttribute("lockerlist", memberuselocker);
+		model.addAttribute("paidlist", memberexpensesale);
+		model.addAttribute("talklist", tblmembertalks);
+		model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
+		model.addAttribute("pissdclist", pissdclist);
+		model.addAttribute("sitelist", SiteList);
+		model.addAttribute("depositeList",depositeList);
 
 		return "member/registration/memberregiF";
 	}
@@ -191,60 +301,7 @@ public class VtcMemberController {
 
 		return "redirect:membership.do";
 	}
-
-	@GetMapping("memberfindone")
-	public String memberfindone(Model model, DC dc, tblmember tblmember,
-			@RequestParam(name = "findvalue") String findvalue, @RequestParam(name = "findcategory") int findcategory)
-			throws Exception {
-
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if (users == null) {
-
-			return "redirect:login.do";
-		}
-
-		Map<String, Object> find = new HashMap<>();
-
-		find.put("findvalue", findvalue);
-		find.put("findcategory", findcategory);
-
-		List<tblmember> findlist = vtcMemberService.findmember(find);
-
-		tblmember = findlist.get(0);
-
-		fmsc_s01 fmsc_s01 = new fmsc_s01();
-		fmsc_s01.setCustCode(tblmember.getMemberID());
-		fmsc_s01.setSiteCode(tblmember.getSiteCode());
-		tblCode tblCode = new tblCode();
-		tblCode.setSiteCode(users.getSiteCode());
-		tblCode.setCodeGroupID("6");
-		dc.setSiteCode(users.getSiteCode());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
-		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
-				.fmsc_s01toselectitemanothersite(fmsc_s01);
-		List<tblCode> codelist = vtcService.listTblCode(tblCode);
-		List<DC> dcList = vtcDCService.dclist(dc);
-		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
-		List<Sitecode> SiteList = vtcService.listSiteName();
-
-		model.addAttribute("dclist", dcList);
-		model.addAttribute("tblmember", tblmember);
-		model.addAttribute("codelist", codelist);
-		model.addAttribute("fmsc_s01", fmsc_s01toselectitem);
-		model.addAttribute("lockerlist", memberuselocker);
-		model.addAttribute("paidlist", memberexpensesale);
-		model.addAttribute("talklist", tblmembertalks);
-		model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
-		model.addAttribute("pissdclist", pissdclist);
-		model.addAttribute("sitelist", SiteList);
-
-		return "member/registration/memberregiF";
-
-	}
-
+	
 	@PostMapping("memberfind")
 	@ResponseBody
 	public String memberfind(@RequestParam(name = "findvalue") String findvalue,
@@ -297,49 +354,6 @@ public class VtcMemberController {
 		model.addAttribute("sitelist", sitelist);
 
 		return "member/registration/memberfindlist";
-	}
-
-	// TODO 회원등록관리 회원조회 프로세스
-	@GetMapping("/memberfind")
-	public String memberfindF(Model model, DC dc, tblmember memberid) throws Exception {
-
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if (users == null) {
-
-			return "redirect:login.do";
-		}
-
-		tblmember tblmember = vtcMemberService.tblmemberBymemberId(memberid);
-
-		fmsc_s01 fmsc_s01 = new fmsc_s01();
-		fmsc_s01.setCustCode(tblmember.getMemberID());
-		fmsc_s01.setSiteCode(tblmember.getSiteCode());
-		tblCode tblCode = new tblCode();
-		tblCode.setSiteCode(users.getSiteCode());
-		tblCode.setCodeGroupID("6");
-		dc.setSiteCode(users.getSiteCode());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
-		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
-		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
-		List<tblCode> codelist = vtcService.listTblCode(tblCode);
-		List<DC> dcList = vtcDCService.dclist(dc);
-		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
-		List<Sitecode> SiteList = vtcService.listSiteName();
-	
-		model.addAttribute("dclist", dcList);
-		model.addAttribute("tblmember", tblmember);
-		model.addAttribute("codelist", codelist);
-		model.addAttribute("fmsc_s01", fmsc_s01toselectitem);
-		model.addAttribute("lockerlist", memberuselocker);
-		model.addAttribute("paidlist", memberexpensesale);
-		model.addAttribute("talklist", tblmembertalks);
-		model.addAttribute("anotherlist", fmsc_s01toselectitemanother);
-		model.addAttribute("pissdclist", pissdclist);
-		model.addAttribute("sitelist", SiteList);
-
-		return "member/registration/memberregiF";
 	}
 
 	@GetMapping("memberinsert")

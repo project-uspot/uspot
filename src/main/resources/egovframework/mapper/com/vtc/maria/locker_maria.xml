@@ -353,4 +353,14 @@ and IsDelete = 'N'
 <update id="refundUseLocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
 {call SP_LockerRefund(#{PKID},#{SiteCode},#{LockerID},#{ReturnDate},#{Use_Price},#{WiyakPrice},#{GongjePrice},#{TotalCnt},#{UseCnt},#{UpdUserPKID})}
 </update>
+
+<select id="DepositeListByMember" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite" resultType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+select * from tbldeposite
+where 
+	MemberID = #{MemberID}
+and IsDelete = 'N'
+and SiteCode = #{SiteCode}
+order by LockerID,AddDate desc
+</select>
+
 </mapper>

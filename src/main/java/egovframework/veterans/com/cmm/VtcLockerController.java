@@ -1,8 +1,11 @@
 package egovframework.veterans.com.cmm;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -591,5 +594,28 @@ public class VtcLockerController{
 		vtcLockerService.UpdPLocker(tblplocker);
 		
 		return tbluselocker.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/depositeInsertAndgetList")
+	public List<tbldeposite> depositeInsertAndgetList(tbldeposite tbldeposite) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			
+			List<tbldeposite> Tbldeposites = new ArrayList<tbldeposite>();
+			
+			Tbldeposites = null;
+			return Tbldeposites;
+		}
+		
+		tbldeposite.setSiteCode(users.getSiteCode());
+		tbldeposite.setAddUserPKID(users.getUserPKID());
+		System.out.println(tbldeposite);
+		vtcLockerService.DepositeInsert(tbldeposite);
+		
+		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+		
+		return depositeList;
 	}
 }

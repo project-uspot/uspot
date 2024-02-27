@@ -140,4 +140,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public void refundUseLocker(tbluselocker tbluselocker)throws Exception{
 		update("locker.refundUseLocker",tbluselocker);
 	}
+	
+	public List<tbldeposite> DepositeListByMember(tbldeposite tbldeposite)throws Exception{
+		return selectList("locker.DepositeListByMember",tbldeposite);
+	}
 }

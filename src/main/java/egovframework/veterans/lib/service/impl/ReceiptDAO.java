@@ -13,6 +13,10 @@ public class ReceiptDAO extends EgovComAbstractDAO {
 	public List<Map<String, Object>> getReceipt(String pkid) {
 		return selectList("receipt.getReceipt",pkid);
 	}
+	
+	public List<Map<String, Object>> getReceiptLocker(String pkid) {
+		return selectList("receipt.getReceiptLocker",pkid);
+	}
 
 	public void insertReceipt(Map<String, Object> sqlMap) {
 		insert("receipt.insertReceipt",sqlMap);

@@ -69,4 +69,6 @@ public interface VtcLockerService {
 	void CanceluseLocker(tbluselocker tbluselocker)throws Exception;
 	
 	void refundUseLocker(tbluselocker tbluselocker)throws Exception;
+	
+	List<tbldeposite> DepositeListByMember(tbldeposite tbldeposite)throws Exception;
 }

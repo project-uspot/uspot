@@ -99,6 +99,7 @@
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
 </head>
 <body>
 	<main class="main" id="top">

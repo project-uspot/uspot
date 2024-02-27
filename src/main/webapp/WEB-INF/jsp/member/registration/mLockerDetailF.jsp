@@ -36,7 +36,7 @@
 						<button class="btn btn-success" type="button" onclick="save()">저장</button>						
 						<button class="btn btn-secondary" type="button" onclick="Return()">반납</button>
 						<!-- <button class="btn btn-danger" type="button" onclick="Delete()">삭제</button> -->
-						<button class="btn btn-soft-danger" type="button">영수증</button>
+						<button class="btn btn-soft-danger" type="button" onclick="reReceipt()">영수증</button>
 						<button class="btn btn-soft-info" type="button" onclick="Change()">변경</button>
             		</div>
         		</div>

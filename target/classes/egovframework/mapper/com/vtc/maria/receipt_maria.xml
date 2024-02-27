@@ -23,6 +23,29 @@
 	]]>
 	</select>
 
+	<select id="getReceiptLocker" parameterType="String" resultType="Map">
+	<![CDATA[
+		select a.PKID, d.SiteCode
+		, d.SiteName , d.SiteBNo ,d.PName , d.Address , d.SubAddress ,d.Phone1
+		, e.MemberID , e.Name , e.CellPhone
+		, g.PLockerGroupName , g.PLockerLocation , c.PLockerNo
+		, b.FromDate , b.ToDate , b.RegMonth , IFNULL (b.DCPrice,0) as DCPrice, b.UsePrice , b.Misu , b.RegDate 
+		, case when ifnull(g.NVAT,'N') = 'Y' then ROUND(b.UsePrice * 10/11) else 0 end as gonggub
+		, case when ifnull(g.NVAT,'N') = 'Y' then ROUND(b.UsePrice- (b.UsePrice * 10/11)) else 0 end as vat
+		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
+		, f.SawonName , f.SawonNo 
+		from tblPaid a
+		left join tbluselocker b on a.SiteCode = b.SiteCode and a.PaidGroupSaleNo = b.PKID 
+		left join tblplocker c on a.SiteCode = c.SiteCode and b.LockerID = c.PLockerID 
+		left join tblplockergroup g on a.SiteCode = g.SiteCode and c.PLockerGroupID = g.PLockerGroupID
+		left join tblsite d on a.SiteCode = d.SiteCode 
+		left join tblmember e on b.MemberID = e.MemberID 
+		left join tblUser f on a.AddUserPKID = f.UserPKID 
+		where a.isDelete = 'N'
+		and a.PKID = #{value}
+	]]>
+	</select>
+	
 	<insert id="insertReceipt" parameterType="Map">
 	<!-- <![CDATA[
 	INSERT INTO tbl_receipt (SiteCode, FPKID, SiteBNo, SaleDate, ReceiptText, MemberID, CellPhone, IsDelete)
