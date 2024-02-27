@@ -20,6 +20,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 	}
 
 	@Override
+	public List<Map<String, Object>> getReceiptLocker(String pkid) {
+		return receiptDAO.getReceiptLocker(pkid);
+	}
+	
+	@Override
 	public void insertReceipt(Map<String, Object> sqlMap) {
 		 receiptDAO.insertReceipt(sqlMap);
 	}
@@ -28,5 +33,4 @@ public class ReceiptServiceImpl implements ReceiptService {
 	public Map<String, Object> getReReceipt(Map<String, Object> setSql) {
 		return receiptDAO.getReReceipt(setSql);
 	}
-
 }
