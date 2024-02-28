@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.DC;
-import egovframework.veterans.com.cmm.service.vo.Expense;
-import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpense;
+import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
@@ -37,19 +38,19 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	public int getDCSortOrder(String siteCode) {
 		return selectOne("paid.getDCSortOrder", siteCode);
 	}	
-	public List<ExpenseGroup> selectExpenseGroup(String SiteCode) throws Exception {
+	public List<tblexpensegroup> selectExpenseGroup(String SiteCode) throws Exception {
 		return selectList("paid.selectExpenseGroup", SiteCode);
 	}
-	public ExpenseGroup getExpenseGroupDetail(ExpenseGroup group) throws Exception {
+	public tblexpensegroup getExpenseGroupDetail(tblexpensegroup group) throws Exception {
 		return selectOne("paid.getExpenseGroupDetail", group);
 	}
-	public void updateExpenseGroup(ExpenseGroup group) throws Exception {
+	public void updateExpenseGroup(tblexpensegroup group) throws Exception {
 		update("paid.updateExpenseGroup", group);
 	}
-	public void insertExpenseGroup(ExpenseGroup group) throws Exception {
+	public void insertExpenseGroup(tblexpensegroup group) throws Exception {
 		insert("paid.insertExpenseGroup", group);
 	}
-	public void deleteExpenseGroup(ExpenseGroup group) throws Exception {
+	public void deleteExpenseGroup(tblexpensegroup group) throws Exception {
 		update("paid.deleteExpenseGroup", group);
 	}
 	public int getExGpSortOrder(String siteCode) {
@@ -57,19 +58,19 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	}
 
 	
-	public List<Expense> selectExpense(String SiteCode) throws Exception {
+	public List<tblexpense> selectExpense(String SiteCode) throws Exception {
 		return selectList("paid.selectExpense", SiteCode);
 	}
-	public Expense getExpenseDetail(Expense expense) throws Exception {
+	public tblexpense getExpenseDetail(tblexpense expense) throws Exception {
 		return selectOne("paid.getExpenseDetail", expense);
 	}
-	public void updateExpense(Expense expense) throws Exception {
+	public void updateExpense(tblexpense expense) throws Exception {
 		update("paid.updateExpense", expense);
 	}
-	public void insertExpense(Expense expense) throws Exception {
+	public void insertExpense(tblexpense expense) throws Exception {
 		insert("paid.insertExpense", expense);
 	}
-	public void deleteExpense(Expense expense) {
+	public void deleteExpense(tblexpense expense) {
 		update("paid.deleteExpense", expense);
 	}
 	public int getExSortOrder(String siteCode) {
@@ -106,5 +107,13 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	
 	public void ReceiptInsert(tblpaid tblpaid)throws Exception{
 		update("paid.ReceiptInsert",tblpaid);
+	}
+	
+	public List<tblexpense> ExpenseByGroupID(tblexpense tblexpense)throws Exception{
+		return selectList("paid.ExpenseByGroupID",tblexpense);
+	}
+	
+	public void ExpenseSaleInsert(tblexpensesale tblexpensesale)throws Exception{
+		insert("paid.ExpenseSaleInsert",tblexpensesale);
 	}
 }

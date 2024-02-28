@@ -1,5 +1,7 @@
 package egovframework.veterans.com.cmm;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.HashMap;
 
 import java.util.List;
@@ -16,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.DC;
-import egovframework.veterans.com.cmm.service.vo.Expense;
-import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpense;
+import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.lib.OfflinePayController;
@@ -128,20 +131,20 @@ public class VtcPaidController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
-		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
+		List<tblexpensegroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expenseGroup";
 	}
 	
 	@RequestMapping(value="ExpenseGroupUdp.do")
-	public String expenseGroupModify(ModelMap model, ExpenseGroup group)  throws Exception{
+	public String expenseGroupModify(ModelMap model, tblexpensegroup group)  throws Exception{
 		group = VtcPaidService.getExpenseGroupDetail(group);
 		model.addAttribute("list", group);
 		return "basic/paid/expenseGroup_modify";
 	}
 	
 	@RequestMapping(value="ExpenseGroupUdpOK.do")
-	public String expenseGroupModifyOK(ExpenseGroup group, HttpServletRequest request, ModelMap model) throws Exception {
+	public String expenseGroupModifyOK(tblexpensegroup group, HttpServletRequest request, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -173,7 +176,7 @@ public class VtcPaidController {
 	}
 	
 	@RequestMapping(value="ExpenseGpInsertOK.do")
-	public String ExpenseGroupInsertOK(ExpenseGroup group, ModelMap model) throws Exception {
+	public String ExpenseGroupInsertOK(tblexpensegroup group, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -188,7 +191,7 @@ public class VtcPaidController {
 		return "redirect:ExpenseGroup.do";
 	}
 	@RequestMapping(value="deleteExpGp.do")
-	public String deleteExpGp(ModelMap model, ExpenseGroup group) throws Exception {
+	public String deleteExpGp(ModelMap model, tblexpensegroup group) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -210,15 +213,15 @@ public class VtcPaidController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
-		List<Expense> list = VtcPaidService.selectExpense(users.getSiteCode());
+		List<tblexpense> list = VtcPaidService.selectExpense(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expense";
 	}
 	
 	@RequestMapping(value="ExpenseUpd.do")
-	public String expenseModify(ModelMap model, Expense expense, HttpServletRequest request) throws Exception {
+	public String expenseModify(ModelMap model, tblexpense expense, HttpServletRequest request) throws Exception {
 		String SiteCode = request.getParameter("SiteCode");
-		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(SiteCode);
+		List<tblexpensegroup> list = VtcPaidService.selectExpenseGroup(SiteCode);
 
 		expense = VtcPaidService.getExpenseDetail(expense);
 		
@@ -228,20 +231,20 @@ public class VtcPaidController {
 		return "basic/paid/expense_modify";
 	}
 	@RequestMapping(value="ExpenseUpdOK.do")
-	public String expenseModifyOK(Expense expense) throws Exception {
+	public String expenseModifyOK(tblexpense expense) throws Exception {
 		VtcPaidService.updateExpense(expense);
 		return "redirect:Expense.do";
 	}
 	
 	@RequestMapping(value="ExpenseInsert.do")
-	public String ExpenseInsert(Expense expense, HttpServletRequest request, ModelMap model) throws Exception {
+	public String ExpenseInsert(tblexpense expense, HttpServletRequest request, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
-		List<ExpenseGroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
+		List<tblexpensegroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
 		int SortOrder = VtcPaidService.getExSortOrder(users.getSiteCode());
 		
 		model.addAttribute("list", list);
@@ -250,7 +253,7 @@ public class VtcPaidController {
 	}
 	
 	@RequestMapping(value="ExpenseInsertOK.do")
-	public String ExpenseInsertOK(Expense expense, HttpServletRequest request, ModelMap model) throws Exception {
+	public String ExpenseInsertOK(tblexpense expense, HttpServletRequest request, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -265,7 +268,7 @@ public class VtcPaidController {
 		return "redirect:Expense.do";
 	}
 	@RequestMapping(value="deleteExp.do")
-	public String deleteExpense(ModelMap model, Expense expense) throws Exception {
+	public String deleteExpense(ModelMap model, tblexpense expense) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		if(users == null){
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
@@ -351,8 +354,38 @@ public class VtcPaidController {
 		tblpaid.setUpdUserPKID(users.getUserPKID());
 		
 		VtcPaidService.ReceiptInsert(tblpaid);
-		System.out.println(tblpaid);
 		
 		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/ExpenseByGroupID")
+	public List<tblexpense> ExpenseByGroupID(tblexpense tblexpense)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return null;
+		}
+		
+		tblexpense.setSiteCode(users.getSiteCode());
+		List<tblexpense> expenselist = VtcPaidService.ExpenseByGroupID(tblexpense);
+		
+		return expenselist;
+	}
+	
+	@ResponseBody
+	@PostMapping("/ExpenseSaleInsert")
+	public int ExpenseSaleInsert(tblexpensesale tblexpensesale)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return 0;
+		}
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setAddUserPKID(users.getUserPKID());
+		
+		VtcPaidService.ExpenseSaleInsert(tblexpensesale);
+		
+		return tblexpensesale.getPKID();
 	}
 }

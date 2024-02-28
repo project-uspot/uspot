@@ -74,14 +74,14 @@
 			SiteCode = #{SiteCode}
 	</select>
 	
-	
-	<select id="selectExpenseGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+	<select id="selectExpenseGroup" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup">
 		select * from tblExpenseGroup
 		where
 			SiteCode = #{SiteCode}
 		and IsDelete = 'N'
+		order by SortOrder
 	</select>
-	<select id="getExpenseGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup" resultType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+	<select id="getExpenseGroupDetail" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup" resultType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup">
 		select * 
 		from tblexpensegroup
 		where
@@ -89,7 +89,7 @@
 		and ExpenseGroupID = #{ExpenseGroupID}
 		and IsDelete = 'N'
 	</select>
-	<update id="updateExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+	<update id="updateExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup">
 		update tblexpensegroup set
 			ExpenseGroupName = #{ExpenseGroupName}
 			,SortOrder = #{SortOrder}
@@ -99,13 +99,13 @@
 			SiteCode = #{SiteCode}
 		and ExpenseGroupID = #{ExpenseGroupID}
 	</update>
-	<insert id="insertExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+	<insert id="insertExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup">
 		INSERT INTO tblexpensegroup
 			(SiteCode, ExpenseGroupName, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
 		VALUES
 			(#{SiteCode}, #{ExpenseGroupName}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
 	</insert>
-	<update id="deleteExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.ExpenseGroup">
+	<update id="deleteExpenseGroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensegroup">
 		update tblexpensegroup set
 			IsDelete = 'Y'
 			, UpdUserPKID = #{UpdUserPKID}
@@ -122,7 +122,7 @@
 			SiteCode = #{SiteCode}
 	</select>
 	
-	<select id="selectExpense" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+	<select id="selectExpense" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblexpense">
 		select 
 			a.SiteCode , ExpenseID, ExpenseGroupName, ExpenseName, case ExpenseType when 'I' then '수입' else '지출' end as 'ExpenseType'
 			, case NVAT when 'Y' then '포함' else '미포함' end as 'Nvat', DefPrice, a.SortOrder
@@ -132,7 +132,7 @@
 			a.SiteCode = #{SiteCode}
 		and a.IsDelete = 'N'
 	</select> 
-	<select id="getExpenseDetail" parameterType="egovframework.veterans.com.cmm.service.vo.Expense" resultType="egovframework.veterans.com.cmm.service.vo.Expense">
+	<select id="getExpenseDetail" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpense" resultType="egovframework.veterans.com.cmm.service.vo.tblexpense">
 		select 
 			a.SiteCode , ExpenseID, b.ExpenseGroupName, a.ExpenseName, ExpenseType 
 			, Nvat , DefPrice, a.SortOrder
@@ -143,7 +143,7 @@
 		and a.IsDelete = 'N'
 		and a.ExpenseID = #{ExpenseID}
 	</select>
-	<update id="updateExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+	<update id="updateExpense" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpense">
 		update tblexpense set
 			ExpenseGroupID = #{ExpenseGroupID}
 			, ExpenseName = #{ExpenseName}
@@ -158,13 +158,13 @@
 		and IsDelete = 'N'
 		and ExpenseID = #{ExpenseID}
 	</update>
-	<insert id="insertExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+	<insert id="insertExpense" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpense">
 		INSERT INTO tblexpense
 			(SiteCode, ExpenseGroupID, ExpenseName, ExpenseType, DefPrice, NVAT, SortOrder, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID)
 		VALUES
 			(#{SiteCode}, #{ExpenseGroupID}, #{ExpenseName}, #{ExpenseType}, #{DefPrice}, #{Nvat}, #{SortOrder}, 'N', sysdate(), #{AddUserPKID}, null, 0);
 	</insert>
-	<update id="deleteExpense" parameterType="egovframework.veterans.com.cmm.service.vo.Expense">
+	<update id="deleteExpense" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpense">
 		update tblexpense set
 			IsDelete = 'Y'
 			, UpdUserPKID = #{UpdUserPKID}
@@ -495,4 +495,22 @@
 		and PKID = #{PKID}
 		and IsDelete = 'N'
 	</update>
+	<select id="ExpenseByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpense" resultType="egovframework.veterans.com.cmm.service.vo.tblexpense">
+		select * from tblexpense
+		where
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and ExpenseGroupID = #{ExpenseGroupID}
+		order by SortOrder
+	</select>
+	<insert id="ExpenseSaleInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensesale" useGeneratedKeys="true" keyProperty="PKID">
+		INSERT INTO tblexpensesale
+		(SiteCode, ExpenseID, `InOut`, SaleDate, 
+		Price, MemberID, IsMemMode, ExpCnt, 
+		Note, IsDelete, AddDate, AddUserPKID)
+		values
+		(#{SiteCode},#{ExpenseID},#{InOut},#{SaleDate}, 
+		#{Price},#{MemberID},#{IsMemMode},#{ExpCnt}, 
+		#{Note},'N',now(),#{AddUserPKID})
+	</insert>
 </mapper>

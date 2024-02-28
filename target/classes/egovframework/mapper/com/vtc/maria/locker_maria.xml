@@ -362,5 +362,12 @@ and IsDelete = 'N'
 and SiteCode = #{SiteCode}
 order by LockerID,AddDate desc
 </select>
-
+<insert id="InsertDepositeRefund" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
+INSERT tbldeposite(SiteCode, LockerID, MemberID, SaleDate, RealSaleDate, Deposite, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, OriginPKID)
+(select SiteCode, LockerID, MemberID, DATE_FORMAT(now(),'%Y-%m-%d') SaleDate,now() RealSaleDate,#{Deposite} Deposite, IsDelete, now() AddDate,#{AddUserPKID} AddUserPKID,'' UpdDate, 0 UpdUserPKID,#{OriginPKID} OriginPKID
+FROM tbldeposite
+where
+	PKID = #{OriginPKID}
+)
+</insert>
 </mapper>

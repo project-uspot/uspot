@@ -904,7 +904,18 @@
 					}
                     
                     function etcPaidF() {
-						
+                    	var url = 'etcPaidInsertF.do?MemberID='+$('#memberID').val();
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1250,height=550";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
 					}
                     
                     function openpop(url,windowFeatures) {
@@ -952,7 +963,7 @@
                         	mLockerF();
                         }
                         if (event.ctrlKey && event.key === 'q') {
-                        	mitemrefund();
+                        	etcPaidF();
                         }
                     });
                     var previousRow = null;
@@ -1310,7 +1321,7 @@
                             			<button class="btn btn-info mt-n2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop12">등록</button>
                             		</div>
                             		<div class="col-auto">
-                            			<button class="btn btn-danger mt-n2" type="button" onclick="depositeDelete()">환불</button>
+                            			<button class="btn btn-danger mt-n2" type="button" onclick="Refunddeposite()">환불</button>
                             		</div>
                             	</div>
                                 <div id="tabledeposite" data-list='{"valueNames":["SaleDate","Deposite","AddDate"]}' class="w-50">
@@ -1335,7 +1346,7 @@
 												
 												<c:forEach var="depositemap" items="${depositeList}">
 												    <tr onclick="depositebodyclick(this)">
-												        <td class="SaleDate">${depositemap.saleDate}</td>
+												        <td class="SaleDate">${depositemap.saleDate}<input type="hidden" id="dPKID" value="${depositemap.PKID}"></td>
 												        <td class="Deposite text-end"><fmt:formatNumber value="${depositemap.deposite}" pattern="#,###"/></td>
 												        <td class="AddDate fw-bold text-end">${depositemap.addDate}</td>
 												    </tr>
@@ -1409,10 +1420,11 @@
                     		var Deposite = removeCommasFromNumber($('#Ddeposite').val());
                     		var MemberID = $('#memberID').val();
                     		
+                    		
                     		if(SaleDate == ''){
                     			alert('판매일자를 작성해주세요.');
                     			return false;
-                    		}else if(Deposite < 1 || Deposite == ''){
+                    		}else if(Deposite < 1 || $('#Ddeposite').val() == ''){
                     			alert('보증금액를 작성해주세요.');
                     			return false;
                     		}else{
@@ -1427,24 +1439,8 @@
                     		        	Deposite : Deposite
                     		        },
                     		        success: function(data) {
-                    		        	$('#depositebody').empty();
-                    		        	var totalDeposite = 0;
                     		        	
-                    		        	$.each(data, function(index, item) {
-                    		                totalDeposite += item.deposite;
-                    		                var newRow = '<tr onclick="depositebodyclick(this)">' +
-                    		                                '<td class="SaleDate">' + item.saleDate + '</td>' +
-                    		                                '<td class="Deposite text-end">' + item.deposite + '</td>' +
-                    		                                '<td class="AddDate fw-bold text-end">' + item.addDate + '</td>' +
-                    		                            '</tr>';
-                    		                $('#depositebody').prepend(newRow);
-                    		            });
-                    		        	
-                    		        	var totalRow = '<tr>' +
-                                        	'<td colspan="3" class="text-start fw-bold text-bg-light fs-lg-1">합계 : '+formatNumberWithCommas(totalDeposite)+'</td>' +
-                                     	'</tr>';
-                      					$('#depositebody').prepend(totalRow);
-                      					
+                    		        	tableRefactory(data);
                     		        	
                     		        	var depobutton = $('#depositeInsertButton');
             							depobutton.attr('data-bs-dismiss','modal');
@@ -1458,6 +1454,92 @@
                     		        }
                     			});
                     		}
+						}
+                    	
+                    	function Refunddeposite() {
+                    		if(DepositePrevRow == null){
+                    			alert('환불할 행을 선택해주세요.');
+                    			return false;
+                    		}
+                    		if(confirm("정말 환불하시겠습니까?")){
+                    			depositeRefund();
+                    		}else{
+                    			return false;
+                    		}
+						}
+                    	
+                    	function depositeRefund() {
+                    		
+                    		var deposite = removeCommasFromNumber($(DepositePrevRow).find('.Deposite').text());
+                    		var MemberID = $('#memberID').val();
+
+                    		if(deposite < 1){
+                    			alert('이미 환불처리된 건입니다.');
+                    			return false;
+                    		}else{
+                    			$.ajax({
+                    		        type: "POST", 
+                    		        url: "DepositeOriginPKIDFind", 
+                    		        dataType : 'json',
+                    		        data: { 
+                    		        	OriginPKID : $(DepositePrevRow).find('#dPKID').val()
+                    		        },
+                    		        success: function(data) {	
+                    		        	if(data == '0'){
+                    		        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+                    		        		window.opener.location.reload();
+                    		                window.close();
+                    		        	}else if(data == '-1'){
+                    		        		alert('이미 환불처리된 건입니다.');
+                    		        	    return false;
+                    		        	}else{
+                    		        		$.ajax({
+                    		        	        type: "POST", 
+                    		        	        url: "InsertDepositeRefund", 
+                    		        	        dataType : 'json',
+                    		        	        data: { 
+                    		        	        	Deposite : -deposite,
+                    		        	        	MemberID : MemberID,
+                    		        	        	OriginPKID : $(DepositePrevRow).find('#dPKID').val()
+                    		        	        },
+                    		        	        success: function(data) {	
+                    		        	        	tableRefactory(data);
+                    		        	        },
+                    		        	        error: function(xhr, status, error) {
+                    		        	       	 console.log("Status: " + status);
+                    		        	         console.log("Error: " + error);
+                    		        	        }
+                    		        		});
+                    		        	}
+                    		        },
+                    		        error: function(xhr, status, error) {
+                    		       	 console.log("Status: " + status);
+                    		         console.log("Error: " + error);
+                    		        }
+                    			});
+                    		}
+						}
+                    	
+                    	function tableRefactory(data){
+                    		$('#depositebody').empty();
+        		        	var totalDeposite = 0;
+        		            var rowsHTML = '';
+        		        	
+        		            $.each(data, function(index, item) {
+        		                totalDeposite += item.deposite;
+        		                rowsHTML += '<tr onclick="depositebodyclick(this)">' +
+        		                                '<td class="SaleDate">' + item.saleDate + '<input type="hidden" id="dPKID" value="' + item.pkid + '"></td>' +
+        		                                '<td class="Deposite text-end">' + formatNumberWithCommas(item.deposite) + '</td>' +
+        		                                '<td class="AddDate fw-bold text-end">' + item.addDate + '</td>' +
+        		                            '</tr>';
+        		            });
+        		        	
+        		        	var totalRow = '<tr>' +
+                            	'<td colspan="3" class="text-start fw-bold text-bg-light fs-lg-1">합계 : '+formatNumberWithCommas(totalDeposite)+'</td>' +
+                         	'</tr>';
+          					
+          					rowsHTML = totalRow + rowsHTML;
+          				    $('#depositebody').append(rowsHTML);
 						}
                     	</script>
 						

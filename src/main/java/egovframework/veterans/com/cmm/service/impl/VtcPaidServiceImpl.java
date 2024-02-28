@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.vo.DC;
-import egovframework.veterans.com.cmm.service.vo.Expense;
-import egovframework.veterans.com.cmm.service.vo.ExpenseGroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpense;
+import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
@@ -54,23 +55,23 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	
 	
 	@Override
-	public List<ExpenseGroup> selectExpenseGroup(String SiteCode) throws Exception {
+	public List<tblexpensegroup> selectExpenseGroup(String SiteCode) throws Exception {
 		return paidDAO.selectExpenseGroup(SiteCode);
 	}
 	@Override
-	public ExpenseGroup getExpenseGroupDetail(ExpenseGroup group) throws Exception {
+	public tblexpensegroup getExpenseGroupDetail(tblexpensegroup group) throws Exception {
 		return paidDAO.getExpenseGroupDetail(group);
 	}
 	@Override
-	public void updateExpenseGroup(ExpenseGroup group) throws Exception {
+	public void updateExpenseGroup(tblexpensegroup group) throws Exception {
 		paidDAO.updateExpenseGroup(group);
 	}
 	@Override
-	public void insertExpenseGroup(ExpenseGroup group) throws Exception {
+	public void insertExpenseGroup(tblexpensegroup group) throws Exception {
 		paidDAO.insertExpenseGroup(group);
 	}
 	@Override
-	public void deleteExpenseGroup(ExpenseGroup group) throws Exception {
+	public void deleteExpenseGroup(tblexpensegroup group) throws Exception {
 		paidDAO.deleteExpenseGroup(group);
 	}
 	@Override
@@ -80,23 +81,23 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	
 	
 	@Override
-	public List<Expense> selectExpense(String SiteCode) throws Exception {
+	public List<tblexpense> selectExpense(String SiteCode) throws Exception {
 		return paidDAO.selectExpense(SiteCode);
 	}
 	@Override
-	public Expense getExpenseDetail(Expense expense) throws Exception {
+	public tblexpense getExpenseDetail(tblexpense expense) throws Exception {
 		return paidDAO.getExpenseDetail(expense);
 	}
 	@Override
-	public void updateExpense(Expense expense) throws Exception {
+	public void updateExpense(tblexpense expense) throws Exception {
 		paidDAO.updateExpense(expense);
 	}
 	@Override
-	public void insertExpense(Expense expense) throws Exception {
+	public void insertExpense(tblexpense expense) throws Exception {
 		paidDAO.insertExpense(expense);
 	}
 	@Override
-	public void deleteExpense(Expense expense) throws Exception {
+	public void deleteExpense(tblexpense expense) throws Exception {
 		paidDAO.deleteExpense(expense);
 	}
 	@Override
@@ -142,5 +143,13 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	@Override
 	public void ReceiptInsert(tblpaid tblpaid) throws Exception {
 		paidDAO.ReceiptInsert(tblpaid);
+	}
+	@Override
+	public List<tblexpense> ExpenseByGroupID(tblexpense tblexpense) throws Exception {
+		return paidDAO.ExpenseByGroupID(tblexpense);
+	}
+	@Override
+	public void ExpenseSaleInsert(tblexpensesale tblexpensesale) throws Exception {
+		paidDAO.ExpenseSaleInsert(tblexpensesale);
 	}
 }

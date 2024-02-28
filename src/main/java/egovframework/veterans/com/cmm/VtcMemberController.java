@@ -44,6 +44,7 @@ import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
@@ -66,7 +67,6 @@ public class VtcMemberController {
 	private final VtcLockerService vtcLockerService;
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
-	private final VtcItemService vtcItemService;
 	
 	public static Functions f = Functions.getInstance();
 
@@ -1483,5 +1483,23 @@ public class VtcMemberController {
 		model.addAttribute("mleveltext",mleveltext);
 		
 		return "member/registration/mLockerReInsertF";
+	}
+	
+	@GetMapping("/etcPaidInsertF.do")
+	public String etcPaidInsertF(tblmember tblmember,Model model)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		model.addAttribute("member",member);
+		
+		List<tblexpensegroup> tblexpensegroupList = vtcPaidService.selectExpenseGroup(users.getSiteCode());
+		model.addAttribute("grouplist",tblexpensegroupList);
+		
+		return "member/registration/etcPaidInsertF";
 	}
 }

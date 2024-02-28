@@ -611,8 +611,32 @@ public class VtcLockerController{
 		
 		tbldeposite.setSiteCode(users.getSiteCode());
 		tbldeposite.setAddUserPKID(users.getUserPKID());
-		System.out.println(tbldeposite);
+	
 		vtcLockerService.DepositeInsert(tbldeposite);
+		
+		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+		
+		return depositeList;
+	}
+	
+	@ResponseBody
+	@PostMapping("/InsertDepositeRefund")
+	public List<tbldeposite> InsertDepositeRefund(tbldeposite tbldeposite)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			
+			List<tbldeposite> Tbldeposites = new ArrayList<tbldeposite>();
+			
+			Tbldeposites = null;
+			return Tbldeposites;
+		}
+		
+		tbldeposite.setAddUserPKID(users.getUserPKID());
+		tbldeposite.setSiteCode(users.getSiteCode());
+		
+		vtcLockerService.InsertDepositeRefund(tbldeposite);
 		
 		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
 		
