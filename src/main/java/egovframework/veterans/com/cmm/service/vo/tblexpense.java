@@ -1,12 +1,9 @@
 package egovframework.veterans.com.cmm.service.vo;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
-@SuppressWarnings("serial")
 @Data
-public class ExpenseGroup implements Serializable{
+public class tblexpense{
 	
 	/* 사이트코드 */
 	private String SiteCode;
@@ -14,8 +11,16 @@ public class ExpenseGroup implements Serializable{
 	/* 기타그룹ID */
 	private int ExpenseGroupID;
 	
-	/* 기타그룹명 */
-	private String ExpenseGroupName;
+	/* 기타매출ID */
+	private int ExpenseID;
+	
+	/* 기타매출명 */
+	private String ExpenseName;
+	
+	private String ExpenseType;
+	
+	/* 금액 */
+	private String DefPrice;
 	
 	/* 삭제여부 */
 	private String IsDelete;
@@ -34,6 +39,12 @@ public class ExpenseGroup implements Serializable{
 	
 	/* 수정자 */
 	private int UpdUserPKID;
+	
+	/* 부가세 */
+	private String Nvat;
+	
+	/* 기타그룹명 */
+	private String ExpenseGroupName;
 	
 	
 }
