@@ -61,4 +61,9 @@ public class OfflinePayDAO extends EgovComAbstractDAO {
 		return returnMap;
 	}
 
+	public Map<String, Object> insertExpensesale(Map<String, Object> sqlMap) {
+		Map<String,Object> result = selectOne("offlinePay.insertExpensesale",sqlMap);
+		sqlMap.putAll(result);
+		return sqlMap;
+	}
 }

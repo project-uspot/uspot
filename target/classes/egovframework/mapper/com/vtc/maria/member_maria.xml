@@ -76,6 +76,7 @@
 		on fmsc_s01.ItemPKID = selectitem.ItemID
 		where CustCode = #{CustCode}
 		and fmsc_s01.isDelete = 'N'
+		and fmsc_s01.SiteCode = #{SiteCode}
 		order by fmsc_s01.State ,SaleDate desc
 	</select>
 

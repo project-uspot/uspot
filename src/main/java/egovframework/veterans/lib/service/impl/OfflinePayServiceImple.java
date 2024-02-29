@@ -69,4 +69,9 @@ public class OfflinePayServiceImple implements OfflinePayService {
 		return offlinePayDAO.insertFMSC_S01(returnMap);
 	}
 
+	@Override
+	public Map<String, Object> insertExpensesale(Map<String, Object> sqlMap) {
+		return offlinePayDAO.insertExpensesale(sqlMap);
+	}
+
 }

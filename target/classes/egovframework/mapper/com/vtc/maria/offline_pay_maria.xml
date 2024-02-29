@@ -100,4 +100,10 @@
 		order by PKID desc
 		limit 1
 	</update>
+	
+	<select id="insertExpensesale" parameterType="Map" resultType="Map">
+		<![CDATA[
+			{call SP_InsertExpensesale(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID})}
+		]]>
+	</select>
 </mapper>

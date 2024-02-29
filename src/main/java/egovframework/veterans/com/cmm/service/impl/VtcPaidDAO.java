@@ -10,7 +10,6 @@ import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.tblexpense;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
-import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
@@ -77,8 +76,8 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 		return selectOne("paid.getExSortOrder", siteCode);
 	}
 	
-	public List<memberexpensesale> memberexpensesale(String MemberID)throws Exception {
-		return selectList("paid.memberexpensesale",MemberID);
+	public List<Map<String,Object>> memberexpensesale(tblexpensesale tblexpensesale)throws Exception {
+		return selectList("paid.memberexpensesale",tblexpensesale);
 	}
 	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid) {
 		return selectList("paid.settlemnetlist", tblpaid);
@@ -115,5 +114,17 @@ public class VtcPaidDAO extends EgovComAbstractDAO {
 	
 	public void ExpenseSaleInsert(tblexpensesale tblexpensesale)throws Exception{
 		insert("paid.ExpenseSaleInsert",tblexpensesale);
+	}
+	
+	public Map<String,Object> ExpenseSaleJoinGroupJojnExpense(tblexpensesale tblexpensesale)throws Exception{
+		return selectOne("paid.ExpenseSaleJoinGroupJojnExpense",tblexpensesale);
+	}
+	
+	public List<tblpaid> PaidBySaleNoAndSaleType(tblpaid tblpaid)throws Exception{
+		return selectList("paid.PaidBySaleNoAndSaleType",tblpaid);
+	}
+	
+	public void UpdExpenseSale(tblexpensesale tblexpensesale)throws Exception{
+		update("paid.UpdExpenseSale",tblexpensesale);
 	}
 }

@@ -13,7 +13,6 @@ import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.tblexpense;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
-import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
@@ -107,10 +106,10 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	
 	
 	@Override
-	public List<memberexpensesale> memberexpensesale(String MemberID)
+	public List<Map<String,Object>> memberexpensesale(tblexpensesale tblexpensesale)
 			throws Exception {
 
-		return paidDAO.memberexpensesale(MemberID);
+		return paidDAO.memberexpensesale(tblexpensesale);
 	}
 	@Override
 	public List<settlemnetlist> settlemnetlist(Map<String, Object> tblpaid)
@@ -151,5 +150,17 @@ public class VtcPaidServiceImpl extends EgovAbstractServiceImpl implements VtcPa
 	@Override
 	public void ExpenseSaleInsert(tblexpensesale tblexpensesale) throws Exception {
 		paidDAO.ExpenseSaleInsert(tblexpensesale);
+	}
+	@Override
+	public Map<String, Object> ExpenseSaleJoinGroupJojnExpense(tblexpensesale tblexpensesale) throws Exception {
+		return paidDAO.ExpenseSaleJoinGroupJojnExpense(tblexpensesale);
+	}
+	@Override
+	public List<tblpaid> PaidBySaleNoAndSaleType(tblpaid tblpaid) throws Exception {
+		return paidDAO.PaidBySaleNoAndSaleType(tblpaid);
+	}
+	@Override
+	public void UpdExpenseSale(tblexpensesale tblexpensesale) throws Exception {
+		paidDAO.UpdExpenseSale(tblexpensesale);
 	}
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class memberuselocker {
 	private String PKID;
+	private String SiteCode;
 	private String PLockerGroupName;
 	private String PLockerLocation;
 	private int PLockerNo;

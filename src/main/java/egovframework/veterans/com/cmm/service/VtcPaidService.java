@@ -7,7 +7,6 @@ import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.tblexpense;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
-import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.settlemnetlist;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 
@@ -33,7 +32,7 @@ public interface VtcPaidService {
 	void updateExpense(tblexpense expense) throws Exception;
 	void insertExpense(tblexpense expense) throws Exception;
 	void deleteExpense(tblexpense expense) throws Exception;
-	List<memberexpensesale> memberexpensesale(String MemberID)throws Exception;
+	List<Map<String,Object>> memberexpensesale(tblexpensesale tblexpensesale)throws Exception;
 	int getExSortOrder(String SiteCode) throws Exception;
 	
 	List<settlemnetlist> settlemnetlist(Map<String, Object> fmmap) throws Exception;
@@ -46,4 +45,7 @@ public interface VtcPaidService {
 	void ReceiptInsert(tblpaid tblpaid)throws Exception;
 	List<tblexpense> ExpenseByGroupID(tblexpense tblexpense)throws Exception;
 	void ExpenseSaleInsert(tblexpensesale tblexpensesale)throws Exception;
+	Map<String,Object> ExpenseSaleJoinGroupJojnExpense(tblexpensesale tblexpensesale)throws Exception;
+	List<tblpaid> PaidBySaleNoAndSaleType(tblpaid tblpaid)throws Exception;
+	void UpdExpenseSale(tblexpensesale tblexpensesale)throws Exception;
 }

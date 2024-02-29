@@ -30,7 +30,7 @@ public interface VtcLockerService {
 
 	void lockercodeupdate(tblplocker tblplocker) throws Exception;
 
-	List<memberuselocker> memberuselocker(String MemberID) throws Exception;
+	List<memberuselocker> memberuselocker(tbluselocker tbluselocker) throws Exception;
 	
 	List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception;
 	
