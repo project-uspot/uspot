@@ -1,7 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.HashMap;
 
 import java.util.List;
@@ -23,7 +21,6 @@ import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
-import egovframework.veterans.lib.OfflinePayController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -387,5 +384,22 @@ public class VtcPaidController {
 		VtcPaidService.ExpenseSaleInsert(tblexpensesale);
 		
 		return tblexpensesale.getPKID();
+	}
+	
+	@ResponseBody
+	@PostMapping("/UpdExpenseSale")
+	public String UpdExpenseSale(tblexpensesale tblexpensesale)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if(users == null) {
+			return "0";
+		}
+		
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setUpdUserPKID(users.getUserPKID());
+		
+		VtcPaidService.UpdExpenseSale(tblexpensesale);
+		
+		return "success";
 	}
 }

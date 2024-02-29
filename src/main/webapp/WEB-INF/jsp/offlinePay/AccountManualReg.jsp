@@ -163,7 +163,7 @@ function save(){
 	
 	var uparam = '${uparam}';
 	
-	if(uparam == 'locker'){
+	if(uparam == 'locker' || uparam == 'etc'){
 		opener.accountChange();
 	}else{
 		opener.totalchange();

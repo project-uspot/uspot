@@ -22,6 +22,12 @@ public class tblexpensesale {
 	private String IsMemMode;
 
 	private int ExpCnt;
+	
+	private double TotalPrice;
+	
+	private double Misu;
+	
+	private double PaidPrice;
 
 	private String Note;
 

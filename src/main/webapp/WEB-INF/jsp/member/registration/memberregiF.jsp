@@ -644,7 +644,7 @@
                     <button class="btn btn-soft-danger" type="button" onclick="mitemrefund()"><span data-feather="trash"></span>&nbsp;환불(X)</button>
                     <button class="btn btn-soft-warning" type="button" onclick="mitemrestF()"><span data-feather="user-x"></span>&nbsp;휴회(shift+C)</button>
                     <button class="btn btn-soft-info" type="button" onclick="mLockerF()"><span data-feather="archive"></span>&nbsp;사물함 임대(shift+V)</button>
-                    <button class="btn btn-soft-primary" type="button" onclick="etcPaidF()"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
+                    <button class="btn btn-soft-primary" type="button" onclick="etcPaidInsertF()"><span data-feather="shopping-cart"></span>&nbsp;기타매출등록(Q)</button>
                     <script type="text/javascript">
                     var myPopup;
                     
@@ -903,8 +903,23 @@
                       	});
 					}
                     
-                    function etcPaidF() {
+                    function etcPaidInsertF() {
                     	var url = 'etcPaidInsertF.do?MemberID='+$('#memberID').val();
+                        var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1250,height=550";
+                        if (myPopup === undefined || myPopup.closed) {
+                            myPopup = window.open(url, "_blank", windowFeatures);
+                        } else {
+                        	myPopup.focus();
+                        }
+                        document.addEventListener('click', function() {
+	                        if (myPopup && !myPopup.closed) {
+	                            myPopup.focus();
+	                        }
+                      	});
+					}
+                    
+                    function etcPaidSelectF(PKID) {
+                    	var url = 'etcPaidSelectF.do?PKID='+PKID;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1250,height=550";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
@@ -963,7 +978,7 @@
                         	mLockerF();
                         }
                         if (event.ctrlKey && event.key === 'q') {
-                        	etcPaidF();
+                        	etcPaidInsertF();
                         }
                     });
                     var previousRow = null;
@@ -1154,25 +1169,25 @@
                                         <table class="table fs--1 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="sort align-middle" scope="col" data-sort="ExpenseGroupName" style="width:15%;">분류</th>
-                                                    <th class="sort align-middle text-start" scope="col" data-sort="ExpenseName" style="width:30%;">항목</th>
-                                                    <th class="sort align-middle text-start" scope="col" data-sort="InOut" style="width:20%;">지출구분</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="SaleDate" style="width:15%;">매출일자</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="Price" style="width:15%;">판매금액</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="DefPrice" style="width:15%;">결제금액</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="minabPrice" style="width:15%;">미납금액</th>
+                                                    <th class="sort align-middle" scope="col" data-sort="ExpenseGroupName">분류</th>
+                                                    <th class="sort align-middle text-start" scope="col" data-sort="ExpenseName">항목</th>
+                                                    <th class="sort text-center" scope="col" data-sort="InOut">지출구분</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="SaleDate">매출일자</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="Price">판매금액</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="DefPrice">결제금액</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="minabPrice">미납금액</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list" id="customer-wishlist-table-body">
                                                 <c:forEach var="paid" items="${paidlist}">
-                                                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                                                        <td class="LockerName align-middle white-space-nowrap fs--1 text-900">${paid.expenseGroupName}</td>
-                                                        <td class="RegDate align-middle text-900 fs--1 text-900">${paid.expenseName}</td>
-                                                        <td class="FromDate align-middle text-1000 text-900">${paid.inOut}</td>
-                                                        <td class="ToDate align-middle text-1000 text-end">${paid.saleDate}</td>
-                                                        <td class="RegMonth align-middle text-1000 text-end">${paid.price}</td>
-                                                        <td class="RealPrice align-middle text-1000 text-end">${paid.defPrice}</td>
-                                                        <td class="PaidPrice align-middle text-1000 text-end">${paid.minabPrice}</td>
+                                                    <tr class="hover-actions-trigger btn-reveal-trigger position-static" onclick="etcpaidbodyclick(this)" ondblclick="etcPaidSelectF(${paid.PKID})">
+                                                        <td class="LockerName align-middle white-space-nowrap fs--1 text-900">${paid.ExpenseGroupName}</td>
+                                                        <td class="RegDate align-middle text-900 fs--1">${paid.ExpenseName}</td>
+                                                        <td class="FromDate text-center">${paid.InOut}</td>
+                                                        <td class="ToDate align-middle text-1000 text-end">${paid.SaleDate}</td>
+                                                        <td class="RegMonth align-middle text-1000 text-end"><fmt:formatNumber value="${paid.TotalPrice}" pattern="#,###"/></td>
+                                                        <td class="RealPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.PaidPrice}" pattern="#,###"/></td>
+                                                        <td class="PaidPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.Misu}" pattern="#,###"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty paidlist}">
@@ -1180,6 +1195,16 @@
                                                 </c:if>
                                             </tbody>
                                         </table>
+                                        <script type="text/javascript">
+                                        var etcpaidRow = null;
+                                        function etcpaidbodyclick(clickedRow){
+                                        	if (etcpaidRow !== null) {
+                                            	$(etcpaidRow).css('background-color', '');
+                                            }
+                                        	$(clickedRow).css('background-color', 'lightblue');
+                                        	etcpaidRow = clickedRow;
+                                        }
+                                        </script>
                                     </div>
                                     <div class="row align-items-center justify-content-between py-2 pe-0 fs--1">
                                         <div class="col-auto d-flex">

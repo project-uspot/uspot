@@ -78,10 +78,10 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	}
 
 	@Override
-	public List<memberuselocker> memberuselocker(String MemberID)
+	public List<memberuselocker> memberuselocker(tbluselocker tbluselocker)
 			throws Exception {
 
-		return vtcLockerDAO.memberuselocker(MemberID);
+		return vtcLockerDAO.memberuselocker(tbluselocker);
 	}
 
 	@Override

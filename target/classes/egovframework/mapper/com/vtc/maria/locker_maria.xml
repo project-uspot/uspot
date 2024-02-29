@@ -128,7 +128,7 @@
 	where
 		PLockerID = #{PLockerID}
 </update>
-<select id="memberuselocker" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberuselocker">
+<select id="memberuselocker" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker" resultType="egovframework.veterans.com.cmm.service.vo.memberuselocker">
 	select tblPLockerGroup.PLockerGroupName,tblPLockerGroup.PLockerLocation,tblPLocker.PLockerNo,RegDate,tblUseLocker.PKID,tblUseLocker.FromDate,tblUseLocker.ToDate,tblUseLocker.RegMonth 
 	,tblUseLocker.RealPrice,tblUseLocker.PaidPrice,Misu,
 	 CASE
@@ -144,6 +144,7 @@ END AS IsFlagText,
 	where
 		tblUseLocker.MemberID = #{MemberID}
 	and tblUseLocker.IsDelete = 'N'
+	and tblUseLocker.SiteCode = #{SiteCode}
 	order by IsFlag,RegDate desc
 </select>
 <select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="map">

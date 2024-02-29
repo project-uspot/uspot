@@ -26,4 +26,6 @@ public interface OfflinePayService {
 	public void insertPaidCancelRent(Map<String, Object> returnMap);
 
 	public Map<String, Object> insertFMSC_S01(Map<String, Object> returnMap);
+	
+	Map<String, Object> insertExpensesale(Map<String, Object> sqlMap);
 }

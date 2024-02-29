@@ -187,6 +187,9 @@ public class OfflinePayController {
 		case "rent":
 			saleType = "대관";
 			break;
+		case "etc":
+			saleType = "기타비용";
+			break;
 		default:
 			break;
 		}
@@ -489,6 +492,11 @@ public class OfflinePayController {
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
 						break;
+					case "기타비용":
+						returnMap = OfflinePayService.insertExpensesale(returnMap);
+						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
+						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
+						break;
 					case "대관":
 						returnMap = OfflinePayService.insertPaidRent(returnMap);
 						break;
@@ -503,6 +511,8 @@ public class OfflinePayController {
 						ReceiptController.insertReceiptItem(f.getNullToSpaceStrValue(returnMap.get("paidPKID")),receiptService);
 						break;
 					case "사물함":
+						break;
+					case "기타비용":
 						break;
 					case "대관":
 						break;

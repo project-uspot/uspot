@@ -61,9 +61,9 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 		insert("locker.lockercodeupdate",tblplocker);
 	}
 	
-	public List<memberuselocker> memberuselocker(String MemberID) throws Exception{
+	public List<memberuselocker> memberuselocker(tbluselocker tbluselocker) throws Exception{
 		
-		return selectList("locker.memberuselocker", MemberID);
+		return selectList("locker.memberuselocker", tbluselocker);
 	}
 	
 	public List<Map<String,Object>> plockerByGroupID(tblplockergroup tblplockergroup) throws Exception{

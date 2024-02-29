@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
-import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
@@ -39,12 +38,12 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
-import egovframework.veterans.com.cmm.service.vo.memberexpensesale;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
+import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
@@ -113,7 +112,7 @@ public class VtcMemberController {
 
 		fmsc_s01 fmsc_s01 = new fmsc_s01();
 		fmsc_s01.setCustCode(tblmember.getMemberID());
-		fmsc_s01.setSiteCode(tblmember.getSiteCode());
+		fmsc_s01.setSiteCode(users.getSiteCode());
 		tblCode tblCode = new tblCode();
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
@@ -121,9 +120,15 @@ public class VtcMemberController {
 		tbldeposite tbldeposite = new tbldeposite();
 		tbldeposite.setSiteCode(users.getSiteCode());
 		tbldeposite.setMemberID(tblmember.getMemberID());
+		tblexpensesale tblexpensesale = new tblexpensesale();
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setMemberID(tblmember.getMemberID());
+		tbluselocker tbluselocker = new tbluselocker();
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setMemberID(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tbluselocker);
+		List<Map<String,Object>> memberexpensesale = vtcPaidService.memberexpensesale(tblexpensesale);
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -169,7 +174,7 @@ public class VtcMemberController {
 
 		fmsc_s01 fmsc_s01 = new fmsc_s01();
 		fmsc_s01.setCustCode(tblmember.getMemberID());
-		fmsc_s01.setSiteCode(tblmember.getSiteCode());
+		fmsc_s01.setSiteCode(users.getSiteCode());
 		tblCode tblCode = new tblCode();
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
@@ -177,9 +182,15 @@ public class VtcMemberController {
 		tbldeposite tbldeposite = new tbldeposite();
 		tbldeposite.setSiteCode(users.getSiteCode());
 		tbldeposite.setMemberID(tblmember.getMemberID());
+		tblexpensesale tblexpensesale = new tblexpensesale();
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setMemberID(tblmember.getMemberID());
+		tbluselocker tbluselocker = new tbluselocker();
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setMemberID(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tbluselocker);
+		List<Map<String,Object>> memberexpensesale = vtcPaidService.memberexpensesale(tblexpensesale);
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
 				.fmsc_s01toselectitemanothersite(fmsc_s01);
@@ -219,7 +230,7 @@ public class VtcMemberController {
 
 		fmsc_s01 fmsc_s01 = new fmsc_s01();
 		fmsc_s01.setCustCode(tblmember.getMemberID());
-		fmsc_s01.setSiteCode(tblmember.getSiteCode());
+		fmsc_s01.setSiteCode(users.getSiteCode());
 		tblCode tblCode = new tblCode();
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
@@ -227,9 +238,15 @@ public class VtcMemberController {
 		tbldeposite tbldeposite = new tbldeposite();
 		tbldeposite.setSiteCode(users.getSiteCode());
 		tbldeposite.setMemberID(tblmember.getMemberID());
+		tblexpensesale tblexpensesale = new tblexpensesale();
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setMemberID(tblmember.getMemberID());
+		tbluselocker tbluselocker = new tbluselocker();
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setMemberID(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tbluselocker);
+		List<Map<String,Object>> memberexpensesale = vtcPaidService.memberexpensesale(tblexpensesale);
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService.fmsc_s01toselectitemanothersite(fmsc_s01);
 		List<tblCode> codelist = vtcService.listTblCode(tblCode);
@@ -535,9 +552,15 @@ public class VtcMemberController {
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
 		dc.setSiteCode(users.getSiteCode());
+		tblexpensesale tblexpensesale = new tblexpensesale();
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		tblexpensesale.setMemberID(tblmember.getMemberID());
+		tbluselocker tbluselocker = new tbluselocker();
+		tbluselocker.setSiteCode(users.getSiteCode());
+		tbluselocker.setMemberID(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitem = vtcMemberService.fmsc_s01toselectitem(fmsc_s01);
-		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tblmember.getMemberID());
-		List<memberexpensesale> memberexpensesale = vtcPaidService.memberexpensesale(tblmember.getMemberID());
+		List<memberuselocker> memberuselocker = vtcLockerService.memberuselocker(tbluselocker);
+		List<Map<String,Object>> memberexpensesale = vtcPaidService.memberexpensesale(tblexpensesale);
 		List<tblmembertalk> tblmembertalks = vtcMemberService.membertblmembertalk(tblmember.getMemberID());
 		List<fmsc_s01toselectitem> fmsc_s01toselectitemanother = vtcMemberService
 				.fmsc_s01toselectitemanothersite(fmsc_s01);
@@ -832,6 +855,7 @@ public class VtcMemberController {
 		
 		
 		tblpaid.setPaidGroupSaleNo(fmsc_s01.getGroupSaleNo());
+		tblpaid.setSiteCode(users.getSiteCode());
 		
 		tblmember.setMemberID(result.get(0).getCustCode());
 		
@@ -983,6 +1007,7 @@ public class VtcMemberController {
 		dc.setSiteCode(users.getSiteCode());
 		tblmember.setMemberID(result.get(0).getCustCode());
 		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
+		tblpaid.setSiteCode(users.getSiteCode());
 		/*
 		 * int cntFmsc = 0; for(fmsc_s01 fmsc: result) { if(fmsc_s01.getSaleNo() ==
 		 * fmsc.getSaleNo()) { tblmember.setMemberID(fmsc.getCustCode());
@@ -1097,6 +1122,7 @@ public class VtcMemberController {
 		List<fmsc_s01> result = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 
 		tblpaid.setPaidGroupSaleNo(result.get(0).getGroupSaleNo());
+		tblpaid.setSiteCode(users.getSiteCode());
 		List<tblpaid> paidList = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
 
 		tblItem_02.setSiteCode(result.get(0).getSiteCode());
@@ -1383,6 +1409,7 @@ public class VtcMemberController {
 		Map<String, Object>lockerInfo = vtcLockerService.PLockerJoinGroupByID(tblplocker);
 		
 		tblpaid.setPaidGroupSaleNo(uselocker.getPKID());
+		tblpaid.setSiteCode(users.getSiteCode());
 		
 		List<tblpaid> paidList = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
 		
@@ -1501,5 +1528,42 @@ public class VtcMemberController {
 		model.addAttribute("grouplist",tblexpensegroupList);
 		
 		return "member/registration/etcPaidInsertF";
+	}
+	
+	@GetMapping("/etcPaidSelectF.do")
+	public String etcPaidSelectF(tblexpensesale tblexpensesale,Model model)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그아웃 되었습니다.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
+		
+		tblexpensesale.setSiteCode(users.getSiteCode());
+		
+		Map<String,Object> etcinfo = vtcPaidService.ExpenseSaleJoinGroupJojnExpense(tblexpensesale);
+		
+		model.addAttribute("etcinfo",etcinfo);
+		
+		tblmember tblmember = new tblmember();
+		
+		String MemberID = (String) etcinfo.get("MemberID");
+		
+		tblmember.setMemberID(MemberID);
+		
+		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
+		
+		model.addAttribute("member",member);
+		
+		tblpaid tblpaid = new tblpaid();
+		
+		tblpaid.setPaidGroupSaleNo(tblexpensesale.getPKID());
+		tblpaid.setSiteCode(users.getSiteCode());
+		tblpaid.setSaleType("기타비용");
+		
+		List<tblpaid> paidList = vtcPaidService.PaidBySaleNoAndSaleType(tblpaid);
+		model.addAttribute("paidlist",paidList);
+		
+		return "member/registration/etcPaidSelectF";
 	}
 }

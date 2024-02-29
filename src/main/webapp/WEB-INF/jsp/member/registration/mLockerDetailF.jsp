@@ -2011,7 +2011,7 @@ function mLockerReInsertF() {
 <%-- 영수증 재발행 --%>
 function reReceipt(){
 	var PKID = $(previousRow).find('.PKID').text();
-	var myWindow = window.open("${pageContext.request.contextPath}/locker/ReReceipt.do?PKID="+PKID, "MsgWindow", "width=320,height=800");
+	var myWindow = window.open("${pageContext.request.contextPath}/etc/ReReceipt.do?PKID="+PKID, "MsgWindow", "width=320,height=800");
 	myWindow.print();
 }
 </script>

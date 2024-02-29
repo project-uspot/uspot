@@ -181,15 +181,15 @@
 			SiteCode = #{SiteCode}
 	</select>
 	
-	<select id="memberexpensesale" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.memberexpensesale">
-		select tblexpensegroup.ExpenseGroupName,tblexpense.ExpenseName,'InOut',SaleDate,Price,DefPrice,
-		(DefPrice - Price) AS minabPrice
+	<select id="memberexpensesale" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensesale" resultType="map">
+		select *
 		from tblexpensesale
 		left join tblexpense on tblexpensesale.ExpenseID = tblExpense.ExpenseID
 		left join tblexpensegroup on tblexpense.ExpenseGroupID = tblexpensegroup.ExpenseGroupID
 		where 
 			MemberID = #{MemberID}
 		and tblexpensesale.IsDelete = 'N'
+		and tblexpensesale.SiteCode = #{SiteCode}
 	</select>
 	
 	<select id="settlemnetlist" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.settlemnetlist">
@@ -420,6 +420,7 @@
 		where
 			IsDelete = 'N'
 		and PaidGroupSaleNo = #{PaidGroupSaleNo}
+		and SiteCode = #{SiteCode}
 	</select>
 	<update id="paidchange" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid">
 		update tblpaid set
@@ -506,11 +507,51 @@
 	<insert id="ExpenseSaleInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensesale" useGeneratedKeys="true" keyProperty="PKID">
 		INSERT INTO tblexpensesale
 		(SiteCode, ExpenseID, `InOut`, SaleDate, 
-		Price, MemberID, IsMemMode, ExpCnt, 
+		Price, MemberID, IsMemMode, ExpCnt,
+		TotalPrice, Misu, PaidPrice,
 		Note, IsDelete, AddDate, AddUserPKID)
 		values
 		(#{SiteCode},#{ExpenseID},#{InOut},#{SaleDate}, 
 		#{Price},#{MemberID},#{IsMemMode},#{ExpCnt}, 
+		#{TotalPrice},#{Misu},#{PaidPrice},
 		#{Note},'N',now(),#{AddUserPKID})
 	</insert>
+	
+	<select id="ExpenseSaleJoinGroupJojnExpense" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensesale" resultType="map">
+		select * from tblexpensesale a
+		left join tblexpense b on a.ExpenseID = b.ExpenseID and a.SiteCode = b.SiteCode 
+		left join tblexpensegroup c on b.ExpenseGroupID = c.ExpenseGroupID and b.SiteCode = c.SiteCode 
+		where 
+			a.IsDelete = 'N'
+		and a.SiteCode = #{SiteCode}
+		and a.PKID = #{PKID}
+	</select>
+	
+	<select id="PaidBySaleNoAndSaleType" parameterType="egovframework.veterans.com.cmm.service.vo.tblpaid" resultType="egovframework.veterans.com.cmm.service.vo.tblpaid">
+		select * from tblpaid
+		where
+			IsDelete = 'N'
+		and PaidGroupSaleNo = #{PaidGroupSaleNo}
+		and SiteCode = #{SiteCode}
+		and SaleType = #{SaleType}
+	</select>
+	
+	<update id="UpdExpenseSale" parameterType="egovframework.veterans.com.cmm.service.vo.tblexpensesale">
+		UPDATE tblexpensesale SET 
+		ExpenseID=#{ExpenseID},
+		`InOut`=#{InOut}, 
+		SaleDate=#{SaleDate}, 
+		Price=#{Price}, 
+		ExpCnt=#{ExpCnt}, 
+		TotalPrice=#{TotalPrice}, 
+		Misu=#{Misu}, 
+		PaidPrice=#{PaidPrice}, 
+		Note=#{Note}, 
+		UpdDate=now(), 
+		UpdUserPKID=#{UpdUserPKID}
+		where 
+			PKID = #{PKID}
+		and SiteCode = #{SiteCode}
+		and IsDelete = 'N' 
+	</update>
 </mapper>
