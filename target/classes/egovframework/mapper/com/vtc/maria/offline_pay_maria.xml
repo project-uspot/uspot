@@ -103,7 +103,7 @@
 	
 	<select id="insertExpensesale" parameterType="Map" resultType="Map">
 		<![CDATA[
-			{call SP_InsertExpensesale(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID})}
+			{call SP_InsertExpensesale(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID},#{pkid})}
 		]]>
 	</select>
 </mapper>

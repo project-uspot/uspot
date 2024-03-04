@@ -348,6 +348,12 @@ function paid(){
 	if(recheck != 1){
 		recheck = 0;
 	}
+	
+	var pkid = '${param.pkid}';
+	if(pkid == ''){
+		pkid = 0;
+	}
+	
 	$.ajax({
 		type : 'POST',
 		url : '${pageContext.request.contextPath}/'+urlParam+'/paidReg',
@@ -364,7 +370,8 @@ function paid(){
 			tempSaleNo : "${param.tempSaleNo}",
 			insert : $("#InsertYN").val(),
 			InType : "${param.InType}",
-			recheck : recheck
+			recheck : recheck,
+			pkid : pkid
 		},
 		success: function(data){
 			console.log(data);

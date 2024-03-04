@@ -1164,9 +1164,9 @@
                         <div class="tab-pane fade" id="tab-cost" role="tabpanel" aria-labelledby="cost-tab">
                             <div class="mb-6">
                                 <h3 class="mb-4">기타비용정보</h3>
-                                <div id="tablepaid" data-list='{"valueNames":["ExpenseGroupName","ExpenseName","InOut","SaleDate","Price","DefPrice","minabPrice"],"page":5,"pagination":true}'>
+                                <div id="tablepaid" data-list='{"valueNames":["ExpenseGroupName","ExpenseName","InOut","SaleDate","TotalPrice","PaidPrice","Misu"],"page":5,"pagination":true}'>
                                     <div class="table-responsive scrollbar">
-                                        <table class="table fs--1 mb-0">
+                                        <table class="table table-sm fs--1 mb-0">
                                             <thead>
                                                 <tr>
                                                     <th class="sort align-middle" scope="col" data-sort="ExpenseGroupName">분류</th>
@@ -1181,13 +1181,22 @@
                                             <tbody class="list" id="customer-wishlist-table-body">
                                                 <c:forEach var="paid" items="${paidlist}">
                                                     <tr class="hover-actions-trigger btn-reveal-trigger position-static" onclick="etcpaidbodyclick(this)" ondblclick="etcPaidSelectF(${paid.PKID})">
-                                                        <td class="LockerName align-middle white-space-nowrap fs--1 text-900">${paid.ExpenseGroupName}</td>
-                                                        <td class="RegDate align-middle text-900 fs--1">${paid.ExpenseName}</td>
-                                                        <td class="FromDate text-center">${paid.InOut}</td>
-                                                        <td class="ToDate align-middle text-1000 text-end">${paid.SaleDate}</td>
-                                                        <td class="RegMonth align-middle text-1000 text-end"><fmt:formatNumber value="${paid.TotalPrice}" pattern="#,###"/></td>
-                                                        <td class="RealPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.PaidPrice}" pattern="#,###"/></td>
-                                                        <td class="PaidPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.Misu}" pattern="#,###"/></td>
+                                                        <td class="ExpenseGroupName align-middle white-space-nowrap fs--1 text-900 fw-bold">${paid.ExpenseGroupName}</td>
+                                                        <td class="ExpenseName align-middle text-900 fs--1">${paid.ExpenseName}</td>
+                                                        <td class="InOut text-center">
+                                                        	<c:choose>
+                                                        		<c:when test="${paid.InOut eq 'I'}">
+                                                        			수입
+                                                        		</c:when>
+                                                        		<c:when test="${paid.InOut eq 'O'}">
+                                                        			지출
+                                                        		</c:when>
+                                                        	</c:choose>
+                                                        </td>
+                                                        <td class="SaleDate align-middle text-1000 text-end">${paid.SaleDate}</td>
+                                                        <td class="TotalPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.TotalPrice}" pattern="#,###"/></td>
+                                                        <td class="PaidPrice align-middle text-1000 text-end"><fmt:formatNumber value="${paid.PaidPrice}" pattern="#,###"/></td>
+                                                        <td class="Misu align-middle text-1000 text-end"><fmt:formatNumber value="${paid.Misu}" pattern="#,###"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty paidlist}">
@@ -1351,7 +1360,7 @@
                             	</div>
                                 <div id="tabledeposite" data-list='{"valueNames":["SaleDate","Deposite","AddDate"]}' class="w-50">
                                     <div class="table-responsive scrollbar">
-                                        <table class="table fs--1 mb-0">
+                                        <table class="table table-sm fs--1 mb-0">
                                             <thead>
                                                 <tr>
                                                     <th class="sort " scope="col" data-sort="SaleDate">매출일자</th>
@@ -1416,7 +1425,11 @@
 						        			<div class="col">
 						        				<div class="input-group">
   													<span class="input-group-text" id="basic-addon1">보증금액</span>
-													<input class="form-control" type="text" id="Ddeposite" aria-describedby="basic-addon1" oninput="onlyNumber(this)"/>
+													<select class="form-select" id="Ddeposite">
+														<c:forEach items="${depolist}" var="depo">
+															<option value="${depo}"><fmt:formatNumber value="${depo}" pattern="#,###"/></option>
+														</c:forEach>
+													</select>
 												</div>
 						        			</div>
 						        		</div>

@@ -136,6 +136,7 @@ public class VtcMemberController {
 		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
 		List<Sitecode> SiteList = vtcService.listSiteName();
 		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+		List<Integer> lockerdepositeList = vtcLockerService.DepositeBySiteCode(users.getSiteCode());
 
 		model.addAttribute("dclist", dcList);
 		model.addAttribute("tblmember", tblmember);
@@ -148,6 +149,7 @@ public class VtcMemberController {
 		model.addAttribute("pissdclist", pissdclist);
 		model.addAttribute("sitelist", SiteList);
 		model.addAttribute("depositeList",depositeList);
+		model.addAttribute("depolist",lockerdepositeList);
 
 		return "member/registration/memberregiF";
 	}
@@ -199,6 +201,7 @@ public class VtcMemberController {
 		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
 		List<Sitecode> SiteList = vtcService.listSiteName();
 		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+		List<Integer> lockerdepositeList = vtcLockerService.DepositeBySiteCode(users.getSiteCode());
 
 		model.addAttribute("dclist", dcList);
 		model.addAttribute("tblmember", tblmember);
@@ -211,6 +214,7 @@ public class VtcMemberController {
 		model.addAttribute("pissdclist", pissdclist);
 		model.addAttribute("sitelist", SiteList);
 		model.addAttribute("depositeList",depositeList);
+		model.addAttribute("depolist",lockerdepositeList);
 
 		return "member/registration/memberregiF";
 
@@ -254,6 +258,7 @@ public class VtcMemberController {
 		List<DC> pissdclist = vtcDCService.dclistBypissId(users.getSiteCode());
 		List<Sitecode> SiteList = vtcService.listSiteName();
 		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
+		List<Integer> lockerdepositeList = vtcLockerService.DepositeBySiteCode(users.getSiteCode());
 	
 		model.addAttribute("dclist", dcList);
 		model.addAttribute("tblmember", tblmember);
@@ -266,6 +271,7 @@ public class VtcMemberController {
 		model.addAttribute("pissdclist", pissdclist);
 		model.addAttribute("sitelist", SiteList);
 		model.addAttribute("depositeList",depositeList);
+		model.addAttribute("depolist",lockerdepositeList);
 
 		return "member/registration/memberregiF";
 	}
