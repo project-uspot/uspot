@@ -361,7 +361,7 @@ where
 	MemberID = #{MemberID}
 and IsDelete = 'N'
 and SiteCode = #{SiteCode}
-order by LockerID,AddDate desc
+order by AddDate desc
 </select>
 <insert id="InsertDepositeRefund" parameterType="egovframework.veterans.com.cmm.service.vo.tbldeposite">
 INSERT tbldeposite(SiteCode, LockerID, MemberID, SaleDate, RealSaleDate, Deposite, IsDelete, AddDate, AddUserPKID, UpdDate, UpdUserPKID, OriginPKID)
@@ -371,4 +371,12 @@ where
 	PKID = #{OriginPKID}
 )
 </insert>
+
+<select id="DepositeBySiteCode" parameterType="String" resultType="int">
+	select distinct PLockerDeposite from tblplockergroup
+	where 
+		SiteCode = #{SiteCode}
+	and IsDelete = 'N'
+	order by PLockerDeposite
+</select>
 </mapper>

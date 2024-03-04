@@ -493,6 +493,8 @@ public class OfflinePayController {
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
 						break;
 					case "기타비용":
+						int pkid = Integer.parseInt(request.getParameter("pkid"));
+						returnMap.put("pkid",pkid);
 						returnMap = OfflinePayService.insertExpensesale(returnMap);
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));

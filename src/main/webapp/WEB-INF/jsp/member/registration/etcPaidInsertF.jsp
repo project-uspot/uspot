@@ -29,72 +29,70 @@
 	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 264px;">
 	        	<div class="col-auto mt-2">
-					<div class="card border border-primary mt-2">
-			        	<div class="row">
-			        		<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">회원번호</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
-									<input type="hidden" id="sitecode" value="${member.siteCode}">
-									<input type="hidden" id="GroupSaleNo">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">회원성명</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
-								</div>
-							</div>
-			        	</div>
-			        	<div class="row">
-			        		<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">회원구분</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
-								</div>
-							</div>
-			        	</div>
-			        	<div class="row">
-			        		<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">회원종류</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
-								</div>
-							</div>
-			        	</div>
-			        	<div class="row">
-			        		<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">휴대전화</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-text" id="basic-addon1">일반전화</span>
-									<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
-								</div>
-							</div>
-			        	</div>
-						<div class="col-auto">
+		        	<div class="row">
+		        		<div class="col-md-6">
 							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
+								<span class="input-group-text" id="basic-addon1">회원번호</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
+								<input type="hidden" id="sitecode" value="${member.siteCode}">
+								<input type="hidden" id="GroupSaleNo">
 							</div>
 						</div>
-				    </div>
+						<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">회원성명</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
+							</div>
+						</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">회원구분</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
+							</div>
+						</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">회원종류</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
+							</div>
+						</div>
+		        	</div>
+		        	<div class="row">
+		        		<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">휴대전화</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group input-group-sm">
+								<span class="input-group-text" id="basic-addon1">일반전화</span>
+								<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
+							</div>
+						</div>
+		        	</div>
+					<div class="col-auto">
+						<div class="input-group input-group-sm">
+							<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
+							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -123,7 +121,10 @@
 						X
 					</div>
 					<div class="col-auto">
-						<input class="form-control form-control-sm" type="number" id="expcnt" name="expcnt" min="1" value="1" style="width: 71px;text-align:right;"/>
+						<div class="input-group input-group-sm">
+							<input class="form-control form-control-sm" type="number" id="expcnt" name="expcnt" min="1" value="1" style="width: 71px;text-align:right;"/>
+							<span class="input-group-text" id="basic-addon2">건</span>
+						</div>
 					</div>
 				</div>
 				<div class="col-auto mt-n2">
@@ -363,7 +364,7 @@ function save() {
 	        	ExpenseID : $('#expenseid').val(),
 	        	InOut : $('input[name=expensetype]').val(),
 	        	SaleDate : $('#saledate').val(),
-	        	Price : removeCommasFromNumber($('#payprice').val()),
+	        	Price : $('#expenseid').find('option:selected').attr('id'),
 	        	MemberID : $('#memberid').val(),
 	        	IsMemMode : 'Y',
 	        	ExpCnt : $('#expcnt').val(),
@@ -409,7 +410,6 @@ function payCash() {
 	    modalcheck = true;
 	    return false;
 	}
-	
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "etcprice"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory text-center">현금</td>');
@@ -427,16 +427,15 @@ function payCash() {
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	sortChange();
-	
 	$.ajax({
 		type: "POST", 
         url: "ExpenseSaleInsert",
         dataType : 'json',
         data: { 
         	ExpenseID : $('#expenseid').val(),
-        	InOut : $('input[name=expensetype]').val(),
+        	InOut : $('input[name=expensetype]:checked').val(),
         	SaleDate : $('#saledate').val(),
-        	Price : removeCommasFromNumber($('#payprice').val()),
+        	Price : $('#expenseid').find('option:selected').attr('id'),
         	MemberID : $('#memberid').val(),
         	IsMemMode : 'Y',
         	ExpCnt : $('#expcnt').val(),
@@ -525,7 +524,7 @@ function totalchange() {
 	        	ExpenseID : $('#expenseid').val(),
 	        	InOut : $('input[name=expensetype]').val(),
 	        	SaleDate : $('#saledate').val(),
-	        	Price : removeCommasFromNumber($('#paidbody tr').find('.paidprice').text()),
+	        	Price : $('#expenseid').find('option:selected').attr('id'),
 	        	MemberID : $('#memberid').val(),
 	        	ExpCnt : $('#expcnt').val(),
 	        	TotalPrice : removeCommasFromNumber($('#totalprice').val()),
@@ -589,7 +588,7 @@ function accountChange() {
         	ExpenseID : $('#expenseid').val(),
         	InOut : $('input[name=expensetype]').val(),
         	SaleDate : $('#saledate').val(),
-        	Price : removeCommasFromNumber($('#payprice').val()),
+        	Price : $('#expenseid').find('option:selected').attr('id'),
         	MemberID : $('#memberid').val(),
         	IsMemMode : 'Y',
         	ExpCnt : $('#expcnt').val(),

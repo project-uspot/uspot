@@ -350,6 +350,16 @@ function paid(){
 		}
 		urlParam = "zero";
 	}
+	
+	var recheck = '${param.recheck}';
+	if(recheck != 1){
+		recheck = 0;
+	}
+	
+	var pkid = '${param.pkid}';
+	if(pkid == ''){
+		pkid = 0;
+	}
 
 	$.ajax({
 		type : 'POST',
@@ -366,6 +376,7 @@ function paid(){
 			saleType : "${uparam}",
 			tempSaleNo : "${param.tempSaleNo}",
 			insert : $("#InsertYN").val(),
+			recheck : recheck
 		},
 		success: function(data){
 			console.log(data);

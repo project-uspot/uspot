@@ -381,6 +381,8 @@ public class VtcPaidController {
 		tblexpensesale.setSiteCode(users.getSiteCode());
 		tblexpensesale.setAddUserPKID(users.getUserPKID());
 		
+		System.out.println(tblexpensesale);
+		
 		VtcPaidService.ExpenseSaleInsert(tblexpensesale);
 		
 		return tblexpensesale.getPKID();
