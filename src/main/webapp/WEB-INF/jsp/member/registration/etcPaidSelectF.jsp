@@ -19,7 +19,7 @@
             		</div>
             		<div class="col-auto">
 						<!-- <button class="btn btn-success" type="button" onclick="etcsave()">저장</button> -->
-						<button class="btn btn-soft-danger" type="button">영수증</button>
+						<button class="btn btn-soft-danger" type="button" onclick="reReceipt()">영수증</button>
             		</div>
         		</div>
         	</div>
@@ -246,7 +246,7 @@
 				</div>
 				<div class="row mb-1">
 					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
+						<button class="btn btn-soft-danger" type="button" onclick="Cancel()" style="width:113px;">결제취소</button>
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-phoenix-success" type="button" onclick="reReceipt()">영수증재발행</button>
@@ -280,7 +280,14 @@ $(document).ready(function() {
     $('#paidbody').on('click', 'tr', function() {
         paidbodyclick(this);
 	});
+    
+	var firstTableRow = $('#paidbody').children('tr:first');
+    
+    if (firstTableRow.length > 0) {
+        firstTableRow.click();
+    }
 });
+
 
 var previousRow = null;
 function paidbodyclick(clickedRow){
@@ -481,11 +488,32 @@ function paycredit() {
         }
   	});
 }
+var prevbuttonText = '';
+$("button").click(function() {
+    var buttonText = $(this).text();
+    prevbuttonText = buttonText;
+});
+
 
 function totalchange() {
-	if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
-		accountChange('account');
+	if($('#paidbody tr#new').find('.paidassignType').text() == '신용취소'){
+		CancelInsert();
 		return false;
+	}
+	
+	if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
+		if($('#paidbody tr#new').find('.paidassignType').text() == '현금취소'){
+			CancelInsert();
+			return false;
+		}else{
+			if(prevbuttonText == '신용카드'){
+				//accountChange('notaccount');
+				//return false;
+			}else{
+				accountChange('account');
+				return false;
+			}
+		}
 	}
 	
 	$('#paidbody tr#new').attr('id','etcprice');
@@ -634,6 +662,71 @@ function accountChange(option) {
 	});
 }
 
+function CancelInsert() {
+	$.ajax({
+        type: "POST", 
+        url: "tblpaidinsert", 
+        dataType : 'json',
+        data: { 
+        	FPKID : $('#DBPKID').val(),
+        	SiteCode : $('#sitecode').val(),
+        	SaleDate : getCurrentDate(),
+        	RealSaleDate : $('#paidbody tr#new').find('.paiddate').text(),
+        	SaleType : '기타비용',
+        	PayType : $('#paidbody tr#new').find('.paidcategory').text(),
+        	Price : removeCommasFromNumber($('#paidbody tr#new').find('.paidprice').text()),
+        	AssignType : $('#paidbody tr#new').find('.paidassignType').text(), 
+        	Maeipsa : $('#paidbody tr#new').find('.paidmapsa').text(), 
+        	CardName : $('#paidbody tr#new').find('.paidcardtype').text(),
+			AssignNo : $('#paidbody tr#new').find('.paidassignN').text(),
+			Pos : $('#paidbody tr#new').find('.POS').text(),
+			SignPad : $('#paidbody tr#new').find('.signpad').text(),
+			Halbu : $('#paidbody tr#new').find('.Halbu').text(),
+			SaleTime : $('#paidbody tr#new').find('.SaleTime').text(),
+        	PaidGroupSaleNo : $('#DBPKID').val(),
+        	OID : $('#paidbody tr#new').find('.OID').text(),
+			TID : $('#paidbody tr#new').find('.TID').text(),
+			OriginPKID : $(previousRow).find('.PKID').text()
+        },
+        success: function(success) {	
+        	
+        	$('#paidbody tr#new').attr('id','etcprice');
+        	sortChange();
+        	
+        	$.ajax({
+        		type: "POST", 
+        		url: "UpdExpenseSale", 
+                dataType : 'json',
+                data: { 
+                	PKID : $('#DBPKID').val(),
+                	ExpenseID : $('#expenseid').val(),
+                	InOut : $('input[name=expensetype]:checked').val(),
+                	SaleDate : $('#saledate').val(),
+                	Price : $('#DBPrice').val(),
+                	MemberID : $('#memberid').val(),
+                	ExpCnt : $('#expcnt').val(),
+                	TotalPrice : removeCommasFromNumber($('#totalprice').val()),
+                	Misu : removeCommasFromNumber($('#misu').val()),
+                	PaidPrice : removeCommasFromNumber($('#paidprice').val()),
+                	Note : $('#note').val()
+                },
+                success: function(data) {
+                	window.opener.location.reload();
+                	window.location.href = 'etcPaidSelectF.do?PKID='+$('#DBPKID').val();
+                },
+                error: function(xhr, status, error) {
+               	 console.log("Status: " + status);
+                 console.log("Error: " + error);
+                }
+        	});
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
 <%-- 현금 영수증 변환--%>
 function cashReceiptChange(){
 	var paidcategory = $(previousRow).find('.paidcategory').text();
@@ -708,15 +801,143 @@ function deleteRow() {
     }
 }
 
+function Cancel() {
+	$('#resultmessage').html('결제 취소하시겠습니까?');
+  	$('.modal-footer').empty();
+  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="payCancel()">예</button>';
+  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">아니오</button>';
+  	$('.modal-footer').append(okaybutton);
+  	$('.modal-footer').append(cancelbutton);
+    $('#modalButton').click();
+    modalcheck = true;
+}
+
 function payCancel() {
     if (previousRow !== null) {
-        // Find the row with the class 'paidprice' within the previousRow
-        var paidPriceText = $(previousRow).find('.paidprice').text();
+    	
+    	var PKID = $(previousRow).find('.PKID').text();
+    	var paidcategory = $(previousRow).find('.paidcategory').text(); 
+        var paidPriceText = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+        var paidassignType = '';
+        var paidcardtype = $(previousRow).find('.paidcardtype').text();
+        var paidmapsa = $(previousRow).find('.paidmapsa').text();
+        var paidassignN = $(previousRow).find('.paidassignN').text();
+        var SaleTime = $(previousRow).find('.SaleTime').text();
+        var OID = $(previousRow).find('.OID').text();
+        var TID = $(previousRow).find('.TID').text();
+        if(paidcategory == '보증금'){
+        	depositeRefund();	
+        	return false;
+        }
+        
+        if($(previousRow).find('.paidassignType').text().indexOf('취소') !== -1){
+        	alert('이미 취소된 건입니다.');
+    	    return false;
+        }
+        
+        if($(previousRow).find('.paidassignType').text().indexOf('환불') !== -1){
+        	$('#resultmessage').html('이미 환불된 건입니다.');
+    	  	$('.modal-footer').empty();
+    	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+    	  	$('.modal-footer').append(cancelbutton);
+    	    $('#modalButton').click();
+    	    modalcheck = true;
+    	    return false;
+        }
+        
+        $.ajax({
+            type: "POST", 
+            url: "OriginPKIDFind", 
+            dataType : 'json',
+            data: { 
+            	OriginPKID : PKID
+            },
+            success: function(data) {	
+            	if(data == '0'){
+            		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+            		window.opener.location.reload();
+                    window.close();
+            	}else if(data == '-1'){
+            		alert('이미 취소된 건입니다.');
+            	    return false;
+            	}else{
+            		switch (paidcategory) {
+            		case '현금': paidassignType = '현금취소';
+            			break;
+            		case '신용승인': paidassignType = '신용취소';
+        				break;	
+            		default:
+            			break;
+            		}
+                    
+            		if(paidcategory == "계좌이체"){
+            			var url = "${pageContext.request.contextPath}/etc/AccountCancel.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
+            			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+            		    if (myPopup === undefined || myPopup.closed) {
+            		        myPopup = window.open(url, "_blank", windowFeatures);
+            		    } else {
+            		    	myPopup.focus();
+            		    }
+            		    document.addEventListener('click', function() {
+            		        if (myPopup && !myPopup.closed) {
+            		            myPopup.focus();
+            		        }
+            		  	});
+            		    
+            		    return false;
+            		}else if(paidcategory != '현금'){
+            			var url = "${pageContext.request.contextPath}/etc/CancelPaid.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
+            			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+            		    if (myPopup === undefined || myPopup.closed) {
+            		        myPopup = window.open(url, "_blank", windowFeatures);
+            		    } else {
+            		    	myPopup.focus();
+            		    }
+            		    document.addEventListener('click', function() {
+            		        if (myPopup && !myPopup.closed) {
+            		            myPopup.focus();
+            		        }
+            		  	});
+            		    
+            		    return false;
+            		}
+            		
+                    if (paidPriceText > 0) {
+                        paidPriceText = -paidPriceText;
+                    } else if (paidPriceText < 0) {
+                        paidPriceText = Math.abs(paidPriceText);
+                    }
+                    
+            		var paidPrice = formatNumberWithCommas(paidPriceText);
 
-        // Display the text in an alert window
-        alert('Paid Price: ' + paidPriceText);
+                        	
+                   	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
+               		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+               		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
+               		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
+               		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
+               		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+               		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+               		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+               		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+               		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+               		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+               		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+               		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+               		
+               		var tableBody = $('#paidbody');
+               		tableBody.append(newRow);
+               		sortChange();
+               		CancelInsert();
+            	}
+            },
+            error: function(xhr, status, error) {
+           	 console.log("Status: " + status);
+             console.log("Error: " + error);
+            }
+    	});
     } else {
-        alert('No row selected.');
+    	alert('취소할 건을 선택해주세요');
     }
 }
 

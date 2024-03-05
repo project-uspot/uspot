@@ -1,7 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +39,7 @@ public class VtcLockerController{
 	
 	public static Marker locker = MarkerFactory.getMarker("locker");
 	
-	@GetMapping("/samulhaminfo.do")
+	@GetMapping("/lockerinfo.do")
 	public String samulhaminfo(Model model) throws Exception {
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
@@ -56,17 +54,17 @@ public class VtcLockerController{
 
 		model.addAttribute("list",SamulhamList);
 		
-		return "samulham/information/samulhaminfoList";
+		return "locker/information/lockerinfoList";
 	}
 	
-	@GetMapping("/samulhaminfodetail")
+	@GetMapping("/lockerdetail.do")
 	public String samulhamdetail(@RequestParam(name = "lockergroupid")int lockergroupid,Model model) throws Exception {
 		
 		tblplockergroup samulhamdetail = vtcLockerService.selectSamulhamInfodetail(lockergroupid);
 		
 		model.addAttribute("vo",samulhamdetail);
 		
-		return "samulham/information/samulhaminfoDetail";
+		return "locker/information/lockerinfoDetail";
 	}
 	
 	@GetMapping("/lockercodelist.do")
@@ -81,7 +79,7 @@ public class VtcLockerController{
 		model.addAttribute("grouplist",tblplockergroup);
 		model.addAttribute("list",lockercodelist);
 		
-		return "samulham/lockercode/lockercodelist";
+		return "locker/lockercode/lockercodelist";
 	}
 	
 	@GetMapping("/lockercodeinsert.do")
@@ -93,7 +91,7 @@ public class VtcLockerController{
 		int maxsortorder = vtcLockerService.maxsortorder(users.getSiteCode());
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);
-		return "samulham/lockercode/lockercodeinsertF";
+		return "locker/lockercode/lockercodeinsertF";
 	}
 	
 	@ResponseBody
@@ -157,7 +155,7 @@ public class VtcLockerController{
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);
 		model.addAttribute("detail",lockercodedetail);
-		return "samulham/lockercode/lockercodeupdateF";
+		return "locker/lockercode/lockercodeupdateF";
 	}
 	
 	@PostMapping("/lockercodeupdate.do")

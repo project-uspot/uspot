@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 
 <c:choose>
@@ -100,6 +101,7 @@
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
 	<main class="main" id="top">
@@ -568,7 +570,7 @@
 	                   	<c:forEach items="${sessiontblAuthuserGroups}" var="list">
 	                   		<c:if test="${list.pgmPKID == 87}">
 	                   			<li class="nav-item">
-	                   				<a class="nav-link" href="${pageContext.request.contextPath}/samulhaminfo.do" data-bs-toggle="" aria-expanded="false">
+	                   				<a class="nav-link" href="${pageContext.request.contextPath}/lockerinfo.do" data-bs-toggle="" aria-expanded="false">
                          				<div class="d-flex align-items-center">
                          					<span class="nav-link-text">사물함 분류정보 관리</span>
                          				</div>

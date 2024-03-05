@@ -639,6 +639,9 @@ public class OfflinePayController {
 		case "locker":
 			saleType = "사물함";
 			break;
+		case "etc":
+			saleType = "기타비용";
+			break;
 		case "rent":
 			saleType = "대관";
 			break;

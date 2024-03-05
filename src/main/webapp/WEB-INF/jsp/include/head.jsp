@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +24,7 @@
     <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
 	<script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
 
     <!-- ===============================================-->

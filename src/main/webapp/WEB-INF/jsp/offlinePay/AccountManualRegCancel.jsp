@@ -17,7 +17,7 @@
 					<div class="btn-group btn-group-lg" role="group" aria-label="First group">
 					    <button class="btn btn-secondary ms-2 fs-5" id="prevButton" type="button"><span data-feather="chevron-left"></span></button>
 					    <c:forEach items="${accountList}" var="accountMap" varStatus="loop">
-					        <button class="btn btn-secondary ms-1 groupButton" type="button" value="${accountMap.PKID }">${accountMap.BankName}</button>
+					        <button class="btn btn-secondary ms-1 groupButton" type="button" value="${accountMap.PKID}">${accountMap.BankName}</button>
 					    </c:forEach>
 					    <button class="btn btn-secondary ms-2" id="nextButton" ><span data-feather="chevron-right"></span></button>
 					</div>
