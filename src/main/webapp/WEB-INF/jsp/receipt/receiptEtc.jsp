@@ -11,12 +11,8 @@
 </head>
 <body>
 <div>
-<c:set var="dayName" value="" />
 <c:set var="gonggub" value="0" />
 <c:set var="vat" value="0" />
-<c:set var="RealPrice" value="0" />
-<c:set var="PaidPrice" value="0" />
-<c:set var="Misu" value="0" />
 <c:forEach items="${receiptList }" var="receiptMap" varStatus="status">
 	<c:if test="${status.index == 0}">
 		<h3 style='text-align:center;'>${receiptMap.SiteName }</h3>
@@ -27,11 +23,8 @@
 		<div><span>회원번호: ${receiptMap.MemberID } [${receiptMap.Name }]</span></div>
 		<div>-----------------------------------------------</div>
 	</c:if>
-	<div><span>사 물 함: [${receiptMap.PLockerGroupName} / ${receiptMap.PLockerLocation}]${receiptMap.PLockerNo}</span></div>
-	<div><span>등 록 일: ${receiptMap.RegDate}</span></div>
-	<div><span>사용기간: ${receiptMap.FromDate }~${receiptMap.ToDate }(${receiptMap.RegMonth })</span></div>
-	<div><span>사 용 료: <fmt:formatNumber value='${receiptMap.UsePrice}' pattern=" #,###" /></span></div>
-	<div><span>할인금액: <fmt:formatNumber value='${receiptMap.DCPrice}' pattern=" #,###" /></span></div>
+	<div><span>항 목: ${receiptMap.ExpenseName}(${receiptMap.ExpCnt})</span></div>
+	<div><span>매출금액: <fmt:formatNumber value='${receiptMap.RealPrice}' pattern=" #,###" /></span></div>
 	<c:choose>
 		<c:when test="${receiptMap.NVAT eq 'Y'}">
 			<div><span>금액: <fmt:formatNumber value='${receiptMap.gonggub}' pattern=" #,###" /></span></div>
@@ -44,13 +37,12 @@
 	<div>-----------------------------------------------</div>
 	<c:set var="gonggub" value="${gonggub + receiptMap.gonggub}" />
 	<c:set var="vat" value="${vat + receiptMap.vat}" />
-	<c:set var="RealPrice" value="${RealPrice + receiptMap.UsePrice}" />
-	<c:set var="PaidPrice" value="${PaidPrice + receiptMap.Price}" />
-	<c:set var="Misu" value="${Misu + receiptMap.Misu}" />
+	<c:set var="PaidPrice" value="${receiptMap.Price}" />
+	<c:set var="Misu" value="${receiptMap.Misu}" />
 	<c:if test="${status.index + 1 == fn:length(receiptList)}">
 		<div><span>공급가액: <fmt:formatNumber value='${gonggub}' pattern=" #,###" /></span></div>
 		<div><span>부 가 세: <fmt:formatNumber value='${vat}' pattern=" #,###" /></span></div>
-		<div><span>받을금액: <fmt:formatNumber value='${RealPrice}' pattern=" #,###" /></span></div>
+		<div><span>받을금액: <fmt:formatNumber value='${receiptMap.RealPrice}' pattern=" #,###" /></span></div>
 		<div>-----------------------------------------------</div>
 		<c:choose>
 			<c:when test="${receiptMap.paytype eq '현금' }">
@@ -77,11 +69,11 @@
 				<div><span>계좌이체: <fmt:formatNumber value='${receiptMap.Price }' pattern=" #,###" /></span></div>
 			</c:when>
 		</c:choose>
-		<div><span>승인일자: ${receiptMap.RealSaleDate }</span></div>
+		<div><span>승인일자: ${receiptMap.RealSaleDate}</span></div>
 		<div>-----------------------------------------------</div>
-		<div><span>받은금액: <fmt:formatNumber value='${PaidPrice }' pattern=" #,###" /></span></div>
+		<div><span>받은금액: <fmt:formatNumber value='${PaidPrice}' pattern=" #,###" /></span></div>
 		<c:if test="${Misu > 0 }">
-			<div><span>미납금액: <fmt:formatNumber value='${Misu }' pattern=" #,###" /></span></div>
+			<div><span>미납금액: <fmt:formatNumber value='${Misu}' pattern=" #,###" /></span></div>
 		</c:if>
 		<div><span>담 당 자: [${receiptMap.SawonNo}]${receiptMap.SawonName }</span></div>
 	</c:if>

@@ -9,6 +9,8 @@ public interface ReceiptService {
 
 	List<Map<String, Object>> getReceiptLocker(String pkid);
 	
+	List<Map<String, Object>> getReceiptEtc(String pkid);
+	
 	public void insertReceipt(Map<String, Object> sqlMap);
 
 	public Map<String, Object> getReReceipt(Map<String, Object> setSql);

@@ -25,6 +25,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 	}
 	
 	@Override
+	public List<Map<String, Object>> getReceiptEtc(String pkid) {
+		return receiptDAO.getReceiptEtc(pkid);
+	}
+	
+	@Override
 	public void insertReceipt(Map<String, Object> sqlMap) {
 		 receiptDAO.insertReceipt(sqlMap);
 	}
