@@ -7,8 +7,14 @@
      		<div class="col-auto">
 				<h2>사물함 분류정보 관리</h2>
          	</div>
+         	<c:set var="maxSort" value="0"/>
+         	<c:forEach var="sort" items="${list}">
+         		<c:if test="${maxSort < sort.sortOrder}">
+					<c:set var="maxSort" value="${sort.sortOrder}"/>
+				</c:if>
+         	</c:forEach>
          	<div class="col-auto">
-         		<button class="btn btn-info" type="button" onclick="save()">신규</button>
+         		<button class="btn btn-info" type="button" onclick="save(${maxSort+10})">신규</button>
 				<button class="btn btn-warning" type="button" onclick="merge()">수정</button>
 				<button class="btn btn-danger" type="button" onclick="save()">삭제</button>
 				<button class="btn btn-success" type="button" onclick="save()">엑셀로 저장</button>
@@ -61,10 +67,26 @@
 </div>
 <script type="text/javascript">
 	var myPopup;
+	
+	function save(sort){
+		var url = "LockerInfoInsertF.do?sort="+sort;
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";
+	    if (myPopup === undefined || myPopup.closed) {
+	        myPopup = window.open(url, "_blank", windowFeatures);
+	    } else {
+	    	myPopup.focus();
+	    }
+	    document.addEventListener('click', function() {
+	        if (myPopup && !myPopup.closed) {
+	            myPopup.focus();
+	        }
+	  	});
+	}
+	
 	function merge(){
 		var groupid = $(previousRow).find('.PLockerGroupID').text();
 		var url = "lockerdetail.do?lockergroupid="+groupid;
-		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=700";
+		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
 	    } else {

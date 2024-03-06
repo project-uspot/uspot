@@ -152,4 +152,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public List<Integer> DepositeBySiteCode(String SiteCode)throws Exception{
 		return selectList("locker.DepositeBySiteCode",SiteCode);
 	}
+	
+	public void LockerInfoInsert(tblplockergroup tblplockergroup)throws Exception{
+		insert("locker.LockerInfoInsert",tblplockergroup);
+	}
 }

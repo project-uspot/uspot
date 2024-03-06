@@ -193,4 +193,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public List<Integer> DepositeBySiteCode(String SiteCode) throws Exception {
 		return vtcLockerDAO.DepositeBySiteCode(SiteCode);
 	}
+
+	@Override
+	public void LockerInfoInsert(tblplockergroup tblplockergroup) throws Exception {
+		vtcLockerDAO.LockerInfoInsert(tblplockergroup);
+	}
 }

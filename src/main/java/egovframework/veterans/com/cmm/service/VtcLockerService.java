@@ -75,4 +75,6 @@ public interface VtcLockerService {
 	void InsertDepositeRefund(tbldeposite tbldeposite)throws Exception;
 	
 	List<Integer> DepositeBySiteCode(String SiteCode)throws Exception;
+	
+	void LockerInfoInsert(tblplockergroup tblplockergroup)throws Exception;
 }
