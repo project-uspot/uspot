@@ -47,13 +47,13 @@ public class fmsc_s04_01 {
 	private double ReturnPrice;
 
 
-	private String Account;
+	private String Account="";
 
 
-	private String Bank;
+	private String Bank="";
 
 
-	private String AccountNo;
+	private String AccountNo="";
 
 
 	private String ORToDate;

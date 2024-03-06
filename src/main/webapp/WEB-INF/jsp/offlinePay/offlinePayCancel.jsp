@@ -248,7 +248,7 @@ function save(){
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#PayType").val() + '</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">-' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + $("#AssignType").val() + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + $("#Maeipsa").val() + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' + $("#CardName").val() + '</td>');
@@ -263,7 +263,13 @@ function save(){
 	newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + $("#TID").val() + '</td>');
 
 	$(opener.document).find('#paidbody').append(newRow);
-
+	<%--
+	$(opener.document).find('#paidbody .hover-actions-trigger').each(function() {
+			var bgColor = $(this).css("background-color");
+	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	        	$(this).attr('class','cancel');
+	        }
+	});--%>
 	opener.totalchange();
 	self.close();
 }
@@ -312,12 +318,14 @@ function paid(){
 			OID : $("#OID").val(),
 			SaleTime : $("#SaleTime").val(),
 			AssignNo : $("#AssignNo").val(),
-			Price : parseInt(removeCommasFromNumber($("#Price").val())),
+			Price : parseInt(removeCommasFromNumber($("#Price").val().replaceAll('-',''))),
 			optPay : document.querySelector('input[name="optPay"]:checked').value,
 			optType : document.querySelector('input[name="optType"]:checked').value,
 			MemberID : $("#MemberID").val(),
 			saleType : "${uparam}",
-			pkid : '${param.pkid}'
+			pkid : '${param.pkid}',
+			InType : '${param.InType}',
+			tempSaleNo : '${param.tempSaleNo}',
 		},
 		success: function(data){
 			console.log(data);

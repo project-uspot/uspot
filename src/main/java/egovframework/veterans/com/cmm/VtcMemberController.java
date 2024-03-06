@@ -164,13 +164,6 @@ public class VtcMemberController {
 				updatetblmember.setDCID(-1);
 			}
 
-			updatetblmember.setUpdUserPKID(users.getUserPKID());
-			updatetblmember.setName(f.fixEncoding(updatetblmember.getName()));
-			updatetblmember.setAddress(f.fixEncoding(updatetblmember.getAddress()));
-			updatetblmember.setSubAddress(f.fixEncoding(updatetblmember.getSubAddress()));
-			updatetblmember.setCarNo(f.fixEncoding(updatetblmember.getCarNo()));
-			updatetblmember.setNote(f.fixEncoding(updatetblmember.getNote()));
-
 			vtcMemberService.updatemember(updatetblmember);
 
 			return "redirect:memberfind?MemberID="+updatetblmember.getMemberID();
@@ -377,7 +370,6 @@ public class VtcMemberController {
 		return "member/registration/memberinsertF";
 	}
 	
-	//포스트 매핑시 한글깨짐 해결하면 개천재
 	// TODO 회원등록관리 회원등록 프로세스
 	@PostMapping(value = "memberinsertP", produces = "text/plain;charset=UTF-8")
 	public String memebrinsert(tblmember tblmember, Model model,
@@ -394,11 +386,6 @@ public class VtcMemberController {
 
 			return "redirect:login.do";
 		}
-		tblmember.setName(f.fixEncoding(tblmember.getName()));
-		tblmember.setAddress(f.fixEncoding(tblmember.getAddress()));
-		tblmember.setSubAddress(f.fixEncoding(tblmember.getSubAddress()));
-		tblmember.setCarNo(f.fixEncoding(tblmember.getCarNo()));
-		tblmember.setNote(f.fixEncoding(tblmember.getNote()));
 		
 		if (tblmember.getName().length() < 2) {
 
@@ -1073,7 +1060,7 @@ public class VtcMemberController {
 		
 		vtcMemberService.fmsc_01insert(fmsc_s01);
 		
-		tblpaid.setPaidGroupSaleNo(fmsc_s01.getSaleNo());
+		tblpaid.setPaidGroupSaleNo(fmsc_s01.getGroupSaleNo());
 		
 		vtcPaidService.paidchange(tblpaid);
 		
@@ -1119,6 +1106,12 @@ public class VtcMemberController {
 		setSql.put("GroupSaleNo",result.get(0).getGroupSaleNo());
 		setSql.put("ReFundDate",f.formatDate(new Date(), "yMd"));
 		List<Map<String,Object>> refundList = vtcMemberService.selectRefund(setSql);
+		if(refundList.size() == 0) {
+			refundList = vtcMemberService.selectFmsc_s04_01(setSql);
+		}
+		if(refundList.size() == 0) {
+			refundList = vtcMemberService.selectFmsc_s04(setSql);
+		}
 		//String mleveltext = "";
 		//String dcname = "";
 		//int dcid = 0;
@@ -1228,6 +1221,7 @@ public class VtcMemberController {
 		return fmsc_s04.getSaleNo();
 	}
 	
+	// TODO 회원등록관리 강좌 환불 대기신청
 	@PostMapping("/itemrefund_wait")
 	@ResponseBody
 	public String itemrefund_wait(fmsc_s04_01 fmsc_s04_01,fmsc_s01 fmsc_s01) throws Exception{

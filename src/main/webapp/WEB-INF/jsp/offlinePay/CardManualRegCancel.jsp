@@ -143,7 +143,7 @@ function save(){
 
 	opener.frmOffline.RealSaleDate.value = year+"-"+month+"-"+day+" "+ getCurrentTime();
 	opener.frmOffline.PayType.value = "신용카드";
-	opener.frmOffline.AssignType.value = "신용승인";
+	opener.frmOffline.AssignType.value = "신용취소";
 	opener.frmOffline.Maeipsa.value = $("#Maeipsa").val();
 	opener.frmOffline.CardName.value = $("#CardName").val();
 	opener.frmOffline.AssignNo.value = $("#AssignNo").val();

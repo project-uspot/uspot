@@ -98,4 +98,8 @@ public interface VtcMemberService {
 
 	void fmsc_01insertTemp_delete(Map<String, Object> setSql);
 
+	List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql);
+
+	List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql);
+
 }

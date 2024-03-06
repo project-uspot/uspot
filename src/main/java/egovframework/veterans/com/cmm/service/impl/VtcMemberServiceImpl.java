@@ -242,4 +242,14 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
 		vtcMemberDAO.fmsc_01insertTemp_delete(setSql);		
 	}
+
+	@Override
+	public List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql) {
+		return vtcMemberDAO.selectFmsc_s04_01(setSql);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
+		return vtcMemberDAO.selectFmsc_s04(setSql);
+	}
 }

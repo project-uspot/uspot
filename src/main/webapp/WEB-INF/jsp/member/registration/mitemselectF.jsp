@@ -1140,15 +1140,47 @@ function paidCancel(){
 		return false;
 	}
 
+	var GroupSaleNo = $("#GroupSaleNo").val();
+	var InType = $("#InType").val();
+
 	if(frm.paidCategory.value == "현금" ){
 		$("#paidbody .hover-actions-trigger").each(function() {
 			var bgColor = $(this).css("background-color");
 	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
-	            $(this).remove();
+	        	if(isToday($(this).find('.paiddate').text()) && $(this).attr("id") == "new"){
+	        		$(this).remove();	
+	        	}else{
+		        	if(removeCommasFromNumber($(this).find(".paidprice").text()) < 0){
+		        		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+		        		$('.modal-footer').empty();
+		        		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		        		$('.modal-footer').append(cancelbutton);
+		        		$('#modalButton').click();
+		        		modalcheck = true;
+		        		return false;
+		        	}
+	        		var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
+	        		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+	        		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
+	        		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">-' + $(this).find('.paidprice').text() + '</td>');
+	        		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+	        		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+	        		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+	        		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+	        		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+	        		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+	        		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+	        		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+	        		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+	        			
+	        		var tableBody = $('#paidbody');
+	        		tableBody.append(newRow);
+	        		totalchange();
+	        	}
 	        }
 	    });
 	}else if(frm.paidCategory.value == "계좌이체" ){
-		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
@@ -1161,7 +1193,7 @@ function paidCancel(){
 	        }
 	  	});
 	}else{
-		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
@@ -1316,6 +1348,18 @@ function removeCommasFromNumber(formattedNumber) {
 
 function roundToNearestTen(num) {
 	return Math.round(num / 10) * 10;
+}
+
+function isToday(dateStr) {
+    var inputDate = new Date(dateStr);
+    var today = new Date();
+
+    <%--// 날짜 비교를 위해 시간 부분을 0으로 설정--%>
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    // 날짜 비교
+    return inputDate.getTime() === today.getTime();
 }
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>

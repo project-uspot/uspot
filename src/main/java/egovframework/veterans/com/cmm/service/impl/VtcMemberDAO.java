@@ -187,4 +187,12 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
 		update("member.fmsc_01insertTemp_delete",setSql);
 	}
+
+	public List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql) {
+		return selectList("member.selectFmsc_s04_01",setSql);
+	}
+
+	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
+		return selectList("member.selectFmsc_s04",setSql);
+	}
 }
