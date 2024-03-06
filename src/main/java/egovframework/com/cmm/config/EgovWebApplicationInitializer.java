@@ -67,9 +67,9 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("encodingFilter", new org.springframework.web.filter.CharacterEncodingFilter());
 		characterEncoding.setInitParameter("encoding", "UTF-8");
 		characterEncoding.setInitParameter("forceEncoding", "true");
-		characterEncoding.addMappingForUrlPatterns(null, false, "*.do");
+		characterEncoding.addMappingForUrlPatterns(null, false, "/*");
 		//characterEncoding.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "*.do");
-		
+
 		//-------------------------------------------------------------
 		// Spring ServletContextListener 설정
 		//-------------------------------------------------------------
