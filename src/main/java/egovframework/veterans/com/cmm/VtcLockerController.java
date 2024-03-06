@@ -1,5 +1,6 @@
 package egovframework.veterans.com.cmm;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
@@ -57,6 +59,9 @@ public class VtcLockerController{
 		return "locker/information/lockerinfoList";
 	}
 	
+	@GetMapping("/LockerInfoInsertF.do")
+	public String LockerInfoInsertF() throws Exception {return "locker/information/lockerinfoInsert";}
+	
 	@GetMapping("/lockerdetail.do")
 	public String samulhamdetail(@RequestParam(name = "lockergroupid")int lockergroupid,Model model) throws Exception {
 		
@@ -65,6 +70,38 @@ public class VtcLockerController{
 		model.addAttribute("vo",samulhamdetail);
 		
 		return "locker/information/lockerinfoDetail";
+	}
+	
+	@ResponseBody
+	@PostMapping("/LockerInfoInsert")
+	public String LockerInfoInsert(tblplockergroup tblplockergroup,@RequestParam(value = "imageInput",required = false)MultipartFile LockerImage)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return "0";
+		}
+		
+		if(LockerImage != null && !LockerImage.isEmpty()) {
+			
+			String LockerImagefilename = LockerImage.getOriginalFilename();
+			
+			tblplockergroup.setLockerImage(LockerImagefilename);
+	
+			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			
+			try {
+				LockerImage.transferTo(new File(image_path + LockerImagefilename));
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setAddUserPKID(users.getUserPKID());		
+		
+		vtcLockerService.LockerInfoInsert(tblplockergroup);
+		
+		return "success";
 	}
 	
 	@GetMapping("/lockercodelist.do")

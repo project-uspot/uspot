@@ -43,6 +43,8 @@
     <link href="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
     <link href="${pageContext.request.contextPath}/new_lib/vendors/choices/choices.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link href="${pageContext.request.contextPath}/new_lib/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/new_lib/vendors/prism/prism-okaidia.css" rel="stylesheet">
     
     <script>
       var phoenixIsRTL = window.config.config.phoenixIsRTL;

@@ -379,4 +379,21 @@ where
 	and IsDelete = 'N'
 	order by PLockerDeposite
 </select>
+
+<insert id="LockerInfoInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
+INSERT INTO tblplockergroup
+(SiteCode, PLockerGroupName, PLockerLocation, PLockerType, 
+PLockerDeposite, PLockerPrice, PLockerMonth, SortOrder, 
+NVAT, LockerImage,JungsiNewDate, 
+JungsiReDate, JungsiFromToDate, JungsiNew_STime, JungsiNew_ETime, 
+JungsiRe_STime, JungsiRe_ETime, IsDelete, 
+AddDate, AddUserPKID, DanCnt, WebYN)
+values
+(#{SiteCode},#{PLockerGroupName},#{PLockerLocation},#{PLockerType}, 
+#{PLockerDeposite},#{PLockerPrice},#{PLockerMonth},#{SortOrder}, 
+#{NVAT},#{LockerImage},#{JungsiNewDate}, 
+#{JungsiReDate},#{JungsiFromToDate},#{JungsiNewSTime},#{JungsiNewETime}, 
+#{JungsiReSTime},#{JungsiReETime},'N',
+now(), #{AddUserPKID}, #{DanCnt},'Y')
+</insert>
 </mapper>
