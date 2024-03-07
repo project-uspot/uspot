@@ -1,5 +1,8 @@
 package egovframework.veterans.com.cmm;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
@@ -45,6 +49,7 @@ import egovframework.veterans.com.cmm.service.vo.tbldeposite;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
+import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
@@ -1368,7 +1373,12 @@ public class VtcMemberController {
 		}
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
-		List<tblplockergroup> lockergrouplist = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblplockergroup tblplockergroup = new tblplockergroup();
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		
+		List<tblplockergroup> lockergrouplist = vtcLockerService.LockerInfoList(tblplockergroup);
 		
 		tblCode.setSiteCode(users.getSiteCode());
 		tblCode.setCodeGroupID("6");
@@ -1419,7 +1429,11 @@ public class VtcMemberController {
 		
 		List<tblpaid> paidList = vtcPaidService.tblpaidbypaidgroupsaleno(tblpaid);
 		
-		List<tblplockergroup> lockergrouplist = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		tblplockergroup tblplockergroup = new tblplockergroup();
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		
+		List<tblplockergroup> lockergrouplist = vtcLockerService.LockerInfoList(tblplockergroup);
 		
 		tbldeposite.setSiteCode(users.getSiteCode());
 		
@@ -1482,7 +1496,11 @@ public class VtcMemberController {
 		}
 		
 		tblmember member = vtcMemberService.tblmemberBymemberId(tblmember);
-		List<tblplockergroup> lockergrouplist = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblplockergroup tblplockergroup = new tblplockergroup();
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		List<tblplockergroup> lockergrouplist = vtcLockerService.LockerInfoList(tblplockergroup);
 		
 		tblplocker.setSiteCode(users.getSiteCode());
 		
@@ -1571,5 +1589,40 @@ public class VtcMemberController {
 		model.addAttribute("paidlist",paidList);
 		
 		return "member/registration/etcPaidSelectF";
+	}
+	
+	@ResponseBody
+	@PostMapping("/MemberImageChange")
+	public String MemberImageChange(tblmemberphoto tblmemberphoto,@RequestParam(value = "imageInput",required = false)MultipartFile MemberImage)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			return "0";
+		}
+		
+		if(MemberImage != null && !MemberImage.isEmpty()) {
+			
+			String MemberImagefilename = MemberImage.getOriginalFilename();
+			
+			String ImgName = "Mem"+tblmemberphoto.getMemberID()+"Img"+MemberImagefilename;
+			
+			
+			byte[] imageBytes = MemberImage.getBytes();
+			
+			String image_path = session.getServletContext().getRealPath("new_lib/assets/img/memberimage/");
+			
+			try {
+				Files.write(Paths.get(image_path + ImgName), imageBytes);
+				
+				tblmemberphoto.setPhoto(imageBytes);
+				
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+		tblmemberphoto.setSiteCode(users.getSiteCode());
+		vtcMemberService.MemberImageChange(tblmemberphoto);
+		
+		return "success";
 	}
 }

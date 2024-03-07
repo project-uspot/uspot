@@ -14,11 +14,12 @@
 				</c:if>
          	</c:forEach>
          	<div class="col-auto">
-         		<button class="btn btn-info" type="button" onclick="save(${maxSort+10})">신규</button>
+         		<button class="btn btn-outline-primary" type="button" onclick="location.href='lockerinfo.do'">조회</button>
+         		<button class="btn btn-info" type="button" onclick="create(${maxSort+10})">신규</button>
 				<button class="btn btn-warning" type="button" onclick="merge()">수정</button>
-				<button class="btn btn-danger" type="button" onclick="save()">삭제</button>
-				<button class="btn btn-success" type="button" onclick="save()">엑셀로 저장</button>
-				<button class="btn btn-secondary" type="button" onclick="save()">삭제데이터 보기</button>
+				<button class="btn btn-danger" type="button" onclick="remove()">삭제</button>
+				<button class="btn btn-success" type="button">엑셀로 저장</button>
+				<button class="btn btn-secondary" type="button" onclick="location.href='lockerDeleteinfo.do'">삭제데이터 보기</button>
        		</div>
    		</div>
    	</div>
@@ -68,7 +69,17 @@
 <script type="text/javascript">
 	var myPopup;
 	
-	function save(sort){
+	//테이블 클릭하면 행 바뀌는 로직
+	var previousRow = null;
+	function tbodyclick(clickedRow){
+		if (previousRow !== null) {
+	    	$(previousRow).css('background-color', '');
+	    }
+		$(clickedRow).css('background-color', 'lightblue');
+	    previousRow = clickedRow;
+	}
+	
+	function create(sort){
 		var url = "LockerInfoInsertF.do?sort="+sort;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";
 	    if (myPopup === undefined || myPopup.closed) {
@@ -84,6 +95,15 @@
 	}
 	
 	function merge(){
+		if(previousRow == null){
+			$('#resultmessage').html('수정할 행을 선택해주세요.');
+			$('.modal-footer').empty();
+			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
+		}
 		var groupid = $(previousRow).find('.PLockerGroupID').text();
 		var url = "lockerdetail.do?lockergroupid="+groupid;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";
@@ -99,13 +119,35 @@
 	  	});
 	}
 	
-	//테이블 클릭하면 행 바뀌는 로직
-	var previousRow = null;
-	function tbodyclick(clickedRow){
-		if (previousRow !== null) {
-	    	$(previousRow).css('background-color', '');
-	    }
-		$(clickedRow).css('background-color', 'lightblue');
-	    previousRow = clickedRow;
+	function remove() {
+		if(previousRow == null){
+			$('#resultmessage').html('삭제할 행을 선택해주세요.');
+			$('.modal-footer').empty();
+			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			$('.modal-footer').append(cancelbutton);
+		    $('#modalButton').click();
+		    modalcheck = true;
+		    return false;
+		}
+		
+		$.ajax({
+	        type: "POST", 
+	        url: "RemoveLockerGroup", 
+	        dataType : 'json',
+	        data: { 
+	        	PLockerGroupID: $(previousRow).find('.PLockerGroupID').text()
+	        },
+	        success: function(data) {	
+	       	 	if(data == '0'){
+	       	 		alert('세션이 만료되었습니다. 다시 로그인해주세여');	
+	       	 	}
+	       	 	window.location.reload();
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
 	}
 </script>
+<%@ include file="../../include/foot.jsp" %>

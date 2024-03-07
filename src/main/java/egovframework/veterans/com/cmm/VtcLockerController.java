@@ -48,11 +48,18 @@ public class VtcLockerController{
 		
 		if(users ==null) {
 			model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
-			model.addAttribute("script", "back");
+			model.addAttribute("url", "login.do");
+			model.addAttribute("script", "redirect");
 
 			return "common/msg";
 		}
-		List<tblplockergroup> SamulhamList=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblplockergroup tblplockergroup = new tblplockergroup();
+		
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		
+		List<tblplockergroup> SamulhamList=vtcLockerService.LockerInfoList(tblplockergroup);
 
 		model.addAttribute("list",SamulhamList);
 		
@@ -90,6 +97,7 @@ public class VtcLockerController{
 	
 			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
 			
+			
 			try {
 				LockerImage.transferTo(new File(image_path + LockerImagefilename));
 			} catch (Exception e) {
@@ -101,14 +109,123 @@ public class VtcLockerController{
 		
 		vtcLockerService.LockerInfoInsert(tblplockergroup);
 		
+		if(LockerImage != null && !LockerImage.isEmpty()) {
+			
+			String LockerImagefilename = LockerImage.getOriginalFilename();
+			
+			String ImgName = "PLG"+tblplockergroup.getPLockerGroupID()+"Img"+LockerImagefilename; 
+			
+			tblplockergroup.setLockerImage(ImgName);
+	
+			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			
+			
+			try {
+				LockerImage.transferTo(new File(image_path + ImgName));
+			} catch (Exception e) {
+				return "0";
+			}
+			
+			vtcLockerService.UpdLockerGroupImage(tblplockergroup);
+		}
+		
 		return "success";
 	}
 	
-	@GetMapping("/lockercodelist.do")
-	public String lockercodelist(Model model) throws Exception {
+	@ResponseBody
+	@PostMapping("/UpdLockerGroup")
+	public String UpdLockerGroup(tblplockergroup tblplockergroup,@RequestParam(value = "imageInput",required = false)MultipartFile LockerImage)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return "0";
+		}
+		
+		if(LockerImage != null && !LockerImage.isEmpty()) {
+			
+			String LockerImagefilename = LockerImage.getOriginalFilename();
+			
+			String ImgName = "PLG"+tblplockergroup.getPLockerGroupID()+"Img"+LockerImagefilename; 
+			
+			tblplockergroup.setLockerImage(ImgName);
+			
+			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			
+			try {
+				LockerImage.transferTo(new File(image_path + ImgName));
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setUpdUserPKID(users.getUserPKID());		
+		
+		vtcLockerService.UpdLockerGroup(tblplockergroup);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@PostMapping("/RemoveLockerGroup")
+	public String RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return "0";
+		}
+		
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setUpdUserPKID(users.getUserPKID());
+		
+		vtcLockerService.RemoveLockerGroup(tblplockergroup);
+		
+		return "success";
+	}
+	
+	@GetMapping("/lockerDeleteinfo.do")
+	public String lockerDeleteinfo(Model model) throws Exception {
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
-		List<tblplockergroup> tblplockergroup = vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		if(users ==null) {
+			model.addAttribute("msg", "세션이 만료되었습니다. 다시로그인해주세요.");
+			model.addAttribute("url", "login.do");
+			model.addAttribute("script", "redirect");
+
+			return "common/msg";
+		}
+		
+		tblplockergroup tblplockergroup = new tblplockergroup();
+		
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("Y");
+		
+		List<tblplockergroup> SamulhamList=vtcLockerService.LockerInfoList(tblplockergroup);
+
+		model.addAttribute("list",SamulhamList);
+		
+		return "locker/information/lockerinfoList";
+	}
+	
+	@GetMapping("/lockercodelist.do")
+	public String lockercodelist(tblplockergroup parametergroup,Model model) throws Exception {
+		
+		Users users =  (Users) session.getAttribute("loginuserinfo");
+		
+		if(users ==null) {
+			model.addAttribute("msg", "세션이 만료되었습니다. 다시로그인해주세요.");
+			model.addAttribute("url", "login.do");
+			model.addAttribute("script", "redirect");
+
+			return "common/msg";
+		}
+		
+		parametergroup.setSiteCode(users.getSiteCode());
+		parametergroup.setIsDelete("N");
+		
+		List<tblplockergroup> tblplockergroup = vtcLockerService.LockerInfoList(parametergroup);
 		tblplocker tblplocker = new tblplocker();
 		tblplocker.setSiteCode(users.getSiteCode());
 		tblplocker.setIsDelete("N");
@@ -120,11 +237,14 @@ public class VtcLockerController{
 	}
 	
 	@GetMapping("/lockercodeinsert.do")
-	public String lockercodeinsertF(Model model) throws Exception{
+	public String lockercodeinsertF(tblplockergroup tblplockergroup,Model model) throws Exception{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
-		List<tblplockergroup> PlockergroupName=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		
+		List<tblplockergroup> PlockergroupName=vtcLockerService.LockerInfoList(tblplockergroup);
 		int maxsortorder = vtcLockerService.maxsortorder(users.getSiteCode());
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);
@@ -140,6 +260,8 @@ public class VtcLockerController{
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		
 		int plockernovalue = vtcLockerService.plockernovalue(tblplockergroup);
+	
+		
 		return Integer.toString(plockernovalue);
 		
 	}
@@ -178,7 +300,7 @@ public class VtcLockerController{
 	}
 	
 	@GetMapping("/lockercodeupdate.do")
-	public String lockercodeupdateF(@RequestParam("PLockerID")int PLockerID,Model model) throws Exception{
+	public String lockercodeupdateF(@RequestParam("PLockerID")int PLockerID,Model model,tblplockergroup tblplockergroup) throws Exception{
 		
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
@@ -187,7 +309,10 @@ public class VtcLockerController{
 		tblplocker.setPLockerID(PLockerID);
 		tblplocker.setSiteCode(users.getSiteCode());
 		tblplocker lockercodedetail = vtcLockerService.lockervobyplockerid(tblplocker);
-		List<tblplockergroup> PlockergroupName=vtcLockerService.selectSamulhamInfoList(users.getSiteCode());
+		
+		tblplockergroup.setSiteCode(users.getSiteCode());
+		tblplockergroup.setIsDelete("N");
+		List<tblplockergroup> PlockergroupName=vtcLockerService.LockerInfoList(tblplockergroup);
 		int maxsortorder = vtcLockerService.maxsortorder(users.getSiteCode());
 		model.addAttribute("list",PlockergroupName);
 		model.addAttribute("sortorder",maxsortorder+1);

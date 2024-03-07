@@ -732,4 +732,8 @@
 			where SaleNo = #{tempSaleNo}
 		]]>
 	</update>
+	
+	<update id="MemberImageChange" parameterType="egovframework.veterans.com.cmm.service.vo.tblmemberphoto">
+		{call SP_MemberImageChange(#{MemberID},#{SiteCode},#{Photo})}
+	</update>
 </mapper>

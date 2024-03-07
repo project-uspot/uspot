@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.fmsc_s04;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s04_01;
 import egovframework.veterans.com.cmm.service.vo.tblIssueMemberCard;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
+import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 
 public interface VtcMemberService {
@@ -97,5 +98,6 @@ public interface VtcMemberService {
 	void insertFmsc_s01_insert_temp(Map<String, Object> list) throws Exception;
 
 	void fmsc_01insertTemp_delete(Map<String, Object> setSql);
-
+	
+	void MemberImageChange(tblmemberphoto tblmemberphoto)throws Exception;
 }

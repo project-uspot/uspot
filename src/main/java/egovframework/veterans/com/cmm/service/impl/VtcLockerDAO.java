@@ -16,9 +16,9 @@ import egovframework.veterans.com.cmm.service.vo.tblplocker;
 @Repository
 public class VtcLockerDAO extends EgovComAbstractDAO{
 	
-	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
+	public List<tblplockergroup> LockerInfoList(tblplockergroup tblplockergroup) throws Exception{
 		
-		return selectList("locker.selectSamulhamInfoList",SiteCode);
+		return selectList("locker.LockerInfoList",tblplockergroup);
 	}
 	
 	public tblplockergroup selectSamulhamInfodetail(int lockergroupIid) throws Exception{
@@ -155,5 +155,17 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public void LockerInfoInsert(tblplockergroup tblplockergroup)throws Exception{
 		insert("locker.LockerInfoInsert",tblplockergroup);
+	}
+	
+	public void UpdLockerGroupImage(tblplockergroup tblplockergroup)throws Exception{
+		update("locker.UpdLockerGroupImage",tblplockergroup);
+	}
+	
+	public void UpdLockerGroup(tblplockergroup tblplockergroup)throws Exception{
+		update("locker.UpdLockerGroup",tblplockergroup);
+	}
+	
+	public void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception{
+		update("locker.RemoveLockerGroup",tblplockergroup);
 	}
 }

@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="locker">
 
-	<select id="selectSamulhamInfoList" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" parameterType="String">
+	<select id="LockerInfoList" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
 		select * from tblplockergroup 
 		where 
 			SiteCode = #{SiteCode}
-		and IsDelete = 'N'
+		and IsDelete = #{IsDelete}
 		order by SortOrder
 	</select>
 	<select id="selectSamulhamInfodetail" parameterType="int" resultType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
@@ -68,7 +68,7 @@
 </select>
 
 <select id="plockernovalue" resultType="int" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
-		select max(a.PLockerNo)
+		select IFNULL(max(a.PLockerNo),0)
 	from
 		tblplocker a
 	left join 
@@ -78,7 +78,7 @@
 	where
 		a.IsDelete = 'N'
 	and a.SiteCode = #{SiteCode}
-	and c.PLockergroupname = #{PLockergroupname}
+	and c.PLockergroupname = #{PLockerGroupName}
 </select>
 
 <select id="plockernolist" resultType="egovframework.veterans.com.cmm.service.vo.tblplocker" parameterType="egovframework.veterans.com.cmm.service.vo.tblplocker">
@@ -380,7 +380,7 @@ where
 	order by PLockerDeposite
 </select>
 
-<insert id="LockerInfoInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
+<insert id="LockerInfoInsert" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" useGeneratedKeys="true" keyProperty="PLockerGroupID">
 INSERT INTO tblplockergroup
 (SiteCode, PLockerGroupName, PLockerLocation, PLockerType, 
 PLockerDeposite, PLockerPrice, PLockerMonth, SortOrder, 
@@ -396,4 +396,49 @@ values
 #{JungsiReSTime},#{JungsiReETime},'N',
 now(), #{AddUserPKID}, #{DanCnt},'Y')
 </insert>
+<update id="UpdLockerGroupImage" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
+update tblplockergroup set
+LockerImage = #{LockerImage}
+where 
+	PLockerGroupID = #{PLockerGroupID}
+and SiteCode = #{SiteCode}
+and IsDelete = 'N'
+</update>
+<update id="UpdLockerGroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
+UPDATE tblplockergroup SET 
+PLockerGroupName=#{PLockerGroupName}, 
+PLockerLocation=#{PLockerLocation}, 
+PLockerType=#{PLockerType}, 
+PLockerDeposite=#{PLockerDeposite}, 
+PLockerPrice=#{PLockerPrice}, 
+PLockerMonth=#{PLockerMonth}, 
+SortOrder=#{SortOrder}, 
+NVAT=#{NVAT}, 
+LockerImage=#{LockerImage}, 
+JungsiNewDate=#{JungsiNewDate}, 
+JungsiReDate=#{JungsiReDate}, 
+JungsiFromToDate=#{JungsiFromToDate}, 
+JungsiNew_STime=#{JungsiNewSTime}, 
+JungsiNew_ETime=#{JungsiNewETime}, 
+JungsiRe_STime=#{JungsiReSTime}, 
+JungsiRe_ETime=#{JungsiReETime},
+IsDelete = #{IsDelete}, 
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}, 
+DanCnt=#{DanCnt}
+where
+	PLockerGroupID=#{PLockerGroupID}
+AND SiteCode=#{SiteCode}
+and IsDelete = 'N'
+</update>
+<update id="RemoveLockerGroup" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup">
+UPDATE tblplockergroup SET 
+IsDelete = 'Y', 
+UpdDate=now(), 
+UpdUserPKID=#{UpdUserPKID}
+where
+	PLockerGroupID=#{PLockerGroupID}
+AND SiteCode=#{SiteCode}
+and IsDelete = 'N'
+</update>
 </mapper>
