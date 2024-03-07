@@ -24,9 +24,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	private final VtcLockerDAO vtcLockerDAO;
 	
 	@Override
-	public List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception{
+	public List<tblplockergroup> LockerInfoList(tblplockergroup tblplockergroup) throws Exception{
 		
-		return vtcLockerDAO.selectSamulhamInfoList(SiteCode);
+		return vtcLockerDAO.LockerInfoList(tblplockergroup);
 	}
 
 	@Override
@@ -197,5 +197,20 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	@Override
 	public void LockerInfoInsert(tblplockergroup tblplockergroup) throws Exception {
 		vtcLockerDAO.LockerInfoInsert(tblplockergroup);
+	}
+
+	@Override
+	public void UpdLockerGroupImage(tblplockergroup tblplockergroup) throws Exception {
+		vtcLockerDAO.UpdLockerGroupImage(tblplockergroup);
+	}
+
+	@Override
+	public void UpdLockerGroup(tblplockergroup tblplockergroup) throws Exception {
+		vtcLockerDAO.UpdLockerGroup(tblplockergroup);
+	}
+
+	@Override
+	public void RemoveLockerGroup(tblplockergroup tblplockergroup) throws Exception {
+		vtcLockerDAO.RemoveLockerGroup(tblplockergroup);
 	}
 }

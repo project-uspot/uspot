@@ -9,6 +9,7 @@ import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
+import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
@@ -241,5 +242,10 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	@Override
 	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
 		vtcMemberDAO.fmsc_01insertTemp_delete(setSql);		
+	}
+
+	@Override
+	public void MemberImageChange(tblmemberphoto tblmemberphoto) throws Exception {
+		vtcMemberDAO.MemberImageChange(tblmemberphoto);
 	}
 }

@@ -79,7 +79,7 @@ button {
 					분류</label> 
 					<select id="plockergroupname" name=pLockerGroupID style="margin-top: 10px;" onchange="plockernovalue()">
 					<c:forEach var="list" items="${list}">
-						<option value="${list.PLockergroupid}">${list.PLockergroupname}</option>
+						<option value="${list.PLockerGroupID}">${list.PLockerGroupName}</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -129,7 +129,7 @@ button {
 		type : 'POST',
 		url : 'plockernovalue',
 		data : {
-			PLockergroupname : plockergroupname
+			PLockerGroupName : plockergroupname
 		},
 		success : function(data) {
 			console.log(data);
@@ -150,7 +150,7 @@ button {
 				type : 'POST',
 				url : 'plockernovalue',
 				data : {
-					PLockergroupname : plockergroupname
+					PLockerGroupName : plockergroupname
 				},
 				success : function(data) {
 					console.log(data);

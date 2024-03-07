@@ -20,8 +20,8 @@
 						<select class="form-select" id="PLockergroupid" name="PLockergroupid">
 							<option value="0">전체</option>
 							<c:forEach items="${grouplist}" var="grouplist">
-								<option value="${grouplist.PLockergroupid}">
-									${grouplist.PLockergroupname} / ${grouplist.PLockerlocation}
+								<option value="${grouplist.PLockerGroupID}">
+									${grouplist.PLockerGroupName} / ${grouplist.PLockerLocation}
 								</option>
         					</c:forEach>
 						</select>
@@ -56,7 +56,7 @@
 		</div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1 ">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1">
+				<table class="table table-sm table-hover fs--1 mb-1">
 					<colgroup>
 						<col style="width:100px">
 						<col style="width:80px">
@@ -78,8 +78,8 @@
 					</thead>
 					<tbody class="list">
 						<c:forEach items="${list}" var="list">
-							<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" 
-							 onclick="openpop(${list.PLockerID})" style="cursor:pointer;">
+							<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="paidbodyclick(this)"
+							 ondblclick="openpop(${list.PLockerID})" style="cursor:pointer;">
 								<td class="pkid align-middle py-3 ">
 									<c:out value="${list.PLockerGroupName} / ${list.PLockerLocation}"/>
 								</td>
@@ -130,6 +130,15 @@ if (checkbox.checked) {
     hiddenInput.value = "N";
 }
 
+var previousRow = null;
+function paidbodyclick(clickedRow){
+	if (previousRow !== null) {
+    	$(previousRow).css('background-color', '');
+    }
+	$(clickedRow).css('background-color', 'lightblue');
+    previousRow = clickedRow;
+}
+
 	function openpop(PLockerID) {
 		var url = "lockercodeinsert.do";
 		if(typeof PLockerID !== "undefined"){
@@ -171,8 +180,8 @@ if (checkbox.checked) {
             	 console.log(commentList);
             	 commentList.forEach(function(list) {
                      // 데이터를 기반으로 HTML 로우를 만듭니다.
-                     var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" ' +
-                         'onclick="openpop(' + list.plockerID + ')" style="cursor:pointer;">';
+                     var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" onclick="paidbodyclick(this)" ' +
+                         'ondblclick="openpop(' + list.plockerID + ')" style="cursor:pointer;">';
                      row += '<td class="pkid align-middle py-3 ">' + list.plockerGroupName + ' / ' + list.plockerLocation + '</td>';
                      row += '<td class="sortOrder align-middle white-space-nowrap ">' + list.plockerNO + '</td>';
                      var stateText = '';

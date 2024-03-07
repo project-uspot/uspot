@@ -12,7 +12,7 @@ import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 public interface VtcLockerService {
 
-	List<tblplockergroup> selectSamulhamInfoList(String SiteCode) throws Exception;
+	List<tblplockergroup> LockerInfoList(tblplockergroup tblplockergroup) throws Exception;
 
 	tblplockergroup selectSamulhamInfodetail(int lockergroupIid) throws Exception;
 
@@ -77,4 +77,10 @@ public interface VtcLockerService {
 	List<Integer> DepositeBySiteCode(String SiteCode)throws Exception;
 	
 	void LockerInfoInsert(tblplockergroup tblplockergroup)throws Exception;
+	
+	void UpdLockerGroupImage(tblplockergroup tblplockergroup)throws Exception;
+	
+	void UpdLockerGroup(tblplockergroup tblplockergroup)throws Exception;
+	
+	void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception;
 }

@@ -9,6 +9,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
+import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
 import egovframework.veterans.com.cmm.service.vo.tblmembertalk;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01toselectitem;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s03;
@@ -186,5 +187,9 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 
 	public void fmsc_01insertTemp_delete(Map<String, Object> setSql) {
 		update("member.fmsc_01insertTemp_delete",setSql);
+	}
+	
+	public void MemberImageChange(tblmemberphoto tblmemberphoto)throws Exception{
+		update("member.MemberImageChange",tblmemberphoto);
 	}
 }

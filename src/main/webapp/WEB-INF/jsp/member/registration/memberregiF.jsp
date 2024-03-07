@@ -326,8 +326,8 @@
                                 <div class="card-body d-flex flex-column justify-content-between pb-3">
                                     <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
                                         <div class="col-12 col-sm-auto mb-sm-2">
-                                            <div class="avatar avatar-5xl ms-3">
-                                                <img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/imagesample.jpg" />
+                                            <div class="avatar avatar-5xl ms-3" id="imagediv">
+                                                <img class="rounded-circle" id="memberimage" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/${img}" />
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-auto flex-1">
@@ -405,13 +405,65 @@
                                         <div class="row">
                                         	<div class="col-auto">
 		                                        <div class="btn-group btn-group-sm mt-2" role="group" aria-label="...">
+													<input type="file" id="imageInput" style="display:none;" accept="image/*"/>
 												  <button class="btn btn-secondary" type="button">촬영</button>
-												  <button class="btn btn-secondary" type="button" onclick="">불러오기</button>
-												  <button class="btn btn-secondary" type="button">삭제</button>
+												  <button class="btn btn-secondary" id="imageUpload" type="button">불러오기</button>
+												  <button class="btn btn-secondary" id="deleteImage" type="button">삭제</button>
 												</div>
 										    </div>
 										</div>
                                     </div>
+                                    <script type="text/javascript">
+                                    $("#imageUpload").click(function() {
+                                    	$("#imageInput").click();
+                                    });
+
+                                    $("#deleteImage").click(function() {
+                                    	$('#imageInput').val('');
+                                    	$("#memberimage").remove();
+                                    });
+                                    
+                                    $("#imageInput").change(function() {
+                                    	const fileInput = this;
+                                    	if (fileInput.files && fileInput.files[0]) {
+                                    		const reader = new FileReader();
+
+                                    		reader.onload = function(e) {
+                                    			const newImage = $("<img>")
+                                    				.addClass("rounded-circle")
+                                    				.attr({
+                                    					src: e.target.result,
+                                    					id: "memberimage"
+                                    				});
+                                    			$("#memberimage").remove();
+                                    			$("#imagediv").append(newImage);
+                                    		};
+                                    		reader.readAsDataURL(fileInput.files[0]);
+                                    		
+                                    		const formData = new FormData();
+                                    		formData.append('imageInput', $('#imageInput').get(0).files[0]);
+                                    		formData.append('MemberID', $('#memberID').val());
+                                    		
+                                    		$.ajax({
+                                    	        type: "POST", 
+                                    	        url: "MemberImageChange", 
+                                    	        data: formData,
+                                    	        processData: false,
+                                    	        contentType: false,
+                                    	        success: function(data) {
+                                    	        	if(data == '0'){
+                                    	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                                    	        	}
+                                    	        	window.location.reload();
+                                    	        },
+                                    	        error: function(xhr, status, error) {
+                                    	       	 console.log("Status: " + status);
+                                    	         console.log("Error: " + error);
+                                    	        }
+                                    		});
+                                    	}
+                                    });
+                                    </script>
                                     <div class="d-flex flex-between-center border-top border-dashed border-300 pt-4">
                                         <div class="col-sm-6 col-md-4">
                                             <h6 class="text-primary">생년월일</h6>

@@ -17,6 +17,7 @@
         	</div>
         </div>
     </div>
+    <input type="hidden" id="PLockerGroupID" name="PLockerGroupID" value="${vo.PLockerGroupID}">
     <div class="row">
 	    <div class="card ms-3" style="width: 440px;">
 	        <div class="card-body" style="height: 390px;">
@@ -126,7 +127,7 @@
            		</div>
 	        	<div class="card text-white overflow-hidden" id="imagecard" style="max-width:30rem;height: 260px;">
 	        		<c:choose>
-	        			<c:when test="${vo.lockerImage == null}">
+	        			<c:when test="${vo.lockerImage == null || vo.lockerImage == ''}">
 	        			</c:when>
 	        			<c:otherwise>
 	        				<img class="card-img-top" src="${pageContext.request.contextPath}/images/egovframework/com/cmm/main/${vo.lockerImage}" name="lockerimg" id="lockerimg"/>
@@ -158,7 +159,7 @@
        					<input class="form-control" id="jungsinewfromdate" name="jungsinewfromdate" type="date"/>
        				</div>
        				<div class="ms-n4" style="width: 160px;">
-       					<input class="form-control datetimepicker" id="JungsiNewSTime" name="JungsiNewSTime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}' value="00:00"/>
+       					<input class="form-control datetimepicker" id="JungsiNewSTime" name="JungsiNewSTime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'/>
        				</div>
        				<div class="col-1 mx-n2 me-n6">
        					_
@@ -167,9 +168,26 @@
        					<input class="form-control" id="jungsinewtodate" name="jungsinewtodate" type="date"/>
        				</div>
        				<div class="ms-n4" style="width: 160px;">
-       					<input class="form-control datetimepicker" id="JungsiNewETime" name="JungsiNewETime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}' value="00:00"/>
+       					<input class="form-control datetimepicker" id="JungsiNewETime" name="JungsiNewETime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'/>
        				</div>
        			</div>
+       			<script type="text/javascript">
+       				if('${vo.jungsiNewDate}' != ''||'${vo.jungsiNewSTime}' != ''||'${vo.jungsiNewETime}' != ''){
+    					$('#newCheck').attr('checked','checked');
+    					var jungsiNewDate = '${vo.jungsiNewDate}';
+    					var newdate = jungsiNewDate.split("~");
+    					
+    					$('#jungsinewfromdate').val(newdate[0]);
+    					$('#jungsinewtodate').val(newdate[1]);
+    					$('#JungsiNewSTime').val('${vo.jungsiNewSTime}');
+    					$('#JungsiNewETime').val('${vo.jungsiNewETime}');
+    				}else{
+    					$('#jungsinewfromdate').val(getCurrentDate());
+    					$('#jungsinewtodate').val(getCurrentDate());
+    					$('#JungsiNewSTime').val('00:00');
+    					$('#JungsiNewETime').val('00:00');
+    				}
+       			</script>
        			<div class="row mb-3">
        				<div class="col-2 me-n7 mt-1">
 						<input class="form-check-input" id="reCheck" name="reCheck" type="checkbox" value="Y"/>
@@ -179,7 +197,7 @@
        					<input class="form-control" id="JungsiReFromDate" name="JungsiReFromDate" type="date"/>
        				</div>
        				<div class="ms-n4" style="width: 160px;">
-       					<input class="form-control datetimepicker" id="JungsiReSTime" name="JungsiReSTime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}' value="00:00"/>
+       					<input class="form-control datetimepicker" id="JungsiReSTime" name="JungsiReSTime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'/>
        				</div>
        				<div class="col-1 mx-n2 me-n6">
        					_
@@ -188,9 +206,26 @@
        					<input class="form-control" id="JungsiReToDate" name="JungsiReToDate" type="date"/>
        				</div>
        				<div class="ms-n4" style="width: 160px;">
-       					<input class="form-control datetimepicker" id="JungsiReETime" name="JungsiReETime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}' value="00:00"/>
+       					<input class="form-control datetimepicker" id="JungsiReETime" name="JungsiReETime" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'/>
        				</div>
        			</div>
+       			<script type="text/javascript">
+       				if('${vo.jungsiReDate}' != ''||'${vo.jungsiReSTime}' != ''||'${vo.jungsiReETime}' != ''){
+    					$('#reCheck').attr('checked','checked');
+    					var jungsiReDate = '${vo.jungsiReDate}';
+    					var redate = jungsiReDate.split("~");
+    					
+    					$('#JungsiReFromDate').val(redate[0]);
+    					$('#JungsiReToDate').val(redate[1]);
+    					$('#JungsiReSTime').val('${vo.jungsiReSTime}');
+    					$('#JungsiReETime').val('${vo.jungsiReETime}');
+    				}else{
+    					$('#JungsiReFromDate').val(getCurrentDate());
+    					$('#JungsiReToDate').val(getCurrentDate());
+    					$('#JungsiReSTime').val('00:00');
+    					$('#JungsiReETime').val('00:00');
+    				}
+       			</script>
        			<div class="row">
        				<div class="col-2 me-n7 mt-1">
 						<input class="form-check-input" id="jungsiCheck" name="jungsiCheck" type="checkbox" value="Y"/>
@@ -206,6 +241,19 @@
        					<input class="form-control" id="JungsiToDate" name="JungsiToDate" type="date"/>
        				</div>
        			</div>
+       			<script type="text/javascript">
+       				if('${vo.jungsiFromToDate}' != ''){
+    					$('#jungsiCheck').attr('checked','checked');
+    					var jungsiFromToDate = '${vo.jungsiFromToDate}';
+    					var jungsidate = jungsiFromToDate.split("~");
+    					
+    					$('#JungsiFromDate').val(jungsidate[0]);
+    					$('#JungsiToDate').val(jungsidate[1]);
+    				}else{
+    					$('#JungsiFromDate').val(getCurrentDate());
+    					$('#JungsiToDate').val(getCurrentDate());
+    				}
+       			</script>
        			<div class="mb-n4 mt-3">
        				<p>※시간설정 예) 00:00 ~ 23:59(오전,오후 설정)</p>
        				<p>※기간 설정은 대표그룹 1개만 설정해도 온라인접수에 적용됨.</p>
@@ -215,16 +263,15 @@
     </div>
 </body>
 <script>
-
-//$('#jungsinewfromdate,#jungsinewtodate,#JungsiReFromDate,#JungsiReToDate,#JungsiFromDate,#JungsiToDate').val(getCurrentDate());
-
 $("#imageUpload").click(function() {
-	$("#imageInput").click();
+	$("#imageInput").click(); 
 });
 
+var DeleteCheck = '';
 $("#deleteImage").click(function() {
 	$('#imageInput').val('');
 	$("#lockerimg").remove();
+	DeleteCheck = 'Y';
 });
 
 $("#imageInput").change(function() {
@@ -246,7 +293,12 @@ $("#imageInput").change(function() {
 		reader.readAsDataURL(fileInput.files[0]);
 	}
 });
-var nvat = 'N';
+var nvat;
+if ($('#nvat').prop('checked')) {
+	nvat = 'Y';
+} else {
+	nvat = 'N';
+}
 $("#nvat").change(function() {
 	if ($('#nvat').prop('checked')) {
 		nvat = 'Y';
@@ -254,6 +306,8 @@ $("#nvat").change(function() {
 		nvat = 'N';
 	}
 });
+
+
 
 function saveCheck(){
 	if($('#plockergroupname').val().trim() == ''){
@@ -279,6 +333,7 @@ function saveCheck(){
 	}
 }
 
+
 function save() {
 	var JungsiNewDate = '';
 	var JungsiNewSTime = '';
@@ -287,6 +342,14 @@ function save() {
 	var JungsiReSTime = '';
 	var JungsiReETime = '';
 	var JungsiFromToDate = '';
+	
+	var isdelete = '';
+	if ($('#isdelete').prop('checked')) {
+		isdelete = 'Y';
+	} else {
+		isdelete = 'N';
+	}
+	
 	
 	if ($('#newCheck').prop('checked')) {
 		JungsiNewDate = $('#jungsinewfromdate').val()+'~'+$('#jungsinewtodate').val();
@@ -306,9 +369,16 @@ function save() {
 	
 	const formData = new FormData();
 	formData.append('imageInput', $('#imageInput').get(0).files[0]);
+	formData.append('PLockerGroupID', $('#PLockerGroupID').val());
 	formData.append('PLockerGroupName', $('#plockergroupname').val());
     formData.append('PLockerLocation', $('#plockerlocation').val());
     formData.append('PLockerType', $('#plockertype').val());
+    if($('#plockerdeposite').val() != ''){
+    	formData.append('PLockerDeposite', removeCommasFromNumber($('#plockerdeposite').val()));
+    }
+    if($('#plockerprice').val() != ''){
+    	formData.append('PLockerPrice', removeCommasFromNumber($('#plockerprice').val()));
+    }
     formData.append('PLockerMonth', $('#plockermonth').val());
     formData.append('SortOrder', $('#sortorder').val());
     formData.append('NVAT', nvat);
@@ -319,15 +389,24 @@ function save() {
     formData.append('JungsiNewETime', JungsiNewETime);
     formData.append('JungsiReSTime', JungsiReSTime);
     formData.append('JungsiReETime', JungsiReETime);
+    formData.append('IsDelete', isdelete);
     formData.append('DanCnt', $('#dancnt').val());
+    if(DeleteCheck == 'Y'){
+    	formData.append('LockerImage','');
+    }else{
+    	formData.append('LockerImage','${vo.lockerImage}');
+    }
 	
 	$.ajax({
         type: "POST", 
-        url: "LockerInfoInsert", 
+        url: "UpdLockerGroup", 
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data) {	
+        success: function(data) {
+        	if(data == '0'){
+        		alert('세션이 만료되었습니다.로그인해주세요.');
+        	}
         	window.close();
         	window.opener.location.reload();
         },
