@@ -37,7 +37,7 @@
 		INSERT INTO uspot_test.tblsite
 			(SiteCode, SiteID, SiteName, SiteBNo, PName, UpTae, JongMok, ZipCode, Address, SubAddress, Phone1, Phone2, Fax, Email, DamDangJa, DamDangJaPhone, Note, AcceptNo, Logout_Time, NoUseLogoutTime, IsUseYN, vaccine_Pass_Cnt, IsDelete, AddDate, AddUserpkid, UpdDate, UpdUserpkid)
 		VALUES
-			(#{SiteCode}, #{SiteID}, #{SiteName}, #{SiteBNo}, #{Pname}, #{UpTae}, #{JongMok}, #{ZipCode}, #{Address}, #{SubAddress}, #{Phone1}, #{Phone2}, #{Fax}, #{Email}, #{DamDangJa}, #{Note}, #{AcceptNo}, #{LogOutTime}, #{NoUseLogOutItme}, 0, #{IsUseYN}, #{VaccinePassCnt}, 'N', sysdate(), #{AddUserpkid}, sysdate(), #{UpdUserpkid});
+			(#{SiteCode}, #{SiteID}, #{SiteName}, #{SiteBNo}, #{Pname}, #{UpTae}, #{JongMok}, #{ZipCode}, #{Address}, #{SubAddress}, #{Phone1}, #{Phone2}, #{Fax}, #{Email}, #{DamDangJa}, #{Note}, #{AcceptNo}, #{LogOutTime}, #{NoUseLogOutItme}, 0, #{IsUseYN}, #{VaccinePassCnt}, 'N', sysdate(), #{AddUserPKID}, sysdate(), #{UpdUserpkid});
 	</insert>
 	<select id="listSiteName" resultType="egovframework.veterans.com.cmm.service.vo.Sitecode">
 		select SiteCode, SiteName from tblsite 

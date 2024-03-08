@@ -103,100 +103,100 @@ function valueChk() {
 <div class="row">
 	<div class="col-xl-9">
 		<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/modifyOK.do" class="row g-3 mb-6">
-			<input type="hidden" name="SiteCode" value="${sitecode.siteCode }">
+			<input type="hidden" name="siteCode" value="${vo.siteCode}">
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="SiteName" name="SiteName" type="text" value="<c:out value="${sitecode.siteName }"/>"  />
+					<input class="form-control" id="SiteName" name="SiteName" type="text" value="${vo.siteName}"/>
 					<label for="SiteName">사업장명</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="SiteID" name="SiteID" type="text" value="<c:out value="${sitecode.siteID }"/>" />
+					<input class="form-control" id="SiteID" name="SiteID" type="text" value="<c:out value="${vo.siteID}"/>" />
 					<label for="SiteID">사업장코드</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="SiteBNo" name="SiteBNo" type="text" value="<c:out value="${sitecode.siteBNo }"/>" />
+					<input class="form-control" id="SiteBNo" name="SiteBNo" type="text" value="<c:out value="${vo.siteBNo }"/>" />
 					<label for="SiteBNo">사업자번호</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="Pname" name="Pname" type="text" value="<c:out value="${sitecode.pname }"/>" />
+					<input class="form-control" id="Pname" name="Pname" type="text" value="<c:out value="${vo.pname }"/>" />
 					<label for="Pname">대표자명</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="UpTae" name="UpTae" type="text" value="<c:out value="${sitecode.upTae }"/>" />
+					<input class="form-control" id="UpTae" name="UpTae" type="text" value="<c:out value="${vo.upTae }"/>" />
 					<label for="UpTae">업태</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="JongMok" name="JongMok" type="text" value="<c:out value="${sitecode.jongMok }"/>" />
+					<input class="form-control" id="JongMok" name="JongMok" type="text" value="<c:out value="${vo.jongMok }"/>" />
 					<label for="JongMok">종목</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="Phone1" name="Phone1" type="text" value="<c:out value="${fn:replace(sitecode.phone1,'-','')}"></c:out>" />
+					<input class="form-control" id="Phone1" name="Phone1" type="text" value="<c:out value="${fn:replace(vo.phone1,'-','')}"></c:out>" />
 					<label for="Phone1">전화번호1</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="Phone2" name="Phone2" type="text" value="<c:out value="${fn:replace(sitecode.phone2,'-','')}"></c:out>" />
+					<input class="form-control" id="Phone2" name="Phone2" type="text" value="<c:out value="${fn:replace(vo.phone2,'-','')}"></c:out>" />
 					<label for="Phone2">전화번호2</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="Fax" name="Fax" type="text" value="<c:out value="${sitecode.fax }"></c:out>" />
+					<input class="form-control" id="Fax" name="Fax" type="text" value="<c:out value="${vo.fax }"></c:out>" />
 					<label for="Fax">FAX</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="Email" name="Email" type="text" value="<c:out value="${sitecode.email }"></c:out>" />
+					<input class="form-control" id="Email" name="Email" type="text" value="<c:out value="${vo.email }"></c:out>" />
 					<label for="Email">E-Mail</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="DamDangJa" name="DamDangJa" type="text" value="<c:out value="${sitecode.damDangJa }"></c:out>" />
+					<input class="form-control" id="DamDangJa" name="DamDangJa" type="text" value="<c:out value="${vo.damDangJa }"></c:out>" />
 					<label for="DamDangJa">담당자</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3 mb-2">
 				<div class="form-floating">
-					<input class="form-control" id="DamDangJaPhone" name="DamDangJaPhone" type="text" value="<c:out value="${sitecode.damDangJaPhone }"/>" />
+					<input class="form-control" id="DamDangJaPhone" name="DamDangJaPhone" type="text" value="<c:out value="${vo.damDangJaPhone }"/>" />
 					<label for="DamDangJaPhone">담당자 연락처</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-4">
 				<div class="form-floating">
-					<input class="form-control" id="ZipCode" name="ZipCode" type="text" value="<c:out value="${sitecode.zipCode }"/>" />
+					<input class="form-control" id="ZipCode" name="ZipCode" type="text" value="<c:out value="${vo.zipCode }"/>" />
 					<label for="ZipCode">우편번호</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-8">
 				<div class="form-floating">
-					<input class="form-control" id="Address" name="Address" type="text" value="<c:out value="${sitecode.address }"/>" />
+					<input class="form-control" id="Address" name="Address" type="text" value="<c:out value="${vo.address }"/>" />
 					<label for="Address">주소</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-12">
 				<div class="form-floating">
-					<input class="form-control" id="SubAddress" name="SubAddress" type="text" value="<c:out value="${sitecode.subAddress }"/>" />
+					<input class="form-control" id="SubAddress" name="SubAddress" type="text" value="<c:out value="${vo.subAddress }"/>" />
 					<label for="SubAddress">세부주소</label>
 				</div>
 			</div>
 			<div class="col-12 gy-6">
 				<div class="form-floating">
-					<textarea class="form-control" id="Note" name="Note" style="height: 100px" ><c:out value="${sitecode.note }"/></textarea>
+					<textarea class="form-control" id="Note" name="Note" style="height: 100px" ><c:out value="${vo.note }"/></textarea>
 					<label for="Note">비고</label>
 				</div>
 			</div>
@@ -208,24 +208,6 @@ function valueChk() {
 				</div>
 				<div class="col-auto">
 					<input type="button" class="btn btn-info px-5 " value="수정" id="modify" onclick="valueChk();"/>
-				</div>
-			</div>
-		</div>
-		<input class="btn btn-info px-5" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered"  value="수정" id="modify" onclick="valueChk();">
-		<div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<!-- <div class="modal-header">
-						<h5 class="modal-title" id="verticallyCenteredModalLabel">Modal title</h5>
-						<button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
-					</div> -->
-					<div class="modal-body" id="text" >
-						<p class="text-700 lh-lg mb-0">수정하시겠습니까?</p>
-					</div>
-					<div class="modal-footer">
-						<!-- <button class="btn btn-primary" type="button">확인</button> -->
-						<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">확인</button>
-					</div>
 				</div>
 			</div>
 		</div>

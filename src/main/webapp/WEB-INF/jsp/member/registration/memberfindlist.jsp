@@ -121,7 +121,7 @@
 					            	}
 					            	else if(data === '2'){
 					            		window.close();
-					            		window.opener.location.href = 'memberfindone?findvalue='+findvalue+'&findcategory='+findcategory;
+					            		window.opener.location.href = 'membership.do?findvalue='+findvalue+'&findcategory='+findcategory+ '&findtype=1';
 					            	}
 					            	else if(data === '3'){
 					            		window.location.href = "findlist?findvalue="+findvalue+"&findcategory="+findcategory;
@@ -215,7 +215,7 @@ function tronclick(row) {
     
     window.close();
     
-    window.opener.location.href='memberfind?MemberID='+memberID;
+    window.opener.location.href='membership.do?MemberID='+memberID +'&findtype=2';
 }
 </script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>

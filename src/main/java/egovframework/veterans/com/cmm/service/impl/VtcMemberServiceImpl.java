@@ -248,4 +248,14 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public void MemberImageChange(tblmemberphoto tblmemberphoto) throws Exception {
 		vtcMemberDAO.MemberImageChange(tblmemberphoto);
 	}
+
+	@Override
+	public tblmemberphoto MemebrPhotoByMemberID(String MemberID) throws Exception {
+		return vtcMemberDAO.MemebrPhotoByMemberID(MemberID);
+	}
+
+	@Override
+	public void MemberImageRemove(String MemberID) throws Exception {
+		vtcMemberDAO.MemberImageRemove(MemberID);
+	}
 }

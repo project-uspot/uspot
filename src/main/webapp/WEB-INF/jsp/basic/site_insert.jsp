@@ -13,62 +13,62 @@ function valueChk() {
 	var frm = document.frm; 
 	//alert("alert");
 	if(!frm.SiteName.value) {
-		document.getElementById("text").innerText = "사업장명을 입력해주세요.";
+		alert('사업장명을 입력해주세요.');
 		frm.SiteName.focus();
 		return false
 	}
 	if(!frm.SiteID.value) {
-		document.getElementById("text").innerText = "사업장코드를 입력해주세요.";
+		alert('사업장코드를 입력해주세요.');
 		return false
 		frm.SiteID.focus();
 	}
 	if(!frm.SiteBNo.value) {
-		document.getElementById("text").innerText = "사업자번호를 입력해주세요.";
+		alert('사업자번호를 입력해주세요.');
 		frm.SiteBNo.focus();
 		return false
 	}
 	if(!frm.Pname.value) {
-		document.getElementById("text").innerText = "대표자명을 입력해주세요.";
+		alert('대표자명을 입력해주세요.');
 		frm.Pname.focus();
 		return false
 	}
 	if(!frm.UpTae.value) {
-		document.getElementById("text").innerText = "업태를 입력해주세요.";
+		alert('업태를 입력해주세요.');
 		frm.UpTae.focus();
 		return false
 	}
 	if(!frm.JongMok.value) {
-		document.getElementById("text").innerText = "종목를 입력해주세요.";
+		alert('종목를 입력해주세요.');
 		frm.JongMok.focus();
 		return false
 	}
 	if(!frm.Phone1.value) {
-		document.getElementById("text").innerText = "전화번호1를 입력해주세요.";
+		alert('전화번호1를 입력해주세요.');
 		frm.Phone1.focus();
 		return false
 	}
 	if(!frm.Phone2.value) {
-		document.getElementById("text").innerText = "전화번호2를 입력해주세요.";
+		alert('사전화번호2를 입력해주세요.');
 		frm.Phone2.focus();
 		return false
 	}
 	if(!frm.Email.value) {
-		document.getElementById("text").innerText = "이메일을 입력해주세요.";
+		alert('이메일을 입력해주세요.');
 		frm.Email.focus();
 		return false
 	}
 	if(!frm.DamDangJa.value) {
-		document.getElementById("text").innerText = "담당자를 입력해주세요.";
+		alert('담당자를 입력해주세요.');
 		frm.DamDangJa.focus();
 		return false
 	}
 	if(!frm.DamDangJaPhone.value) {
-		document.getElementById("text").innerText = "담당자번호를 입력해주세요.";
+		alert('담당자번호를 입력해주세요.');
 		frm.DamDangJaPhone.focus();
 		return false
 	}
 	if(!frm.Note.value) {
-		document.getElementById("text").innerText = "비고를 입력해주세요.";
+		alert('비고를 입력해주세요.');
 		frm.Note.focus();
 		return false
 	}
@@ -89,6 +89,9 @@ function valueChk() {
 			</div>
 		</div>
 	</div>
+</div>
+<div id="text" style="display: none;">
+
 </div>
 <div class="row">
 	<div class="col-xl-9">

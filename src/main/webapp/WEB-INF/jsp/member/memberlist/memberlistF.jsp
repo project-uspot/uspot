@@ -164,13 +164,13 @@
                           <input class="form-check-input" type="checkbox"/>
                         </div>
                       </td>
-                      <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-1100" href="../../../apps/e-commerce/landing/profile.html">
+                      <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-1100" href="membership.do?MemberID=${list.memberID}&findtype=2">
                           <div class="avatar avatar-m"><img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/team/32.webp" alt="" />
                           </div>
                           <p class="mb-0 ms-3 text-1100 fw-bold">${list.name}</p>
                         </a></td>
                       <td class="email align-middle white-space-nowrap pe-5">${list.memberID}</td>
-                       <td class="total-orders align-middle white-space-nowrap fw-semi-bold text-end text-1000">${list.regDate}</td>
+                       <td class="total-orders align-middle white-space-nowrap fw-semi-bold text-end text-1000">${list.regdate}</td>
                       <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-1100">
                       <c:if test="${list.gender == 0}">
                       	여자
