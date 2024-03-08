@@ -30,7 +30,7 @@ public class VtcEntryController{
    
    private final VtcSLOrderService orderService;
    
-   
+   // TODO 출입관리-일일입장관리
    @GetMapping("OneDayOrder.do")
    public String OneDayOrder(ModelMap model) throws Exception {
 	   Users users = (Users) session.getAttribute("loginuserinfo");
@@ -75,5 +75,18 @@ public class VtcEntryController{
 	   map.put("list", groups);
 	   
 	   return map;
+   }
+   
+   // TODO 출입관리- 출입관리
+   @GetMapping("entryManage.do")
+   public String memEntryManage(ModelMap model) throws Exception {
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+	   if(users == null){
+		   model.addAttribute("msg", "로그인을 다시 해주세요.");
+	       model.addAttribute("script", "back");
+		   return "redirect:login.do";
+	   }
+
+	   return "entry/entryManage";
    }
 }

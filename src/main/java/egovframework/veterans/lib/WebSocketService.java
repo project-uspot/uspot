@@ -52,5 +52,13 @@ public class WebSocketService {
 		return result; // 서버로부터 받은 응답 반환
 	}
 
-	
+	public boolean getSocketChk(String IP, int PORT) {
+		try (Socket socket = new Socket(IP, PORT)) {
+			log.debug("소켓 연결성공");
+			return true;
+		} catch (Exception e) {
+			log.debug("소켓 연결실패");
+			return false;
+		}
+	}
 }

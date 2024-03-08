@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -68,5 +69,10 @@ public class VtcServiceImpl extends EgovAbstractServiceImpl implements VtcServic
 	@Override
 	public String codenameByCodeValue(tblCode tblCode) {
 		return VtcDAO.codenameByCodeValue(tblCode);
+	}
+
+	@Override
+	public Map<String, Object> selectSiteIdSet(String siteCode) {
+		return VtcDAO.selectSiteIdSet(siteCode);
 	}	
 }
