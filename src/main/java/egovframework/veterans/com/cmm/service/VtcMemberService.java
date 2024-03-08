@@ -104,4 +104,8 @@ public interface VtcMemberService {
 	tblmemberphoto MemebrPhotoByMemberID(String MemberID)throws Exception;
 	
 	void MemberImageRemove(String MemberID)throws Exception;
+
+	List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql);
+
+	List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql);
 }

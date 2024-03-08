@@ -257,5 +257,14 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	@Override
 	public void MemberImageRemove(String MemberID) throws Exception {
 		vtcMemberDAO.MemberImageRemove(MemberID);
+		
+	}
+	public List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql) {
+		return vtcMemberDAO.selectFmsc_s04_01(setSql);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
+		return vtcMemberDAO.selectFmsc_s04(setSql);
 	}
 }

@@ -615,6 +615,7 @@ public class OfflinePayController {
 		    Halbu = "00";
 		}
 
+		String InType = request.getParameter("InType");
 		String tempSaleNo = request.getParameter("tempSaleNo");
 		String Price = request.getParameter("Price");
 		String MemberID = request.getParameter("MemberID");
@@ -921,7 +922,7 @@ public class OfflinePayController {
 				if(RS04.equals("0000")) {
 					switch (saleType) {
 					case "강습":
-						OfflinePayService.insertPaidCancelFmsc_s01(returnMap);
+						returnMap.put("SaleType",InType);
 						break;
 					case "사물함":
 						/*
@@ -933,6 +934,18 @@ public class OfflinePayController {
 						OfflinePayService.insertPaidCancelRent(returnMap);
 						break;
 					default:
+						break;
+					}
+
+					returnMap = OfflinePayService.insertPaid(returnMap);
+					//영수증 저장
+					switch (saleType) {
+					case "강습":
+						ReceiptController.insertReceiptItem(f.getNullToSpaceStrValue(returnMap.get("paidPKID")),receiptService);
+						break;
+					case "사물함":
+						break;
+					case "대관":
 						break;
 					}
 				}

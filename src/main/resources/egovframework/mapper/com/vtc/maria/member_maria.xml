@@ -747,4 +747,32 @@
 		where
 			MemberID = #{MemberID} 
 	</update>
+	
+	<select id="selectFmsc_s04_01" parameterType="Map" resultType="Map">
+	<![CDATA[
+		select a.UseCnt as dayCnt , a.TotalCnt as totalCnt , b.RealPrice , a.UsePrice , a.WiyakPrice , a.GongjePrice
+		, c.CategoryName, c.JungName, c.DayName, c.FromTime, c.LevelName, c.Admission
+		, a.SaleNo , b.PaidPrice , b.Misu , a.ReturnPrice as RefundPrice
+		from fmsc_s04_01 a
+		left join fmsc_s01 b on a.sitecode = b.sitecode and a.saleno = b.saleno and b.state = 'E'
+		LEFT JOIN selectitembyitemcode c ON a.sitecode = c.sitecode AND b.ItemPKID = c.ItemID
+		where a.SiteCode = #{SiteCode}
+		and b.Group_SaleNo = #{GroupSaleNo}
+		and a.isDelete = 'N'
+	]]>
+	</select>
+
+	<select id="selectFmsc_s04" parameterType="Map" resultType="Map">
+	<![CDATA[
+		select a.UseCnt as dayCnt , a.TotalCnt as totalCnt , b.RealPrice , a.UsePrice , a.WiyakPrice , a.GongjePrice
+		, c.CategoryName, c.JungName, c.DayName, c.FromTime, c.LevelName, c.Admission
+		, a.SaleNo , b.PaidPrice , b.Misu , a.ReturnPrice as RefundPrice , a.RegDate , a.CancelDate 
+		from fmsc_s04 a
+		left join fmsc_s01 b on a.sitecode = b.sitecode and a.saleno = b.saleno and b.state = 'E'
+		LEFT JOIN selectitembyitemcode c ON a.sitecode = c.sitecode AND b.ItemPKID = c.ItemID
+		where a.SiteCode = #{SiteCode}
+		and b.Group_SaleNo = #{GroupSaleNo}
+		and a.isDelete = 'N'
+	]]>
+	</select>
 </mapper>

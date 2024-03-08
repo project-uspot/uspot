@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -46,5 +47,9 @@ public class VtcDAO extends EgovComAbstractDAO{
 	}
 	public String codenameByCodeValue(tblCode tblCode) {
 		return selectOne("frame.codenameByCodeValue",tblCode);
+	}
+
+	public Map<String, Object> selectSiteIdSet(String siteCode) {
+		return selectOne("frame.selectSiteIdSet",siteCode);
 	}
 }

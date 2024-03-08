@@ -375,7 +375,7 @@
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
 					<div class="col w-30 px-1">
-						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">신용카드</button>
 					</div>
 					<div class="col w-30 px-1">
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
@@ -1269,6 +1269,13 @@ function paidCancel(){
 		return false;
 	}
 
+	if($("#Insert").val() == ''){
+		var GroupSaleNo = $("#tempSaleNo").val();
+	}else{
+		var GroupSaleNo = $("#GroupSaleNo").val();	
+	}
+	var InType = "재등록";
+
 	if(frm.paidCategory.value == "현금" ){
 		$("#paidbody .hover-actions-trigger").each(function() {
 			var bgColor = $(this).css("background-color");
@@ -1277,7 +1284,7 @@ function paidCancel(){
 	        }
 	    });
 	}else if(frm.paidCategory.value == "계좌이체" ){
-		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
@@ -1290,7 +1297,7 @@ function paidCancel(){
 	        }
 	  	});
 	}else{
-		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);

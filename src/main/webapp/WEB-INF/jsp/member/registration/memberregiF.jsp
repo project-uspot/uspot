@@ -210,7 +210,7 @@
 
 <body>
     <div class="mb-9">
-        <form action="membershipUpdate" method="get" accept-charset="UTF-8" id="myForm">
+        <form action="membershipUpdate" method="post" accept-charset="UTF-8" id="myForm"  enctype="application/x-www-form-urlencoded">
             <div class="row align-items-center justify-content-between g-3 mb-4">
                 <div class="row g-3">
                     <h2 class="mb-0" style="width: 210px;">회원등록관리</h2>

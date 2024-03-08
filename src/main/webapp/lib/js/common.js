@@ -74,16 +74,18 @@ function getCurrentDate(){
 	return formattedDate;
 }
 
+//현재날짜를 YYYY-MM-DD hh:mm:ss 형식으로 반환해주는 함수
 function getCurrentDateTime() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  const day = now.getDate().toString().padStart(2, '0');
-  const hours = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-  const seconds = now.getSeconds().toString().padStart(2, '0');
+	var today = new Date();
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var hours = ('0' + today.getHours()).slice(-2); 
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var seconds = ('0' + today.getSeconds()).slice(-2); 
+	var datestring = year + '-' + month  + '-' + day +' '+ hours + ':' + minutes  + ':' + seconds; 
+	return datestring;
 }
 
 function onlyNumber(input) {
@@ -113,4 +115,22 @@ function plusDay(date,plusday){
 	var toDateValue = fromDate.toISOString().slice(0, 10);
 
 	return toDateValue;
+	
+}
+// 숫자 반올림
+function roundToNearestTen(num) {
+	return Math.round(num / 10) * 10;
+}
+
+// date 문자열이 오늘날짜인지 체크
+function isToday(dateStr) {
+    var inputDate = new Date(dateStr);
+    var today = new Date();
+
+    // 날짜 비교를 위해 시간 부분을 0으로 설정
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    // 날짜 비교
+    return inputDate.getTime() === today.getTime();
 }

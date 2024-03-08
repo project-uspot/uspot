@@ -196,8 +196,14 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public tblmemberphoto MemebrPhotoByMemberID(String MemberID)throws Exception{
 		return selectOne("member.MemebrPhotoByMemberID",MemberID);
 	}
-	
 	public void MemberImageRemove(String MemberID)throws Exception{
 		update("member.MemberImageRemove",MemberID);
+	}
+	public List<Map<String, Object>> selectFmsc_s04_01(Map<String, Object> setSql) {
+		return selectList("member.selectFmsc_s04_01",setSql);
+	}
+
+	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
+		return selectList("member.selectFmsc_s04",setSql);
 	}
 }

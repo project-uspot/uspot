@@ -1,6 +1,7 @@
 package egovframework.veterans.com.cmm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.veterans.com.cmm.service.vo.PGM;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
@@ -25,4 +26,6 @@ public interface VtcService {
 	void optionchange(tblCode tblCode)throws Exception;
 	
 	String codenameByCodeValue(tblCode tblCode);
+
+	Map<String, Object> selectSiteIdSet(String siteCode);
 }

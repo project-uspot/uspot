@@ -20,6 +20,7 @@
     <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
     <!-- ===============================================-->
     <!--    Stylesheets-->
     <!-- ===============================================-->
@@ -427,6 +428,8 @@
 									    <td class="signpad py-2 align-middle white-space-nowrap">${paid.signPad}</td>
 									    <td class="OID py-2 align-middle white-space-nowrap">${paid.OID}</td>
 									    <td class="PayKind py-2 align-middle white-space-nowrap"></td>
+									    <td class="paidPKID py-2 align-middle white-space-nowrap" style="display:none;">${paid.PKID}</td>
+									    <td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none;">${paid.saleTime}</td>
 									</tr>
 								</c:forEach>
                         	</tbody>
@@ -464,7 +467,7 @@
 						<button class="btn btn-phoenix-primary w-100" type="button"  id="pay-cash" name="pay-cash" onclick="paycash()">현금</button>
 					</div>
 					<div class="col w-30 px-1">
-						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">현금 외 결제</button>
+						<button class="btn btn-soft-primary w-100" type="button"  onclick="paycredit()">신용카드</button>
 					</div>
 					<div class="col w-30 px-1">
 						<button class="btn btn-soft-secondary w-100" type="button" onclick="payAccount()">계좌입금</button>
@@ -494,6 +497,7 @@
 	    	<input type="hidden" name="CardName" value="">
 	    	<input type="hidden" name="GroupSaleNo" id="GroupSaleNo" value="${fmsc_s01.groupSaleNo }">
 	    	<input type="hidden" name="Insert" id="Insert" value="Y">
+	    	<input type="hidden" name="PKID" id="PKID" value="">
 	    </form>
 	</div>
 </body>
@@ -637,6 +641,7 @@ function test(ItemID,selectedDate,nextDate) {
 	        type: "POST",
 	        url: "mitemfindbyid",
 	        dataType : 'json',
+			async : false,
 	        data: { 
 	        	ItemID: ItemID,
 	        	FindDate: selectedDate
@@ -653,6 +658,7 @@ function test(ItemID,selectedDate,nextDate) {
 			   	        type: "POST",
 			   	        url: "tblcodelist",
 			   	        dataType : 'json',
+			   			async : false,
 			   	        success: function(codelist) {
 			   	        	if(list.DefPrice != 0 && list.DefPrice != '' && list.DefPrice != null){
 			   	        		priceoptionlist.append($('<option>', {
@@ -728,12 +734,11 @@ function test(ItemID,selectedDate,nextDate) {
 									}
 				   	         	});
 			   	        	}
-	
-			   	        	sortchange();
 			   	        },
 			   	        error: function(xhr, status, error) {
-			   	       	 console.log("Status: " + status);
-			   	         console.log("Error: " + error);
+				   	       	 console.log("Status: " + status);
+				   	         console.log("Error: " + error);
+				   	         return false;
 			   	        }
 			   		});
 					
@@ -744,10 +749,13 @@ function test(ItemID,selectedDate,nextDate) {
 			       		$('#fromdate').val($('#oldfromdate').val());
 			       	}		       	
 			       	$('#todate').val($('#oldtodate').val());
+			    	
+	   	        	sortchange();
 	        },
 	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
+		       	 console.log("Status: " + status);
+		         console.log("Error: " + error);
+		         return false;
 	        }
 		});
 	}
@@ -776,7 +784,7 @@ $('#regmonth, #fromdate').on('change', function() {
     formattedDate.setMonth(formattedDate.getMonth() + monthsToAdd);
     formattedDate.setDate(formattedDate.getDate()-1);
     
-    const formattedDateString = formatDate(formattedDate);
+    const formattedDateString = TformatDate(formattedDate);
     
     $('#todate').val(formattedDateString);
 });
@@ -786,6 +794,7 @@ function sortchange(){
 	var regmonth = $('#regmonth').val();
 	var price = $('#price option:selected').attr('id');
    	var dcper = $('#dcds').find('option:selected').attr('id');
+
    	var dcprice = (price*dcper/100)*regmonth;
    	var sortprice = (price*regmonth)-dcprice;
    	
@@ -816,15 +825,18 @@ function totalchange(){
 	toldPaidprice = removeCommasFromNumber($('#oldPaidprice').val());
 	totalprice = totalprice - toldPaidprice + tchangeprice;
 
+	tremainprice = totalprice-tpaidprice;
+	
 	$('#totalprice').val(formatNumberWithCommas(totalprice));
 
 	$('#tpaidprice').val(formatNumberWithCommas(tpaidprice));
 
-	$('#tremainprice').val(formatNumberWithCommas(totalprice-tpaidprice));
+	$('#tremainprice').val(formatNumberWithCommas(tremainprice));
 
-	$('#changeprice').val(formatNumberWithCommas(tchangeprice-toldPaidprice));
+	$('#changeprice').val(formatNumberWithCommas(tremainprice));
 
-	$('#payprice').val(formatNumberWithCommas(tchangeprice-toldPaidprice));
+	$('#payprice').val(formatNumberWithCommas(tremainprice));
+	
 }
 
 <%--//날짜를 테이블에서 가지고와서 잘라서 보내는 함수--%>
@@ -840,14 +852,6 @@ function parseString(inputString) {
 	const numberOfMonths = parseInt(matches[3], 10);
 
 	return [startDate, endDate, numberOfMonths.toString()];
-}
-   
-<%--//date 형식을 YYYY-MM-DD 형식으로 바궈주는 함수--%>
-function formatDate(date) {
-	const yyyy = date.getFullYear();
-	const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 2자리 숫자로 표시
-	const dd = String(date.getDate()).padStart(2, '0'); // 일자를 2자리 숫자로 표시
-	return yyyy+'-'+mm+'-'+dd;
 }
 
 function save() {
@@ -917,7 +921,7 @@ function fmsc_01save() {
         	GroupSaleNo : $("#GroupSaleNo").val(),
         },
         success: function(data) {	
-	        	
+	        console.log(data);
         },
         error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
@@ -955,8 +959,8 @@ function fmsc_01save() {
 					TID : $(this).find('.TID').text(),
     	        },
     	        success: function(data){
-					console.log(Data);
-					paidPkid=Data;
+					console.log(data);
+					paidPkid=data;
     	        },
     	        error:function(xhr, status, error){
 					console.log("Status: " + status);
@@ -965,7 +969,8 @@ function fmsc_01save() {
 				}
     		});
 
-    		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+    		//var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
+    		var inlineRadioOptions = 0;
 
     		if(inlineRadioOptions >= 1){
     		    var myWindow = window.open("${pageContext.request.contextPath}/lecture/Receipt.do?PKID="+paidPkid+"&Type=Change", "MsgWindow", "width=320,height=800");
@@ -1002,7 +1007,7 @@ function extractYearMonth(dateString) {
   
 <%--//현금 결제--%>
 function paycash() {
-	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#payprice').val()) == 0 || $('#payprice').val() == ''){
 	  	$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -1011,10 +1016,11 @@ function paycash() {
 	    modalcheck = true;
 	    return false;
 	}
+
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#tremainprice').val() + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">' + $('#payprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -1024,7 +1030,7 @@ function paycash() {
 	newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
 	newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
 	newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-		
+	
 	var tableBody = $('#paidbody');
 	tableBody.append(newRow);
 	totalchange();
@@ -1033,7 +1039,7 @@ function paycash() {
 
 <%-- 신용카드 결제 --%>
 function paycredit(){
-	if(removeCommasFromNumber($('#tremainprice').val()) < 1 || $('#tremainprice').val() == ''){
+	if(removeCommasFromNumber($('#tremainprice').val()) == 0 || $('#tremainprice').val() == ''){
 		$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
 		$('.modal-footer').empty();
 		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
@@ -1045,8 +1051,37 @@ function paycredit(){
 	
 	var GroupSaleNo = $("#GroupSaleNo").val();
 	var InType = "반변경";
+	var url = "";
 
-	var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
+	if(removeCommasFromNumber($('#tremainprice').val()) > 0){
+		url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#payprice").val() +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;	
+	}else{
+		var frm = document.payFrm;
+		if(frm.paidCategory.value == ""){
+			$('#resultmessage').html('결제취소할 강좌를 선택해주세요.');
+			$('.modal-footer').empty();
+			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			$('.modal-footer').append(cancelbutton);
+			$('#modalButton').click();
+			modalcheck = true;
+			return false;
+		}else if(frm.paidCategory.value != "신용카드"){
+			$('#resultmessage').html('기존 결제를 취소 후 진행해 주세요.');
+			$('.modal-footer').empty();
+			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+			$('.modal-footer').append(cancelbutton);
+			$('#modalButton').click();
+			modalcheck = true;
+			return false;
+		}else{
+			if(removeCommasFromNumber(frm.paidPrice.value) >= removeCommasFromNumber($('#tremainprice').val().replaceAll('-',''))){
+				url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +$('#tremainprice').val().replaceAll('-','') +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
+			}else{
+				url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
+			}
+		}
+	}
+	
 	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
     if (myPopup === undefined || myPopup.closed) {
         myPopup = window.open(url, "_blank", windowFeatures);
@@ -1082,15 +1117,57 @@ function paidCancel(){
 		return false;
 	}
 
+	var GroupSaleNo = $("#GroupSaleNo").val();
+	var InType = "반변경";
+
 	if(frm.paidCategory.value == "현금" ){
 		$("#paidbody .hover-actions-trigger").each(function() {
 			var bgColor = $(this).css("background-color");
-	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
-	            $(this).remove();
+			if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
+	        	if(isToday($(this).find('.paiddate').text()) && $(this).attr("id") == "new"){
+	        		$(this).remove();	
+	        	}else{
+		        	if(removeCommasFromNumber($(this).find(".paidprice").text()) < 0){
+		        		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+		        		$('.modal-footer').empty();
+		        		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+		        		$('.modal-footer').append(cancelbutton);
+		        		$('#modalButton').click();
+		        		modalcheck = true;
+		        		return false;
+		        	}
+	        		var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
+	        		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+	        		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
+	        		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-700">-' + $(this).find('.paidprice').text() + '</td>');
+	        		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+	        		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+	        		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+	        		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+	        		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+	        		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+	        		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+	        		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+	        		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+	        			
+	        		var tableBody = $('#paidbody');
+	        		tableBody.append(newRow);
+	        		totalchange();
+	        	}
 	        }
 	    });
 	}else if(frm.paidCategory.value == "계좌이체" ){
-		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		
+		if(removeCommasFromNumber(frm.paidPrice.value) < 0){
+    		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+    		$('.modal-footer').empty();
+    		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+    		$('.modal-footer').append(cancelbutton);
+    		$('#modalButton').click();
+    		modalcheck = true;
+    		return false;
+    	}
+		var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
@@ -1103,7 +1180,16 @@ function paidCancel(){
 	        }
 	  	});
 	}else{
-		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val();
+		if(removeCommasFromNumber(frm.paidPrice.value) < 0){
+    		$('#resultmessage').html('결제가 취소된 금액입니다.<br>확인 후 결제취소해주세요.');
+    		$('.modal-footer').empty();
+    		var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+    		$('.modal-footer').append(cancelbutton);
+    		$('#modalButton').click();
+    		modalcheck = true;
+    		return false;
+    	}
+		var url = "${pageContext.request.contextPath}/lecture/CancelPaid.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType="+InType;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	    if (myPopup === undefined || myPopup.closed) {
 	        myPopup = window.open(url, "_blank", windowFeatures);
@@ -1146,7 +1232,7 @@ function cashReceiptChange(){
 			var bgColor = $(this).css("background-color");
 	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
 	        	console.log($(this).find(".paidprice"));
-	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
+	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#GroupSaleNo").val();
 	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	            if (myPopup === undefined || myPopup.closed) {
 	                myPopup = window.open(url, "_blank", windowFeatures);
@@ -1204,61 +1290,6 @@ function reReceipt(){
 	myWindow.print();
 }
 
-<%--//paid 의 결제 일자를 넣기 위한 현재날짜 포맷--%>
-function getCurrentDateTime() {
-	var today = new Date();
-
-	var year = today.getFullYear();
-	var month = ('0' + (today.getMonth() + 1)).slice(-2);
-	var day = ('0' + today.getDate()).slice(-2);
-	var hours = ('0' + today.getHours()).slice(-2); 
-	var minutes = ('0' + today.getMinutes()).slice(-2);
-	var seconds = ('0' + today.getSeconds()).slice(-2); 
-	var datestring = year + '-' + month  + '-' + day +' '+ hours + ':' + minutes  + ':' + seconds; 
-	return datestring;
-}
-
-<%--//금액에 , 를 붙혀서 return 해주는 함수--%>
-function formatNumberWithCommas(amount) {
-	<%--// Check if the input is a valid number--%>
-	if (isNaN(amount)) {
-		return "Invalid input";
-	}
-
-	<%--// Convert the number to a string--%>
-	let amountStr = amount.toString();
-
-	<%--// Split the string into integer and decimal parts--%>
-	let parts = amountStr.split('.');
-
-	<%--// Add commas to the integer part--%>
-	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-	<%--// Join the integer and decimal parts back together--%>
-	let formattedAmount = parts.join('.');
-
-	return formattedAmount;
-}
-
-<%--//금액에 붙은 , 를 지워주는 함수--%>
-function removeCommasFromNumber(formattedNumber) {
-	<%--// Remove commas from the string--%>
-	let numberWithoutCommas = formattedNumber.replace(/,/g, '');
-
-	<%--// Convert the string to a number--%>
-	let numericValue = parseFloat(numberWithoutCommas);
-
-	<%--// Check if the conversion was successful--%>
-	if (isNaN(numericValue)) {
-		return "Invalid input";
-	}
-
-	return numericValue;
-}
-
-function roundToNearestTen(num) {
-	return Math.round(num / 10) * 10;
-}
 </script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>

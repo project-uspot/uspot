@@ -456,10 +456,42 @@
                   <div class="parent-wrapper label-1">
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="entry">
                     <c:if test="${value32 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-accordion.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="entryManage()" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">출입관리</span>
                           </div>
                         </a>
+                        <script type="text/javascript">
+                       		var myManage;
+                       		
+	                        function entryManage() {
+	                        	var url = "${pageContext.request.contextPath}/entryManage.do";
+	                            var windowName = "entryManage"; // 팝업 창의 이름
+	                            var windowWidth = 1500; // 팝업 창의 가로 크기
+	                            var windowHeight = 700; // 팝업 창의 세로 크기
+
+	                            // 뷰포트의 가로, 세로 크기 가져오기
+	                            var screenWidth = window.innerWidth;
+	                            var screenHeight = window.innerHeight;
+
+	                            // 팝업 창이 화면 중앙에 위치하도록 계산
+	                            var left = (screenWidth - windowWidth) / 2 + window.screenX;
+	                            var top = (screenHeight - windowHeight) / 2 + window.screenY;
+
+	                            // 팝업 창 열기
+	                            var windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + left + ",top=" + top;
+	                            if (myManage === undefined || myManage.closed) {
+	                            	myManage = window.open(url, "_blank", windowFeatures);
+	                            } else {
+	                            	myManage.focus();
+	                            }
+	                            document.addEventListener('click', function() {
+	    	                        if (myManage && !myManage.closed) {
+	    	                        	myManage.focus();
+	    	                        }
+	                          	});
+		                        
+	                        }
+                        </script>
                       </li>
                       </c:if>
                       <c:if test="${value33 eq true}">

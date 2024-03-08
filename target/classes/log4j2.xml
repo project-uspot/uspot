@@ -35,6 +35,16 @@
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
+		<RollingFile name="LogChk" fileName="${FILENAME}/Log.log"
+				filePattern="${FILENAME}/daily/%d{yyyyMM}/Log_%d{yyyyMMddHH}.log" >
+			<PatternLayout>
+				<pattern>${defaultPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- interval(default 1)이므로 1초 간격으로 rolling 수행 --> 
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
     </Appenders>
     
     
@@ -52,7 +62,7 @@
 	    <Logger name="org.springframework" level="DEBUG" additivity="false">
 	        <AppenderRef ref="console" />
 	    </Logger>
-	    
+
 	    <Logger name="egovframework.veterans" level="DEBUG" additivity="true">
 			<AppenderRef ref="Test" />
 			<AppenderRef ref="OfflinePay" />
