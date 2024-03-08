@@ -52,6 +52,12 @@
 			SiteCode = #{SiteCode}
 	</update>
 	
+	<select id="selectSiteIdSet" parameterType="String" resultType="Map">
+	<![CDATA[
+		select * from tblSite_id where SiteCode = #{value} and IsDelete ='N'
+	]]>
+	</select>
+	
 	
  	<select id="selectPGMGroupInfo" parameterType="egovframework.veterans.com.cmm.service.vo.PGMGroup" resultType="egovframework.veterans.com.cmm.service.vo.PGMGroup">
 		select * from tblPgmGroup 

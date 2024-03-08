@@ -86,7 +86,7 @@ public class VtcEntryController{
 	       model.addAttribute("script", "back");
 		   return "redirect:login.do";
 	   }
-
+	   
 	   return "entry/entryManage";
    }
 }

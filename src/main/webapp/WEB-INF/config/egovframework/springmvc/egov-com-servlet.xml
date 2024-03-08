@@ -32,6 +32,7 @@
     
     <!-- setting Locale Locale Interceptor 설정하기  -->
     <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" id="localeChangeInterceptor" p:paramName="lang"/>
+    <bean class="egovframework.com.cmm.interceptor.CustomInterceptor" id="customInterceptor"/>
 
     <bean class="org.springframework.web.servlet.i18n.SessionLocaleResolver" id="localeResolver"/>
     
@@ -43,6 +44,7 @@
         <property name="interceptors">
             <list>
                 <ref bean="localeChangeInterceptor"/>
+                <!-- <ref bean="customInterceptor"/> --><!-- webConfig대신 -->
                 <!-- <ref bean="egovWebLogInterceptor"/> -->
             </list>
         </property>
