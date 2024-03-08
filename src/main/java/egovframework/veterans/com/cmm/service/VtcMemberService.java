@@ -100,4 +100,8 @@ public interface VtcMemberService {
 	void fmsc_01insertTemp_delete(Map<String, Object> setSql);
 	
 	void MemberImageChange(tblmemberphoto tblmemberphoto)throws Exception;
+	
+	tblmemberphoto MemebrPhotoByMemberID(String MemberID)throws Exception;
+	
+	void MemberImageRemove(String MemberID)throws Exception;
 }

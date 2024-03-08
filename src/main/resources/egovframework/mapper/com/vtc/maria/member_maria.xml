@@ -736,4 +736,15 @@
 	<update id="MemberImageChange" parameterType="egovframework.veterans.com.cmm.service.vo.tblmemberphoto">
 		{call SP_MemberImageChange(#{MemberID},#{SiteCode},#{Photo})}
 	</update>
+	<select id="MemebrPhotoByMemberID" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmemberphoto">
+		select * from tblmemberphoto
+		where
+			MemberID = #{MemberID}
+	</select>
+	<update id="MemberImageRemove" parameterType="String">
+		update tblmemberphoto set 
+		Photo = null
+		where
+			MemberID = #{MemberID} 
+	</update>
 </mapper>

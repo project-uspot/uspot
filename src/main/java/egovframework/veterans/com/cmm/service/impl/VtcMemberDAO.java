@@ -192,4 +192,12 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public void MemberImageChange(tblmemberphoto tblmemberphoto)throws Exception{
 		update("member.MemberImageChange",tblmemberphoto);
 	}
+	
+	public tblmemberphoto MemebrPhotoByMemberID(String MemberID)throws Exception{
+		return selectOne("member.MemebrPhotoByMemberID",MemberID);
+	}
+	
+	public void MemberImageRemove(String MemberID)throws Exception{
+		update("member.MemberImageRemove",MemberID);
+	}
 }

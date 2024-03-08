@@ -82,21 +82,28 @@ public class VtcMainController {
 	}
 	
 	@RequestMapping(value="/siteDetail.do") 
-	public String sitecodeDetail(@RequestParam(name = "SiteCode",defaultValue="10001")String SiteCode, ModelMap model) throws Exception{
+	public String sitecodeDetail(String SiteCode, ModelMap model) throws Exception{
 		model.addAttribute("sitecode", VtcService.selectSiteCode(SiteCode).get(0));
 		return "basic/detail";
 	}
 	
-	@RequestMapping(value="siteModify.do")
+	@RequestMapping(value="/siteModify.do")
 	public String sitecodeModify(ModelMap model, String SiteCode) throws Exception {
-		model.addAttribute("sitecode", VtcService.selectSiteCode(SiteCode));
+		
+		List<Sitecode> sitecode2 = VtcService.selectSiteCode(SiteCode);
+		
+		Sitecode sitecode3 = sitecode2.get(0);
+		model.addAttribute("vo",sitecode3);
+		
 		return "basic/modify";
 	}
 	
 	@RequestMapping(value="modifyOK.do")
 	public String sitecodeModifyOK(Sitecode Sitecode) throws Exception {
+		
+		System.out.println(Sitecode);
 		VtcService.updateSiteCode(Sitecode);
-		return "redirect:siteDetail.do";
+		return "redirect:selecSitecode.do";
 	}
 	
 	@RequestMapping("insertSite.do")

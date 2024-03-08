@@ -16,25 +16,16 @@
         </div>
         <div class="mb-4">
 	          <div class="row g-3">
-	            <div class="col-auto">
-	              <div class="search-box">
-	                <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-	                  <input class="form-control search-input search" type="search" placeholder="Search customers" aria-label="Search" />
-	                  <span class="fas fa-search search-box-icon"></span>
-	
-	                </form>
-	              </div>
-	            </div>
 	            <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 	            </div>
-	            <div class="col-auto">
+	            <%-- <div class="col-auto">
 	              <a class="btn btn-info px-5" href="${pageContext.request.contextPath}/insertSite.do" title="등록">등록</a>
-	            </div>
+	            </div> --%>
 	          </div>
 	        </div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top  border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-	  			<table class="table table-sm fs--1 mb-1">
+	  			<table class="table table-sm table-hover fs--1 mb-1">
 		  			<colgroup>
 		  				<col style="width:50px">
 		  				<col style="width:140px">
@@ -74,17 +65,16 @@
 		  				</tr>
   					</thead>
 	  				<tbody class="list">
-	  					<c:forEach items="${siteList }" var="site">
-			  				<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center">
-			  					<td class="SiteID align-middle white-space-nowrap pe-5">
-			  						<c:out value="${site.siteID }"></c:out>
+	  					<c:forEach items="${siteList}" var="site">
+			  				<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" ondblclick="location.href='siteDetail.do?SiteCode=${site.siteCode}'">
+			  					<td class="SiteID align-middle white-space-nowrap">
+			  						<c:out value="${site.siteID}"></c:out>
 			  					</td>
 			  					<td class="SiteName align-middle white-space-nowrap ">
-			  						<form action="<c:url value='siteDetail.do'/>" method="post">
-										<input type="hidden" name="SiteCode" value="${site.siteCode }">
-										<input type="hidden" name=SiteID value="${site.siteID }">
-										<input class="fw-bold" type="submit" value="<c:out value="${site.siteName }"/>" style="border: 0px solid #e0e0e0; backGround-color: white;"> 
-									</form>
+									<c:out value="${site.siteName }"/> 
+			  					</td>
+			  					<td style="display: none;">
+			  						<input type="hidden" name=SiteID value="${site.siteID }">
 			  					</td>
 			  					<td class="SiteBNo align-middle white-space-nowrap ">
 			  						<c:out value="${site.siteBNo }"></c:out>

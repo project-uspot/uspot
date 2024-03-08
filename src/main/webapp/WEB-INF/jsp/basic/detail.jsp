@@ -136,9 +136,8 @@ function fn_egov_delete_article(form) {
 					<a class="btn btn-warning px-5" href="${pageContext.request.contextPath}/selecSitecode.do" title="목록">목록</a><!-- 목록 -->
 				</div>
 				<div class="col-auto">
-					<form action="/siteModify.do" method="post">
+					<form action="siteModify.do?SiteCode=${sitecode.siteCode}" method="post">
 						<input type="submit" class="btn btn-info px-5" value="수정" /><!-- 수정 -->
-						<input type="hidden" name="SiteCode" value="${sitecode.siteCode }"> 
 					</form>
 				</div>
 				<div class="col-auto">

@@ -277,7 +277,7 @@
                                         $('body').append(buttonHTML);
                                         $('#modalButton').click();
                                     } else if (data === '2') {
-                                        location.href = 'memberfindone?findvalue=' + findvalue + '&findcategory=' + findcategory;
+                                        location.href = 'membership.do?findvalue=' + findvalue + '&findcategory=' + findcategory + '&findtype=1';
                                     } else if (data === '3') {
                                         var url = "findlist?findvalue=" + findvalue + "&findcategory=" + findcategory;
                                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1000,height=500";
@@ -327,7 +327,14 @@
                                     <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
                                         <div class="col-12 col-sm-auto mb-sm-2">
                                             <div class="avatar avatar-5xl ms-3" id="imagediv">
-                                                <img class="rounded-circle" id="memberimage" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/${img}" />
+                                            	<c:choose>
+                                            		<c:when test="${base64Image == null || base64Image == ''}">
+                                            			<img class="rounded-circle" id="memberimage" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/uspot.jpg"/>
+                                            		</c:when>
+                                            		<c:otherwise>
+                                            			<img class="rounded-circle" id="memberimage" src="data:image/jpeg;base64,${base64Image}" />
+                                            		</c:otherwise>
+                                            	</c:choose>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-auto flex-1">
@@ -421,6 +428,33 @@
                                     $("#deleteImage").click(function() {
                                     	$('#imageInput').val('');
                                     	$("#memberimage").remove();
+                                    	
+                                    	$.ajax({
+                                	        type: "POST", 
+                                	        url: "MemberImageRemove", 
+                                	        data: {
+                                	        	MemberID : $('#memberID').val()
+                                	        },
+                                	        success: function(data) {
+                                	        	if(data == '0'){
+                                	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                                	        		window.location.reload();
+                                	        	}else{
+                                	        		const newImage = $("<img>")
+                                    				.addClass("rounded-circle")
+                                    				.attr({
+                                    					src: '${pageContext.request.contextPath}/new_lib/assets/img/memberimage/uspot.jpg',
+                                    					id: "memberimage"
+                                    				});
+                                    			$("#memberimage").remove();
+                                    			$("#imagediv").append(newImage);
+                                	        	}
+                                	        },
+                                	        error: function(xhr, status, error) {
+                                	       	 console.log("Status: " + status);
+                                	         console.log("Error: " + error);
+                                	        }
+                                		});
                                     });
                                     
                                     $("#imageInput").change(function() {
@@ -453,8 +487,9 @@
                                     	        success: function(data) {
                                     	        	if(data == '0'){
                                     	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                                    	        		window.location.reload();
                                     	        	}
-                                    	        	window.location.reload();
+                                    	        	
                                     	        },
                                     	        error: function(xhr, status, error) {
                                     	       	 console.log("Status: " + status);

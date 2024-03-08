@@ -76,58 +76,60 @@
 					<a class="btn btn-info px-5" href="javascript:Yremoveall()" style="position: absolute; margin-top: -41px;margin-left: 500px;">선택해제</a>
 					<a class="btn btn-info px-5" href="javascript:authYselectall()" style="position: absolute; margin-top: -41px;margin-left: 650px;">권한전체선택</a>
 					<a class="btn btn-info px-5" href="javascript:authYremoveall()" style="position: absolute; margin-top: -41px;margin-left: 830px;">권한선택해제</a>
-					<table class="table table-sm fs--1 mb-1">
-						<thead>
-							<tr>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">선택</th>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램ID</th>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램명</th>
-								<th colspan="6" class="sort board border-github border-bottom align-middle pe-1 " scope="col" style="text-align: center;">권한</th>
-							</tr>
-							<tr>
-								<th class="sort board border-github align-middle pe-1" scope="col">조회</th>
-								<th class="sort board border-github align-middle pe-1" scope="col">입력</th>
-								<th class="sort board border-github align-middle pe-1" scope="col">수정</th>
-								<th class="sort board border-github align-middle pe-1" scope="col">삭제</th>
-								<th class="sort board border-github align-middle pe-1" scope="col">엑셀</th>
-								<th class="sort board border-github align-middle pe-1" scope="col">인쇄</th>
-							</tr>
-						</thead>					
-						<tbody class="authylist">
-						<c:forEach items="${arr_item4}" var="mItem4">
-							<tr>
-								<td >
-									<input type="checkbox" class="form-check-input" id="Yauth" name="Yauth">
-									<input type="hidden" value="${mItem4.pkid}" class="pkid">
-								</td>
-								<td>
-									<c:out value="${mItem4.pgmID}"/>
-								</td>
-								<td>
-									<c:out value="${mItem4.pgmName}"/>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Sel" id="authY" <c:if test="${mItem4.sel eq 'Y'}">checked</c:if>>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Ins" id="authY" <c:if test="${mItem4.ins eq 'Y'}">checked</c:if>>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Upd" id="authY" <c:if test="${mItem4.upd eq 'Y'}">checked</c:if>>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Del" id="authY" <c:if test="${mItem4.del eq 'Y'}">checked</c:if>>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Excel" id="authY" <c:if test="${mItem4.excel eq 'Y'}">checked</c:if>>
-								</td>
-								<td>
-									<input type="checkbox" class="form-check-input" name="Prt" id="authY" <c:if test="${mItem4.prt eq 'Y'}">checked</c:if>>
-								</td>
-							</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+					<div style="height: 350px;overflow-y: auto;">
+						<table class="table table-sm fs--1 mb-1">
+							<thead>
+								<tr>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">선택</th>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램ID</th>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램명</th>
+									<th colspan="6" class="sort board border-github border-bottom align-middle pe-1 " scope="col" style="text-align: center;">권한</th>
+								</tr>
+								<tr>
+									<th class="sort board border-github align-middle pe-1" scope="col">조회</th>
+									<th class="sort board border-github align-middle pe-1" scope="col">입력</th>
+									<th class="sort board border-github align-middle pe-1" scope="col">수정</th>
+									<th class="sort board border-github align-middle pe-1" scope="col">삭제</th>
+									<th class="sort board border-github align-middle pe-1" scope="col">엑셀</th>
+									<th class="sort board border-github align-middle pe-1" scope="col">인쇄</th>
+								</tr>
+							</thead>					
+							<tbody class="authylist">
+							<c:forEach items="${arr_item4}" var="mItem4">
+								<tr>
+									<td >
+										<input type="checkbox" class="form-check-input" id="Yauth" name="Yauth">
+										<input type="hidden" value="${mItem4.pkid}" class="pkid">
+									</td>
+									<td>
+										<c:out value="${mItem4.pgmID}"/>
+									</td>
+									<td>
+										<c:out value="${mItem4.pgmName}"/>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Sel" id="authY" <c:if test="${mItem4.sel eq 'Y'}">checked</c:if>>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Ins" id="authY" <c:if test="${mItem4.ins eq 'Y'}">checked</c:if>>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Upd" id="authY" <c:if test="${mItem4.upd eq 'Y'}">checked</c:if>>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Del" id="authY" <c:if test="${mItem4.del eq 'Y'}">checked</c:if>>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Excel" id="authY" <c:if test="${mItem4.excel eq 'Y'}">checked</c:if>>
+									</td>
+									<td>
+										<input type="checkbox" class="form-check-input" name="Prt" id="authY" <c:if test="${mItem4.prt eq 'Y'}">checked</c:if>>
+									</td>
+								</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
@@ -137,30 +139,32 @@
 					<a class="btn btn-info px-5" href="javascript:revauthority()" style="position: absolute; margin-top: -41px;margin-left: 500px;">권한회수</a>
 					<a class="btn btn-info px-5" href="javascript:Nselectall()" style="position: absolute; margin-top: -41px;margin-left: 650px;">전체선택</a>
 					<a class="btn btn-info px-5" href="javascript:Nremoveall()" style="position: absolute; margin-top: -41px;margin-left: 800px;">선택해제</a>
-					<table class="table table-sm fs--1 mb-1">
-						<thead>
-							<tr>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">선택</th>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램ID</th>
-								<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램명</th>
-							</tr>
-						</thead>
-						<tbody class="authnlist">
-						<c:forEach items="${arr_item3}" var="Item3">
-							<tr>
-								<td >
-									<input type="checkbox" class="form-check-input" id="authN">
-								</td>
-								<td>
-									<c:out value="${Item3.pgmID}"/>
-								</td>
-								<td>
-									<c:out value="${Item3.pgmName}"/>
-								</td>
-							</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+					<div style="height: 184px;overflow-y: auto;">
+						<table class="table table-sm fs--1 mb-1">
+							<thead>
+								<tr>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">선택</th>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램ID</th>
+									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램명</th>
+								</tr>
+							</thead>
+							<tbody class="authnlist">
+							<c:forEach items="${arr_item3}" var="Item3">
+								<tr>
+									<td >
+										<input type="checkbox" class="form-check-input" id="authN">
+									</td>
+									<td>
+										<c:out value="${Item3.pgmID}"/>
+									</td>
+									<td>
+										<c:out value="${Item3.pgmName}"/>
+									</td>
+								</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -212,6 +216,7 @@ tdElements.forEach(function(td) {
         
         $.ajax({
             type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+            async:false,
             url: "authusergrouplistY.do", // 실제 엔드포인트로 교체해야 합니다
             dataType : 'json',
             data: { 
@@ -271,6 +276,7 @@ tdElements.forEach(function(td) {
         
         $.ajax({
             type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+            async:false,
             url: "authusergrouplistN.do", // 실제 엔드포인트로 교체해야 합니다
             dataType : 'json',
             data: { 
@@ -356,6 +362,7 @@ pgmtdElements.forEach(function(td) {
         
         $.ajax({
             type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+            async:false,
             url: "authusergrouplistN.do", // 실제 엔드포인트로 교체해야 합니다
             dataType : 'json',
             data: { 
@@ -427,6 +434,7 @@ function Authorization() {
 	
     $.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        async:false,
         url: "authorization.do", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 
@@ -460,6 +468,7 @@ function Authorization() {
     
     $.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        async:false,
         url: "authusergrouplistY.do", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 
@@ -527,6 +536,7 @@ function revauthority() {
     
     $.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        async:false,
         url: "revauthority.do", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 
@@ -587,6 +597,7 @@ function revauthority() {
     
     $.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+        async:false,
         url: "authusergrouplistN.do", // 실제 엔드포인트로 교체해야 합니다
         dataType : 'json',
         data: { 

@@ -1322,7 +1322,7 @@
                       <li class="collapsed-nav-item-title d-none">기초관리</li>
 	                  	<c:if test="${value5 eq true}">
 	                      <li class="nav-item">
-	                      	<a class="nav-link" href="${pageContext.request.contextPath}/selecSitecode.do?siteCode=10001" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
+	                      	<a class="nav-link" href="${pageContext.request.contextPath}/selecSitecode.do" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
 	                          <div class="d-flex align-items-center">
 	                          	<span class="nav-link-text">사업장관리</span>
 	                          </div>
@@ -1437,7 +1437,7 @@
               </div>
             </a>
           </div>
-          <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
+          <%-- <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
             <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
               <input class="form-control search-input fuzzy-search rounded-pill form-control-sm" type="search" placeholder="Search..." aria-label="Search" data-bs-toggle="tooltip" data-bs-placement="right" title="검색" />
               <span class="fas fa-search search-box-icon"></span>
@@ -1546,7 +1546,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --%>
           <ul class="navbar-nav navbar-nav-icons flex-row">
             <li class="nav-item">
               <div class="theme-control-toggle fa-icon-wait px-2">
@@ -1555,7 +1555,7 @@
                 <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch theme"><span class="icon" data-feather="sun"></span></label>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <%-- <li class="nav-item dropdown">
               <a class="nav-link" href="#" style="min-width: 2.5rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span data-feather="bell" style="height:20px;width:20px;"></span></a>
 
               <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border border-300 navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
@@ -1682,8 +1682,8 @@
                   </div>
                 </div>
               </div>
-            </li>
-            <li class="nav-item dropdown">
+            </li> --%>
+            <%-- <li class="nav-item dropdown">
               <a class="nav-link" id="navbarDropdownNindeDots" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" data-bs-auto-close="outside" aria-expanded="false">
                 <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
@@ -1747,7 +1747,7 @@
                   </div>
                 </div>
               </div>
-            </li>
+            </li> --%>
             <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-l ">
                   <!-- <img class="rounded-circle " src="assets/img/team/40x40/57.webp" alt="" 1/> -->
