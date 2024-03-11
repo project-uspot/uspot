@@ -1,5 +1,6 @@
 package egovframework.veterans.com.cmm;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -528,7 +529,6 @@ public class VtcItemController{
 	   tblItem.setItemCode(request.getParameter("Item_Code"));
 		
 	   tblItem = vtcItemService.itemCode_Chk(tblItem);
-	   System.out.println("tblItem : " + tblItem);
 	   if (tblItem != null && !tblItem.getItemCode().equals("")) {
 		   return "false";
 	   } else {
@@ -545,9 +545,6 @@ public class VtcItemController{
 		   return "redirect:login.do";
 	   }
 	   
-	   System.out.println( "ItemCode : " +  ItemCode);
-	   
-	   
 	   TblItem tblItem = new TblItem();
 	   tblItem.setSiteCode(users.getSiteCode());
 	   tblItem.setItemCode(ItemCode);
@@ -556,18 +553,16 @@ public class VtcItemController{
 	   item_01.setSiteCode(users.getSiteCode());
 	   
 	   TblItem_02 item_02 = new TblItem_02();
-		item_02.setSiteCode(users.getSiteCode());
+	   item_02.setSiteCode(users.getSiteCode());
 		
-		TblItem_03 item_03 = new TblItem_03();
-		item_03.setSiteCode(users.getSiteCode());
+	   TblItem_03 item_03 = new TblItem_03();
+	   item_03.setSiteCode(users.getSiteCode());
 	   
 	   code.setSiteCode(users.getSiteCode());
 	   code.setCodeGroupID("5");
 	   
-	   
 	   selectitem.setSiteCode(users.getSiteCode());
 	   List<selectitem> listSelectItem = vtcItemService.listSelectItemY(selectitem);
-	   
 	   
 	   TblItem getItem = vtcItemService.getTblItem(tblItem);
 	   List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
@@ -1267,4 +1262,56 @@ public class VtcItemController{
 	
 		return itemList;
 	}
+   
+   @ResponseBody
+   @PostMapping("/ItemImageChange")
+   public String ItemImageChange(TblItem tblItem,@RequestParam(value = "imageInput",required = false)MultipartFile ItemImage)throws Exception{
+	   
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		if (users == null) {
+			return "0";
+		}
+		
+		if(ItemImage != null && !ItemImage.isEmpty()) {
+			
+			String ItemImagefilename = ItemImage.getOriginalFilename();
+			
+			String ImgName = "Item"+tblItem.getItemCode()+"Img"+ItemImagefilename; 
+			
+			tblItem.setPicture(ImgName);
+			
+			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			
+			try {
+				ItemImage.transferTo(new File(image_path + ImgName));
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+		
+		tblItem.setSiteCode(users.getSiteCode());
+		tblItem.setUpdUserPKID(users.getUserPKID());
+		
+		vtcItemService.ItemImageChange(tblItem);
+		
+		return "success";
+   }
+   
+   @ResponseBody
+   @PostMapping("/ItemImageRemove")
+   public String ItemImageRemove(TblItem tblItem)throws Exception{
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+		
+	   if (users == null) {
+		   return "0";
+	   }
+	   
+	   tblItem.setSiteCode(users.getSiteCode());
+	   tblItem.setUpdUserPKID(users.getUserPKID());
+	   
+	   vtcItemService.ItemImageRemove(tblItem);
+	   
+	   return "success";
+   }
 }

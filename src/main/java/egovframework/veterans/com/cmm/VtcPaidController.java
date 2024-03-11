@@ -287,7 +287,6 @@ public class VtcPaidController {
 		if(users == null){
 			users = new Users();
 		}
-		System.out.println("sdfsdfsdfdsfsdfsdfdfs");
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("saleDate", tblpaid.getSaleDate());
 	    map.put("outputOrderNo", 0);
@@ -380,8 +379,6 @@ public class VtcPaidController {
 		}
 		tblexpensesale.setSiteCode(users.getSiteCode());
 		tblexpensesale.setAddUserPKID(users.getUserPKID());
-		
-		System.out.println(tblexpensesale);
 		
 		VtcPaidService.ExpenseSaleInsert(tblexpensesale);
 		

@@ -123,7 +123,7 @@
 					<form id="frmOffline" name="frmOffline" action="">
 						<input type="hidden" id="RealSaleDate" name="RealSaleDate" value="">
 						<input type="hidden" id="PayType" name="PayType" value="">
-						<input type="hidden" id="Price" name="Price" value="">
+						<input type="hidden" id="payPrice" name="payPrice" value="">
 						<input type="hidden" id="AssignType" name="AssignType" value="">
 						<input type="hidden" id="Maeipsa" name="Maeipsa" value="">
 						<input type="hidden" id="CardName" name="CardName" value="">
@@ -308,7 +308,6 @@ function paid(){
 	}else if(checkedRadio == '3'){
 		urlParam = "zero";
 	}
-
 	$.ajax({
 		type : 'POST',
 		url : '${pageContext.request.contextPath}/'+urlParam+'/paidRegCancel',
@@ -335,7 +334,7 @@ function paid(){
 			if(data.responseCode == "0000"){
 				$("#RealSaleDate").val(formatDate(data.SaleDate,"yMdHms"));
 				$("#PayType").val(data.PayType);
-				$("#Price").val(data.Price);
+				$("#payPrice").val(data.Price);
 				$("#AssignType").val(data.AssignType);
 				$("#Maeipsa").val(data.CompanyName);
 				$("#CardName").val(data.CardName);

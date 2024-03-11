@@ -18,7 +18,7 @@ import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
 @Repository("VtcItemDAO")
 public class VtcItemDAO extends EgovComAbstractDAO{
 	
-
+	
 	public List<TblItem_01> listItemCode(TblItem_01 item_01) {
 		return selectList("item.listItemCode", item_01);
 	}
@@ -123,5 +123,13 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	}
 	public int itemmonthbyitemid(int itemid)throws Exception{
 		return selectOne("item.itemmonthbyitemid",itemid);
+	}
+	
+	public void ItemImageChange(TblItem tblItem)throws Exception{
+		update("item.ItemImageChange",tblItem);
+	}
+	
+	public void ItemImageRemove(TblItem tblItem)throws Exception{
+		update("item.ItemImageRemove",tblItem);
 	}
 }

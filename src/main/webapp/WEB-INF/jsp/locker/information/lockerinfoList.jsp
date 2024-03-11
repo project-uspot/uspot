@@ -31,7 +31,7 @@
 			<table class="table table-hover table-bordered fs--1 mb-0">
 				<thead>
 			        <tr>
-						<th class="sort pe-1 text-center"  data-sort="PLockerGroupName" style="width:9%;">분류</th>
+						<th class="sort pe-1 white-space-nowrap align-middle text-center" scope="col" data-sort="PLockerGroupName" style="width:9%;">분류</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerLocation">위 치</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerDeposite">보증금</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerPrice">사용료</th>
@@ -45,8 +45,8 @@
       			</thead>
 		        <tbody class="list">
 					<c:forEach items="${list}" var="list">
-						<tr class="text-center" onclick="tbodyclick(this)" ondblclick="merge()" style="cursor:pointer;">
-							<td class="PLockerGroupID" style="display: none;">${list.PLockerGroupID}</td>
+						<tr class="text-center hover-actions-trigger btn-reveal-trigger position-static" onclick="tbodyclick(this)" ondblclick="merge()" style="cursor:pointer;">
+							<td class="PLockerGroupID white-space-nowrap" style="display: none;">${list.PLockerGroupID}</td>
 							<td class="PLockerGroupName">${list.PLockerGroupName}</td>
 							<td class="PLockerLocation">${list.PLockerLocation}</td>
 							<fmt:parseNumber var="PLockerDeposite" integerOnly="true" value="${list.PLockerDeposite}"/>

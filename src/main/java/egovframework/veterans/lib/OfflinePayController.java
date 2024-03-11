@@ -925,6 +925,7 @@ public class OfflinePayController {
 						returnMap.put("SaleType",InType);
 						break;
 					case "사물함":
+						
 						/*
 						 * returnMap.put("pkid",request.getParameter("pkid"));
 						 * OfflinePayService.insertPaidCancelLocker(returnMap);
@@ -936,7 +937,6 @@ public class OfflinePayController {
 					default:
 						break;
 					}
-
 					returnMap = OfflinePayService.insertPaid(returnMap);
 					//영수증 저장
 					switch (saleType) {
@@ -954,7 +954,7 @@ public class OfflinePayController {
 			}
 
 			returnStr = f.MapToJson(returnMap);
-			System.out.println(resultMap);
+			
 			return returnMap;
 		}else {
 			String rMsg = resultMap.get("MSG"); // 실패 사유 메시지

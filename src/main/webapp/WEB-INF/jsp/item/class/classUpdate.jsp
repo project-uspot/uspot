@@ -1,52 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="../../include/head.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>강습반 정보 변경</title>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon.ico">
-<link rel="manifest" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/manifest.json">
-<meta name="msapplication-TileImage" content="${pageContext.request.contextPath}/new_lib/assets/img/favicons/mstile-150x150.png">
-<meta name="theme-color" content="#ffffff">
-<meta name="robots" content="noindex">
-<script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
-<%-- <script src="${pageContext.request.contextPath}/new_lib/js/theme/flatpickr.js"></script> --%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    
-
-
-
-
-<!-- ===============================================-->
-<!--    Stylesheets-->
-<!-- ===============================================-->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-<link href="${pageContext.request.contextPath}/new_lib/scss/theme/_navbar-vertical.scss" rel="stylesheet" />
-<link href="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
-<link href="${pageContext.request.contextPath}/new_lib/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.css" integrity="sha512-EM9iXXndA8L72Sgf6i5hYHnfcGNchX5oDY6E/GNvb6CXyEXxyzXeSiXHK9UEpQw+cKD8C4ZU/Qn4HI0z8JPENg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
 	<div class="card h-100">
@@ -513,7 +472,9 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">강좌소개</h4>
-				               					<textarea class="tinymce" id="Intro" name="Intro"  data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'><c:out value="${item.intro}" /></textarea>
+												<div>
+				               						<textarea class="form-control" rows="5" id="Intro" name="Intro"><c:out value="${item.intro}"/></textarea>
+												</div>
 				         					</div>
 				         				</div>
 									</div>
@@ -521,7 +482,9 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">세부내용</h4>
-				               					<textarea class="tinymce" id="Detail" name="Detail" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'><c:out value="${item.detail}" /></textarea>
+												<div>
+				               						<textarea class="form-control" rows="5" id="Detail" name="Detail"><c:out value="${item.detail}"/></textarea>
+												</div>
 				             				</div>
 				             			</div>
 									</div>
@@ -529,7 +492,9 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">비고</h4>
-				               					<textarea class="tinymce" id="Note" name="Note" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'><c:out value="${item.note}" /></textarea>
+												<div>
+				               						<textarea class="form-control" rows="5" id="Note" name="Note"><c:out value="${item.note}"/></textarea>
+												</div>
 				             				</div>
 				             			</div>
 									</div>
@@ -537,42 +502,123 @@
 								<div class="tab-pane fade" id="tab-propose" role="tabpanel" aria-labelledby="propose-tab">
 									<div class="col-sm-6 col-md-10 mb-2">
 										<h4 class="mb-3">이미지</h4>
-										<div class="dropzone dropzone-multiple p-0 mb-5" id="my-awesome-dropzone" data-dropzone="data-dropzone">
-											<div class="fallback">
-												<input name="file" type="file"  />
-											</div>
-											<div class="dz-preview d-flex flex-wrap">
-												<div class="border bg-white rounded-3 d-flex flex-center position-relative me-2 mb-2" ><img class="dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/products/23.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" /><a class="dz-remove text-400" href="#!" data-dz-remove="data-dz-remove"><span data-feather="x"></span></a></div>
-											</div>
-											<div class="dz-message text-600" data-dz-message="data-dz-message">Drag your photo here<span class="text-800 px-1">or</span>
-												<button class="btn btn-link p-0" type="button">Browse from device</button><br /><img class="mt-3 me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/image-icon.png" width="40" alt="" />
-											</div>
-										</div>
+										 <div class="card" style="width: 460px;">
+									        <div class="card-body mb-n10 mt-n3 me-3 mx-n4" style="height: 440px;">
+									        	<div class="card text-white overflow-hidden" id="imagecard" style="max-width:30rem;height: 260px;">
+									        		<c:choose>
+									        			<c:when test="${item.picture == null || item.picture == ''}">
+									        			</c:when>
+									        			<c:otherwise>
+									        				<img class="card-img-top" src="${pageContext.request.contextPath}/images/egovframework/com/cmm/main/${item.picture}" name="itemimg" id="itemimg"/>
+									        			</c:otherwise>
+									        		</c:choose>
+												</div>
+												<div class="row mt-2">
+													<div class="col-auto">
+														<input type="file" id="imageInput" style="display:none;" accept="image/*"/>
+														<button class="btn btn-primary" type="button" id="imageUpload" name="imageUpload">등록</button>
+														<button class="btn btn-outline-primary" id="deleteImage" type="button">삭제</button>
+													</div>				
+												</div>
+									        </div>
+									    </div>
 									</div>
 								</div>
+								<script type="text/javascript">
+								$("#imageUpload").click(function() {
+									$("#imageInput").click(); 
+								});
+
+								var DeleteCheck = '';
+								$("#deleteImage").click(function() {
+									$('#imageInput').val('');
+									$("#itemimg").remove();
+									DeleteCheck = 'Y';
+									
+									const formData = new FormData();
+                            		formData.append('ItemCode', '${param.ItemCode}');
+									
+                            		$.ajax({
+                            	        type: "POST", 
+                            	        url: "ItemImageRemove", 
+                            	        data: formData,
+                            	        processData: false,
+                            	        contentType: false,
+                            	        success: function(data) {
+                            	        	if(data == '0'){
+                            	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                            	        		window.location.reload();
+                            	        	}
+                            	        },
+                            	        error: function(xhr, status, error) {
+                            	       	 console.log("Status: " + status);
+                            	         console.log("Error: " + error);
+                            	        }
+                            		});
+								});
+
+								$("#imageInput").change(function() {
+									const fileInput = this;
+									if (fileInput.files && fileInput.files[0]) {
+										const reader = new FileReader();
+
+										reader.onload = function(e) {
+											const newImage = $("<img>")
+												.addClass("card-img-top")
+												.attr({
+													src: e.target.result,
+													name: "itemimg",
+													id: "itemimg"
+												});
+											$("#itemimg").remove();
+											$("#imagecard").append(newImage);
+										};
+										reader.readAsDataURL(fileInput.files[0]);
+										
+										const formData = new FormData();
+                                		formData.append('imageInput', $('#imageInput').get(0).files[0]);
+                                		formData.append('ItemCode', '${param.ItemCode}');
+                                		
+                                		$.ajax({
+                                	        type: "POST", 
+                                	        url: "ItemImageChange", 
+                                	        data: formData,
+                                	        processData: false,
+                                	        contentType: false,
+                                	        success: function(data) {
+                                	        	if(data == '0'){
+                                	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                                	        		window.location.reload();
+                                	        	}
+                                	        },
+                                	        error: function(xhr, status, error) {
+                                	       	 console.log("Status: " + status);
+                                	         console.log("Error: " + error);
+                                	        }
+                                		});
+									}
+								});
+								</script>
 								<div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
 									<div class="col-sm-6 col-md-10 mb-2">
 										<div class="dropzone dropzone-multiple p-0" id="dropzone" data-dropzone="data-dropzone" data-options='{"url":"valid/url","maxFiles":1,"dictDefaultMessage":"Choose or Drop a file here"}'>
 											<div class="fallback">
-												<input type="file" name="file" />
+												<input type="file" name="itemfile"  id="itemfile"/>
 											</div>
 											<div class="dz-message" data-dz-message="data-dz-message">
 												<div class="dz-message-text">
-													<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25" alt="" />Drop your file here
+													<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25" alt="" />파일을 올려주세요
 												</div>
 											</div>
 											<div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
+											
 												<div class="d-flex pb-3 border-bottom media px-2">
-													<div class="border border-300 p-2 rounded-2 me-2">
+													<div class="border border-300 p-2 rounded-2 me-2" id="fileimgdiv">
 														<img class="rounded-2 dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" />
 													</div>
 													<div class="flex-1 d-flex flex-between-center">
 														<div>
 															<h6 data-dz-name="data-dz-name"></h6>
-															<div class="d-flex align-items-center">
-																<p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"></p>
-																<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
-															</div>
 															<span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
 														</div>
 														<div class="dropdown font-sans-serif">
@@ -587,15 +633,63 @@
 										</div>
 									</div>
 								</div>
+								<script type="text/javascript">
+									$("#itemfile").change(function() {
+										alert($('#itemfile').val());
+										const fileInput = this;
+										if (fileInput.files && fileInput.files[0]) {
+											const reader = new FileReader();
+	
+											reader.onload = function(e) {
+												const newImage = $("<img>")
+													.addClass("rounded-2 dz-image")
+													.attr({
+														src: "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png",
+														name: "itemfileimg",
+														id: "itemfileimg"
+													});
+												$("#itemfileimg").remove();
+												$("#fileimgdiv").append(newImage);
+											};
+											reader.readAsDataURL(fileInput.files[0]);
+											
+											alert('${item.itemID}');
+											
+											/* const formData = new FormData();
+	                                		formData.append('imageInput', $('#imageInput').get(0).files[0]);
+	                                		formData.append('ItemCode', '${param.ItemCode}');
+	                                		
+	                                		$.ajax({
+	                                	        type: "POST", 
+	                                	        url: "ItemImageChange", 
+	                                	        data: formData,
+	                                	        processData: false,
+	                                	        contentType: false,
+	                                	        success: function(data) {
+	                                	        	if(data == '0'){
+	                                	        		alert('세션이 만료되었습니다.로그인해주세요.');
+	                                	        		window.location.reload();
+	                                	        	}
+	                                	        },
+	                                	        error: function(xhr, status, error) {
+	                                	       	 console.log("Status: " + status);
+	                                	         console.log("Error: " + error);
+	                                	        }
+	                                		}); */
+										}
+									});
+								</script>
 								<div class="tab-pane fade" id="tab-otherlearn" role="tabpanel" aria-labelledby="otherlearn-tab">
 									<div class="col-sm-6 col-md-10 mb-2">
 										<div class="col-sm-6 col-md-10 mb-2">
 											<div class="card">
 												<div class="card-body">
 													<h4 class="mb-3">메모(관리)</h4>
-				                					<textarea class="tinymce" id="Bigo" name="Bigo" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'><c:out value="${item.bigo}" /></textarea>
-				              						</div>
+													<div>
+				               							<textarea class="form-control" rows="5" id="Bigo" name="Bigo"><c:out value="${item.bigo}"/></textarea>
+													</div>
 				              					</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1020,20 +1114,5 @@
 	
 	</script>
 </body>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/fontawesome/all.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/lodash/lodash.min.js"></script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/feather-icons/feather.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dayjs/dayjs.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/phoenix.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/echarts/echarts.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/ecommerce-dashboard.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/tinymce/tinymce.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.js"></script>
+<%@ include file="../../include/foot.jsp" %>
 </html>
