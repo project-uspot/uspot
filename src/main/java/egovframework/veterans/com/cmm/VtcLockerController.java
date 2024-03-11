@@ -158,6 +158,7 @@ public class VtcLockerController{
 				return "0";
 			}
 		}
+		
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		tblplockergroup.setUpdUserPKID(users.getUserPKID());		
 		
@@ -395,7 +396,6 @@ public class VtcLockerController{
 		
 		try {
 			Users users =  (Users) session.getAttribute("loginuserinfo");
-			System.out.println(users);
 			if (users == null) {
 				Map<String,Object> map = new HashMap<String, Object>();
 	        	

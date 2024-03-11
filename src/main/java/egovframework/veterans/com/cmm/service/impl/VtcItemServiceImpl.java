@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcItemService;
@@ -26,6 +28,7 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	private final VtcItemDAO itemDAO;
 	
 	@Override
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public List<TblItem_01> listItemCode(TblItem_01 item_01) throws Exception {
 		return itemDAO.listItemCode(item_01);
 	}
@@ -162,6 +165,13 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	@Override
 	public int itemmonthbyitemid(int itemid) throws Exception {
 		return itemDAO.itemmonthbyitemid(itemid);
+	}
+	@Override
+	public void ItemImageChange(TblItem tblItem) throws Exception {
+		itemDAO.ItemImageChange(tblItem);
+	}
+	@Override
+	public void ItemImageRemove(TblItem tblItem) throws Exception {
+		itemDAO.ItemImageRemove(tblItem);
 	}	
-	
 }

@@ -205,7 +205,7 @@
 	
 	 <select id="listSelectItemY" resultType="egovframework.veterans.com.cmm.service.vo.selectitem" parameterType="egovframework.veterans.com.cmm.service.vo.selectitem"> 
 		select * from selectitem a 
-		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID  
+		left join tblcode b on a.SiteCode = b.SiteCode and a.DaeSangID = b.PKID
 		where 
 			a.SiteCode = #{SiteCode}
 		and a.IsDelete  = 'N'
@@ -566,4 +566,22 @@
 			ItemID = #{ItemID}
 		and IsDelete  = 'N'
 	</select>
+	<update id="ItemImageChange" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		update tblitem set
+		Picture = #{Picture}, 
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where 
+			SiteCode = #{SiteCode}
+		and ItemCode = #{ItemCode}
+	</update>
+	<update id="ItemImageRemove" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		update tblitem set
+		Picture = null, 
+		UpdDate = now(),
+		UpdUserPKID = #{UpdUserPKID}
+		where 
+			SiteCode = #{SiteCode}
+		and ItemCode = #{ItemCode}
+	</update>
 </mapper>

@@ -14,13 +14,12 @@ import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 
 @Service("VtcService")
+
 public class VtcServiceImpl extends EgovAbstractServiceImpl implements VtcService{
 	
 	@Resource(name="VtcDAO")
 	private VtcDAO VtcDAO;
 
-
-	
 	@Override
 	public List<Sitecode> selectSiteCode(String SiteCode) throws Exception {
 		return VtcDAO.selectSiteCode(SiteCode);

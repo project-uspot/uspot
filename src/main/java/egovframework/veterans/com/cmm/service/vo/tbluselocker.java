@@ -68,7 +68,7 @@ public class tbluselocker {
 	private int WiyakPrice;
 
 
-	private int Use_Price;
+	private int UsedPrice;
 
 
 	private int GongjePrice;

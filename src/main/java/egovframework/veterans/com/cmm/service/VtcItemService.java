@@ -50,4 +50,6 @@ public interface VtcItemService {
 	List<maturitylist> maturitylist(Map<String, Object> map)throws Exception;
 	List<selectitem> findItem(Map<String, Object> find) throws Exception;
 	int itemmonthbyitemid(int itemid)throws Exception;
+	void ItemImageChange(TblItem tblItem)throws Exception;
+	void ItemImageRemove(TblItem tblItem)throws Exception;
 }
