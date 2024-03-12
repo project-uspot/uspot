@@ -448,7 +448,11 @@ public class OfflinePayController {
 			returnMap.put("CompanyName",RS12);
 			returnMap.put("msg1",RS17);
 			returnMap.put("msg2",RS16);
-			returnMap.put("msg3","");
+			if(uparam.equals("cash")) {
+				returnMap.put("msg3",""+BarCode);	
+			}else {
+				returnMap.put("msg3","");
+			}
 			returnMap.put("SignGubun","N");
 			returnMap.put("SaleDate","20"+RS07);
 			returnMap.put("IsPos","Y");
