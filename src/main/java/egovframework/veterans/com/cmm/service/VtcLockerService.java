@@ -83,4 +83,6 @@ public interface VtcLockerService {
 	void UpdLockerGroup(tblplockergroup tblplockergroup)throws Exception;
 	
 	void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception;
+	
+	void refundcashcheck(tbluselocker tbluselocker)throws Exception;
 }

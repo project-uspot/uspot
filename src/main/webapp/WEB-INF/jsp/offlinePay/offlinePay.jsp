@@ -274,7 +274,12 @@ function save(){
 	<%-- $(opener.document).find('#itemtbody tr').each(function() {
 		$(this).find('.sort').attr('id','Y');
 	}); --%>
-
+	
+	if('${param.refundcashcheck}' == 'N'){
+		opener.refundcashcheck();
+		opener.refundcashcheck = 'Y';
+	}
+	
 	opener.focus();
 	opener.totalchange();
 	self.close();

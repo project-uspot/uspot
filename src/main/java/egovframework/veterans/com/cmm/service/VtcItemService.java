@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
+import egovframework.veterans.com.cmm.service.vo.tblitem_file;
 
 public interface VtcItemService {
 	
@@ -52,4 +53,7 @@ public interface VtcItemService {
 	int itemmonthbyitemid(int itemid)throws Exception;
 	void ItemImageChange(TblItem tblItem)throws Exception;
 	void ItemImageRemove(TblItem tblItem)throws Exception;
+	void itemfileChange(tblitem_file tblitem_file)throws Exception;
+	tblitem_file item_fileByItemID(tblitem_file tblitem_file)throws Exception;
+	void itemfileRemove(tblitem_file tblitem_file)throws Exception;
 }

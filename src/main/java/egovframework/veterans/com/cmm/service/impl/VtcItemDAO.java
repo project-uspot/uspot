@@ -14,6 +14,7 @@ import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
+import egovframework.veterans.com.cmm.service.vo.tblitem_file;
 
 @Repository("VtcItemDAO")
 public class VtcItemDAO extends EgovComAbstractDAO{
@@ -131,5 +132,17 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	
 	public void ItemImageRemove(TblItem tblItem)throws Exception{
 		update("item.ItemImageRemove",tblItem);
+	}
+	
+	public void itemfileChange(tblitem_file tblitem_file)throws Exception{
+		update("item.itemfileChange",tblitem_file);
+	}
+	
+	public tblitem_file item_fileByItemID(tblitem_file tblitem_file)throws Exception{
+		return selectOne("item.item_fileByItemID",tblitem_file);
+	}
+	
+	public void itemfileRemove(tblitem_file tblitem_file)throws Exception {
+		update("item.itemfileRemove",tblitem_file);
 	}
 }

@@ -1,7 +1,11 @@
 package egovframework.veterans.com.cmm;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +40,7 @@ import egovframework.veterans.com.cmm.service.vo.TblItem_03;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
+import egovframework.veterans.com.cmm.service.vo.tblitem_file;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -571,6 +576,12 @@ public class VtcItemController{
 	   List<tblCode> listtblCode = VtcServise.listTblCode(code);
 	   List<Users> listUsers = UserService.listUsers(users.getSiteCode());
 	   
+	   tblitem_file tblitem_file = new tblitem_file();
+	   tblitem_file.setSiteCode(users.getSiteCode());
+	   tblitem_file.setItemID(getItem.getItemID());
+	   
+	   tblitem_file = vtcItemService.item_fileByItemID(tblitem_file);
+	   
 	   model.addAttribute("list", listSelectItem);
 	   model.addAttribute("item01", listItem01);
 	   model.addAttribute("item02", listItem02);
@@ -578,6 +589,7 @@ public class VtcItemController{
 	   model.addAttribute("tblcode", listtblCode);
 	   model.addAttribute("User", listUsers);
 	   model.addAttribute("item", getItem);
+	   model.addAttribute("file",tblitem_file);
 	   
 	   return "item/class/classUpdate";
    }
@@ -1311,6 +1323,78 @@ public class VtcItemController{
 	   tblItem.setUpdUserPKID(users.getUserPKID());
 	   
 	   vtcItemService.ItemImageRemove(tblItem);
+	   
+	   return "success";
+   }
+   
+   @ResponseBody
+   @PostMapping("/itemfileChange")
+   public String itemfileChange(tblitem_file tblitem_file,@RequestParam(name = "file")MultipartFile itemfile)throws Exception{
+	   
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+		
+	   if (users == null) {
+		   return "0";
+	   }
+	   
+	   if(itemfile != null && !itemfile.isEmpty()) {
+			
+			String basePath = "Images/egovframework/com/cmm/file/";
+			
+			Path folderPath = Paths.get(basePath,users.getSiteCode());
+			
+			//폴더 없으면 생성해주는 로직
+			if (!Files.exists(folderPath)) {
+                Files.createDirectories(folderPath);
+            }
+			
+			String originalFilename = itemfile.getOriginalFilename();
+			
+			String filepath = originalFilename.split("\\.")[1];
+			
+			String[] fileStrings = {"hwp","gif","jpg","pdf","png","xls","ppt","zip","doc"};
+			
+			int filepathok = 0;
+			for(String fileString : fileStrings) {
+				if(filepath.equals(fileString)) {
+					filepathok++;
+				}
+			}
+			
+			if(filepathok == 0) {
+				return "-2";
+			}
+			
+			tblitem_file.setFileName(originalFilename);
+			
+			Path filePath = Paths.get(folderPath.toString(), originalFilename);
+			
+			
+			try {
+				itemfile.transferTo(filePath.toFile());
+			} catch (Exception e) {
+				return "-1";
+			}
+			
+			tblitem_file.setSiteCode(users.getSiteCode());
+			vtcItemService.itemfileChange(tblitem_file);
+		}
+	   return "success";
+   }
+   
+   @ResponseBody
+   @PostMapping("/itemfileRemove")
+   public String itemfileRemove(tblitem_file tblitem_file)throws Exception{
+	   
+	   Users users = (Users) session.getAttribute("loginuserinfo");
+		
+	   if (users == null) {
+		   return "0";
+	   }
+	   
+	   tblitem_file.setSiteCode(users.getSiteCode());
+	   
+	   vtcItemService.itemfileRemove(tblitem_file);
 	   
 	   return "success";
    }

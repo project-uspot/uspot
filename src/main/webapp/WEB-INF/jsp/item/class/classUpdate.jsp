@@ -21,7 +21,7 @@
 					<div class="col-xl-12">
 						<form action="updateItem.do" method="post" id="frm" name="frm">
 							<input type="hidden" id="check_id_result" value=""><!-- 아이디 중복체크 결과 -->
-							<input type="hidden" name="ItemID" value="${item.itemID}">
+							<input type="hidden" name="ItemID" id="ItemID" value="${item.itemID}">
 							<ul class="nav nav-underline" id="myTab" role="tablist">
 								<li class="nav-item">
 									<a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">기본정보</a>
@@ -600,84 +600,123 @@
 								});
 								</script>
 								<div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
+									<input type="file" name="itemfile"  id="itemfile" style="display:none;"/>
 									<div class="col-sm-6 col-md-10 mb-2">
-										<div class="dropzone dropzone-multiple p-0" id="dropzone" data-dropzone="data-dropzone" data-options='{"url":"valid/url","maxFiles":1,"dictDefaultMessage":"Choose or Drop a file here"}'>
-											<div class="fallback">
-												<input type="file" name="itemfile"  id="itemfile"/>
-											</div>
+										<div class="dropzone dropzone-multiple p-0">
 											<div class="dz-message" data-dz-message="data-dz-message">
-												<div class="dz-message-text">
-													<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25" alt="" />파일을 올려주세요
+												<div class="dz-message-text" id="fileupload" style="cursor: pointer;">
+													<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25"/>파일을 올려주세요
 												</div>
 											</div>
-											<div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
-											
-												<div class="d-flex pb-3 border-bottom media px-2">
-													<div class="border border-300 p-2 rounded-2 me-2" id="fileimgdiv">
-														<img class="rounded-2 dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" />
-													</div>
-													<div class="flex-1 d-flex flex-between-center">
-														<div>
-															<h6 data-dz-name="data-dz-name"></h6>
-															<span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+											<div class="dz-preview m-0 d-flex flex-column" id="fileinfo">
+												<c:if test="${file.fileName != null}">
+													<div class="d-flex pb-3 px-2" id="imagedownroad">
+														<div class="border border-300 p-2 me-2" id="fileimgdiv">
+															<img class="rounded-2 dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" />
 														</div>
-														<div class="dropdown font-sans-serif">
-															<button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-															<div class="dropdown-menu dropdown-menu-end border py-2">
-																<a class="dropdown-item" href="#!" data-dz-remove="data-dz-remove">Remove File</a>
+														<div class="flex-1 d-flex flex-between-center">
+															<div>
+																<h6 data-dz-name="data-dz-name">${file.fileName}</h6>
+																<span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
 															</div>
+															<button class="btn btn-link text-600 btn-sm " type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="removeFile()"><span class="fas far fa-trash-alt"></span>삭제</button>
 														</div>
 													</div>
-												</div>
+												</c:if>
 											</div>
 										</div>
 									</div>
 								</div>
 								<script type="text/javascript">
-									$("#itemfile").change(function() {
-										alert($('#itemfile').val());
-										const fileInput = this;
-										if (fileInput.files && fileInput.files[0]) {
-											const reader = new FileReader();
-	
-											reader.onload = function(e) {
-												const newImage = $("<img>")
-													.addClass("rounded-2 dz-image")
-													.attr({
-														src: "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png",
-														name: "itemfileimg",
-														id: "itemfileimg"
-													});
-												$("#itemfileimg").remove();
-												$("#fileimgdiv").append(newImage);
-											};
-											reader.readAsDataURL(fileInput.files[0]);
-											
-											alert('${item.itemID}');
-											
-											/* const formData = new FormData();
-	                                		formData.append('imageInput', $('#imageInput').get(0).files[0]);
-	                                		formData.append('ItemCode', '${param.ItemCode}');
-	                                		
-	                                		$.ajax({
-	                                	        type: "POST", 
-	                                	        url: "ItemImageChange", 
-	                                	        data: formData,
-	                                	        processData: false,
-	                                	        contentType: false,
-	                                	        success: function(data) {
-	                                	        	if(data == '0'){
-	                                	        		alert('세션이 만료되었습니다.로그인해주세요.');
-	                                	        		window.location.reload();
-	                                	        	}
-	                                	        },
-	                                	        error: function(xhr, status, error) {
-	                                	       	 console.log("Status: " + status);
-	                                	         console.log("Error: " + error);
-	                                	        }
-	                                		}); */
-										}
+									$("#fileupload").click(function() {
+										$("#itemfile").click(); 
 									});
+									
+									$("#itemfile").change(function() {
+									    var formData = new FormData();
+									    formData.append('file', $('#itemfile')[0].files[0]);
+									    formData.append('ItemID',$('#ItemID').val());
+									    
+									    $.ajax({
+									    	url: 'itemfileChange',
+											type: 'POST',
+											data: formData,
+											contentType: false,
+											processData: false,
+											success: function(data){
+												if(data == '0'){
+													alert('세션이 만료되었습니다.');
+													window.opener.location.reload();
+													window.close();
+												}else if(data == '-1'){
+													alert('파일 등록에 실패했습니다.');
+												}else if(data == '-2'){
+													alert('올바르지 않은 확장자입니다.');
+												}else{
+													var fileName = $('#itemfile').val().split('\\').pop(); // Extract file name
+
+												    // Create HTML elements
+												    var fileDiv = $("<div>").addClass("d-flex pb-3 px-2");
+												    var imgDiv = $("<div>").addClass("border border-300 p-2 me-2").attr("id", "fileimgdiv");
+												    var img = $("<img>").addClass("rounded-2 dz-image").attr("src", "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png").attr("alt", "...");
+												    img.attr("data-dz-thumbnail", "data-dz-thumbnail");
+
+												    imgDiv.append(img);
+												    
+												    var flexDiv = $("<div>").addClass("flex-1 d-flex flex-between-center");
+												    var contentDiv = $("<div>");
+												    var h6 = $("<h6>").attr("data-dz-name", "data-dz-name").text(fileName);
+												    var span = $("<span>").addClass("fs--2 text-danger").attr("data-dz-errormessage", "data-dz-errormessage");
+
+												    contentDiv.append(h6, span);
+												    
+												    var button = $("<button>").addClass("btn btn-link text-600 btn-sm").attr({
+												      "type": "button",
+												      "data-bs-toggle": "dropdown",
+												      "aria-haspopup": "true",
+												      "aria-expanded": "false",
+												      "onclick": "removeFile()"
+												    }).text("삭제").prepend($("<span>").addClass("fas far fa-trash-alt"));
+
+												    flexDiv.append(contentDiv, button);
+												    fileDiv.append(imgDiv, flexDiv);
+
+												    // Append elements to #fileinfo div
+												    $("#fileinfo").html(fileDiv);
+												}
+									        },
+									        error: function(error) {
+									         
+												console.log(error);
+									        }
+										});
+									});
+									
+									function removeFile() {
+										
+										const formData = new FormData();
+										formData.append('ItemID',$('#ItemID').val());
+										
+										$.ajax({
+									    	url: 'itemfileRemove',
+											type: 'POST',
+											data: formData,
+											contentType: false,
+											processData: false,
+											success: function(data){
+												if(data == '0'){
+													alert('세션이 만료되었습니다.');
+													window.opener.location.reload();
+													window.close();
+												}
+												$("#fileinfo").empty();
+									        },
+									        error: function(error) {
+									         
+												console.log(error);
+									        }
+										});
+									}
 								</script>
 								<div class="tab-pane fade" id="tab-otherlearn" role="tabpanel" aria-labelledby="otherlearn-tab">
 									<div class="col-sm-6 col-md-10 mb-2">

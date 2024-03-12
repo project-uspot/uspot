@@ -18,6 +18,7 @@ import egovframework.veterans.com.cmm.service.vo.TblItem_03;
 import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
+import egovframework.veterans.com.cmm.service.vo.tblitem_file;
 import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 
@@ -173,5 +174,17 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	@Override
 	public void ItemImageRemove(TblItem tblItem) throws Exception {
 		itemDAO.ItemImageRemove(tblItem);
+	}
+	@Override
+	public void itemfileChange(tblitem_file tblitem_file) throws Exception {
+		itemDAO.itemfileChange(tblitem_file);
+	}
+	@Override
+	public tblitem_file item_fileByItemID(tblitem_file tblitem_file) throws Exception {
+		return itemDAO.item_fileByItemID(tblitem_file);
+	}
+	@Override
+	public void itemfileRemove(tblitem_file tblitem_file) throws Exception {
+		itemDAO.itemfileRemove(tblitem_file);
 	}	
 }

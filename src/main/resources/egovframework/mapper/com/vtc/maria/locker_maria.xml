@@ -441,4 +441,13 @@ where
 AND SiteCode=#{SiteCode}
 and IsDelete = 'N'
 </update>
+
+<update id="refundcashcheck" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
+	update tbluselocker set
+	Note = CONCAT(Note, ' ','위약금결제완료')
+	where
+		PKID = #{PKID} 
+	and SiteCode = #{SiteCode}
+	and IsDelete = 'N'
+</update>
 </mapper>

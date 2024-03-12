@@ -802,4 +802,16 @@ public class VtcLockerController{
 		
 		return depositeList;
 	}
+	
+	@ResponseBody
+	@PostMapping("/refundcashcheck")
+	public String refundcashcheck(tbluselocker tbluselocker)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		
+		vtcLockerService.refundcashcheck(tbluselocker);
+		
+		return "success";
+	}
 }

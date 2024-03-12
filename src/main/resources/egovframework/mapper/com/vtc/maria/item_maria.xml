@@ -584,4 +584,22 @@
 			SiteCode = #{SiteCode}
 		and ItemCode = #{ItemCode}
 	</update>
+	<update id="itemfileChange" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_file">
+		{call SP_itemfileChange(#{SiteCode},#{ItemID},#{FileName})}
+	</update>
+	
+	<select id="item_fileByItemID" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_file" resultType="egovframework.veterans.com.cmm.service.vo.tblitem_file">
+		select * from tblitem_file
+		where
+			SiteCode = #{SiteCode}
+		and ItemID = #{ItemID} 
+	</select>
+	
+	<update id="itemfileRemove" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_file">
+		update tblitem_file set
+		FileName = null
+		where
+			SiteCode = #{SiteCode}
+		and ItemID = #{ItemID}
+	</update>
 </mapper>
