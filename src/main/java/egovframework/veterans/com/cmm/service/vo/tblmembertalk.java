@@ -26,10 +26,10 @@ public class tblmembertalk {
 	private String TalkText;
 
 
-	private String IsFllowUp;
+	private String IsFollowUp;
 
 
-	private String FllowUpText;
+	private String FollowUpText;
 
 
 	private String IsDelete;
