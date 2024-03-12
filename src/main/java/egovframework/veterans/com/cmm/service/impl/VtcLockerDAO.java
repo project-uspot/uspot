@@ -168,4 +168,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception{
 		update("locker.RemoveLockerGroup",tblplockergroup);
 	}
+	
+	public void refundcashcheck(tbluselocker tbluselocker)throws Exception{
+		update("locker.refundcashcheck",tbluselocker);
+	}
 }

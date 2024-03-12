@@ -844,7 +844,14 @@ function gongjeChange() {
 	if(!isFinite(wiyakprice)){
 		wiyakprice = 0; 
 	}
-	var gongjeprice = totalPLockerPrice-wiyakprice-useprice;
+	
+	var totalwiyak = wiyakprice+useprice;
+	
+	if('${uselocker.note}'.includes('위약금결제완료')){
+		totalwiyak = 0;	
+	}
+	
+	var gongjeprice = totalPLockerPrice-totalwiyak;
 	
 	var gongje = 0;
 	
@@ -1043,7 +1050,7 @@ function lockerDelete() {
         	PKID : $('#DBPKID').val(),
         	LockerID : $('#DBPLockerID').val() 
         },
-        success: function(data) {	
+        success: function(data) {
         	if(data == '0'){
         		alert("세션이 만료되었습니다.다시 로그인해주세요.");
         		window.opener.location.reload();
@@ -1230,6 +1237,27 @@ function paycredit() {
 }
 
 function totalchange(){
+	
+	if(refundcashcheck == 'Y'){
+		$.ajax({
+	        type: "POST", 
+	        url: "refundcashcheck",
+	        async:false,
+	        dataType : 'json',
+	        data: { 
+	        	PKID : $('#DBPKID').val()
+	        },
+	        success: function(data) {	
+	        		
+	        	
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		});
+	}
+	
 	if(isrefund == '환불'){
 		if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
 			$('#paidbody tr#new').find('.paidassignType').text('현금취소환불');
@@ -1985,15 +2013,27 @@ function refundPrice() {
             	    modalcheck = true;
             	    return false;
             	}else{
-            		$('#resultmessage').html('환불할 금액을 입력해주세요.(최대 <font style="color: red;">'+$('#gongjeprice').val()+'</font>원 가능)<br><div class="input-group input-group-sm"><span class="input-group-text" id="basic-addon1">환불금액</span><input class="form-control" type="text" id="returnprice" name="returnprice" style="text-align:right;" oninput="onlyNumber(this)"/></div>');
-            	  	$('.modal-footer').empty();
-            	  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="refundCategory()" data-bs-dismiss="modal">확인</button>';
-            	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-            	  	$('.modal-footer').append(okaybutton);
-            	  	$('.modal-footer').append(cancelbutton);
-            	    $('#modalButton').click();
-            	    modalcheck = true;
-            	    return false;
+            		if(paidcategory == '현금영수증'){
+            			$('#resultmessage').html('이 결제수단의 경우 전액환불만을 지원하고 있습니다.<br>공제금액을 넘는경우 위약금액 결제 후 환불 가능합니다.<br>(최대 <font style="color: red;">'+$('#gongjeprice').val()+'</font>원 가능)<br><div class="input-group input-group-sm"><span class="input-group-text" id="basic-addon1">환불금액</span><input class="form-control" type="text" id="returnprice" name="returnprice" style="text-align:right;" oninput="onlyNumber(this)" value = "'+$(previousRow).find('.paidprice').text()+'" readonly="readonly"/></div>');
+                	  	$('.modal-footer').empty();
+                	  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="refundCategory()" data-bs-dismiss="modal">확인</button>';
+                	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+                	  	$('.modal-footer').append(okaybutton);
+                	  	$('.modal-footer').append(cancelbutton);
+                	    $('#modalButton').click();
+                	    modalcheck = true;
+                	    return false;
+            		}else{
+            			$('#resultmessage').html('환불할 금액을 입력해주세요.(최대 <font style="color: red;">'+$('#gongjeprice').val()+'</font>원 가능)<br><div class="input-group input-group-sm"><span class="input-group-text" id="basic-addon1">환불금액</span><input class="form-control" type="text" id="returnprice" name="returnprice" style="text-align:right;" oninput="onlyNumber(this)"/></div>');
+                	  	$('.modal-footer').empty();
+                	  	var okaybutton = '<button class="btn btn-primary" type="button" onclick="refundCategory()" data-bs-dismiss="modal">확인</button>';
+                	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+                	  	$('.modal-footer').append(okaybutton);
+                	  	$('.modal-footer').append(cancelbutton);
+                	    $('#modalButton').click();
+                	    modalcheck = true;
+                	    return false;	
+            		}
             	}
 	        },
 	        error: function(xhr, status, error) {
@@ -2004,9 +2044,47 @@ function refundPrice() {
 	}
 }
 
+var refundcashcheck = '';
 function refundCategory() {
+	var gongjeprice = removeCommasFromNumber($("#gongjeprice").val());
 	var returnprice = removeCommasFromNumber($("#returnprice").val());
 	var paidcategory = $(previousRow).find('.paidcategory').text();
+	var paidprice = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+	var wiwakprice = formatNumberWithCommas(removeCommasFromNumber($('#useprice').val())+removeCommasFromNumber($('#wiyakprice').val()));
+	
+	if(returnprice > gongjeprice){
+		
+		if(paidcategory == '현금영수증'){
+			
+			var cashbutton = '<button class="cash" id="cash" type="button" style="display:none;">dd</button>';
+			document.body.insertAdjacentHTML('beforeend',cashbutton);
+			$('#cash').click();
+			
+			var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + wiwakprice +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$('#DBPLockerID').val()+'&refundcashcheck=N';
+			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+		    if (myPopup === undefined || myPopup.closed) {
+		        myPopup = window.open(url, "_blank", windowFeatures);
+		    } else {
+		    	myPopup.focus();
+		    }
+		    document.addEventListener('click', function() {
+		        if (myPopup && !myPopup.closed) {
+		            myPopup.focus();
+		        }
+		  	});
+		    
+		    return false;
+		}else{
+			alert('환불금액이 공제금액을 초과하였습니다.확인해주세요.');
+			return false;	
+		}
+	}else if($("#returnprice").val() == ''){
+		alert('환불금액이 입력되지 않았습니다.');
+		return false;
+	}else if(returnprice > paidprice){
+		alert('환불금액이 결제금액을 초과하였습니다.확인해주세요.');
+		return false;
+	}
 	
 	if(paidcategory == '현금'){
 		refundCash(returnprice);
@@ -2042,7 +2120,7 @@ function refundCash(returnprice){
         	newRow.append('<td class="PKID" style="display: none;">' + pkid + '</td>');
     		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
     		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + -formatNumberWithCommas(returnprice) + '</td>');
+    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">-' + formatNumberWithCommas(returnprice) + '</td>');
     		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">현금환불</td>');
     		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
     		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -2162,6 +2240,25 @@ function refundLocker() {
 	});
 }
 
+function refundcashcheck() {
+	$.ajax({
+        type: "POST", 
+        url: "refundcashcheck",
+        async:false,
+        dataType : 'json',
+        data: { 
+        	PKID : $('#DBPKID').val()
+        },
+        success: function(data) {	
+        		
+        	
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
 
 function mLockerReInsertF() {
 	location.href = 'mLockerReInsertF.do?MemberID='+$('#memberid').val()+'&PLockerID='+$('#DBPLockerID').val()+'&PKID='+$('#DBPKID').val();

@@ -213,4 +213,9 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public void RemoveLockerGroup(tblplockergroup tblplockergroup) throws Exception {
 		vtcLockerDAO.RemoveLockerGroup(tblplockergroup);
 	}
+
+	@Override
+	public void refundcashcheck(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.refundcashcheck(tbluselocker);
+	}
 }

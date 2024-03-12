@@ -1321,7 +1321,7 @@
                         <div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
                             <div class="mb-6">
                                 <h3 class="mb-4">회원상담관리</h3>
-                                <div id="tabletalk" data-list='{"valueNames":["TalkDate","UserName","TalkText","FllowUpText"],"page":5,"pagination":true}'>
+                                <div id="tabletalk" data-list='{"valueNames":["TalkDate","UserName","TalkText","FollowUpText"],"page":5,"pagination":true}'>
                                     <div class="table-responsive scrollbar">
                                         <table class="table fs--1 mb-0">
                                             <thead>
@@ -1329,7 +1329,7 @@
                                                     <th class="sort align-middle" scope="col" data-sort="TalkDate" style="width:15%;">상담일자</th>
                                                     <th class="sort align-middle text-start" scope="col" data-sort="UserName" style="width:30%;">상담자</th>
                                                     <th class="sort align-middle text-start" scope="col" data-sort="TalkText" style="width:20%;">상담내용</th>
-                                                    <th class="sort align-middle text-end" scope="col" data-sort="FllowUpText" style="width:15%;">조치사항</th>
+                                                    <th class="sort align-middle text-end" scope="col" data-sort="FollowUpText" style="width:15%;">조치사항</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list" id="customer-wishlist-table-body">
@@ -1338,7 +1338,7 @@
                                                         <td class="TalkDate align-middle white-space-nowrap fs--1 text-900">${talk.talkDate}</td>
                                                         <td class="UserName align-middle text-900 fs--1 fw-semi-bold text-900">${talk.userName}</td>
                                                         <td class="TalkText align-middle fw-bold text-1000 text-900">${talk.talkText}</td>
-                                                        <td class="FllowUpText align-middle fw-bold text-1000 text-end">${talk.fllowUpText}</td>
+                                                        <td class="FollowUpText align-middle fw-bold text-1000 text-end">${talk.followUpText}</td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty talklist}">
