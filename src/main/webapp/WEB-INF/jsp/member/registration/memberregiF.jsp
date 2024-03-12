@@ -1341,7 +1341,7 @@
                                                         <td class="TalkDate align-middle white-space-nowrap fs--1 text-900">${talk.talkDate}</td>
                                                         <td class="UserName align-middle text-900 fs--1 fw-semi-bold text-900">${talk.userName}</td>
                                                         <td class="TalkText align-middle fw-bold text-1000 text-900">${talk.talkText}</td>
-                                                        <td class="FollowUpText align-middle fw-bold text-1000 text-end">${talk.fllowUpText}</td>
+                                                        <td class="FollowUpText align-middle fw-bold text-1000 text-end">${talk.followUpText}</td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty talklist}">
