@@ -42,4 +42,5 @@ public interface VtcUserService {
 	void allchange(TblAuthuserGroup tblAuthuserGroup)throws Exception;
 	List<Users> userlistBytype(Users users)throws Exception;
 	List<TblAuthuserGroup> tblauthusergroupbyusergroup(TblAuthuserGroup tblAuthuserGroup)throws Exception;
+	TblAuthuserGroup tblauthusergroupBypgmIDAndUserGroupID(TblAuthuserGroup tblAuthuserGroup)throws Exception;
 }

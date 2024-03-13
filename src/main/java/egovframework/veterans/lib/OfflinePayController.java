@@ -488,9 +488,16 @@ public class OfflinePayController {
 					case "사물함":
 						int recheck = Integer.parseInt(request.getParameter("recheck"));
 						returnMap.put("recheck",recheck);
+						String refundcashcheck = request.getParameter("refundcashcheck");
+						returnMap.put("refundcashcheck",refundcashcheck);
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
+						if(refundcashcheck.equals("N")) {
+							int pkid = Integer.parseInt(request.getParameter("pkid"));
+							returnMap.put("tempSaleNo",pkid);
+							returnMap.put("SaleNo",pkid);
+						}
 						break;
 					case "기타비용":
 						int pkid = Integer.parseInt(request.getParameter("pkid"));

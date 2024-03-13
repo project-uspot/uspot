@@ -119,5 +119,7 @@ public class VtcUserDAO extends EgovComAbstractDAO {
 		return selectList("user.tblauthusergroupbyusergroup",tblAuthuserGroup);
 	}
 	
-	
+	public TblAuthuserGroup tblauthusergroupBypgmIDAndUserGroupID(TblAuthuserGroup tblAuthuserGroup)throws Exception{
+		return selectOne("user.tblauthusergroupBypgmIDAndUserGroupID",tblAuthuserGroup);
+	}
 }

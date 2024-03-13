@@ -146,7 +146,7 @@
 																		<div class="input-group-text">
 																			<input class="form-check-input" id="tu" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 																		</div>
-																		<input class="form-control flatpickr" aria-label="Text input with checkbox" value="${item.tuesIn }" id="Tues" name="TuesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
+																		<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.tuesIn }" id="Tues" name="TuesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' />
 																	</div>
 																</div>
 																<div class="col-sm-6 col-md-6 mb-2">
@@ -156,7 +156,7 @@
 																		<div class="input-group-text">
 																			<input class="form-check-input" id="w" type="checkbox" disabled value="Y" aria-label="Checkbox for following text input" />
 																		</div>
-																		<input class="form-control flatpickr" aria-label="Text input with checkbox" value="${item.wednesIn }" id="Wednes" name="WednesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' readonly="readonly"/>
+																		<input class="form-control datetimepicker" aria-label="Text input with checkbox" value="${item.wednesIn }" id="Wednes" name="WednesIn" type="text" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' readonly="readonly"/>
 																	</div>
 																</div>
 																<div class="col-sm-6 col-md-6 mb-2">
@@ -218,14 +218,25 @@
 															<label for="OffMax">오프라인정원</label>
 														</div>
 													</div>
-													<div class="col-sm-6 col-md-6">
+													<div class="col-sm-6 col-md-6 mt-n1">
+														<label class="form-label" for="exampleFormControlInput">온라인 정원</label>
 														<div class="input-group mb-3">
 															<div class="input-group-text">
-																<input class="form-check-input" type="checkbox" id="onChk" value="" aria-label="Checkbox for following text input" onchange="OnMaxdis()" />
+																<c:choose>
+																	<c:when test="${item.onMax == 0}">
+																		<input class="form-check-input" type="checkbox" id="onChk" name="onChk" value="N" aria-label="Checkbox for following text input" onchange="OnMaxdis()"/>	
+																	</c:when>
+																	<c:otherwise>
+																		<input class="form-check-input" type="checkbox" id="onChk" name="onChk" value="Y" aria-label="Checkbox for following text input" onchange="OnMaxdis()" />
+																	</c:otherwise>
+																</c:choose>
+																<input type="hidden" name="chk" id="chk">
 															</div>
-															<input class="form-control" aria-label="Text input with checkbox" disabled value="${item.onMax }" id="OnMax"  name="OnMax" type="number" placeholder="온라인정원" />
+															<input class="form-control" aria-label="Text input with checkbox" disabled value="${item.onMax}" id="OnMax"  name="OnMax" type="number" placeholder="온라인정원" />
+															<input type="hidden" id="DBonMax" name="DBonMax" value="${item.onMax}">
 														</div>
 													</div>
+
 													<div class="col-sm-5 col-md-6">
 														<div class="form-floating input-group">
 															<input class="form-control" id="ItemMonth" name="ItemMonth" value="${item.itemMonth }" type="number"  placeholder="기본개월수" />
@@ -509,7 +520,7 @@
 									        			<c:when test="${item.picture == null || item.picture == ''}">
 									        			</c:when>
 									        			<c:otherwise>
-									        				<img class="card-img-top" src="${pageContext.request.contextPath}/images/egovframework/com/cmm/main/${item.picture}" name="itemimg" id="itemimg"/>
+									        				<img class="card-img-top" src="${pageContext.request.contextPath}/files/lecture/${item.picture}" name="itemimg" id="itemimg"/>
 									        			</c:otherwise>
 									        		</c:choose>
 												</div>
@@ -825,11 +836,11 @@
 		function onMaxValue() {
 			var OnMax = "${item.onMax}";
 			
-			if(OnMax !== null && OnMax !== 0) {
+			if(OnMax !== null && OnMax != 0) {
 				 document.getElementById("onChk").checked = true;
 			     document.getElementById("OnMax").disabled = false;
 			}else {
-				document.getElementById("onChk").checked = false;
+				//document.getElementById("onChk").checked = false;
 		        document.getElementById("OnMax").disabled = true;
 			}
 		}
@@ -1107,15 +1118,21 @@
 		// 초기 설정을 위해 함수 호출
 		manageWeekdayFields();  
 		
-		
+		OnMaxdis();
 		function OnMaxdis() {
 		    var checkbox = document.getElementById("onChk");
 		    var OnMax = document.getElementById("OnMax");
+		    var chk = document.getElementById("chk");
 	
 		    if (checkbox.checked) {
+		    	checkbox.value = 'Y';
 		    	OnMax.disabled = false;
+		    	chk.value = 'Y';
 		    } else {
+		    	OnMax.value = 0;
+		    	checkbox.value = 'N';
 		    	OnMax.disabled = true;
+		    	chk.value = 'N';
 		    }
 		};
 		

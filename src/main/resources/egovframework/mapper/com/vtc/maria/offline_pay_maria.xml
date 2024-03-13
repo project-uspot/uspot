@@ -73,7 +73,7 @@
 	
 	<select id="insertPaidLocker" parameterType="Map" resultType="Map">
 		<![CDATA[
-			{call SP_InsertuseLocker(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID},#{recheck})}	
+			{call SP_InsertuseLocker(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID},#{recheck},#{refundcashcheck})}	
 		]]>
 	</select>
 	

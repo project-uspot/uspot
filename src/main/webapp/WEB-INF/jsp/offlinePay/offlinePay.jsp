@@ -277,11 +277,11 @@ function save(){
 	
 	if('${param.refundcashcheck}' == 'N'){
 		opener.refundcashcheck();
-		opener.refundcashcheck = 'Y';
+	}else{
+		opener.totalchange();	
 	}
 	
 	opener.focus();
-	opener.totalchange();
 	self.close();
 }
 
@@ -359,6 +359,11 @@ function paid(){
 		pkid = 0;
 	}
 	
+	var refundcashcheck = '${param.refundcashcheck}';
+	if(refundcashcheck == ''){
+		refundcashcheck = 'Y';
+	}
+	
 	$.ajax({
 		type : 'POST',
 		url : '${pageContext.request.contextPath}/'+urlParam+'/paidReg',
@@ -376,7 +381,8 @@ function paid(){
 			insert : $("#InsertYN").val(),
 			InType : "${param.InType}",
 			recheck : recheck,
-			pkid : pkid
+			pkid : pkid,
+			refundcashcheck : refundcashcheck
 		},
 		success: function(data){
 			console.log(data);

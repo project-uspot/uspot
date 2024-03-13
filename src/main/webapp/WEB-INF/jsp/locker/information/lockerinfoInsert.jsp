@@ -74,7 +74,7 @@
 				</div>
 				<div class="col-7 mb-2">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">&ensp;순&emsp;위&ensp;</span>
+						<span class="input-group-text" id="basic-addon1">&ensp;순&emsp;서&ensp;</span>
 						<input class="form-control text-end" type="text" aria-describedby="basic-addon1" id="sortorder" name="sortorder" value="${param.sort}"/>
 					</div>
 				</div>

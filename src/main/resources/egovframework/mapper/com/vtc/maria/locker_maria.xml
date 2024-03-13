@@ -444,7 +444,7 @@ and IsDelete = 'N'
 
 <update id="refundcashcheck" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
 	update tbluselocker set
-	Note = CONCAT(Note, ' ','위약금결제완료')
+	after_todate = '위약금결제완료'
 	where
 		PKID = #{PKID} 
 	and SiteCode = #{SiteCode}
