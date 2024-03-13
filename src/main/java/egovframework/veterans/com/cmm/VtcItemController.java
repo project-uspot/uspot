@@ -679,7 +679,16 @@ public class VtcItemController{
 			}
 			String HolyIn = request.getParameter("HolyIn");
 			int OffMax = Integer.parseInt(request.getParameter("OffMax"));
-			/*int OnMax = Integer.parseInt(request.getParameter("OnMax"));*/
+			
+			String chk = request.getParameter("chk");
+			
+			System.out.println(chk);
+			
+			int OnMax = 0;
+			if(chk.equals("Y")) {
+				OnMax = Integer.parseInt(request.getParameter("OnMax"));
+			}
+			
 			int ItemMonth = Integer.parseInt(request.getParameter("ItemMonth"));
 			/*int InCnt = Integer.parseInt(request.getParameter("InCnt"));*/
 			int DamDangUserPKID = Integer.parseInt(request.getParameter("DamDangUserPKID"));
@@ -751,7 +760,7 @@ public class VtcItemController{
 			tblItem.setHoly(Holy);
 			tblItem.setHolyIn(HolyIn);
 			tblItem.setOffMax(OffMax);
-			tblItem.setOnMax(tblItem1.getOffMax());
+			tblItem.setOnMax(OnMax);
 			tblItem.setItemMonth(ItemMonth);
 			tblItem.setInCnt(tblItem1.getInCnt());
 			tblItem.setDamDangUserPKID(DamDangUserPKID);
@@ -1293,7 +1302,7 @@ public class VtcItemController{
 			
 			tblItem.setPicture(ImgName);
 			
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/lecture/");
 			
 			try {
 				ItemImage.transferTo(new File(image_path + ImgName));

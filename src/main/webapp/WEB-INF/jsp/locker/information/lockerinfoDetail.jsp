@@ -90,7 +90,7 @@
 				</script>
 				<div class="col-7 mb-2">
 					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">&ensp;순&emsp;위&ensp;</span>
+						<span class="input-group-text" id="basic-addon1">&ensp;순&emsp;서&ensp;</span>
 						<input class="form-control text-end" type="text" aria-describedby="basic-addon1" id="sortorder" name="sortorder" value="${vo.sortOrder}"/>
 					</div>
 				</div>
@@ -130,7 +130,7 @@
 	        			<c:when test="${vo.lockerImage == null || vo.lockerImage == ''}">
 	        			</c:when>
 	        			<c:otherwise>
-	        				<img class="card-img-top" src="${pageContext.request.contextPath}/images/egovframework/com/cmm/main/${vo.lockerImage}" name="lockerimg" id="lockerimg"/>
+	        				<img class="card-img-top" src="${pageContext.request.contextPath}/files/locker/${vo.lockerImage}" name="lockerimg" id="lockerimg"/>
 	        			</c:otherwise>
 	        		</c:choose>
 				</div>
@@ -366,6 +366,8 @@ function save() {
 	if ($('#jungsiCheck').prop('checked')) {
 		JungsiFromToDate = $('#JungsiFromDate').val()+'~'+$('#JungsiToDate').val();
 	}
+	
+	
 	
 	const formData = new FormData();
 	formData.append('imageInput', $('#imageInput').get(0).files[0]);

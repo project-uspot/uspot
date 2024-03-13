@@ -478,6 +478,7 @@
 	    	</div>
 	    </div>
 	</div>
+	<input type="hidden" name="refundcashcheck" id="refundcashcheck">
 </body>
 <script type="text/javascript">
 var myPopup;
@@ -847,7 +848,9 @@ function gongjeChange() {
 	
 	var totalwiyak = wiyakprice+useprice;
 	
-	if('${uselocker.note}'.includes('위약금결제완료')){
+	if('${uselocker.afterTodate}'.includes('위약금결제완료')){
+		useprice = 0;
+		wiyakprice = 0;
 		totalwiyak = 0;	
 	}
 	
@@ -1237,27 +1240,6 @@ function paycredit() {
 }
 
 function totalchange(){
-	
-	if(refundcashcheck == 'Y'){
-		$.ajax({
-	        type: "POST", 
-	        url: "refundcashcheck",
-	        async:false,
-	        dataType : 'json',
-	        data: { 
-	        	PKID : $('#DBPKID').val()
-	        },
-	        success: function(data) {	
-	        		
-	        	
-	        },
-	        error: function(xhr, status, error) {
-	       	 console.log("Status: " + status);
-	         console.log("Error: " + error);
-	        }
-		});
-	}
-	
 	if(isrefund == '환불'){
 		if($('#paidbody tr#new').find('.paidcategory').text() == '현금영수증'){
 			$('#paidbody tr#new').find('.paidassignType').text('현금취소환불');
@@ -1561,6 +1543,7 @@ function UpduseLocker() {
                 window.close();
         	}else{
         		window.opener.location.reload();
+        		window.location.reload();
         		//window.location.href = 'mLockerDetailF.do?PKID='+$('#GroupSaleNo').val();
         	}
         },
@@ -2044,7 +2027,6 @@ function refundPrice() {
 	}
 }
 
-var refundcashcheck = '';
 function refundCategory() {
 	var gongjeprice = removeCommasFromNumber($("#gongjeprice").val());
 	var returnprice = removeCommasFromNumber($("#returnprice").val());
@@ -2060,7 +2042,7 @@ function refundCategory() {
 			document.body.insertAdjacentHTML('beforeend',cashbutton);
 			$('#cash').click();
 			
-			var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + wiwakprice +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$('#DBPLockerID').val()+'&refundcashcheck=N';
+			var url = "${pageContext.request.contextPath}/locker/CreditCard.do?payprice=" + wiwakprice +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$('#DBPLockerID').val()+'&refundcashcheck=N'+"&pkid="+$('#DBPKID').val();
 			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 		    if (myPopup === undefined || myPopup.closed) {
 		        myPopup = window.open(url, "_blank", windowFeatures);
@@ -2250,8 +2232,9 @@ function refundcashcheck() {
         	PKID : $('#DBPKID').val()
         },
         success: function(data) {	
-        		
-        	
+        	if(data == 'success'){
+        		totalchange();	
+        	}
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);

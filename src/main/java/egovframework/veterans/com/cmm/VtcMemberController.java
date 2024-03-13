@@ -33,8 +33,10 @@ import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
@@ -71,6 +73,7 @@ public class VtcMemberController {
 	private final VtcLockerService vtcLockerService;
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
+	private final VtcUserService vtcUserService;
 	
 	public static Functions f = Functions.getInstance();
 
@@ -111,9 +114,27 @@ public class VtcMemberController {
 			@RequestParam(name = "findvalue",required = false) String findvalue, @RequestParam(name = "findcategory",required = false) String findcategory
 			,@RequestParam(name = "findtype",defaultValue = "0")String findtype) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		
 		if (users == null) {
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(25);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 		
 		
 		if(findtype.equals("1")) {
@@ -1513,13 +1534,22 @@ public class VtcMemberController {
 		
 		if(MemberImage != null && !MemberImage.isEmpty()) {
 			
+			//사진 용량 확인 로직
+//			long fileSize = MemberImage.getSize();
+//			
+//			long maxFileSize = 2 * 1024 * 1024;
+//			
+//			if(maxFileSize < fileSize) {
+//				return "-1";
+//			}
+			
 			String MemberImagefilename = MemberImage.getOriginalFilename();
 			
 			String ImgName = "Mem"+tblmemberphoto.getMemberID()+"Img"+MemberImagefilename;
 			
 			byte[] imageBytes = MemberImage.getBytes();
 			
-			String image_path = session.getServletContext().getRealPath("new_lib/assets/img/memberimage/");
+			String image_path = session.getServletContext().getRealPath("files/member/");
 			
 			try {
 				Files.write(Paths.get(image_path + ImgName), imageBytes);

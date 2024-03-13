@@ -95,7 +95,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(LockerImagefilename);
 	
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			
 			try {
@@ -117,7 +117,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(ImgName);
 	
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			
 			try {
@@ -150,7 +150,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(ImgName);
 			
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			try {
 				LockerImage.transferTo(new File(image_path + ImgName));
