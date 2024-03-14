@@ -202,9 +202,15 @@
 										onclick="openModal()">등록(F2)</button>
 								</div>
 								<script type="text/javascript">
+									if('${authyn.ins}' == 'N'){
+										$('#modal').attr('disabled','disabled');
+									}
 									document.addEventListener('keydown', function(event) {
 										if (event.key === 'F2') {
 										// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+											if('${authyn.ins}' == 'N'){
+												return false;
+											}
 											var button = document.getElementById('modal');
 											if (button) {
 												button.click(); // 버튼 클릭
@@ -429,6 +435,9 @@ function openModal() {
 	}
 	
 function openpop(ItemCode) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem.do";
 	if(typeof ItemCode !== "undefined"){
 		var url = "updateItem.do?ItemCode="+ItemCode;

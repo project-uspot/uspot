@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcPaidService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.DC;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpense;
 import egovframework.veterans.com.cmm.service.vo.tblexpensegroup;
 import egovframework.veterans.com.cmm.service.vo.tblexpensesale;
@@ -33,6 +35,8 @@ public class VtcPaidController {
 
 	private final VtcPaidService VtcPaidService;
 	
+	private final VtcUserService vtcUserService;
+	
 	@RequestMapping(value="DCType.do")
 	public String selectDCType(String SiteCode, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -41,6 +45,24 @@ public class VtcPaidController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(9);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		List<DC> list = VtcPaidService.selectDCType(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/DCType";
@@ -48,6 +70,30 @@ public class VtcPaidController {
 	
 	@RequestMapping(value="DCTypeUpd.do")
 	public String dcTypeModify(ModelMap model, DC dc, HttpServletRequest request) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(9);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		String SiteCode = request.getParameter("SiteCode");
 		
 		List<DC> list = VtcPaidService.selectDCType(SiteCode);
@@ -128,6 +174,24 @@ public class VtcPaidController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(20);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		List<tblexpensegroup> list = VtcPaidService.selectExpenseGroup(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expenseGroup";
@@ -135,6 +199,30 @@ public class VtcPaidController {
 	
 	@RequestMapping(value="ExpenseGroupUdp.do")
 	public String expenseGroupModify(ModelMap model, tblexpensegroup group)  throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(20);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		group = VtcPaidService.getExpenseGroupDetail(group);
 		model.addAttribute("list", group);
 		return "basic/paid/expenseGroup_modify";
@@ -210,6 +298,24 @@ public class VtcPaidController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(14);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		List<tblexpense> list = VtcPaidService.selectExpense(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/paid/expense";
@@ -217,12 +323,36 @@ public class VtcPaidController {
 	
 	@RequestMapping(value="ExpenseUpd.do")
 	public String expenseModify(ModelMap model, tblexpense expense, HttpServletRequest request) throws Exception {
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(14);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		String SiteCode = request.getParameter("SiteCode");
 		List<tblexpensegroup> list = VtcPaidService.selectExpenseGroup(SiteCode);
 
 		expense = VtcPaidService.getExpenseDetail(expense);
-		
-		
+	
 		model.addAttribute("list", list);
 		model.addAttribute("expense", expense);
 		return "basic/paid/expense_modify";

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.veterans.com.cmm.service.VtcService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.PGM;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class VtcMainController {
 
 	private final VtcService VtcService;
+	private final VtcUserService vtcUserService;
 	private final HttpSession session;
 	
 	
@@ -73,6 +76,23 @@ public class VtcMainController {
 			model.addAttribute("url","login.do");
 			return "common/msg";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(5);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 
 		String SiteCode = users.getSiteCode();
 		List<Sitecode> siteList = VtcService.selectSiteCode(SiteCode);
@@ -83,6 +103,32 @@ public class VtcMainController {
 	
 	@RequestMapping(value="/siteDetail.do") 
 	public String sitecodeDetail(String SiteCode, ModelMap model) throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("script", "redirect");
+			model.addAttribute("msg", "세션이 만료되었습니다 다시 로그인해주세요");
+			model.addAttribute("url","login.do");
+			return "common/msg";
+		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(5);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		model.addAttribute("sitecode", VtcService.selectSiteCode(SiteCode).get(0));
 		return "basic/detail";
 	}

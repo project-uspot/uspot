@@ -1050,10 +1050,18 @@
                     document.addEventListener('keydown', function(event) {
                     	if (event.keyCode === 113) {
                     		//f2
+                    		
+                    		if('${authyn.ins}' == 'N'){
+                    			return false;
+                    		}
+                    		
                     		location.href='memberinsert';
                         }
                     	if (event.keyCode === 114) {
                     		//f3
+                    		if('${authyn.upd}' == 'N'){
+                    			return false;
+                    		}
                     		$('#updatebutton').trigger('click');
                         }
                     	if (event.keyCode === 115) {
@@ -1061,6 +1069,10 @@
                     		$('#savebutton').trigger('click');
                         }
                     	if (event.keyCode === 117) {
+                    		
+                    		if('${authyn.del}' == 'N'){
+                    			return false;
+                    		}
                     		//f6
                     		$('#deletebutton').trigger('click');
                         }

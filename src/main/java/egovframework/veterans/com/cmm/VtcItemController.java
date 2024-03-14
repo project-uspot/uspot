@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.VtcUserService;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.TblItem;
 import egovframework.veterans.com.cmm.service.vo.TblItem_01;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
@@ -90,6 +91,24 @@ public class VtcItemController{
 
          return "common/msg";
       }
+      
+      TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(38);
+		
+		tblAuthuserGroup = UserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+      
       Map<String, Object> obMap = new HashMap<>();
       obMap.put("SiteCode", users.getSiteCode());
       obMap.put("IsDelete", "N");
@@ -331,6 +350,23 @@ public class VtcItemController{
 
          return "redirect:login.do";
 	   }
+	   
+	   TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(37);
+		
+		tblAuthuserGroup = UserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 	   
 	   	TblItem_01 item_01 = new TblItem_01();
 	   	item_01.setSiteCode(users.getSiteCode());

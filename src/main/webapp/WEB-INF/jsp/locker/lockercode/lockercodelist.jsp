@@ -50,10 +50,15 @@
 				</div>
 				&emsp;&emsp;&emsp;
 				<div class="col-auto" style="padding-top: 5px;">
-					<a class="btn btn-info px-5" href="javascript:openpop()" title="등록">등록</a>
+					<button type="button" class="btn btn-info px-5"id="insertButton" onclick="openpop()">등록</button>
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+		if('${authyn.ins}' == 'N'){
+			$('#insertButton').attr('disabled','disabled');
+		}
+		</script>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1 ">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
 				<table class="table table-sm table-hover fs--1 mb-1">
@@ -142,6 +147,10 @@ function paidbodyclick(clickedRow){
 	function openpop(PLockerID) {
 		var url = "lockercodeinsert.do";
 		if(typeof PLockerID !== "undefined"){
+			
+			if('${authyn.upd}' == 'N'){
+				return false;
+			}
 			var url = "lockercodeupdate.do?PLockerID="+PLockerID;
 		}
     	var popupWidth = 500;

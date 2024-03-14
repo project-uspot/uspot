@@ -124,9 +124,18 @@ function fn_egov_delete_article(form) {
 	</div>
 </div>
 <script>
+	if('${authyn.upd}' == 'N'){
+		$('#modify').attr('disabled','disabled');
+	}
+	if('${authyn.del}' == 'N'){
+		$('#delete').attr('disabled','disabled');
+	}
 	// 키보드 이벤트 감지
 	document.addEventListener('keydown', function(event) {
 		if (event.key === 'F2') { // F2 키를 눌렀을 때
+			if('${authyn.upd}' == 'N'){
+				return false;
+			}
 			event.preventDefault(); // 기본 동작 방지
 			valueChk()
 		}
@@ -135,6 +144,9 @@ function fn_egov_delete_article(form) {
 			window.location.href = document.getElementById('back').getAttribute('href'); // 링크 주소로 이동
 		}
 		if (event.key === 'F4') { // F2 키를 눌렀을 때
+			if('${authyn.del}' == 'N'){
+				return false;
+			}
 			event.preventDefault(); // 기본 동작 방지
 			document.getElementById('delete').click();
 		}
