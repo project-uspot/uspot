@@ -37,9 +37,15 @@
 					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록(F2)</button>
 				</div>
 				<script type="text/javascript">
+					if('${authyn.ins}' == 'N'){
+						$('#modal').attr('disabled','disabled');
+					}
 					document.addEventListener('keydown', function(event) {
 						if (event.key === 'F2') {
-						// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+							if('${authyn.ins}' == 'N'){
+								return false;
+							}
+							// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
 							var button = document.getElementById('modal');
 							if (button) {
 								button.click(); // 버튼 클릭
@@ -176,6 +182,9 @@ function openModal() {
 
 
 function openpop(groupID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem01.do";
 	if(typeof groupID !== "undefined"){
 		var url = "updateItem01.do?groupID="+groupID;
@@ -184,6 +193,9 @@ function openpop(groupID) {
      window.open(url, "_blank", windowFeatures);
 }
 function openpop01(subGroupID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem02.do";
 	if(typeof subGroupID !== "undefined"){
 		var url = "updateItem02.do?subGroupID="+subGroupID;
@@ -193,6 +205,9 @@ function openpop01(subGroupID) {
 }
 
 function openpop02(levelID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem03.do";
 	if(typeof levelID !== "undefined"){
 		var url = "updateItem03.do?levelID="+levelID;

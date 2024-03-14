@@ -15,15 +15,29 @@
          	</c:forEach>
          	<div class="col-auto">
          		<button class="btn btn-outline-primary" type="button" onclick="location.href='lockerinfo.do'">조회</button>
-         		<button class="btn btn-info" type="button" onclick="create(${maxSort+10})">신규</button>
-				<button class="btn btn-warning" type="button" onclick="merge()">수정</button>
-				<button class="btn btn-danger" type="button" onclick="remove()">삭제</button>
-				<button class="btn btn-success" type="button">엑셀로 저장</button>
+         		<button class="btn btn-info" id="insertButton" type="button" onclick="create(${maxSort+10})">신규</button>
+				<button class="btn btn-warning" id="updateButton" type="button" onclick="merge()">수정</button>
+				<button class="btn btn-danger" id="removeButton" type="button" onclick="remove()">삭제</button>
+				<button class="btn btn-success" id="excelButton" type="button">엑셀로 저장</button>
 				<button class="btn btn-secondary" type="button" onclick="location.href='lockerDeleteinfo.do'">삭제데이터 보기</button>
        		</div>
    		</div>
    	</div>
 </div>
+<script type="text/javascript">
+if('${authyn.ins}' == 'N'){
+	$('#insertButton').attr('disabled','disabled');
+}
+if('${authyn.upd}' == 'N'){
+	$('#updateButton').attr('disabled','disabled');
+}
+if('${authyn.del}' == 'N'){
+	$('#removeButton').attr('disabled','disabled');
+}
+if('${authyn.excel}' == 'N'){
+	$('#excelButton').attr('disabled','disabled');
+}
+</script>
 <div class="bg-white border-top border-bottom w-75">
 	<div id="listtable" data-list='{"valueNames":["PLockerGroupName","PLockerLocation","PLockerDeposite","PLockerPrice","PLockerMonth"
 		,"jungsiNewDate","jungsiReDate","jungsiFromToDate","sortOrder","danCnt"]}'>
@@ -104,6 +118,11 @@
 		    modalcheck = true;
 		    return false;
 		}
+		
+		if('${authyn.upd}' == 'N'){
+			return false;
+		}
+		
 		var groupid = $(previousRow).find('.PLockerGroupID').text();
 		var url = "lockerdetail.do?lockergroupid="+groupid;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";

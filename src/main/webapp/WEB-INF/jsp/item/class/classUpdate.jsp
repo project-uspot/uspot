@@ -12,33 +12,37 @@
 		<div class="card-body pb-3">
 			<div class="col-12 col-xxl-8">
 				<div class="mb-6">
-					<div class="row g-3">
-      					<h3 class="mb-4" style="padding-top: 5px; width: 265px;">강습종목정보 변경</h3>
-						<div class="col-auto">
-							<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
+					<div class="row g-3 navbar-top fixed-top">
+						<div class="row justify-content-between mb-n4 mt-4">
+							<div class="col-auto">
+								<h3 class="mb-4" style="padding-top: 5px; width: 265px;">강습종목정보 변경</h3>
+							</div>
+							<div class="col-auto">
+								<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
+							</div>
 						</div>
+						<ul class="nav nav-underline" id="myTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">기본정보</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="cost-tab" data-bs-toggle="tab" href="#tab-cost" role="tab" aria-controls="tab-cost" aria-selected="false">강좌세부내용</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="propose-tab" data-bs-toggle="tab" href="#tab-propose" role="tab" aria-controls="tab-propose" aria-selected="false">이미지등록</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="consulting-tab" data-bs-toggle="tab" href="#tab-consulting" role="tab" aria-controls="tab-consulting" aria-selected="false">첨부파일</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="otherlearn-tab" data-bs-toggle="tab" href="#tab-otherlearn" role="tab" aria-controls="tab-otherlearn" aria-selected="false">메모</a>
+							</li>
+						</ul>
           			</div>
-					<div class="col-xl-12">
+					<div class="col-xl-12 mt-13">
 						<form action="updateItem.do" method="post" id="frm" name="frm">
 							<input type="hidden" id="check_id_result" value=""><!-- 아이디 중복체크 결과 -->
 							<input type="hidden" name="ItemID" id="ItemID" value="${item.itemID}">
-							<ul class="nav nav-underline" id="myTab" role="tablist">
-								<li class="nav-item">
-									<a class="nav-link active" id="learn-tab" data-bs-toggle="tab" href="#tab-learn" role="tab" aria-controls="tab-learn" aria-selected="true">기본정보</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" id="cost-tab" data-bs-toggle="tab" href="#tab-cost" role="tab" aria-controls="tab-cost" aria-selected="false">강좌세부내용</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" id="propose-tab" data-bs-toggle="tab" href="#tab-propose" role="tab" aria-controls="tab-propose" aria-selected="false">이미지등록</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" id="consulting-tab" data-bs-toggle="tab" href="#tab-consulting" role="tab" aria-controls="tab-consulting" aria-selected="false">첨부파일</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" id="otherlearn-tab" data-bs-toggle="tab" href="#tab-otherlearn" role="tab" aria-controls="tab-otherlearn" aria-selected="false">메모</a>
-								</li>
-							</ul>
 							<div class="tab-content mt-3" id="myTabContent">
 								<div class="tab-pane fade show active" id="tab-learn" role="tabpanel" aria-labelledby="learn-tab">
 									<div class="card-group">

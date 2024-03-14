@@ -12,13 +12,17 @@
 		<div class="card-body pb-3">
 			<div class="col-12 col-xxl-8">
 				<div class="mb-6">
-					<div class="row g-3">
-      					<h3 class="mb-4" style="padding-top: 5px; width: 265px;">강습종목정보 변경</h3>
-						<div class="col-auto">
-							<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
-						</div>
-          			</div>
-					<form method="post" id="frm"  name="frm" action="updateItem01.do" class="g-3 mb-6">
+					<div class="navbar-top fixed-top">
+						<div class="row justify-content-between g-3 mb-n4 mt-0">
+							<div class="col-auto">
+								<h3 class="mb-4" style="padding-top: 5px;">강습종목정보 변경</h3>
+							</div>
+							<div class="col-auto">
+								<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
+							</div>
+	          			</div>
+					</div>
+					<form method="post" id="frm"  name="frm" action="updateItem01.do" class="g-3 mb-6 mt-4">
 						<input type="hidden" id="GroupID" name="GroupID" value="${item01.groupID }">
 						<div class="row ml-1">
 							<div class="col-auto gy-6">

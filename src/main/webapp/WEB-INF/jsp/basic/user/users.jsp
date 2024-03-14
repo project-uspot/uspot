@@ -17,15 +17,21 @@
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info" href="${pageContext.request.contextPath}/userInsert.do" id="insert" title="신규">신규(F2)</a>
+					<button class="btn btn-info" onclick="location.href='userInsert.do'" id="insert" title="신규">신규(F2)</button>
 					<script>
 						// 키보드 이벤트 감지
 						document.addEventListener('keydown', function(event) {
+							if('${authyn.ins}' == 'N'){
+								return false;
+							}
 							if (event.key === 'F2') { // F2 키를 눌렀을 때
 								event.preventDefault(); // 기본 동작 방지
-								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+								location.href='userInsert.do';
 							}
 						});
+						if('${authyn.ins}' == 'N'){
+							$('#insert').attr('disabled','disabled');
+						}
 					</script>
 				</div>
 			</div>

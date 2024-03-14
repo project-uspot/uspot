@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.VtcService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class VtcSLOrderController {
 	private final HttpSession session;
 	private final VtcSLOrderService VtcSLService;
 	private final VtcService vtcService;
+	private final VtcUserService vtcUserService;
 
 	@RequestMapping(value="SLOrderGroup.do")
 	public String selectSLOrder(ModelMap model) throws Exception {
@@ -33,6 +36,24 @@ public class VtcSLOrderController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(15);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		List<SLOrderGroup> list = VtcSLService.selectSLOrderGroup(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/orders/orderGroup";
@@ -40,6 +61,31 @@ public class VtcSLOrderController {
 	
 	@RequestMapping(value="OrderGroupUpd.do")
 	public String orderGroupModify(SLOrderGroup group, ModelMap model) throws Exception {
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "back");
+			return "redirect:login.do";
+		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(15);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		group = VtcSLService.getOrderGroupDetail(group);
 		
 		
@@ -105,6 +151,23 @@ public class VtcSLOrderController {
 			return "redirect:login.do";
 		}
 		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(16);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		List<SLOrderItem> list = VtcSLService.listSLOderItem(users.getSiteCode());
 		model.addAttribute("list", list);
 		return "basic/orders/orderItem";
@@ -117,6 +180,23 @@ public class VtcSLOrderController {
 			model.addAttribute("script", "back");
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(16);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 		
 		code.setSiteCode(users.getSiteCode());
 		code.setCodeGroupID("1");
