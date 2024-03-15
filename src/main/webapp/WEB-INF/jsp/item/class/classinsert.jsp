@@ -22,7 +22,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-12">
-					<form method="post" id="frm"  name="frm" action="${pageContext.request.contextPath}/insertClassInfo.do" class="row g-3 mb-6" enctype="multipart/form-data">
+					<form method="post" id="frm"  name="frm" action="insertClassInfo.do" class="row g-3 mb-6" enctype="multipart/form-data">
 						<input type="hidden" id="check_id_result" value=""><!-- 아이디 중복체크 결과 -->
 						<ul class="nav nav-underline" id="myTab" role="tablist">
 							<li class="nav-item"><a class="nav-link active"
@@ -476,7 +476,7 @@
 									<div class="card">
 										<div class="card-body">
 											<h4 class="mb-3">강좌소개</h4>
-		                					<textarea class="tinymce" id="Intro" name="Intro" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'></textarea>
+		                					<textarea class="tinymce" id="Intro" name="Intro" data-tinymce='{"height":"13rem","placeholder":"내용을입력해주세요"}'></textarea>
                 						</div>
                 					</div>
 								</div>
@@ -484,7 +484,7 @@
 									<div class="card">
 										<div class="card-body">
 											<h4 class="mb-3">세부내용</h4>
-		                					<textarea class="tinymce" id="Detail" name="Detail" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'></textarea>
+		                					<textarea class="tinymce" id="Detail" name="Detail" data-tinymce='{"height":"13rem","placeholder":"내용을입력해주세요"}'></textarea>
                 						</div>
                 					</div>
 								</div>
@@ -492,7 +492,7 @@
 									<div class="card">
 										<div class="card-body">
 											<h4 class="mb-3">비고</h4>
-		                					<textarea class="tinymce" id="Note" name="Note" data-tinymce='{"height":"13rem","placeholder":"Write a description here..."}'></textarea>
+		                					<textarea class="tinymce" id="Note" name="Note" data-tinymce='{"height":"13rem","placeholder":"내용을입력해주세요"}'></textarea>
                 						</div>
                 					</div>
 								</div>
@@ -500,56 +500,132 @@
 							<div class="tab-pane fade" id="tab-propose" role="tabpanel" aria-labelledby="propose-tab">
 								<div class="col-sm-6 col-md-10 mb-2">
 									<h4 class="mb-3">이미지</h4>
-									<div class="dropzone dropzone-multiple p-0 mb-5" id="my-awesome-dropzone" data-dropzone="data-dropzone">
-										<div class="fallback">
-											<input type="file" name="uploadfile" id="uploadfile" />
-										</div>
-										<div class="dz-preview d-flex flex-wrap">
-											<div class="border bg-white rounded-3 d-flex flex-center position-relative me-2 mb-2" ><img class="dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/products/23.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" /><a class="dz-remove text-400" href="#!" data-dz-remove="data-dz-remove"><span data-feather="x"></span></a></div>
-										</div>
-										<div class="dz-message text-600" data-dz-message="data-dz-message">Drag your photo here<span class="text-800 px-1">or</span>
-											<button class="btn btn-link p-0" type="button">Browse from device</button><br /><img class="mt-3 me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/image-icon.png" width="40" alt="" />
-										</div>
-									</div>
+									 <div class="card" style="width: 460px;">
+								        <div class="card-body mb-n10 mt-n3 me-3 mx-n4" style="height: 440px;">
+								        	<div class="card text-white overflow-hidden" id="imagecard" style="max-width:30rem;height: 260px;">
+								        		<c:choose>
+								        			<c:when test="${item.picture == null || item.picture == ''}">
+								        			</c:when>
+								        			<c:otherwise>
+								        				<img class="card-img-top" src="${pageContext.request.contextPath}/files/lecture/${item.picture}" name="itemimg" id="itemimg"/>
+								        			</c:otherwise>
+								        		</c:choose>
+											</div>
+											<div class="row mt-2">
+												<div class="col-auto">
+													<input type="file" id="imageInput" style="display:none;" accept="image/*"/>
+													<button class="btn btn-primary" type="button" id="imageUpload" name="imageUpload">등록</button>
+													<button class="btn btn-outline-primary" id="deleteImage" type="button">삭제</button>
+												</div>				
+											</div>
+								        </div>
+								    </div>
 								</div>
 							</div>
+							<script type="text/javascript">
+							$("#imageUpload").click(function() {
+								$("#imageInput").click(); 
+							});
+
+							var DeleteCheck = '';
+							$("#deleteImage").click(function() {
+								$('#imageInput').val('');
+								$("#itemimg").remove();
+								DeleteCheck = 'Y';
+							});
+
+							$("#imageInput").change(function() {
+								const fileInput = this;
+								if (fileInput.files && fileInput.files[0]) {
+									const reader = new FileReader();
+
+									reader.onload = function(e) {
+										const newImage = $("<img>")
+											.addClass("card-img-top")
+											.attr({
+												src: e.target.result,
+												name: "itemimg",
+												id: "itemimg"
+											});
+										$("#itemimg").remove();
+										$("#imagecard").append(newImage);
+									};
+									reader.readAsDataURL(fileInput.files[0]);
+								}
+							});
+							</script>
 							<div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
+								<input type="file" name="itemfile"  id="itemfile" style="display:none;"/>
 								<div class="col-sm-6 col-md-10 mb-2">
-									<div class="dropzone dropzone-multiple p-0" id="dropzone" data-dropzone="data-dropzone" data-options='{"url":"valid/url","maxFiles":1,"dictDefaultMessage":"Choose or Drop a file here"}'>
-										<div class="fallback">
-											<input type="file" name="file" />
-										</div>
+									<div class="dropzone dropzone-multiple p-0">
 										<div class="dz-message" data-dz-message="data-dz-message">
-											<div class="dz-message-text">
-												<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25" alt="" />Drop your file here
+											<div class="dz-message-text" id="fileupload" style="cursor: pointer;">
+												<img class="me-2" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/cloud-upload.svg" width="25"/>파일을 올려주세요
 											</div>
 										</div>
-										<div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
-											<div class="d-flex pb-3 border-bottom media px-2">
-												<div class="border border-300 p-2 rounded-2 me-2">
-													<img class="rounded-2 dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" />
-												</div>
-												<div class="flex-1 d-flex flex-between-center">
-													<div>
-														<h6 data-dz-name="data-dz-name"></h6>
-														<div class="d-flex align-items-center">
-															<p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"></p>
-															<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
-														</div>
-														<span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+										<div class="dz-preview m-0 d-flex flex-column" id="fileinfo">
+											<c:if test="${file.fileName != null}">
+												<div class="d-flex pb-3 px-2" id="imagedownroad">
+													<div class="border border-300 p-2 me-2" id="fileimgdiv">
+														<img class="rounded-2 dz-image" src="${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" />
 													</div>
-													<div class="dropdown font-sans-serif">
-														<button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-														<div class="dropdown-menu dropdown-menu-end border py-2">
-															<a class="dropdown-item" href="#!" data-dz-remove="data-dz-remove">Remove File</a>
+													<div class="flex-1 d-flex flex-between-center">
+														<div>
+															<h6 data-dz-name="data-dz-name">${file.fileName}</h6>
+															<span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
 														</div>
+														<button class="btn btn-link text-600 btn-sm " type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="removeFile()"><span class="fas far fa-trash-alt"></span>삭제</button>
 													</div>
 												</div>
-											</div>
+											</c:if>
 										</div>
 									</div>
 								</div>
 							</div>
+							<script type="text/javascript">
+								$("#fileupload").click(function() {
+									$("#itemfile").click(); 
+								});
+								
+								$("#itemfile").change(function() {
+								    var fileName = $('#itemfile').val().split('\\').pop(); // Extract file name
+
+								    // Create HTML elements
+								    var fileDiv = $("<div>").addClass("d-flex pb-3 px-2");
+								    var imgDiv = $("<div>").addClass("border border-300 p-2 me-2").attr("id", "fileimgdiv");
+								    var img = $("<img>").addClass("rounded-2 dz-image").attr("src", "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png").attr("alt", "...");
+								    img.attr("data-dz-thumbnail", "data-dz-thumbnail");
+
+								    imgDiv.append(img);
+								    
+								    var flexDiv = $("<div>").addClass("flex-1 d-flex flex-between-center");
+								    var contentDiv = $("<div>");
+								    var h6 = $("<h6>").attr("data-dz-name", "data-dz-name").text(fileName);
+								    var span = $("<span>").addClass("fs--2 text-danger").attr("data-dz-errormessage", "data-dz-errormessage");
+
+								    contentDiv.append(h6, span);
+								    
+								    var button = $("<button>").addClass("btn btn-link text-600 btn-sm").attr({
+								      "type": "button",
+								      "data-bs-toggle": "dropdown",
+								      "aria-haspopup": "true",
+								      "aria-expanded": "false",
+								      "onclick": "removeFile()"
+								    }).text("삭제").prepend($("<span>").addClass("fas far fa-trash-alt"));
+
+								    flexDiv.append(contentDiv, button);
+								    fileDiv.append(imgDiv, flexDiv);
+
+								    // Append elements to #fileinfo div
+								    $("#fileinfo").html(fileDiv);
+								    
+								});    
+								
+								function removeFile() {
+									$("#fileinfo").empty();
+									formData.append('file','');
+								}
+							</script>
 							<div class="tab-pane fade" id="tab-otherlearn" role="tabpanel" aria-labelledby="otherlearn-tab">
 								<div class="col-sm-6 col-md-10 mb-2">
 									<div class="col-sm-6 col-md-10 mb-2">
@@ -882,21 +958,47 @@
 		        datas += "&IsDelete=" + IsDelete;
 		        datas += "&AgeYearGbn=" + AgeYearGbn;
 		        datas += "&LotteryGbn=" + LotteryGbn;
+		        datas += "&Picture=" + $('#imageInput').get(0).files[0];
 		        
 		        console.log(datas);
-				
+		     	// Create FormData object for the image file
+		        var formData = new FormData();
+		     	if($('#imageInput').get(0).files[0] == undefined){
+		     		formData.append('imageInput',null);
+		     	}else{
+		     		formData.append('imageInput', $('#imageInput').get(0).files[0]);
+		     		
+		     	}
+			    formData.append('file', $('#itemfile')[0].files[0]);
+			    formData.append('Intro', tinymce.get("Intro").getContent());
+			    formData.append('Detail', tinymce.get("Detail").getContent());
+			    formData.append('Note', tinymce.get("Note").getContent());
+			    formData.append('Bigo', tinymce.get("Bigo").getContent());
+			    
+		        // Iterate over each additional data and append them to formData
+		        $.each(datas.split('&'), function(index, field) {
+		            var kv = field.split('=');
+		            formData.append(kv[0], kv[1]);
+		        });
+		        
 				$.ajax({
 					type : "post", 
                     url : "insertClassInfo.do",
-                    data : datas, 
-                    success : function() {
-                    	location.href = "classinfo.do";
+                    data : formData, 
+                    processData: false,
+                    contentType: false,
+                    success : function(data) {
+                    	if(data == '-2'){
+                    		alert('파일 확장자가 잘못되었습니다.');
+                    	}else{
+                    		location.href = "classinfo.do";	
+                    	}
                     },
                     error : function(xhr, status, error) {
             			console.log("Status: " + status);
                         console.log("Error: " + error);
             		}
-				})
+				});
 			})
 		});
 		function onlyNumber(obj) {
@@ -906,5 +1008,6 @@
 		}
 		
 	</script>
+
 </body>
 </html>
