@@ -487,9 +487,7 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">강좌소개</h4>
-												<div>
-				               						<textarea class="form-control" rows="5" id="Intro" name="Intro"><c:out value="${item.intro}"/></textarea>
-												</div>
+				               					<textarea class="tinymce" id="Intro" name="Intro"  data-tinymce='{"height":"13rem","placeholder":"내용을 입력해주세요."}'>${item.intro}</textarea>
 				         					</div>
 				         				</div>
 									</div>
@@ -497,9 +495,7 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">세부내용</h4>
-												<div>
-				               						<textarea class="form-control" rows="5" id="Detail" name="Detail"><c:out value="${item.detail}"/></textarea>
-												</div>
+				               					<textarea class="tinymce" id="Detail" name="Detail" data-tinymce='{"height":"13rem","placeholder":"내용을 입력해주세요."}'>${item.detail}</textarea>
 				             				</div>
 				             			</div>
 									</div>
@@ -507,13 +503,13 @@
 										<div class="card">
 											<div class="card-body">
 												<h4 class="mb-3">비고</h4>
-												<div>
-				               						<textarea class="form-control" rows="5" id="Note" name="Note"><c:out value="${item.note}"/></textarea>
-												</div>
+				               					<textarea class="tinymce" id="Note" name="Note" data-tinymce='{"height":"13rem","placeholder":"내용을 입력해주세요."}'>${item.note}</textarea>
 				             				</div>
 				             			</div>
 									</div>
 								</div>
+								<script type="text/javascript">
+								</script>
 								<div class="tab-pane fade" id="tab-propose" role="tabpanel" aria-labelledby="propose-tab">
 									<div class="col-sm-6 col-md-10 mb-2">
 										<h4 class="mb-3">이미지</h4>
@@ -736,19 +732,17 @@
 								<div class="tab-pane fade" id="tab-otherlearn" role="tabpanel" aria-labelledby="otherlearn-tab">
 									<div class="col-sm-6 col-md-10 mb-2">
 										<div class="col-sm-6 col-md-10 mb-2">
+
 											<div class="card">
 												<div class="card-body">
 													<h4 class="mb-3">메모(관리)</h4>
-													<div>
-				               							<textarea class="form-control" rows="5" id="Bigo" name="Bigo"><c:out value="${item.bigo}"/></textarea>
-													</div>
+				                					<textarea class="tinymce" id="Bigo" name="Bigo" data-tinymce='{"height":"13rem","placeholder":"내용을 입력해주세요."}'>${item.bigo}</textarea>
 				              					</div>
-											</div>
+				              				</div>
 										</div>
 									</div>
 								</div>
 							</div>
-				  			
 							<!-- <button type="submit" class="btn btn-warning px-5" style="margin-top: 20px;">수정</button> -->
 							<!-- <input type="button" class="btn btn-warning px-5"  value="수정" id="modify" onclick="valueChk();"/> -->
 						</form>

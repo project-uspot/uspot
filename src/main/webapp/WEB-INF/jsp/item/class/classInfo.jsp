@@ -428,11 +428,11 @@
 
 <script>
 function openModal() {
-	   var item = $("#item").val();
-	   if(item === '1') {
-	      $('#modal-content').load("insertClassInfo.do");
-	   }
-	}
+   var item = $("#item").val();
+   if(item === '1') {
+      $('#modal-content').load("insertClassInfo.do");
+   }
+}
 	
 function openpop(ItemCode) {
 	if('${authyn.upd}' == 'N'){
@@ -445,10 +445,6 @@ function openpop(ItemCode) {
 	 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=600";
      window.open(url, "_blank", windowFeatures);
 }
-
-
-
-
 
 function goPage() {
 	var frm    = document.selectForm;

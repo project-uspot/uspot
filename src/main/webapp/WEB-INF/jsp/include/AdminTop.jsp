@@ -1253,7 +1253,7 @@
                   <div class="parent-wrapper label-1">
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="sms">
                     <c:if test="${value59 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-accordion.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" href="javascript:void(0);" data-bs-toggle="" aria-expanded="false" onclick="SendSMSF()">
                           <div class="d-flex align-items-center"><span class="nav-link-text">SMS보내기</span>
                           </div>
                         </a>
@@ -1270,6 +1270,24 @@
                   </div>
                 </div>
               </li>
+              <script type="text/javascript">
+				
+              var myPopup2;
+              function SendSMSF() {
+	           	  var url = 'SendSMSF.do';
+	                 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
+	                 if (myPopup2 === undefined || myPopup2.closed) {
+	                	 myPopup2 = window.open(url, "_blank", windowFeatures);
+	                 } else {
+	                	 myPopup2.focus();
+	                 }
+	                 document.addEventListener('click', function() {
+	                     if (myPopup2 && !myPopup2.closed) {
+	                    	 myPopup2.focus();
+	                     }
+	               	});
+			  }
+			</script>
               <!-- 기초관리 -->
               <c:choose>
 			  <c:when test="${empty sessiontblAuthuserGroups}">

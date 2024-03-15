@@ -5,19 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -27,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.veterans.com.cmm.service.VtcItemService;
@@ -62,9 +56,7 @@ public class VtcItemController{
    public TblItem_01 handleClickedValues(@RequestParam(name = "itemId") int itemId, TblItem_01 item_01) throws Exception {
       Users users =  (Users) session.getAttribute("loginuserinfo");
       // 클라이언트에서 전송된 클릭된 값 사용하여 필요한 작업 수행
-      System.out.println("클릭된 값들: " + itemId);
-      
-      
+
       Map<String, Object> map = new HashMap<>();
       item_01.setSiteCode(users.getSiteCode());
       item_01.setGroupID(itemId);
@@ -122,11 +114,7 @@ public class VtcItemController{
       int item03SortOrder = vtcItemService.getitem03SortOrder(users.getSiteCode());
       int DefCode = vtcItemService.getitem03DefCode(users.getSiteCode());
       List<TblItem_01> list = vtcItemService.listItemCode(item_01);
-      
-      System.out.println("list : " + list);
-      
-      
-      
+
       model.addAttribute("item01", item_01);
       
       model.addAttribute("SortOrder", SortOrder + 1);
@@ -196,7 +184,6 @@ public class VtcItemController{
       int SortOrder = Integer.parseInt(request.getParameter("SortOrder"));
       String PayDelayTime = request.getParameter("PayDelayTime");
       String MonthSelNoChk = request.getParameter("MonthSelNo");
-      System.out.println("MonthSelNoChk : " + MonthSelNoChk);
       String MonthSelNo = "";
       if(MonthSelNoChk.equals("Y") ) {
     	  MonthSelNo = MonthSelNoChk;
@@ -337,18 +324,15 @@ public class VtcItemController{
 		/* return "redirect:itemcode.do"; */
    }
    
-  
-   
-   
    @RequestMapping(value="classinfo.do")
    public String classInfo(ModelMap model, tblCode code,selectitem selectitem) throws Exception {
 	   
 	   Users users = (Users) session.getAttribute("loginuserinfo");
 	   if(users ==null) {
-         model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
-         model.addAttribute("script", "back");
+		   model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
+		   model.addAttribute("script", "back");
 
-         return "redirect:login.do";
+		   return "redirect:login.do";
 	   }
 	   
 	   TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
@@ -384,9 +368,6 @@ public class VtcItemController{
 	   
 	   List<selectitem> listSelectItem = vtcItemService.listSelectItemY(selectitem);
 	   
-	   System.out.println("listSelectItem : " + listSelectItem);
-	   
-	   
 	   List<TblItem_01> listItem01 = vtcItemService.listItemCode(item_01);
 	   List<TblItem_02> listItem02 = vtcItemService.listItem02(item_02);
 	   List<TblItem_03> listItem03 = vtcItemService.liseItem03(item_03);
@@ -405,24 +386,86 @@ public class VtcItemController{
 	   return "item/class/classInfo";
    }
    
-   @RequestMapping(value="insertClassInfo.do")
+   @RequestMapping("/insertClassInfo.do")
    @ResponseBody
 	public String insertClassInfo(ModelMap model, HttpServletRequest request,
-			TblItem tblItem, @RequestParam("uploadfile") MultipartFile file) throws Exception {
-	   Users users = (Users) session.getAttribute("loginuserinfo");
+			TblItem tblItem, @RequestParam(value = "imageInput",required = false) MultipartFile ItemImage,
+							 @RequestParam(value = "file",required = false) MultipartFile itemfile) throws Exception {
+	   	Users users = (Users) session.getAttribute("loginuserinfo");
 	   	if(users == null){
 	   		model.addAttribute("msg", "로그인을 다시 해주세요.");
 	   		model.addAttribute("script", "back");
 	   		return "redirect:login.do";
 	   	}
-	   	System.out.println("insert-tblItem : " + tblItem);
 	   	
-		
-		System.out.println("insert-file : " + file.getName());
-		System.out.println("insert-file : " + file.getSize());
-		System.out.println("insert-file : " + file.getOriginalFilename());
-		
-	   	  
+	   	
+	   	if(ItemImage != null && !ItemImage.isEmpty()) {
+			
+			String ItemImagefilename = ItemImage.getOriginalFilename();
+			tblItem.setPicture(ItemImagefilename);
+
+			String image_path = session.getServletContext().getRealPath("files/lecture/");
+			
+			try {
+				ItemImage.transferTo(new File(image_path + ItemImagefilename));
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+	   	
+	   	if(tblItem.getPicture() != null && tblItem.getPicture().equals("undefined")) {
+	   		tblItem.setPicture(null);
+	   	}
+	   	
+	   	tblitem_file tblitem_file = new tblitem_file();
+	   	
+	   	if(itemfile != null && !itemfile.isEmpty()) {
+			
+	   		String basePath = "files/file/";
+			
+			Path folderPath = Paths.get(basePath,users.getSiteCode());
+			
+			//폴더 없으면 생성해주는 로직
+			if (!Files.exists(folderPath)) {
+                Files.createDirectories(folderPath);
+            }
+			
+			String originalFilename = itemfile.getOriginalFilename();
+			
+			String filepath = originalFilename.split("\\.")[1];
+			
+			String[] fileStrings = {"hwp","gif","jpg","pdf","png","xls","ppt","zip","doc"};
+			
+			int filepathok = 0;
+			for(String fileString : fileStrings) {
+				if(filepath.equals(fileString)) {
+					filepathok++;
+				}
+			}
+			
+			if(filepathok == 0) {
+				return "-2";
+			}
+			
+			tblitem_file.setFileName(originalFilename);
+			
+			Path filePath = Paths.get(folderPath.toString(), originalFilename);
+			
+			
+			try {
+				itemfile.transferTo(filePath.toFile());
+			} catch (Exception e) {
+				return "-1";
+			}
+			
+			tblitem_file.setSiteCode(users.getSiteCode());
+		}
+	   	
+	   	if(tblitem_file.getFileName() != null && tblitem_file.getFileName().equals("undefined")) {
+	   		tblitem_file.setFileName(null);
+	   	}
+	   	
+	   	
 	   	String SiteCode = users.getSiteCode();
 	   	String ItemCode = request.getParameter("ItemCode");
 		String Type = request.getParameter("Type");
@@ -479,11 +522,13 @@ public class VtcItemController{
 		String RecommendGbn = request.getParameter("RecommendGbn");
 		String inliveRegster = request.getParameter("inliveRegster");
 		String Intro = request.getParameter("Intro");
+		Intro = StringEscapeUtils.unescapeHtml4(Intro);
 		String Detail = request.getParameter("Detail");
+		Detail = StringEscapeUtils.unescapeHtml4(Detail);
 		String Note = request.getParameter("Note");
+		Note = StringEscapeUtils.unescapeHtml4(Note);
 		String Bigo = request.getParameter("Bigo");
-		
-		tblItem = new TblItem();
+		Bigo = StringEscapeUtils.unescapeHtml4(Bigo);
 		
 		tblItem.setItemCode(ItemCode);
 		tblItem.setType(Type);
@@ -551,6 +596,11 @@ public class VtcItemController{
 		tblItem.setSiteCode(SiteCode);
   
 		vtcItemService.itemInsert(tblItem);
+		
+		tblitem_file.setItemID(tblItem.getItemID());
+		tblitem_file.setSiteCode(SiteCode);
+		
+		vtcItemService.itemfileChange(tblitem_file);
 	      
 	   return "redirect:classinfo.do";
    }
@@ -626,7 +676,7 @@ public class VtcItemController{
 	   model.addAttribute("User", listUsers);
 	   model.addAttribute("item", getItem);
 	   model.addAttribute("file",tblitem_file);
-	   
+	   	   
 	   return "item/class/classUpdate";
    }
    
@@ -717,9 +767,7 @@ public class VtcItemController{
 			int OffMax = Integer.parseInt(request.getParameter("OffMax"));
 			
 			String chk = request.getParameter("chk");
-			
-			System.out.println(chk);
-			
+
 			int OnMax = 0;
 			if(chk.equals("Y")) {
 				OnMax = Integer.parseInt(request.getParameter("OnMax"));
@@ -763,9 +811,13 @@ public class VtcItemController{
 			String RecommendGbn = request.getParameter("RecommendGbn");
 			String inliveRegster = request.getParameter("inliveRegster");
 			String Intro = request.getParameter("Intro");
+			Intro = StringEscapeUtils.unescapeHtml4(Intro);			
 			String Detail = request.getParameter("Detail");
+			Detail = StringEscapeUtils.unescapeHtml4(Detail);	
 			String Note = request.getParameter("Note");
+			Note = StringEscapeUtils.unescapeHtml4(Note);	
 			String Bigo = request.getParameter("Bigo");
+			Bigo = StringEscapeUtils.unescapeHtml4(Bigo);
 			
 			TblItem tblItem = new TblItem();
 			tblItem.setItemID(ItemID);
@@ -883,9 +935,6 @@ public class VtcItemController{
 		find.put("findcategory", findcategory);
 		
 		List<selectitem> findlist = vtcItemService.findItem(find);
-		System.out.println("findlist : " + findlist);
-		System.out.println("findlist.get(0) : " + findlist.get(0));
-		
 		
 		TblItem_01 item_01 = new TblItem_01();
 		item_01.setSiteCode(users.getSiteCode());
@@ -931,11 +980,6 @@ public class VtcItemController{
 		   @RequestParam(name="findcategory")String findcategory) throws Exception {
 	   Users users=(Users) session.getAttribute("loginuserinfo");
 	   
-	   System.out.println("IsUse : " + IsUse);
-	   System.out.println("Type : " + Type);
-	   System.out.println("findvalue : " + findvalue);
-	   System.out.println("findcategory : " + findcategory);
-	   
 	   Map<String, Object> find = new HashMap<>();
 	   find.put("SiteCode", users.getSiteCode());
 	   find.put("IsUse", IsUse);
@@ -943,14 +987,10 @@ public class VtcItemController{
 	   find.put("findvalue", findvalue);
 	   find.put("findcategory", findcategory);
 	   
-	   System.out.println("findvalue : " + find);
-	   
 	   List<selectitem> findlist = vtcItemService.findItem(find);
-	   System.out.println("findlist : " + findlist);
-	   
+
 	   Map<String, Object> map = new HashMap<>();
 	   map.put("size", findlist.size());
-	   System.out.println("findlist.size() : " + findlist.size());
 	   map.put("list", findlist);
 	   
 	   return map;
@@ -966,14 +1006,10 @@ public class VtcItemController{
 		   return "redirect:login.do";
 	   }
 	   
-	   System.out.println("groupID : " + groupID);
-	   
 	   TblItem_01.setSiteCode(users.getSiteCode());
 	   TblItem_01.setGroupID(groupID);
 	   
-	   TblItem_01 = vtcItemService.getItem01(TblItem_01);
-	   
-	   System.out.println("TblItem_01 : " + TblItem_01);
+	   TblItem_01 = vtcItemService.getItem01(TblItem_01);	   
 	   
 	   model.addAttribute("item01", TblItem_01);
 	   
@@ -1136,8 +1172,6 @@ public class VtcItemController{
 		   item_01.setWebYN(WebYN);
 		   item_01.setIsDelete(IsDelete);
 		   
-		   System.out.println("upd-item_01 : " + item_01);
-		   
 		   vtcItemService.updateItem01(item_01);
 		   
 		   model.addAttribute("msg", "변경되었습니다.");
@@ -1162,9 +1196,7 @@ public class VtcItemController{
 	       model.addAttribute("script", "back");
 		   return "redirect:login.do";
 	   }
-	   
-	   System.out.println("SubGroupID : " + subGroupID);
-	   
+	   	   
 	   TblItem_01 item_01 = new TblItem_01();
 	   item_01.setSiteCode(users.getSiteCode());
 	   
@@ -1175,8 +1207,6 @@ public class VtcItemController{
 	   item_02.setSubGroupID(subGroupID);
 	   
 	   item_02 = vtcItemService.getItem02(item_02);
-	   
-	   System.out.println("item_02 : " + item_02);
 	   
 	   model.addAttribute("list", listItem01);
 	   model.addAttribute("item02", item_02);
@@ -1242,14 +1272,11 @@ public class VtcItemController{
 	       model.addAttribute("script", "back");
 		   return "redirect:login.do";
 	   }
-	   System.out.println("levelID : " + levelID);
 
 	   item_03.setSiteCode(users.getSiteCode());
 	   item_03.setLevelID(levelID);
 	   
 	   item_03 = vtcItemService.getItem03(item_03);
-	   
-	   System.out.println("item_03  : " + item_03 );
 	   
 	   model.addAttribute("item03", item_03);
       return "item/itemcode/item03update";
@@ -1277,7 +1304,6 @@ public class VtcItemController{
 		
 		item_03.setIsDelete(IsDelete);
 		
-		System.out.println("upd-item_03 : " + item_03);
 		
 		vtcItemService.updateItem03(item_03);
 		
@@ -1384,7 +1410,7 @@ public class VtcItemController{
 	   
 	   if(itemfile != null && !itemfile.isEmpty()) {
 			
-			String basePath = "Images/egovframework/com/cmm/file/";
+			String basePath = "files/file/";
 			
 			Path folderPath = Paths.get(basePath,users.getSiteCode());
 			

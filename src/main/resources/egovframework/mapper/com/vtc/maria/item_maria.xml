@@ -250,7 +250,7 @@
 			SiteCode  = #{SiteCode}
 		and ItemCode = #{ItemCode}
 	</select>
-	<insert id="itemInsert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
+	<insert id="itemInsert" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem" useGeneratedKeys="true" keyProperty="ItemID">
 		INSERT INTO tblitem
 			(SiteCode, ItemCode, Type, GroupID, SubGroupID, LevelID, DaeSangID, FromTime, ToTime,
 			 ClassCnt, WeekYN, MonIn, TuesIn, WednesIn, ThursIn, FriIn, SaturIn, SunIn, Holy, HolyIn,
