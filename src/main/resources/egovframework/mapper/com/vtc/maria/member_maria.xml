@@ -211,7 +211,7 @@
 		AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4)))
 		</when>
 		<when test="findcategory == 4">
-		AND (Name LIKE CONCAT('%', #{findvalue}, '%') OR barCode = #{findvalue})
+		AND (Name LIKE CONCAT('%', #{findvalue}, '%') OR barCode = #{findvalue} or CellPhone LIKE CONCAT('%', #{findvalue}, '%'))
 		</when>
 	</choose>
 	</select>

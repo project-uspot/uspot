@@ -197,4 +197,7 @@ public class tblmember {
 	private String ipinNumbertext;
 	
 	private String MlevelText;
+	
+	private String toDay;
+	private int entrySaleNo;
 }

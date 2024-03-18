@@ -15,6 +15,7 @@ import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblmember;
 
 @Service
 @RequiredArgsConstructor
@@ -212,5 +213,10 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	@Override
 	public void RemoveLockerGroup(tblplockergroup tblplockergroup) throws Exception {
 		vtcLockerDAO.RemoveLockerGroup(tblplockergroup);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectPlockerInfo(tblmember tblmember) {
+		return vtcLockerDAO.selectPlockerInfo(tblmember);
 	}
 }
