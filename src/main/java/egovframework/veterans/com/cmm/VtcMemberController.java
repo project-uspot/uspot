@@ -1,5 +1,8 @@
 package egovframework.veterans.com.cmm;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -15,6 +18,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Marker;
@@ -1535,30 +1539,35 @@ public class VtcMemberController {
 		if(MemberImage != null && !MemberImage.isEmpty()) {
 			
 			//사진 용량 확인 로직
-//			long fileSize = MemberImage.getSize();
-//			
-//			long maxFileSize = 2 * 1024 * 1024;
-//			
-//			if(maxFileSize < fileSize) {
-//				return "-1";
-//			}
+			long fileSize = MemberImage.getSize();
 			
-			String MemberImagefilename = MemberImage.getOriginalFilename();
+			long maxFileSize = 1 * 1024 * 1024;
 			
-			String ImgName = "Mem"+tblmemberphoto.getMemberID()+"Img"+MemberImagefilename;
-			
-			byte[] imageBytes = MemberImage.getBytes();
-			
-			String image_path = session.getServletContext().getRealPath("files/member/");
-			
-			try {
-				Files.write(Paths.get(image_path + ImgName), imageBytes);
-				
-				tblmemberphoto.setPhoto(imageBytes);
-				
-			}catch (Exception e) {
-				return "0";
-			}
+			byte[] imageBytes;
+	        if (maxFileSize < fileSize) {
+	            // 이미지 크기가 최대 크기를 초과하면 크기를 줄임
+	            BufferedImage originalImage = ImageIO.read(MemberImage.getInputStream());
+	            // 이미지 리사이징
+	    	    Image resultingImage = originalImage.getScaledInstance(600, 800, Image.SCALE_DEFAULT);
+	    	    BufferedImage outputImage = new BufferedImage(600, 800, BufferedImage.TYPE_INT_RGB);
+	    	    outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+	            
+	            BufferedImage resizedImage = outputImage; // 너비 800, 높이 600으로 조정
+	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	            ImageIO.write(resizedImage, "jpg", baos);
+	            imageBytes = baos.toByteArray();
+	        } else {
+	            imageBytes = MemberImage.getBytes();
+	        }
+	        String MemberImagefilename = MemberImage.getOriginalFilename();
+	        String ImgName = "Mem" + tblmemberphoto.getMemberID() + "Img" + MemberImagefilename;
+	        String image_path = session.getServletContext().getRealPath("files/member/");
+	        try {
+	            Files.write(Paths.get(image_path + ImgName), imageBytes);
+	            tblmemberphoto.setPhoto(imageBytes);
+	        } catch (Exception e) {
+	            return "0";
+	        }
 		}
 		tblmemberphoto.setSiteCode(users.getSiteCode());
 		vtcMemberService.MemberImageChange(tblmemberphoto);

@@ -13,231 +13,174 @@
             <div class="col-auto">
         		<div class="row justify-content-between">
         			<div class="col-auto">
-						<h3 class="mb-3 pt-2">SMS</h3>
+						<h3 class="mb-3 pt-2">SMS 관리</h3>
             		</div>
             		<div class="col-auto">
-						<button class="btn btn-success" type="button" onclick="etcsave()">저장</button>
-						<button class="btn btn-soft-danger" type="button">영수증</button>
+            			<button class="btn btn-success" type="button" onclick="etcsave()">발송닷컴 CallBack인증(1회용)</button>
+            			<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="mungu" data-bs-target="#insertModal" onclick="munguManage()">자주쓰는 문구관리</button>
+						<button class="btn btn-success" type="button" onclick="etcsave()">작업 초기화</button>
             		</div>
         		</div>
         	</div>
         </div>
     </div>
-    <div class="row">
-	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
-	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 264px;">
-	        	<div class="col-auto mt-2">
-		        	<div class="row">
-		        		<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">회원번호</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="memberid" name="memberid" value="${member.memberID}" readonly="readonly"/>
-								<input type="hidden" id="sitecode" value="${member.siteCode}">
-								<input type="hidden" id="GroupSaleNo">
+    <script type="text/javascript">
+    	function munguManage() {
+			$('#modal-content').load("insertClassInfo.do");
+		}
+    </script>
+    <div class="row g-0 g-md-4 g-xl-6">
+    	<div class="me-n5" style="width: 478px;">
+    		<div class="card bg-1100 h-100 mb-1 w-20 ms-3 me-1 rounded-5">
+		        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 800px;">
+		        	<div class="col-auto mt-2">
+						<div class="card border border-secondary">
+							<div class="card-body" style="height: 670px;">
+								<h4 class="card-title">▶제목</h4>
+								<input class="form-control" id="title" type="text"/>
+								<h4 class="card-title mt-3">▶문자내용</h4>
+								<textarea class="form-control" id="exampleTextarea" rows="20"></textarea>
+								<div class="text-end">
+								SMS:0/96Bytes
+								</div>
+								<h4 class="card-title mt-3">▶보내는 사람 번호</h4>
+								<input class="form-control" id="title" type="text"/>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">회원성명</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="name" name="name" value="${member.name}" readonly="readonly"/>
-							</div>
-						</div>
-		        	</div>
-		        	<div class="row">
-		        		<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1" style="width: 85px;">성별</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="gendertext" name="gendertext" value="${member.genderText}" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">회원구분</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="type" name="type" value="${member.typeText}" readonly="readonly"/>
-							</div>
-						</div>
-		        	</div>
-		        	<div class="row">
-		        		<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">회원종류</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="mlevel" name="mlevel" value="${mleveltext}" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1" style="width: 85px;">최초등록일</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="mregdate" name="mregdate" value="${member.regdate}" readonly="readonly"/>
-							</div>
-						</div>
-		        	</div>
-		        	<div class="row">
-		        		<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">휴대전화</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="cellphone" name="cellphone" value="${member.cellPhone}" readonly="readonly"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text" id="basic-addon1">일반전화</span>
-								<input class="form-control" type="text" aria-describedby="basic-addon1" id="homephone" name="homephone" value="${member.homePhone}" readonly="readonly"/>
-							</div>
-						</div>
-		        	</div>
-					<div class="col-auto">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1" style="width: 85px;">비고</span>
-							<input class="form-control" type="text" aria-describedby="basic-addon1" id="mnote" name="mnote" value="${member.note}" readonly="readonly"/>
+						<div class="ms-13 mt-2">
+							<button class="btn btn-info" type="button">보내기</button>
+							<button class="btn btn-outline-info" type="button">삭제</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="card h-100 mb-1 w-20 me-1" style="width: 570px;">
-        	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 264px;">
-        		<div class="col-md-5">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">분류항목</span>
-						<select class="form-select" id="expensegroupid" aria-describedby="basic-addon1">
-							<option value="0"></option>
-							<c:forEach var="group" items="${grouplist}">
-								<option value="${group.expenseGroupID}">${group.expenseGroupName}</option>
-                        	</c:forEach>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5" style="width: 255px;">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text" id="basic-addon1">항&emsp;&emsp;목</span>
-							<select class="form-select" id="expenseid" aria-describedby="basic-addon1">
-							</select>
-						</div>
-					</div>
-					<div class="col-auto mt-1 mx-n4">
-						X
-					</div>
-					<div class="col-auto">
-						<div class="input-group input-group-sm">
-							<input class="form-control form-control-sm" type="number" id="expcnt" name="expcnt" min="1" value="1" style="width: 71px;text-align:right;"/>
-							<span class="input-group-text" id="basic-addon2">건</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto mt-n2">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text me-3 align-self-xl-end" id="basic-addon1" style="width: 85px;">영수증인쇄</span>
-						<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-							<input class="form-check-input" id="expensetype1" type="radio" name="expensetype" value="I" checked="checked" onclick="return(false);"/>
-							<label class="form-check-label" for="inlineRadio1">수입</label>
-						</div>
-						<div class="form-check form-check-inline mt-2" aria-describedby="basic-addon1">
-							<input class="form-check-input" id="expensetype2" type="radio" name="expensetype" value="O" onclick="return(false);"/>
-							<label class="form-check-label" for="inlineRadio2">지출</label>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-5">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text" id="basic-addon1">매출일자</span>
-						<input class="form-control" type="date" aria-describedby="basic-addon1" id="saledate" name="saledate" style="width: 130px;"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5" style="width: 255px;">
-						<div class="input-group input-group-sm">
-							<span class="input-group-text">금&emsp;&emsp;액</span>
-							<input class="form-control" type="text" id="defprice" name="defprice" style="text-align: right;" readonly="readonly"/>
-							<input type="hidden" id="totalprice" name="totalprice">
-							<input type="hidden" id="misu" name="misu">
-							<input type="hidden" id="paidprice" name="paidprice">
-						</div>
-					</div>
-					<div class="col-auto mt-1">
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" id="inlineCheckbox1" type="checkbox" value="option1" />
-							<label class="form-check-label" for="inlineCheckbox1">영수증인쇄안함</label>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="input-group input-group-sm">
-						<span class="input-group-text">비&emsp;&emsp;고</span>
-						<input class="form-control" type="text" id="note" name="note" maxlength="100"/>
-					</div>
-				</div>
-        	</div>
     	</div>
-	</div>
-    <div class="row">
-	    <div class="card w-60 h-50">
-	    	<div class="card-body my-n3">
-	    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 236px;"
-                    data-list='{"valueNames":["paiddate","paidcategory","paidprice","paidassignType","paidmapsa",""paidcardtype"","paidassignN","paidcardN","POS","signpad","OID","PayKind"],"page":6,"pagination":true}'>
-                	<div class="table-responsive scrollbar">
-                    	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
-                        	<thead>
-	                        	<tr>
-		                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">결제일자</th>
-		                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">결제유형</th>
-		                           	<th class="sort align-middle text-center" scope="col" data-sort="paidprice">결제금액</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">승인구분</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">매입사</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">카드종류</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">승인번호</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">카드번호</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="POS">POS</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="signpad">사인패드</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="OID">OID</th>
-		                            <th class="sort align-middle text-center" scope="col" data-sort="PayKind">PayKind</th>
-	                            </tr>
-                        	</thead>
-                        	<tbody class="list" id="paidbody">
-                        	</tbody>
-                    	</table>
-                    </div>
-            	</div>
-	    	</div>
-	    </div>
-	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 491px; ">
-	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 300px;">
-	    		<div class="col-auto">
-					<div class="input-group mb-3 input-group-sm">
-						<span class="input-group-text">받을금액</span>
-						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;" oninput="onlyNumber(this)"/>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-phoenix-primary" type="button" id="pay-cash" name="pay-cash" onclick="payCash()" style="width:113px;">현금</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-primary" type="button"  onclick="paycredit()" style="width:128px;">신용카드</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-secondary" type="button" style="width:117px;" onclick="payAccount()">계좌입금</button>
-					</div>
-				</div>
-				<div class="row mb-1">
-					<div class="col-auto">
-						<button class="btn btn-soft-danger" type="button" onclick="payCancel()" style="width:113px;">결제취소</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-phoenix-success" type="button">영수증재발행</button>
-					</div>
-					<div class="col-auto">
-						<button class="btn btn-soft-success" type="button">현.영재발행</button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
-						<!-- <button class="btn btn-soft-info" type="button" onclick="deleteRow()" style="width:128px;">행삭제</button> -->
-					</div>
-				</div>
-	    	</div>
-	    </div>
+		<div class="col-md-7 col-lg-7 col-xl-8">
+			<div class="card h-50">
+		    	<div class="card-body my-n3">
+		    		<h4 class="card-title mt-3">▶수신번호(받는 사람 번호)</h4>
+		    		<div class="border-top border-bottom border-200" id="customerOrdersTable" style="overflow-y: scroll; height: 257px;"
+	                    data-list='{"valueNames":["paiddate","paidcategory","paidprice","paidassignType","paidmapsa",""paidcardtype"","paidassignN","paidcardN","POS","signpad","OID","PayKind"],"page":6,"pagination":true}'>
+	                	<div class="table-responsive scrollbar">
+	                    	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+	                        	<thead>
+		                        	<tr>
+			                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">선택</th>
+			                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">회원번호</th>
+			                           	<th class="sort align-middle text-center" scope="col" data-sort="paidprice">회원성명</th>
+			                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignType">성별</th>
+			                            <th class="sort align-middle text-center" scope="col" data-sort="paidmapsa">회원구분</th>
+			                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardtype">일반전화</th>
+			                            <th class="sort align-middle text-center" scope="col" data-sort="paidassignN">휴대전화</th>
+			                            <th class="sort align-middle text-center" scope="col" data-sort="paidcardN">수신</th>
+		                            </tr>
+	                        	</thead>
+	                        	<tbody class="list" id="paidbody">
+	                        	</tbody>
+	                    	</table>
+	                    </div>
+	            	</div>
+	            	<div class="row mt-2">
+	            		<div class="col">
+	            			<button class="btn btn-outline-info" type="button">전체선택</button>
+	            			<button class="btn btn-outline-info" type="button">전체선택</button>
+	            		</div>
+	            		<div class="col">
+	            			<button class="btn btn-outline-info" type="button">검색결과 지우기</button>
+	            		</div>
+	            		<div class="col text-end">
+	            			<button class="btn btn-outline-info" type="button">+목록추가</button>
+	            		</div>
+	            	</div>
+		    	</div>
+		    </div>
+		    <div class="row">
+		    	<div class="col me-n15">
+		    		<div class="card mb-1 w-20 me-1" style="width: 350px;height:380px;">
+				    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4">
+							<div class="row">
+								<div class="col">
+									<h4 class="card-title mt-3">▶전송자목록</h4>
+									<div class="table-responsive scrollbar bg-light w-70" style="height: 270px;">
+				                    	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+				                        	<thead>
+					                        	<tr>
+						                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">선택</th>
+						                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">회원번호</th>
+					                            </tr>
+				                        	</thead>
+				                        	<tbody class="list" id="paidbody">
+				                        	</tbody>
+				                    	</table>
+			                    	</div>
+			                    	<div class="row">
+			                    		<div class="col mt-2">
+			                    			<button class="btn btn-outline-info me-2" type="button">전체삭제</button>
+			                    			<button class="btn btn-outline-info" type="button">선택영역 삭제</button>
+			                    		</div>
+			                    	</div>
+								</div>
+							</div>
+				    	</div>
+				    </div>
+		    	</div>
+		    	<div class="col ms-n8">
+		    		<div class="card mb-1" style="width: 500px;height:380px;">
+				    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4">
+							<div class="row">
+								<div class="col">
+									<div class="row justify-content-between">
+										<div class="col-auto">
+											<h4 class="card-title mt-3">▶전송자목록</h4>	
+										</div>
+										<div class="col-auto">
+											<div class="form-check form-check-inline mt-2">
+												<input class="form-check-input" id="nocheck" type="checkbox" value="option1" />
+												<label class="form-check-label" for="nocheck">수신거부제외</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-5 ms-4">
+										<div class="input-group">
+											<span class="input-group-text" id="basic-addon1">회원성명</span>
+											<input class="form-control" type="text" aria-describedby="basic-addon1" />
+										</div>
+									</div>
+									<div class="col-9 ms-4 mb-2">
+										<div class="input-group">
+											<span class="input-group-text" id="basic-addon1">전화번호</span>
+											<input class="form-control" type="text" aria-describedby="basic-addon1" />
+											<span class="input-group-text">입력(추가)</span>
+  											<span class="input-group-text">취소</span>
+										</div>
+									</div>
+									<div class="table-responsive scrollbar bg-light" style="height: 230px;">
+				                    	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
+				                        	<thead>
+					                        	<tr>
+						                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate">선택</th>
+						                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">회원번호</th>
+					                            </tr>
+				                        	</thead>
+				                        	<tbody class="list" id="paidbody">
+				                        	</tbody>
+				                    	</table>
+			                    	</div>
+								</div>
+							</div>
+				    	</div>
+				    </div>
+		    	</div>
+		    </div>
+		</div>
 	</div>
 </body>
+<div class="modal fade" id="insertModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="insertModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
+		<div class="modal-content" id="01">
+			<jsp:include page="munguSMSF.jsp"/>
+		</div>
+	</div>
+</div>
 </html>
 <%@ include file="../../include/foot.jsp" %>

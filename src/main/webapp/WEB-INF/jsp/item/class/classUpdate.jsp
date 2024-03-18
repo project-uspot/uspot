@@ -611,6 +611,7 @@
 								});
 								</script>
 								<div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
+									※"hwp","gif","jpg","pdf","png","xls","ppt","zip","doc" 확장자 가능
 									<input type="file" name="itemfile"  id="itemfile" style="display:none;"/>
 									<div class="col-sm-6 col-md-10 mb-2">
 										<div class="dropzone dropzone-multiple p-0">
