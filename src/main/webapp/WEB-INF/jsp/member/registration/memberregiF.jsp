@@ -496,8 +496,6 @@
                                    	        	if(data == '0'){
                                    	        		alert('세션이 만료되었습니다.로그인해주세요.');
                                    	        		window.location.reload();
-                                   	        	}else if(data == '-1'){
-                                   	        		alert('용량이 초과되었습니다.(최대 2MB)');	
                                    	        	}else{
                                    	        		if (fileInput.files && fileInput.files[0]) {
                                                 		const reader = new FileReader();

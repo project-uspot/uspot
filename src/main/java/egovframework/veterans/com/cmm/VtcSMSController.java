@@ -1,12 +1,16 @@
 package egovframework.veterans.com.cmm;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import egovframework.veterans.com.cmm.service.VtcSMSService;
 import egovframework.veterans.com.cmm.service.vo.Users;
+import egovframework.veterans.com.cmm.service.vo.sms_mungu;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -14,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class VtcSMSController {
 
 	private final HttpSession session;
+	private final VtcSMSService vtcSMSService;
 	
 	@GetMapping("/SendSMSF.do")
 	public String SendSMSF(Model model)throws Exception{
@@ -27,6 +32,10 @@ public class VtcSMSController {
 
 			return "common/msg";
 		}
+		
+		List<sms_mungu> munguList = vtcSMSService.munguBySitecode(users.getSiteCode());
+		
+		model.addAttribute("mungulist",munguList);
 		
 		return "SMS/send/SendSMSF";
 	}

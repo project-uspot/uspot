@@ -1275,7 +1275,7 @@
               var myPopup2;
               function SendSMSF() {
 	           	  var url = 'SendSMSF.do';
-	                 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=840";
+	                 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=825";
 	                 if (myPopup2 === undefined || myPopup2.closed) {
 	                	 myPopup2 = window.open(url, "_blank", windowFeatures);
 	                 } else {
