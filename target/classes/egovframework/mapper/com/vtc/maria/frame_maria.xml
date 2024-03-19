@@ -105,4 +105,10 @@
 		and IsDelete = 'N'
 		and CodeValue = '1'
 	</select>
+	<select id="tblsite_idBySiteCode" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblsite_id">
+		select * from tblsite_id
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
 </mapper>

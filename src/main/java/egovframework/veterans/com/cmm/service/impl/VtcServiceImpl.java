@@ -12,6 +12,7 @@ import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.PGM;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
+import egovframework.veterans.com.cmm.service.vo.tblsite_id;
 
 @Service("VtcService")
 
@@ -73,5 +74,10 @@ public class VtcServiceImpl extends EgovAbstractServiceImpl implements VtcServic
 	@Override
 	public Map<String, Object> selectSiteIdSet(String siteCode) {
 		return VtcDAO.selectSiteIdSet(siteCode);
+	}
+
+	@Override
+	public tblsite_id tblsite_idBySiteCode(String SiteCode) throws Exception {
+		return VtcDAO.tblsite_idBySiteCode(SiteCode);
 	}	
 }

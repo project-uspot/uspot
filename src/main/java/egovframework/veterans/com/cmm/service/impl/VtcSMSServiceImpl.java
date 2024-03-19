@@ -21,4 +21,19 @@ public class VtcSMSServiceImpl implements VtcSMSService{
 		return vtcSMSDAO.munguBySitecode(SiteCode);
 	}
 
+	@Override
+	public void sms_munguInsert(sms_mungu sms_mungu) throws Exception {
+		vtcSMSDAO.sms_munguInsert(sms_mungu);
+	}
+
+	@Override
+	public void sms_munguUpdate(sms_mungu sms_mungu) throws Exception {
+		vtcSMSDAO.sms_munguUpdate(sms_mungu);
+	}
+
+	@Override
+	public void sms_munguRemove(sms_mungu sms_mungu) throws Exception {
+		vtcSMSDAO.sms_munguRemove(sms_mungu);
+	}
+
 }
