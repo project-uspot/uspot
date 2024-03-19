@@ -134,3 +134,26 @@ function isToday(dateStr) {
     // 날짜 비교
     return inputDate.getTime() === today.getTime();
 }
+
+//진짜 숫자만 받게하는 함수
+function mustNumber(input) {
+    // Remove non-numeric characters
+    let value = input.value.replace(/[^0-9]/g, '');
+    
+    // Update the input value
+    input.value = value;
+}
+
+//숫자11자리를 전화번호로 변환하는 함수
+function formatPhoneNumber(number) {
+    // 숫자 문자열로 변환
+    let strNumber = String(number);
+    // 숫자가 11자리가 아니면 에러 처리
+    if (strNumber.length !== 11) {
+        return "잘못된 전화번호 형식입니다.";
+    }
+    // 전화번호 형식으로 포맷팅
+    let formattedNumber = strNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    
+    return formattedNumber;
+}

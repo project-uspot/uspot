@@ -10,4 +10,6 @@ public class sms_mungu {
 	private String SiteCode;
 
 	private String mungu;
+	
+	private String IsDelete;
 }
