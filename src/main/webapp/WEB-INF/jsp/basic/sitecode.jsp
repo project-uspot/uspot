@@ -9,11 +9,19 @@
 
 <div class="p-0 w-auto">
 	<div class="mb-9">
-		<div class="row g-2 mb-4">
+		<div class="justify-content-between row">
+			<div class="col-auto">
+				<h2 class="mb-0">사업장 관리</h2>
+            </div>
             <div class="col-auto">
-              <h2 class="mb-0">사업장 관리</h2>
+            	<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사업장관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
             </div>
         </div>
+        <script type="text/javascript">
+        if('${authyn.excel}' == 'N'){
+			$('#excelButton').attr('disabled','disabled');
+		}
+        </script>
         <div class="mb-4">
 	          <div class="row g-3">
 	            <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
@@ -25,7 +33,7 @@
 	        </div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top  border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-	  			<table class="table table-sm table-hover fs--1 mb-1">
+	  			<table class="table table-sm table-hover fs--1 mb-1" id="myTable">
 		  			<colgroup>
 		  				<col style="width:50px">
 		  				<col style="width:140px">

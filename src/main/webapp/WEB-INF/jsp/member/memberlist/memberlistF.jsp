@@ -29,7 +29,7 @@
               <h2 class="mb-0">회원명부조회</h2>
             </div>
           </div>
-          <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"],"page":10,"pagination":true}'>
+          <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"]}'>
             <div class="mb-4">
               <div class="row g-3">
                 <div class="col-auto overflow-hidden-y flex-grow-1">
@@ -106,30 +106,31 @@
 							<label class="form-check-label text-900" for="fragileCheck">가입기간</label>
 							<label class="form-label" for="timepicker2">Select Time Range</label>
 							<input class="form-control datetimepicker flatpickr-input" id="timepicker2" type="text" placeholder="d/m/y to d/m/y" data-options="{&quot;mode&quot;:&quot;range&quot;,&quot;dateFormat&quot;:&quot;d/m/y&quot;,&quot;disableMobile&quot;:true}" readonly="readonly">
-					<script type="text/javascript">
-				flatpickr("#timepicker2", {
-					  mode: "range",
-					  dateFormat: "d/m/y",
-					  disableMobile: true,
-					  locale: "ko", // 언어를 한국어로 설정
-					  i18n: {
-					    // 한글 언어 파일 사용
-					    weekdays: {
-					      shorthand: ["일", "월", "화", "수", "목", "금", "토"],
-					      longhand: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"]
-					    },
-					    months: {
-					      shorthand: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-					      longhand: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-					    }
-					  }
-					});
-				</script>
-						
+							<script type="text/javascript">
+								flatpickr("#timepicker2", {
+									  mode: "range",
+									  dateFormat: "d/m/y",
+									  disableMobile: true,
+									  locale: "ko", // 언어를 한국어로 설정
+									  i18n: {
+									    // 한글 언어 파일 사용
+									    weekdays: {
+									      shorthand: ["일", "월", "화", "수", "목", "금", "토"],
+									      longhand: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"]
+									    },
+									    months: {
+									      shorthand: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+									      longhand: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+										}
+									}
+								});
+							</script>
 						</div>
 					</div>
 				</div>
-
+				<div class="col-auto">
+                	<button class="btn btn-primary" onclick="openSMS()">SMS 발송</button>
+                </div>
                 </div>
               </div>
             </div>
@@ -156,7 +157,7 @@
                       <th class="sort align-middle ps-7" scope="col" data-sort="last-seen">주소</th>
                     </tr>
                   </thead>
-                  <tbody class="list" id="customers-table-body">
+                  <tbody class="list" id="listbody">
                   <c:forEach items="${list}" var="list">
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                       <td class="fs--1 align-middle ps-0 py-3">
@@ -164,14 +165,11 @@
                           <input class="form-check-input" type="checkbox"/>
                         </div>
                       </td>
-                      <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-1100" href="membership.do?MemberID=${list.memberID}&findtype=2">
-                          <div class="avatar avatar-m"><img class="rounded-circle" src="${pageContext.request.contextPath}/new_lib/assets/img/team/32.webp" alt="" />
-                          </div>
-                          <p class="mb-0 ms-3 text-1100 fw-bold">${list.name}</p>
-                        </a></td>
-                      <td class="email align-middle white-space-nowrap pe-5">${list.memberID}</td>
+                      <td class="Name align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-1100" href="membership.do?MemberID=${list.memberID}&findtype=2">
+                          ${list.name}</td>
+                      <td class="MemberID align-middle white-space-nowrap pe-5">${list.memberID}</td>
                        <td class="total-orders align-middle white-space-nowrap fw-semi-bold text-end text-1000">${list.regdate}</td>
-                      <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-1100">
+                      <td class="Gender white-space-nowrap fw-bold text-end ps-3">
                       <c:if test="${list.gender == 0}">
                       	여자
                       </c:if>
@@ -199,11 +197,13 @@
                       	</c:otherwise>
                       </c:choose>
                       </td>
-                      <td class="last-order align-middle white-space-nowrap text-700 text-end">${list.cellPhone}</td>
+                      <td class="CellPhone align-middle white-space-nowrap text-700 text-end">${list.cellPhone}</td>
                       <td class="product align-middle white-space-nowrap text-2000 text-end">${list.birthDay}</td>
                       <td class="email align-middle white-space-nowrap pe-1"><a class="fw-semi-bold" href="mailto:annac34@gmail.com">${list.email}</a></td>
                       <td class="city align-middle white-space-nowrap text-1000 ps-7">${list.address}</td>
-                      <td class="city align-middle white-space-nowrap text-1000 ps-7">${list.subAddress}</td> 
+                      <td class="city align-middle white-space-nowrap text-1000 ps-7">${list.subAddress}</td>
+                      <td class="RSMS">${list.RSMS}</td>
+                      <td class="HomePhone">${list.homePhone}</td>
                     </tr>
                     </c:forEach>
                   </tbody>
@@ -292,5 +292,21 @@ $("#gender,#mlevel,#type").change(function() {
         }
     }); 
 });
+
+var myPopup;
+function openSMS() {
+	var url = 'SendSMSF.do?sendTable=Y';
+    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=825";
+    if (myPopup === undefined || myPopup.closed) {
+   		myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+   		myPopup.focus();
+   	}
+    document.addEventListener('click', function() {
+		if (myPopup && !myPopup.closed) {
+			myPopup.focus();
+		}
+	});
+}
 </script>
 </html>

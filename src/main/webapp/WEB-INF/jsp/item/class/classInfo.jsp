@@ -19,7 +19,7 @@
 		<form name="selectForm" id="DocumentForm" action="${pageContext.request.contextPath}/classinfo.do">
 			<div class="mb-1">
 				<div class="row g-6">
-					<div class="card h-100 col-md-9">
+					<div class="card h-100">
 						<div class="card-body">
 							<div class="row g-3">
 								<div class="col-sm-3 col-md-2 mb-2">
@@ -55,9 +55,19 @@
 								<div class="col-auto">
 									<button class="btn btn-outline-info" type="button" id="findbutton" onclick="finditem()" >조회(F3)</button>
 								</div>
+								<div class="col-auto">
+									<button class="btn btn-primary" type="button"
+										data-bs-toggle="modal" id="modal" data-bs-target="#insertModal"
+										onclick="openModal()">등록(F2)</button>
+								</div>
+								<div class="col-auto">
+					            	<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','강습반 정보관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
+					            </div>
 								
 								<script type="text/javascript">
-									
+									if('${authyn.excel}' == 'N'){
+										$('#excelButton').attr('disabled','disabled');
+									}
 									/* $('#findbutton').click(function() { */
 										function finditem() {
 											IsUse = document.getElementById('IsUse').value;
@@ -196,11 +206,7 @@
 										
 								/* }); */
 							</script>
-								<div class="col-auto">
-									<button class="btn btn-primary" type="button"
-										data-bs-toggle="modal" id="modal" data-bs-target="#insertModal"
-										onclick="openModal()">등록(F2)</button>
-								</div>
+								
 								<script type="text/javascript">
 									if('${authyn.ins}' == 'N'){
 										$('#modal').attr('disabled','disabled');
@@ -218,6 +224,7 @@
 										}
 									});
 								</script>
+								
 							</div>
 						</div>
 					</div>
@@ -234,7 +241,7 @@
 						</form>
 					</div> -->
 					<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-						<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
+						<table class="table table-sm fs--1 mb-1 table-hover table-bordered" id="myTable">
 							<thead>
 								<tr>
 									<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" data-sort="ItemCode" scope="col">코드</th>

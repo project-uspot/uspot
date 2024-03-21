@@ -33,9 +33,13 @@
 				</div>
 				<div class="col-auto">
 					<button class="btn btn-info px-5"  onclick="location.href='OrderGpInsert.do'" id="insert" title="신규">신규(F2)</button>
+					<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','일일입장 분류 관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 					<script>
 						if('${authyn.ins}' == 'N'){
 							$('#insert').attr('disabled','disabled');
+						}
+						if('${authyn.excel}' == 'N'){
+							$('#excelButton').attr('disabled','disabled');
 						}
 						document.addEventListener('keydown', function(event) {
 							if('${authyn.ins}' == 'N'){
@@ -52,7 +56,7 @@
 		</div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1 ">
+				<table class="table table-sm fs--1 mb-1 " id="myTable">
 					<colgroup>
 						<col style="width:20px">
 						<col style="width:20px">
