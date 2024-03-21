@@ -135,13 +135,9 @@ function isToday(dateStr) {
     return inputDate.getTime() === today.getTime();
 }
 
-window.addEventListener('beforeunload', function (e) {
-    // 확인 창에 표시할 메시지 설정
+function beforeUnloadHandler(e) {
     var confirmationMessage = '정말로 페이지를 떠나시겠습니까?';
-
-    // 표준에 따라 이벤트 객체의 returnValue에 메시지를 설정
     e.returnValue = confirmationMessage; 
-
-    // 일부 브라우저에서는 returnValue가 메시지를 직접 표시
     return confirmationMessage;
-});
+}
+window.addEventListener('beforeunload', beforeUnloadHandler);
