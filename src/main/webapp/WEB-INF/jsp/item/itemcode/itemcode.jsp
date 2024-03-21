@@ -35,10 +35,14 @@
 				</div>
 				<div class="col-auto" style="padding-top: 5px;">
 					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록(F2)</button>
+					<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('itemTable','강습코드관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 				</div>
 				<script type="text/javascript">
 					if('${authyn.ins}' == 'N'){
 						$('#modal').attr('disabled','disabled');
+					}
+					if('${authyn.excel}' == 'N'){
+						$('#excelButton').attr('disabled','disabled');
 					}
 					document.addEventListener('keydown', function(event) {
 						if (event.key === 'F2') {

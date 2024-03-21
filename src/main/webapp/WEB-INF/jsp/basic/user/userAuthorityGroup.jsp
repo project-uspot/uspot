@@ -7,11 +7,19 @@
 
 <div class="p-0">
 	<div class="mb-9">
-		<div class="row g-2 mb-4">
+		<div class="row justify-content-between">
 		    <div class="col-auto">
 		      <h2 class="mb-0">사용자별 권한그룹 지정 </h2>
 		    </div>
+		    <div class="col-auto">
+		      <button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사용자별 권한그룹 지정')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
+		    </div>
 		</div>
+		<script type="text/javascript">
+		if('${authyn.excel}' == 'N'){
+			$('#excelButton').attr('disabled','disabled');
+		}
+		</script>
 		<div class="mb-4">
 			<div class="row g-3">
 				<div class="col-auto">
@@ -28,7 +36,7 @@
         </div>
         <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1">
+				<table class="table table-sm fs--1 mb-1" id="myTable">
 					<colgroup>
 						<col style="width:70px;">
 						<col style="width:40px;" >

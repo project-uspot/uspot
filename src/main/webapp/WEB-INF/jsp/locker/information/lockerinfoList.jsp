@@ -18,7 +18,7 @@
          		<button class="btn btn-info" id="insertButton" type="button" onclick="create(${maxSort+10})">신규</button>
 				<button class="btn btn-warning" id="updateButton" type="button" onclick="merge()">수정</button>
 				<button class="btn btn-danger" id="removeButton" type="button" onclick="remove()">삭제</button>
-				<button class="btn btn-success" id="excelButton" type="button">엑셀로 저장</button>
+				<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사물함 분류정보 관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 				<button class="btn btn-secondary" type="button" onclick="location.href='lockerDeleteinfo.do'">삭제데이터 보기</button>
        		</div>
    		</div>
@@ -42,7 +42,7 @@ if('${authyn.excel}' == 'N'){
 	<div id="listtable" data-list='{"valueNames":["PLockerGroupName","PLockerLocation","PLockerDeposite","PLockerPrice","PLockerMonth"
 		,"jungsiNewDate","jungsiReDate","jungsiFromToDate","sortOrder","danCnt"]}'>
 		<div class="table-responsive">
-			<table class="table table-hover table-bordered fs--1 mb-0">
+			<table class="table table-hover table-bordered fs--1 mb-0" id="myTable">
 				<thead>
 			        <tr>
 						<th class="sort pe-1 white-space-nowrap align-middle text-center" scope="col" data-sort="PLockerGroupName" style="width:9%;">분류</th>

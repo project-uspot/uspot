@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <footer>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/popper/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/popper/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/new_lib/vendors/list.js/list.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
