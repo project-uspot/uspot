@@ -19,6 +19,7 @@ import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
 import egovframework.veterans.com.cmm.service.vo.tblitem_file;
+import egovframework.veterans.com.cmm.service.vo.tblitem_img;
 import lombok.RequiredArgsConstructor;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 
@@ -168,12 +169,12 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 		return itemDAO.itemmonthbyitemid(itemid);
 	}
 	@Override
-	public void ItemImageChange(TblItem tblItem) throws Exception {
-		itemDAO.ItemImageChange(tblItem);
+	public void ItemImageChange(tblitem_img tblitem_img) throws Exception {
+		itemDAO.ItemImageChange(tblitem_img);
 	}
 	@Override
-	public void ItemImageRemove(TblItem tblItem) throws Exception {
-		itemDAO.ItemImageRemove(tblItem);
+	public void ItemImageRemove(tblitem_img tblitem_img) throws Exception {
+		itemDAO.ItemImageRemove(tblitem_img);
 	}
 	@Override
 	public void itemfileChange(tblitem_file tblitem_file) throws Exception {
@@ -186,5 +187,21 @@ public class VtcItemServiceImpl extends EgovAbstractServiceImpl implements VtcIt
 	@Override
 	public void itemfileRemove(tblitem_file tblitem_file) throws Exception {
 		itemDAO.itemfileRemove(tblitem_file);
+	}
+	@Override
+	public TblItem tblItemByItemID(TblItem tblItem) throws Exception {
+		return itemDAO.tblItemByItemID(tblItem);
+	}
+	@Override
+	public tblitem_img item_imgByItemID(tblitem_img tblitem_img) throws Exception {
+		return itemDAO.item_imgByItemID(tblitem_img);
+	}
+	@Override
+	public tblitem_img item_imgBySubGroupID(tblitem_img tblitem_img) throws Exception {
+		return itemDAO.item_imgBySubGroupID(tblitem_img);
+	}	
+	@Override
+	public tblitem_img item_imgByGroupID(tblitem_img tblitem_img) throws Exception {
+		return itemDAO.item_imgByGroupID(tblitem_img);
 	}	
 }

@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div class="col-auto" style="padding-top: 5px;">
-					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록(F2)</button>
+					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal1">등록(F2)</button>
 					<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('itemTable','강습코드관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 				</div>
 				<script type="text/javascript">
@@ -172,19 +172,6 @@
 
 
 <script type="text/javascript">
-function openModal() {
-    
-   var item = $("#item").val();
-   if(item === '0') {
-      $('#modal-content').load("insertItem01.do");
-   } else if (item === '1') {
-      $('#modal-content').load("insertItem02.do");
-   } else {
-      $('#modal-content').load("insertItem03.do");
-   }
-}
-
-
 function openpop(groupID) {
 	if('${authyn.upd}' == 'N'){
 		return false;
@@ -310,7 +297,21 @@ $("#item,#isdeletecheck").change(function() {
                   var js1FD = JSi1.substr(0,10)
                   var js1TD = JSi1.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js1FD +' '+ list.jungSi1STime + ' ~ ' +  js1TD +' '+  list.jungSi1ETime+ '</td>';
+               var jungSi1STime = '';
+               if(list.jungSi1STime == null || list.jungSi1STime == undefined){
+            	   jungSi1STime = '';
+               }else{
+            	   jungSi1STime = list.jungSi1STime;
+               }
+               
+               var jungSi1ETime = '';
+               if(list.jungSi1ETime == null || list.jungSi1ETime == undefined){
+            	   jungSi1ETime = '';
+               }else{
+            	   jungSi1ETime = list.jungSi1ETime;
+               }
+               
+               row += '<td class="inTime align-middle py-3 ">' + js1FD +' '+ jungSi1STime + ' ~ ' +  js1TD +' '+ jungSi1ETime + '</td>';
                var JSi2 = list.jungSi2
                if (JSi2 === null  ) {
                   JSi2 = '';
@@ -318,7 +319,22 @@ $("#item,#isdeletecheck").change(function() {
                   var js2FD = JSi2.substr(0,10)
                   var js2TD = JSi2.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js2FD +' '+ list.jungSi2STime + ' ~ ' +  js2TD +' '+ list.jungSi2ETime+ '</td>';
+               
+               var jungSi2STime = '';
+               if(list.jungSi2STime == null || list.jungSi2STime == undefined){
+            	   jungSi2STime = '';
+               }else{
+            	   jungSi2STime = list.jungSi2STime;
+               }
+               
+               var jungSi2ETime = '';
+               if(list.jungSi2ETime == null || list.jungSi2ETime == undefined){
+            	   jungSi2ETime = '';
+               }else{
+            	   jungSi2ETime = list.jungSi2ETime;
+               }
+               
+               row += '<td class="inTime align-middle py-3 ">' + js2FD +' '+ jungSi2STime + ' ~ ' +  js2TD +' '+ jungSi2ETime + '</td>';
                var JSi3 = list.jungSi3
                if(JSi3 === null) {
                   JSi3 = '';
@@ -326,7 +342,7 @@ $("#item,#isdeletecheck").change(function() {
                   var js3FD = JSi3.substr(0,10)
                   var js3TD = JSi3.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ list.jungSi2STime + ' ~ ' +  js3TD +' '+ list.jungSi2ETime+ '</td>';
+               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ jungSi2STime + ' ~ ' +  js3TD +' '+ jungSi2ETime + '</td>';
                if(list.jungSi1Inlive === null) {
                   JungSi1Inlive = "";
                } else {
@@ -441,59 +457,48 @@ $("#item,#isdeletecheck").change(function() {
 
 
 </script>
-
-
-
-
-<div class="modal fade" id="insertModal" tabindex="-1"
+<div class="modal fade" id="insertModal1" tabindex="-1"
    data-bs-backdrop="static" aria-labelledby="insertModalLabel"
    aria-hidden="true">
    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content" id="01">
          <jsp:include page="item01insert.jsp" />
       </div>
-      <div class="modal-content" style="display: none;" id="02">
+   </div>
+</div>
+
+<div class="modal fade" id="insertModal2" tabindex="-1"
+   data-bs-backdrop="static" aria-labelledby="insertModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content" id="02">
          <jsp:include page="item02insert.jsp" />
       </div>
-      <div class="modal-content" style="display: none;" id="03">
+   </div>
+</div>
+
+<div class="modal fade" id="insertModal3" tabindex="-1"
+   data-bs-backdrop="static" aria-labelledby="insertModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content" id="03">
          <jsp:include page="item03insert.jsp" />
       </div>
    </div>
 </div>
 
 <script>
-
-	/* 종목 반명 단계 등록 */
-    // select 요소 가져오기
-    var selectElement= 0;
     var selectedValue = 0;
-
-    selectElement = document.getElementById("item");
-    var div01 = document.getElementById("01");
-    if (selectedValue === "0") {
-         div01.style.display = "block";
-     }
-    var div02 = document.getElementById("02");
-    var div03 = document.getElementById("03");
-
-
-    // select 요소의 값이 변경될 때 실행할 함수 정의
-    selectElement.addEventListener("change", function () {
-        // 선택된 옵션의 값을 가져와서 alert 창에 표시
-        selectedValue = selectElement.value;
-        div01.style.display = "none";
-        div02.style.display = "none";
-        div03.style.display = "none";
-
+    $('#item').on('change', function() {
+    	selectedValue = $(this).val();
+    	var modal = $('#modal');
+        modal.removeAttr('data-bs-target');
         if (selectedValue === "0") {
-            div01.style.display = "block";
+        	modal.attr('data-bs-target','#insertModal1');
         } else if (selectedValue === "1") {
-            div02.style.display = "block";
+        	modal.attr('data-bs-target','#insertModal2');
         } else if (selectedValue === "2") {
-            div03.style.display = "block";
-        } 
+        	modal.attr('data-bs-target','#insertModal3');
+        }
     });
 </script>
-
-
-
