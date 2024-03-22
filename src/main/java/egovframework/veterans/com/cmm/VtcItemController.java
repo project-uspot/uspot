@@ -36,6 +36,7 @@ import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
 import egovframework.veterans.com.cmm.service.vo.tblitem_file;
+import egovframework.veterans.com.cmm.service.vo.tblitem_img;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -399,20 +400,6 @@ public class VtcItemController{
 	   	}
 	   	
 	   	
-	   	if(ItemImage != null && !ItemImage.isEmpty()) {
-			
-			String ItemImagefilename = ItemImage.getOriginalFilename();
-			tblItem.setPicture(ItemImagefilename);
-
-			String image_path = session.getServletContext().getRealPath("files/lecture/");
-			
-			try {
-				ItemImage.transferTo(new File(image_path + ItemImagefilename));
-			} catch (Exception e) {
-				return "0";
-			}
-		}
-	   	
 	   	if(tblItem.getPicture() != null && tblItem.getPicture().equals("undefined")) {
 	   		tblItem.setPicture(null);
 	   	}
@@ -601,7 +588,33 @@ public class VtcItemController{
 		tblitem_file.setSiteCode(SiteCode);
 		
 		vtcItemService.itemfileChange(tblitem_file);
-	      
+		
+		tblitem_img tblitem_img = new tblitem_img();
+	   	if(ItemImage != null && !ItemImage.isEmpty()) {
+			
+			String ItemImagefilename = ItemImage.getOriginalFilename();
+			
+			String ImgName = "Item"+tblItem.getItemID()+"Img"+ItemImagefilename; 
+			
+			tblitem_img.setPicture(ImgName);
+
+			String image_path = session.getServletContext().getRealPath("files/lecture/");
+			
+			try {
+				ItemImage.transferTo(new File(image_path + ImgName));
+			} catch (Exception e) {
+				return "0";
+			}
+		}
+		
+		tblitem_img.setSiteCode(users.getSiteCode());
+		tblitem_img.setGroupID(GroupID);
+		tblitem_img.setSubGroupID(SubGroupID);
+		tblitem_img.setItemID(tblItem.getItemID());
+		tblitem_img.setUpdUserPKID(users.getUserPKID());
+		
+		vtcItemService.ItemImageChange(tblitem_img);
+		
 	   return "redirect:classinfo.do";
    }
    
@@ -651,7 +664,7 @@ public class VtcItemController{
 	   
 	   code.setSiteCode(users.getSiteCode());
 	   code.setCodeGroupID("5");
-	   
+	    
 	   selectitem.setSiteCode(users.getSiteCode());
 	   List<selectitem> listSelectItem = vtcItemService.listSelectItemY(selectitem);
 	   
@@ -668,6 +681,34 @@ public class VtcItemController{
 	   
 	   tblitem_file = vtcItemService.item_fileByItemID(tblitem_file);
 	   
+	   tblitem_img tblitem_img = new tblitem_img();
+	   tblitem_img.setSiteCode(users.getSiteCode());
+	   tblitem_img.setItemID(getItem.getItemID());
+	   
+	   tblitem_img = vtcItemService.item_imgByItemID(tblitem_img);
+	   
+	   
+	   if(tblitem_img == null || tblitem_img.getPicture() == null) {
+		   
+		   tblitem_img = new tblitem_img();
+		   
+		   tblitem_img.setSiteCode(users.getSiteCode());
+		   tblitem_img.setSubGroupID(getItem.getSubGroupID());
+		   tblitem_img.setGroupID(getItem.getGroupID());
+		   
+		   tblitem_img = vtcItemService.item_imgBySubGroupID(tblitem_img);
+		   
+		   if(tblitem_img == null || tblitem_img.getPicture() == null) {
+			   
+			   tblitem_img = new tblitem_img();
+			   
+			   tblitem_img.setSiteCode(users.getSiteCode());
+			   tblitem_img.setGroupID(getItem.getGroupID());
+			   
+			   tblitem_img = vtcItemService.item_imgByGroupID(tblitem_img);
+		   }
+	   }
+	   
 	   model.addAttribute("list", listSelectItem);
 	   model.addAttribute("item01", listItem01);
 	   model.addAttribute("item02", listItem02);
@@ -676,6 +717,7 @@ public class VtcItemController{
 	   model.addAttribute("User", listUsers);
 	   model.addAttribute("item", getItem);
 	   model.addAttribute("file",tblitem_file);
+	   model.addAttribute("img",tblitem_img);
 	   	   
 	   return "item/class/classUpdate";
    }
@@ -1348,7 +1390,7 @@ public class VtcItemController{
    
    @ResponseBody
    @PostMapping("/ItemImageChange")
-   public String ItemImageChange(TblItem tblItem,@RequestParam(value = "imageInput",required = false)MultipartFile ItemImage)throws Exception{
+   public String ItemImageChange(tblitem_img tblitem_img,@RequestParam(value = "imageInput",required = false)MultipartFile ItemImage)throws Exception{
 	   
 	   Users users = (Users) session.getAttribute("loginuserinfo");
 		
@@ -1360,9 +1402,9 @@ public class VtcItemController{
 			
 			String ItemImagefilename = ItemImage.getOriginalFilename();
 			
-			String ImgName = "Item"+tblItem.getItemCode()+"Img"+ItemImagefilename; 
+			String ImgName = "Item"+tblitem_img.getItemID()+"Img"+ItemImagefilename; 
 			
-			tblItem.setPicture(ImgName);
+			tblitem_img.setPicture(ImgName);
 			
 			String image_path = session.getServletContext().getRealPath("files/lecture/");
 			
@@ -1373,27 +1415,36 @@ public class VtcItemController{
 			}
 		}
 		
-		tblItem.setSiteCode(users.getSiteCode());
-		tblItem.setUpdUserPKID(users.getUserPKID());
+		TblItem tblItem = new TblItem();
 		
-		vtcItemService.ItemImageChange(tblItem);
+		tblItem.setItemID(tblitem_img.getItemID());
+		tblItem.setSiteCode(users.getSiteCode());
+		
+		tblItem = vtcItemService.tblItemByItemID(tblItem);
+		
+		tblitem_img.setSiteCode(users.getSiteCode());
+		tblitem_img.setGroupID(tblItem.getGroupID());
+		tblitem_img.setSubGroupID(tblItem.getSubGroupID());
+		tblitem_img.setUpdUserPKID(users.getUserPKID());
+		
+		vtcItemService.ItemImageChange(tblitem_img);
 		
 		return "success";
    }
    
    @ResponseBody
    @PostMapping("/ItemImageRemove")
-   public String ItemImageRemove(TblItem tblItem)throws Exception{
+   public String ItemImageRemove(tblitem_img tblitem_img)throws Exception{
 	   Users users = (Users) session.getAttribute("loginuserinfo");
 		
 	   if (users == null) {
 		   return "0";
 	   }
 	   
-	   tblItem.setSiteCode(users.getSiteCode());
-	   tblItem.setUpdUserPKID(users.getUserPKID());
+	   tblitem_img.setSiteCode(users.getSiteCode());
+	   tblitem_img.setUpdUserPKID(users.getUserPKID());
 	   
-	   vtcItemService.ItemImageRemove(tblItem);
+	   vtcItemService.ItemImageRemove(tblitem_img);
 	   
 	   return "success";
    }

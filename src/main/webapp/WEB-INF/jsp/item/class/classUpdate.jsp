@@ -517,10 +517,10 @@
 									        <div class="card-body mb-n10 mt-n3 me-3 mx-n4" style="height: 440px;">
 									        	<div class="card text-white overflow-hidden" id="imagecard" style="max-width:30rem;height: 260px;">
 									        		<c:choose>
-									        			<c:when test="${item.picture == null || item.picture == ''}">
+									        			<c:when test="${img.picture == null || img.picture == ''}">
 									        			</c:when>
 									        			<c:otherwise>
-									        				<img class="card-img-top" src="${pageContext.request.contextPath}/files/lecture/${item.picture}" name="itemimg" id="itemimg"/>
+									        				<img class="card-img-top" src="${pageContext.request.contextPath}/files/lecture/${img.picture}" name="itemimg" id="itemimg"/>
 									        			</c:otherwise>
 									        		</c:choose>
 												</div>
@@ -547,7 +547,7 @@
 									DeleteCheck = 'Y';
 									
 									const formData = new FormData();
-                            		formData.append('ItemCode', '${param.ItemCode}');
+									formData.append('ItemID', '${item.itemID}');
 									
                             		$.ajax({
                             	        type: "POST", 
@@ -588,7 +588,7 @@
 										
 										const formData = new FormData();
                                 		formData.append('imageInput', $('#imageInput').get(0).files[0]);
-                                		formData.append('ItemCode', '${param.ItemCode}');
+                                		formData.append('ItemID', '${item.itemID}');
                                 		
                                 		$.ajax({
                                 	        type: "POST", 

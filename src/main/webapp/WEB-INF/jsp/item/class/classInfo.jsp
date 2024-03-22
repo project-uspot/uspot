@@ -21,22 +21,22 @@
 				<div class="row g-6">
 					<div class="card h-100">
 						<div class="card-body">
-							<div class="row g-3">
-								<div class="col-sm-3 col-md-2 mb-2">
+							<div class="row justify-content-between">
+								<div class="col-md-1">
 									<select class="form-select" id="IsUse" name="IsUse" >
 										<option value="1">사용</option>
 										<option value="2">사용안함</option>
 										<option value="3">삭제</option>
 									</select>
 								</div>
-								<div class="col-sm-3 col-md-2 mb-2">
+								<div class="col-md-1">
 									<select class="form-select" id="Type" name="Type" >
 										<option value="0">전체</option>
 										<option value="1">일반</option>
 										<option value="2">특강</option>
 									</select>
 								</div>
-								<div class="col-sm-3 col-md-2 mb-2">
+								<div class="col-md-1">
 									<select class="form-select" id="findcategory" name="findcategory" >
 										<option value="0" >종목</option>
 										<option value="1">강습반명</option>
@@ -513,11 +513,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);
@@ -653,11 +653,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);
@@ -793,11 +793,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);

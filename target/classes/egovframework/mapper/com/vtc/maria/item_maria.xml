@@ -566,23 +566,18 @@
 			ItemID = #{ItemID}
 		and IsDelete  = 'N'
 	</select>
-	<update id="ItemImageChange" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
-		update tblitem set
-		Picture = #{Picture}, 
-		UpdDate = now(),
-		UpdUserPKID = #{UpdUserPKID}
-		where 
-			SiteCode = #{SiteCode}
-		and ItemCode = #{ItemCode}
+	<update id="ItemImageChange" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_img">
+		{call SP_itemImageChange(#{SiteCode},#{GroupID},#{SubGroupID},#{ItemID},#{picture},#{UpdUserPKID})}
 	</update>
-	<update id="ItemImageRemove" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem">
-		update tblitem set
-		Picture = null, 
+	<update id="ItemImageRemove" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_img">
+		update tblitem_img set
+		picture = null, 
+		IsDelete = 'Y',
 		UpdDate = now(),
 		UpdUserPKID = #{UpdUserPKID}
 		where 
 			SiteCode = #{SiteCode}
-		and ItemCode = #{ItemCode}
+		and ItemID = #{ItemID}
 	</update>
 	<update id="itemfileChange" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_file">
 		{call SP_itemfileChange(#{SiteCode},#{ItemID},#{FileName})}
@@ -602,4 +597,40 @@
 			SiteCode = #{SiteCode}
 		and ItemID = #{ItemID}
 	</update>
+	
+	<select id="tblItemByItemID" parameterType="egovframework.veterans.com.cmm.service.vo.TblItem" resultType="egovframework.veterans.com.cmm.service.vo.TblItem">
+		select * from tblitem
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and ItemID = #{ItemID}
+	</select>
+	
+	<select id="item_imgByItemID" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_img" resultType="egovframework.veterans.com.cmm.service.vo.tblitem_img">
+		select * from tblitem_img
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and ItemID = #{ItemID}
+	</select>
+	
+	<select id="item_imgBySubGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_img" resultType="egovframework.veterans.com.cmm.service.vo.tblitem_img">
+		select * from tblitem_img 
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and SubGroupID = #{SubGroupID}
+		and GroupID = #{GroupID}
+		and ItemID = 0
+	</select>
+	
+	<select id="item_imgByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblitem_img" resultType="egovframework.veterans.com.cmm.service.vo.tblitem_img">
+		select * from tblitem_img 
+		where 
+			IsDelete = 'N'
+		and SiteCode = #{SiteCode}
+		and SubGroupID = 0
+		and GroupID = #{GroupID}
+		and ItemID = 0
+	</select>
 </mapper>

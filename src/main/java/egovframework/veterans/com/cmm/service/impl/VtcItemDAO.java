@@ -15,6 +15,7 @@ import egovframework.veterans.com.cmm.service.vo.maturitylist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
 import egovframework.veterans.com.cmm.service.vo.tblitem_file;
+import egovframework.veterans.com.cmm.service.vo.tblitem_img;
 
 @Repository("VtcItemDAO")
 public class VtcItemDAO extends EgovComAbstractDAO{
@@ -126,12 +127,12 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 		return selectOne("item.itemmonthbyitemid",itemid);
 	}
 	
-	public void ItemImageChange(TblItem tblItem)throws Exception{
-		update("item.ItemImageChange",tblItem);
+	public void ItemImageChange(tblitem_img tblitem_img)throws Exception{
+		update("item.ItemImageChange",tblitem_img);
 	}
 	
-	public void ItemImageRemove(TblItem tblItem)throws Exception{
-		update("item.ItemImageRemove",tblItem);
+	public void ItemImageRemove(tblitem_img tblitem_img)throws Exception{
+		update("item.ItemImageRemove",tblitem_img);
 	}
 	
 	public void itemfileChange(tblitem_file tblitem_file)throws Exception{
@@ -144,5 +145,21 @@ public class VtcItemDAO extends EgovComAbstractDAO{
 	
 	public void itemfileRemove(tblitem_file tblitem_file)throws Exception {
 		update("item.itemfileRemove",tblitem_file);
+	}
+	
+	public TblItem tblItemByItemID(TblItem tblItem)throws Exception{
+		return selectOne("item.tblItemByItemID",tblItem);
+	}
+	
+	public tblitem_img item_imgByItemID(tblitem_img tblitem_img)throws Exception{
+		return selectOne("item.item_imgByItemID",tblitem_img);
+	}
+	
+	public tblitem_img item_imgBySubGroupID(tblitem_img tblitem_img)throws Exception{
+		return selectOne("item.item_imgBySubGroupID",tblitem_img);
+	}
+	
+	public tblitem_img item_imgByGroupID(tblitem_img tblitem_img)throws Exception{
+		return selectOne("item.item_imgByGroupID",tblitem_img);
 	}
 }
