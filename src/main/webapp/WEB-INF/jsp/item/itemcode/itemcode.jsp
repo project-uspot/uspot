@@ -62,10 +62,28 @@
       
 		<div class="mx-n4 px-1 mx-lg-n6 bg-white border-top border-bottom border-200 position-relative top-1" >
 			<div id="tableotherlearn" data-list='{"valueNames":["GroupName","jsType","fromDate","jungSi1","jungSi2","jungSi3","jungSi1Inlive","sortOrder", "againMonth","webYN","itemRejectCnt","monthSelNo",
-			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"],"page":5,"pagination":true}'>
-				<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-					<table class="table table-sm fs--1 mb-1 table-hover table-bordered" id="itemTable">
-						<thead class="itemcodelist">
+			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"]}'>
+				<div class="table-responsive mx-n1 px-1">
+					<table class="table table-sm fs--1 mb-1 table-hover table-bordered scrollbar" id="itemTable" style="width: 160%;">
+						<colgroup>
+							<col style="width: 3%;"><!-- 강습종목 -->
+							<col style="width: 3%;"><!-- 접수구분 -->
+							<col style="width: 7%;"><!-- 접수기간 -->
+							<col style="width: 10%;"><!-- 접수기간 -->
+							<col style="width: 10%;"><!-- 접수기간 -->
+							<col style="width: 7%;"><!-- 접수기간 -->
+							<col style="width: 4%;"><!-- 접수기간 -->
+							<col style="width: 2%;"><!-- 정렬순서 -->
+							<col style="width: 2%;"><!-- 재등록 -->
+							<col style="width: 2%;"><!-- 온라인 -->
+							<col style="width: 2%;"><!-- 등록제한 -->
+							<col style="width: 2%;"><!-- 다개월 -->
+							<col style="width: 9%;"><!-- 추첨접수기간 -->
+							<col style="width: 3%;"><!-- 추첨접수기간 -->
+							<col style="width: 8%;"><!-- 추첨접수기간 -->
+							<col style="width: 8%;"><!-- 추첨접수기간 -->
+						</colgroup>
+						<thead class="itemcodelist scrollbar">
 							<tr>
 							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="GroupName" scope="col" >강습종목</th>
 							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jsType" scope="col">접수구분</th>
@@ -155,11 +173,6 @@
 						<div class="col-auto d-flex">
 							<p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p>
 						</div>
-						<div class="col-auto d-flex">
-							<button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-							<ul class="mb-0 pagination"></ul>
-							<button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -245,6 +258,7 @@ $("#item,#isdeletecheck").change(function() {
       },
       success: function(data) {
          if(item === '0') {
+        	 $('#itemTable').css('width', '160%');
             var item01 = data.item01
             var head = '<tr>'
                head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -268,12 +282,12 @@ $("#item,#isdeletecheck").change(function() {
                head += '<th class="sort board border-github align-middle pe-1 text-center" scope="col">결제기간</th>';
                head += '<th class="sort board border-github align-middle pe-1 text-center" scope="col">선착순</th>';
                head += '</tr>';
-               thead.append(head);
+				thead.append(head);
             item01.forEach(function(list) {
                var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" id="updateTR01" ' +
         			'onclick="openpop(' + list.groupID + ')" style="cursor:pointer; >';
-               /* row += '<td class="groupName align-middle py-3 "><input type="checkbox"></td>'; */
-               row += '<td class="groupName align-middle py-3 " id="GroupName" data-item-id=' + list.groupID + '>' + list.groupName + '</td>';
+               row += '<td class="groupName align-middle py-3 "><input type="checkbox"></td>';
+               row += '<td class="groupName align-middle py-3 " id="GroupName">' + list.groupName + '</td>';
                var JSType = '';
                if(list.jsType == '0') {
                   JSType = '정시접수';
@@ -282,6 +296,8 @@ $("#item,#isdeletecheck").change(function() {
                } else if (list.jsType == '2') {
                   JSType = '기간지정'
                }
+               var groupName = list.groupName;
+               
                row += '<td class="JSType align-middle py-3 ">' + JSType + '</td>';
                var FromDate = list.fromDate
                var ToDate = list.toDate
@@ -289,6 +305,7 @@ $("#item,#isdeletecheck").change(function() {
                   FromDate = '';
                   ToDate = '';
                }
+               
                row += '<td class="inTime align-middle py-3 ">' + FromDate + ' ~ ' +  ToDate + '</td>';
                var JSi1 = list.jungSi1
                if(JSi1 === null) {
@@ -342,7 +359,7 @@ $("#item,#isdeletecheck").change(function() {
                   var js3FD = JSi3.substr(0,10)
                   var js3TD = JSi3.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ jungSi2STime + ' ~ ' +  js3TD +' '+ jungSi2ETime + '</td>';
+               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ ' ~ ' +  js3TD +' '+'</td>';
                if(list.jungSi1Inlive === null) {
                   JungSi1Inlive = "";
                } else {
@@ -407,6 +424,7 @@ $("#item,#isdeletecheck").change(function() {
                
             }) 
          } else if(item === '1') {
+			$('#itemTable').css('width', '100%');
             var item02= data.item02
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -429,6 +447,7 @@ $("#item,#isdeletecheck").change(function() {
                tbody.append(row);
             })
          } else if (item === '2') {
+			$('#itemTable').css('width', '100%');
             var item03= data.item03
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >코드</th>';

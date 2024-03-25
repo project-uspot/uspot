@@ -701,7 +701,7 @@
                   <div class="parent-wrapper label-1">
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="rent">
                     <c:if test="${value95 eq true}">
-                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/rentF.do" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관관리</span>
                           </div>
                         </a>

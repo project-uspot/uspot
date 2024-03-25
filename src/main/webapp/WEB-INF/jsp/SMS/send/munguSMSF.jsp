@@ -17,6 +17,7 @@
 		<div class="input-group">
 			<textarea class="form-control" id="munguText" name="munguText" aria-label="With textarea" oninput="CountMungu()"></textarea>
 			<span class="input-group-text cursor-pointer" onclick="munguSave()">등록</span>
+			<span class="input-group-text cursor-pointer" onclick="munguMerge()">수정</span>
 			<span class="input-group-text cursor-pointer" onclick="munguRemove()">삭제</span>
 		</div>
 		<div class="text-end me-15" id="CountMungu">
@@ -107,68 +108,43 @@ function munguSave() {
 	
 	const code = $(prevMunguRow).find('.Code').text();
 	const mungu = $('#munguText').val();
-	if(code == ''){
-		if(mungu == ''){
-			alert('내용을 입력주세요.');
-			$('#munguText').focus();
-			return false;
-		}else{
-			
-			var maxIndex = 0;
-			
-			$('.text-center.fw-bold#index').each(function() {
-			    var index = parseInt($(this).text());
-			    if (index > maxIndex) {
-			        maxIndex = index;
-			    }
-			});
-			
-			$.ajax({
-		        type: "POST", 
-		        url: "sms_munguInsert", 
-		        dataType : 'json',
-		        data: { 
-		        	mungu : mungu
-		        },
-		        success: function(data) {	
-		        	if(data == 0){
-		        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
-		        		window.opener.location.reload();
-		                window.close();
-		        	}else{
-		        		var newRow = $('<tr onclick="Mungubodyclick(this)"></tr>');
-						newRow.append('<td class="Code" style="display:none;">' + data + '</td>');
-						newRow.append('<td class="text-center fw-bold" id="index">' + Number(maxIndex+1) + '</td>');
-						newRow.append('<td class="fw-bold white-space-nowrap mungu" style="max-width: 200px;">' + mungu + '</td>');
-						$('#mungubody').append(newRow);
-						mungubodyRefact();
-		        	}
-		        },
-		        error: function(xhr, status, error) {
-		       	 console.log("Status: " + status);
-		         console.log("Error: " + error);
-		        }
-			});
-		}
+	
+	if(mungu == ''){
+		alert('내용을 입력주세요.');
+		$('#munguText').focus();
+		return false;
 	}else{
+		
+		var maxIndex = 0;
+		
+		$('.text-center.fw-bold#index').each(function() {
+		    var index = parseInt($(this).text());
+		    if (index > maxIndex) {
+		        maxIndex = index;
+		    }
+		});
+		
 		$.ajax({
 	        type: "POST", 
-	        url: "sms_munguUpdate", 
+	        url: "sms_munguInsert", 
 	        dataType : 'json',
 	        data: { 
-	        	Code : code,
 	        	mungu : mungu
 	        },
 	        success: function(data) {	
-	        	if(data == '0'){
+	        	if(data == 0){
 	        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
 	        		window.opener.location.reload();
 	                window.close();
-	                return false;
+	        	}else{
+	        		var newRow = $('<tr onclick="Mungubodyclick(this)"></tr>');
+					newRow.append('<td class="Code" style="display:none;">' + data + '</td>');
+					newRow.append('<td class="text-center fw-bold" id="index">' + Number(maxIndex+1) + '</td>');
+					newRow.append('<td class="fw-bold white-space-nowrap mungu" style="max-width: 200px;">' + mungu + '</td>');
+					$('#mungubody').append(newRow);
+					mungubodyRefact();
+					alert('등록되었습니다.');
 	        	}
-	        	$(prevMunguRow).find('.mungu').text(mungu);
-	        	alert('수정되었습니다.');
-	        	mungubodyRefact();
 	        },
 	        error: function(xhr, status, error) {
 	       	 console.log("Status: " + status);
@@ -176,6 +152,41 @@ function munguSave() {
 	        }
 		});
 	}
+}
+
+function munguMerge() {
+	
+	const code = $(prevMunguRow).find('.Code').text();
+	const mungu = $('#munguText').val();
+	
+	if(code == ''){
+		alert('행선택 후 수정해주세요.');
+	}
+	
+	$.ajax({
+        type: "POST", 
+        url: "sms_munguUpdate", 
+        dataType : 'json',
+        data: { 
+        	Code : code,
+        	mungu : mungu
+        },
+        success: function(data) {	
+        	if(data == '0'){
+        		alert("세션이 만료되었습니다.다시 로그인해주세요.");
+        		window.opener.location.reload();
+                window.close();
+                return false;
+        	}
+        	$(prevMunguRow).find('.mungu').text(mungu);
+        	alert('수정되었습니다.');
+        	mungubodyRefact();
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
 <!--문구 삭제 하는 함수-->

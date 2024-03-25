@@ -1460,10 +1460,10 @@ public class VtcItemController{
 	   }
 	   
 	   if(itemfile != null && !itemfile.isEmpty()) {
+		   
+		   String basePath = "files/file/";
 			
-			String basePath = "files/file/";
-			
-			Path folderPath = Paths.get(basePath,users.getSiteCode());
+		   Path folderPath = Paths.get(basePath,users.getSiteCode());
 			
 			//폴더 없으면 생성해주는 로직
 			if (!Files.exists(folderPath)) {
