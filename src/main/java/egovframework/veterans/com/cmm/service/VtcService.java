@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.veterans.com.cmm.service.vo.PGM;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
+import egovframework.veterans.com.cmm.service.vo.tblsite_id;
 
 public interface VtcService {
 	
@@ -28,4 +29,6 @@ public interface VtcService {
 	String codenameByCodeValue(tblCode tblCode);
 
 	Map<String, Object> selectSiteIdSet(String siteCode);
+	
+	tblsite_id tblsite_idBySiteCode(String SiteCode)throws Exception;
 }

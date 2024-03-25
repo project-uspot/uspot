@@ -328,4 +328,11 @@
 		and UserGroupID = #{UserGroupID}
 		and IsDelete = 'N'
 	</select>
+	<select id="tblauthusergroupBypgmIDAndUserGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup" resultType="egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup">
+		select * from tblauthusergroup
+		where
+			SiteCode = #{SiteCode}
+		and UserGroupID = #{UserGroupID}
+		and PGMPKID = #{pgmPKID}
+	</select>
 </mapper>

@@ -492,9 +492,16 @@ public class OfflinePayController {
 					case "사물함":
 						int recheck = Integer.parseInt(request.getParameter("recheck"));
 						returnMap.put("recheck",recheck);
+						String refundcashcheck = request.getParameter("refundcashcheck");
+						returnMap.put("refundcashcheck",refundcashcheck);
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
+						if(refundcashcheck.equals("N")) {
+							int pkid = Integer.parseInt(request.getParameter("pkid"));
+							returnMap.put("tempSaleNo",pkid);
+							returnMap.put("SaleNo",pkid);
+						}
 						break;
 					case "기타비용":
 						int pkid = Integer.parseInt(request.getParameter("pkid"));
@@ -929,6 +936,7 @@ public class OfflinePayController {
 						returnMap.put("SaleType",InType);
 						break;
 					case "사물함":
+						
 						/*
 						 * returnMap.put("pkid",request.getParameter("pkid"));
 						 * OfflinePayService.insertPaidCancelLocker(returnMap);
@@ -940,7 +948,6 @@ public class OfflinePayController {
 					default:
 						break;
 					}
-
 					returnMap = OfflinePayService.insertPaid(returnMap);
 					//영수증 저장
 					switch (saleType) {
@@ -958,7 +965,7 @@ public class OfflinePayController {
 			}
 
 			returnStr = f.MapToJson(returnMap);
-			System.out.println(resultMap);
+			
 			return returnMap;
 		}else {
 			String rMsg = resultMap.get("MSG"); // 실패 사유 메시지

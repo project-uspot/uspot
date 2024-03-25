@@ -88,6 +88,7 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
+//숫자만 받고 그 숫자를 금액, 찍어주는 함수
 function onlyNumber(input) {
     // Remove non-numeric characters
     let value = input.value.replace(/[^0-9]/g, '');
@@ -142,3 +143,81 @@ function beforeUnloadHandler(e) {
 }
 // 페이지 종료시 안내메세지 출력
 //window.addEventListener('beforeunload', beforeUnloadHandler);
+
+//진짜 숫자만 받게하는 함수
+function mustNumber(input) {
+    // Remove non-numeric characters
+    let value = input.value.replace(/[^0-9]/g, '');
+    
+    // Update the input value
+    input.value = value;
+}
+
+//숫자11자리를 전화번호로 변환하는 함수
+function formatPhoneNumber(number) {
+    // 숫자 문자열로 변환
+    let strNumber = String(number);
+    // 숫자가 11자리가 아니면 에러 처리
+    if (strNumber.length !== 11) {
+        return "잘못된 전화번호 형식입니다.";
+    }
+    // 전화번호 형식으로 포맷팅
+    let formattedNumber = strNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    
+    return formattedNumber;
+}
+
+// 액셀형식 다운로드
+function fnExcelReport(id, title) {
+   var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+      tab_text = tab_text + '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+      tab_text = tab_text + '<xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>'
+      tab_text = tab_text + '<x:Name>Sheet1</x:Name>';
+      tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+      tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+      
+   tab_text = tab_text + "<div style='text-align:center;'><h2>" + title + "</h2></div>"; // 수정된 부분: 제목(title) 중앙 배치
+
+   tab_text = tab_text + "<table border='1px'>";
+
+   var exportTable = $('#' + id).clone();
+   console.log(exportTable);
+      exportTable.find('input').each(function (index, elem) {
+         if(elem.type == "submit"){
+            $(elem).before($(elem).val());
+         }
+         $(elem).remove(); 
+      });
+      exportTable.find('a').each(function (index, elem) {
+         $(elem).remove(); 
+      });
+
+      tab_text = tab_text + exportTable.html();
+      tab_text = tab_text + '</table></body></html>';
+   var data_type = 'data:application/vnd.ms-excel';
+   var ua = window.navigator.userAgent;
+   var msie = ua.indexOf("MSIE ");
+   var fileName = title + '.xls';
+
+   //Explorer 환경에서 다운로드
+   if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+      if (window.navigator.msSaveBlob) {
+         var blob = new Blob([tab_text], {
+            type: "application/csv;charset=utf-8;"
+            });
+         navigator.msSaveBlob(blob, fileName);
+      }
+   } else {
+      var blob2 = new Blob([tab_text], {
+         type: "application/csv;charset=utf-8;"
+      });
+      var filename = fileName;
+      var elem = window.document.createElement('a');
+         elem.href = window.URL.createObjectURL(blob2);
+         elem.download = filename;
+
+      document.body.appendChild(elem);
+      elem.click();
+      document.body.removeChild(elem);
+   }
+}

@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.veterans.com.cmm.service.VtcLockerService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.tblplockergroup;
 import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
@@ -38,6 +40,7 @@ public class VtcLockerController{
 	
 	private final HttpSession session;
 	private final VtcLockerService vtcLockerService;
+	private final VtcUserService vtcUserService; 
 	
 	public static Marker locker = MarkerFactory.getMarker("locker");
 	
@@ -47,12 +50,29 @@ public class VtcLockerController{
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
 		if(users ==null) {
-			model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
+			model.addAttribute("msg", "세션이 만료되었습니다.다시 로그인해 주세요.");
 			model.addAttribute("url", "login.do");
 			model.addAttribute("script", "redirect");
 
 			return "common/msg";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(87);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 		
 		tblplockergroup tblplockergroup = new tblplockergroup();
 		
@@ -95,7 +115,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(LockerImagefilename);
 	
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			
 			try {
@@ -117,7 +137,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(ImgName);
 	
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			
 			try {
@@ -150,7 +170,7 @@ public class VtcLockerController{
 			
 			tblplockergroup.setLockerImage(ImgName);
 			
-			String image_path = session.getServletContext().getRealPath("images/egovframework/com/cmm/main/");
+			String image_path = session.getServletContext().getRealPath("files/locker/");
 			
 			try {
 				LockerImage.transferTo(new File(image_path + ImgName));
@@ -158,6 +178,7 @@ public class VtcLockerController{
 				return "0";
 			}
 		}
+		
 		tblplockergroup.setSiteCode(users.getSiteCode());
 		tblplockergroup.setUpdUserPKID(users.getUserPKID());		
 		
@@ -197,6 +218,23 @@ public class VtcLockerController{
 			return "common/msg";
 		}
 		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(87);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
+		
 		tblplockergroup tblplockergroup = new tblplockergroup();
 		
 		tblplockergroup.setSiteCode(users.getSiteCode());
@@ -221,6 +259,23 @@ public class VtcLockerController{
 
 			return "common/msg";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(88);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 		
 		parametergroup.setSiteCode(users.getSiteCode());
 		parametergroup.setIsDelete("N");
@@ -395,7 +450,6 @@ public class VtcLockerController{
 		
 		try {
 			Users users =  (Users) session.getAttribute("loginuserinfo");
-			System.out.println(users);
 			if (users == null) {
 				Map<String,Object> map = new HashMap<String, Object>();
 	        	
@@ -801,5 +855,17 @@ public class VtcLockerController{
 		List<tbldeposite> depositeList = vtcLockerService.DepositeListByMember(tbldeposite);
 		
 		return depositeList;
+	}
+	
+	@ResponseBody
+	@PostMapping("/refundcashcheck")
+	public String refundcashcheck(tbluselocker tbluselocker)throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		tbluselocker.setSiteCode(users.getSiteCode());
+		
+		vtcLockerService.refundcashcheck(tbluselocker);
+		
+		return "success";
 	}
 }

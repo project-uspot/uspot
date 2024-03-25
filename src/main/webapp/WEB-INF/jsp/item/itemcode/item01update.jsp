@@ -1,58 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ include file="../../include/head.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>강습종목정보 변경</title>
-<link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon-16x16.png">
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/favicon.ico">
-<link rel="manifest" href="${pageContext.request.contextPath}/new_lib/assets/img/favicons/manifest.json">
-<meta name="msapplication-TileImage" content="${pageContext.request.contextPath}/new_lib/assets/img/favicons/mstile-150x150.png">
-<meta name="theme-color" content="#ffffff">
-<meta name="robots" content="noindex">
-<script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
-<script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-<!-- ===============================================-->
-<!--    Stylesheets-->
-<!-- ===============================================-->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
-<link href="${pageContext.request.contextPath}/new_lib/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-<link href="${pageContext.request.contextPath}/new_lib/scss/theme/_navbar-vertical.scss" rel="stylesheet" />
-<link href="${pageContext.request.contextPath}/new_lib/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
-<link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet/leaflet.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 </head>
 <body>
 	<div class="card h-100">
 		<div class="card-body pb-3">
 			<div class="col-12 col-xxl-8">
 				<div class="mb-6">
-					<div class="row g-3">
-      					<h3 class="mb-4" style="padding-top: 5px; width: 265px;">강습종목정보 변경</h3>
-						<div class="col-auto">
-							<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
-						</div>
-          			</div>
-					<form method="post" id="frm"  name="frm" action="updateItem01.do" class="g-3 mb-6">
+					<div class="navbar-top fixed-top">
+						<div class="row justify-content-between g-3 mb-n4 mt-0">
+							<div class="col-auto">
+								<h3 class="mb-4" style="padding-top: 5px;">강습종목정보 변경</h3>
+							</div>
+							<div class="col-auto">
+								<input type="button" class="btn btn-warning px-5"  value="수정(F3)" id="modify" onclick="valueChk();"/>
+							</div>
+	          			</div>
+					</div>
+					<form method="post" id="frm"  name="frm" action="updateItem01.do" class="g-3 mb-6 mt-4">
 						<input type="hidden" id="GroupID" name="GroupID" value="${item01.groupID }">
 						<div class="row ml-1">
 							<div class="col-auto gy-6">
@@ -117,7 +87,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryFromDate.split(' ')[0]}" id="JungSiLotteryFromDate" name="LotteryFromDate" type="date" disabled  />
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryFromDate.split(' ')[1]}" id="JungSiLotteryFromTime" name="LotteryFromTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryFromDate.split(' ')[1]}" id="JungSiLotteryFromTime" name="LotteryFromTime" type="text" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 											<div class="col-auto gy-8 ms-n4">
 											~
@@ -127,7 +97,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryToDate.split(' ')[0]}" id="JungSiLotteryToDate" name="LotteryToDate" type="date" disabled/>
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryToDate.split(' ')[1]}" id="JungSiLotteryToTime" name="LotteryToTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryToDate.split(' ')[1]}" id="JungSiLotteryToTime" name="LotteryToTime" type="text" style="width: 135px" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 										</div>
 										<div class="row">
@@ -148,7 +118,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryPayFromDate.split(' ')[0]}" id="JungSiLotteryPayFromDate" name="LotteryPayFromDate" type="date" disabled />
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryPayFromDate.split(' ')[1]}" id="JungSiLotteryPayFromTime" name="LotteryPayFromTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryPayFromDate.split(' ')[1]}" id="JungSiLotteryPayFromTime" name="LotteryPayFromTime" type="text" style="width: 135px" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 											<div class="col-auto gy-8 ms-n4">
 											~
@@ -158,7 +128,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryPayToDate.split(' ')[0]}" id="JungSiLotteryPayToDate" name="LotteryPayToDate" type="date" disabled />
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryPayToDate.split(' ')[1]}" id="JungSiLotteryPayToTime" name="LotteryPayToTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryPayToDate.split(' ')[1]}" id="JungSiLotteryPayToTime" name="LotteryPayToTime" type="text" style="width: 135px" disabled placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 										</div>
 										<div class="row">
@@ -171,7 +141,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryAddFromDate.split(' ')[0]}" id="JungSiLotteryAddFromDate" name="LotteryAddFromDate" type="date" disabled/>
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryAddFromDate.split(' ')[1]}" id="JungSiLotteryAddFromTime" name="LotteryAddFromTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryAddFromDate.split(' ')[1]}" id="JungSiLotteryAddFromTime" name="LotteryAddFromTime" type="text" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 											<div class="col-auto gy-8 ms-n4">
 											~
@@ -181,7 +151,7 @@
 												<input class="form-control" value="${item01.jungSiLotteryAddToDate.split(' ')[0]}" id="JungSiLotteryAddToDate" name="LotteryAddToDate" type="date" disabled/>
 											</div>
 											<div class="col-auto gy-7 ml-n4">
-												<input class="form-control timepicker" value="${item01.jungSiLotteryAddToDate.split(' ')[0]}" id="JungSiLotteryAddToTime" name="LotteryAddToTime" type="text" style="width: 135px" disabled/>
+												<input class="form-control datetimepicker" value="${item01.jungSiLotteryAddToDate.split(' ')[0]}" id="JungSiLotteryAddToTime" name="LotteryAddToTime" type="text" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}' disabled/>
 											</div>
 										</div>
 									</div>
@@ -207,7 +177,7 @@
 										<input class="form-control" id="JungSi1Start" name="JungSi1Start" type="date" value="${item01.jungSi1.split('~')[0]}"/>
 									</div>
 									<div class="col-auto gy-4 ml-n4">
-										<input class="form-control timepicker" id="JungSi1STime" name="JungSi1STime" type="text" value="${item01.jungSi1STime }" style="width: 135px"  />
+										<input class="form-control datetimepicker" id="JungSi1STime" name="JungSi1STime" type="text" value="${item01.jungSi1STime }" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'/>
 									</div>
 									<div class="col-auto gy-5 ms-n4">
 									~
@@ -217,7 +187,7 @@
 										<input class="form-control" id="JungSi1End" name="JungSi1End" type="date" value="${item01.jungSi1.split('~')[1]}" />
 									</div>
 									<div class="col-auto gy-4 ml-n4">
-										<input class="form-control timepicker" id="JungSi1ETime" name="JungSi1ETime" type="text" value="${item01.jungSi1ETime }" style="width: 135px" />
+										<input class="form-control datetimepicker" id="JungSi1ETime" name="JungSi1ETime" type="text" value="${item01.jungSi1ETime }" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'/>
 									</div>
 									<font style="margin-left: 100px;">신규 : 구민(1일간 설정), 구외 : 말일까지 설정</font>
 								</div>
@@ -231,7 +201,7 @@
 										<input class="form-control" id="JungSi2Start" name="JungSi2Start" type="date" value="${item01.jungSi2.split('~')[0]}" />
 									</div>
 									<div class="col-auto gy-4 ml-n4">
-										<input class="form-control timepicker" id="JungSi2STime" name="JungSi2STime" type="text" value="${item01.jungSi2STime }" style="width: 135px" />
+										<input class="form-control datetimepicker" id="JungSi2STime" name="JungSi2STime" type="text" value="${item01.jungSi2STime }" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'/>
 									</div>
 									<div class="col-auto gy-5 ms-n4">
 									~
@@ -241,7 +211,7 @@
 										<input class="form-control" id="JungSi2End" name="JungSi2End" type="date" value="${item01.jungSi2.split('~')[1]}"  />
 									</div>
 									<div class="col-auto gy-4 ml-n4">
-										<input class="form-control timepicker" id="JungSi2ETime" name="JungSi2ETime" type="text" value="${item01.jungSi2ETime }" style="width: 135px" />
+										<input class="form-control datetimepicker" id="JungSi2ETime" name="JungSi2ETime" type="text" value="${item01.jungSi2ETime }" style="width: 135px" placeholder="hour : minute" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'/>
 									</div>
 								</div>
 								<div class="row">
@@ -357,17 +327,6 @@
 		            modifyButton.click(); // 버튼 클릭
 		        }
 		    }
-		});
-		
-		$('.timepicker').timepicker({
-		    timeFormat: 'HH:mm p',
-		    interval: 05,
-		    minTime: '00',
-		    maxTime: '23:55',
-		    startTime: '00:00',
-		    dynamic: false,
-		    dropdown: true,
-		    scrollbar: true
 		});
 		
 		function jsType1() {
@@ -522,4 +481,5 @@
 		
 	</script>
 </body>
+<%@ include file="../../include/foot.jsp" %>
 </html>

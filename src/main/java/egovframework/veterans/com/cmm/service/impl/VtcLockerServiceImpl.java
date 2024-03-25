@@ -219,4 +219,8 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	public List<Map<String, Object>> selectPlockerInfo(tblmember tblmember) {
 		return vtcLockerDAO.selectPlockerInfo(tblmember);
 	}
+	
+	public void refundcashcheck(tbluselocker tbluselocker) throws Exception {
+		vtcLockerDAO.refundcashcheck(tbluselocker);
+	}
 }

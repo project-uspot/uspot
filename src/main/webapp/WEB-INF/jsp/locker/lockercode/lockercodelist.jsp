@@ -8,10 +8,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="p-0">
 	<div class="mb-9 col-lg-6">
-		<div class="row g-2 mb-4">
+		<div class="row mb-4 justify-content-between">
 		    <div class="col-auto">
 		      <h2 class="mb-0">사물함코드 관리 </h2>
 		    </div>
+		    <div class="col-auto" style="padding-top: 5px;">
+				<button type="button" class="btn btn-info px-5"id="insertButton" onclick="openpop()">등록</button>
+				<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사물함코드 관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
+			</div>
 		</div>
 		<div class="mb-1">
 			<div class="row g-6">
@@ -48,15 +52,16 @@
 						<input type="hidden" name="isdelete" id="isdelete">
 					</div>
 				</div>
-				&emsp;&emsp;&emsp;
-				<div class="col-auto" style="padding-top: 5px;">
-					<a class="btn btn-info px-5" href="javascript:openpop()" title="등록">등록</a>
-				</div>
 			</div>
 		</div>
-		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1 ">
+		<script type="text/javascript">
+		if('${authyn.ins}' == 'N'){
+			$('#insertButton').attr('disabled','disabled');
+		}
+		</script>
+		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm table-hover fs--1 mb-1">
+				<table class="table table-sm table-hover fs--1 mb-1" id="myTable">
 					<colgroup>
 						<col style="width:100px">
 						<col style="width:80px">
@@ -142,6 +147,10 @@ function paidbodyclick(clickedRow){
 	function openpop(PLockerID) {
 		var url = "lockercodeinsert.do";
 		if(typeof PLockerID !== "undefined"){
+			
+			if('${authyn.upd}' == 'N'){
+				return false;
+			}
 			var url = "lockercodeupdate.do?PLockerID="+PLockerID;
 		}
     	var popupWidth = 500;

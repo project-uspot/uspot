@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sms">
+	<select id="munguBySitecode" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.sms_mungu">
+		select * from sms_mungu
+		where 
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+	</select>
+	<insert id="sms_munguInsert" parameterType="egovframework.veterans.com.cmm.service.vo.sms_mungu" useGeneratedKeys="true" keyProperty="Code">
+		INSERT INTO sms_mungu
+		(SiteCode,mungu)
+		values
+		(#{SiteCode},#{mungu})
+	</insert>
+	<update id="sms_munguUpdate" parameterType="egovframework.veterans.com.cmm.service.vo.sms_mungu">
+		UPDATE sms_mungu SET  
+		mungu=#{mungu}
+		WHERE 
+			Code=#{Code}
+		and SiteCode=#{SiteCode}
+	</update>
+	<update id="sms_munguRemove" parameterType="egovframework.veterans.com.cmm.service.vo.sms_mungu">
+		UPDATE sms_mungu SET  
+		IsDelete='Y'
+		WHERE 
+			Code=#{Code}
+		and SiteCode=#{SiteCode}
+	</update>
+</mapper>

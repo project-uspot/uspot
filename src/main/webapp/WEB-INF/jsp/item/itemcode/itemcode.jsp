@@ -34,12 +34,22 @@
 					</div>
 				</div>
 				<div class="col-auto" style="padding-top: 5px;">
-					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal" onclick="openModal()">등록(F2)</button>
+					<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="modal" data-bs-target="#insertModal1">등록(F2)</button>
+					<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('itemTable','강습코드관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 				</div>
 				<script type="text/javascript">
+					if('${authyn.ins}' == 'N'){
+						$('#modal').attr('disabled','disabled');
+					}
+					if('${authyn.excel}' == 'N'){
+						$('#excelButton').attr('disabled','disabled');
+					}
 					document.addEventListener('keydown', function(event) {
 						if (event.key === 'F2') {
-						// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+							if('${authyn.ins}' == 'N'){
+								return false;
+							}
+							// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
 							var button = document.getElementById('modal');
 							if (button) {
 								button.click(); // 버튼 클릭
@@ -52,10 +62,28 @@
       
 		<div class="mx-n4 px-1 mx-lg-n6 bg-white border-top border-bottom border-200 position-relative top-1" >
 			<div id="tableotherlearn" data-list='{"valueNames":["GroupName","jsType","fromDate","jungSi1","jungSi2","jungSi3","jungSi1Inlive","sortOrder", "againMonth","webYN","itemRejectCnt","monthSelNo",
-			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"],"page":5,"pagination":true}'>
-				<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-					<table class="table table-sm fs--1 mb-1 table-hover table-bordered" id="itemTable">
-						<thead class="itemcodelist">
+			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"]}'>
+				<div class="table-responsive mx-n1 px-1">
+					<table class="table table-sm fs--1 mb-1 table-hover table-bordered scrollbar" id="itemTable" style="width: 160%;">
+						<colgroup>
+							<col style="width: 3%;"><!-- 강습종목 -->
+							<col style="width: 3%;"><!-- 접수구분 -->
+							<col style="width: 7%;"><!-- 접수기간 -->
+							<col style="width: 10%;"><!-- 접수기간 -->
+							<col style="width: 10%;"><!-- 접수기간 -->
+							<col style="width: 7%;"><!-- 접수기간 -->
+							<col style="width: 4%;"><!-- 접수기간 -->
+							<col style="width: 2%;"><!-- 정렬순서 -->
+							<col style="width: 2%;"><!-- 재등록 -->
+							<col style="width: 2%;"><!-- 온라인 -->
+							<col style="width: 2%;"><!-- 등록제한 -->
+							<col style="width: 2%;"><!-- 다개월 -->
+							<col style="width: 9%;"><!-- 추첨접수기간 -->
+							<col style="width: 3%;"><!-- 추첨접수기간 -->
+							<col style="width: 8%;"><!-- 추첨접수기간 -->
+							<col style="width: 8%;"><!-- 추첨접수기간 -->
+						</colgroup>
+						<thead class="itemcodelist scrollbar">
 							<tr>
 							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="GroupName" scope="col" >강습종목</th>
 							   <th rowspan="2" class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" scope="col" data-sort="jsType" scope="col">접수구분</th>
@@ -145,11 +173,6 @@
 						<div class="col-auto d-flex">
 							<p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p>
 						</div>
-						<div class="col-auto d-flex">
-							<button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-							<ul class="mb-0 pagination"></ul>
-							<button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -162,20 +185,10 @@
 
 
 <script type="text/javascript">
-function openModal() {
-    
-   var item = $("#item").val();
-   if(item === '0') {
-      $('#modal-content').load("insertItem01.do");
-   } else if (item === '1') {
-      $('#modal-content').load("insertItem02.do");
-   } else {
-      $('#modal-content').load("insertItem03.do");
-   }
-}
-
-
 function openpop(groupID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem01.do";
 	if(typeof groupID !== "undefined"){
 		var url = "updateItem01.do?groupID="+groupID;
@@ -184,6 +197,9 @@ function openpop(groupID) {
      window.open(url, "_blank", windowFeatures);
 }
 function openpop01(subGroupID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem02.do";
 	if(typeof subGroupID !== "undefined"){
 		var url = "updateItem02.do?subGroupID="+subGroupID;
@@ -193,6 +209,9 @@ function openpop01(subGroupID) {
 }
 
 function openpop02(levelID) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem03.do";
 	if(typeof levelID !== "undefined"){
 		var url = "updateItem03.do?levelID="+levelID;
@@ -239,6 +258,7 @@ $("#item,#isdeletecheck").change(function() {
       },
       success: function(data) {
          if(item === '0') {
+        	 $('#itemTable').css('width', '160%');
             var item01 = data.item01
             var head = '<tr>'
                head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -262,12 +282,12 @@ $("#item,#isdeletecheck").change(function() {
                head += '<th class="sort board border-github align-middle pe-1 text-center" scope="col">결제기간</th>';
                head += '<th class="sort board border-github align-middle pe-1 text-center" scope="col">선착순</th>';
                head += '</tr>';
-               thead.append(head);
+				thead.append(head);
             item01.forEach(function(list) {
                var row = '<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center" id="updateTR01" ' +
         			'onclick="openpop(' + list.groupID + ')" style="cursor:pointer; >';
-               /* row += '<td class="groupName align-middle py-3 "><input type="checkbox"></td>'; */
-               row += '<td class="groupName align-middle py-3 " id="GroupName" data-item-id=' + list.groupID + '>' + list.groupName + '</td>';
+               row += '<td class="groupName align-middle py-3 "><input type="checkbox"></td>';
+               row += '<td class="groupName align-middle py-3 " id="GroupName">' + list.groupName + '</td>';
                var JSType = '';
                if(list.jsType == '0') {
                   JSType = '정시접수';
@@ -276,6 +296,8 @@ $("#item,#isdeletecheck").change(function() {
                } else if (list.jsType == '2') {
                   JSType = '기간지정'
                }
+               var groupName = list.groupName;
+               
                row += '<td class="JSType align-middle py-3 ">' + JSType + '</td>';
                var FromDate = list.fromDate
                var ToDate = list.toDate
@@ -283,6 +305,7 @@ $("#item,#isdeletecheck").change(function() {
                   FromDate = '';
                   ToDate = '';
                }
+               
                row += '<td class="inTime align-middle py-3 ">' + FromDate + ' ~ ' +  ToDate + '</td>';
                var JSi1 = list.jungSi1
                if(JSi1 === null) {
@@ -291,7 +314,21 @@ $("#item,#isdeletecheck").change(function() {
                   var js1FD = JSi1.substr(0,10)
                   var js1TD = JSi1.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js1FD +' '+ list.jungSi1STime + ' ~ ' +  js1TD +' '+  list.jungSi1ETime+ '</td>';
+               var jungSi1STime = '';
+               if(list.jungSi1STime == null || list.jungSi1STime == undefined){
+            	   jungSi1STime = '';
+               }else{
+            	   jungSi1STime = list.jungSi1STime;
+               }
+               
+               var jungSi1ETime = '';
+               if(list.jungSi1ETime == null || list.jungSi1ETime == undefined){
+            	   jungSi1ETime = '';
+               }else{
+            	   jungSi1ETime = list.jungSi1ETime;
+               }
+               
+               row += '<td class="inTime align-middle py-3 ">' + js1FD +' '+ jungSi1STime + ' ~ ' +  js1TD +' '+ jungSi1ETime + '</td>';
                var JSi2 = list.jungSi2
                if (JSi2 === null  ) {
                   JSi2 = '';
@@ -299,7 +336,22 @@ $("#item,#isdeletecheck").change(function() {
                   var js2FD = JSi2.substr(0,10)
                   var js2TD = JSi2.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js2FD +' '+ list.jungSi2STime + ' ~ ' +  js2TD +' '+ list.jungSi2ETime+ '</td>';
+               
+               var jungSi2STime = '';
+               if(list.jungSi2STime == null || list.jungSi2STime == undefined){
+            	   jungSi2STime = '';
+               }else{
+            	   jungSi2STime = list.jungSi2STime;
+               }
+               
+               var jungSi2ETime = '';
+               if(list.jungSi2ETime == null || list.jungSi2ETime == undefined){
+            	   jungSi2ETime = '';
+               }else{
+            	   jungSi2ETime = list.jungSi2ETime;
+               }
+               
+               row += '<td class="inTime align-middle py-3 ">' + js2FD +' '+ jungSi2STime + ' ~ ' +  js2TD +' '+ jungSi2ETime + '</td>';
                var JSi3 = list.jungSi3
                if(JSi3 === null) {
                   JSi3 = '';
@@ -307,7 +359,7 @@ $("#item,#isdeletecheck").change(function() {
                   var js3FD = JSi3.substr(0,10)
                   var js3TD = JSi3.substr(11,21)
                }
-               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ list.jungSi2STime + ' ~ ' +  js3TD +' '+ list.jungSi2ETime+ '</td>';
+               row += '<td class="inTime align-middle py-3 ">' + js3FD +' '+ ' ~ ' +  js3TD +' '+'</td>';
                if(list.jungSi1Inlive === null) {
                   JungSi1Inlive = "";
                } else {
@@ -372,6 +424,7 @@ $("#item,#isdeletecheck").change(function() {
                
             }) 
          } else if(item === '1') {
+			$('#itemTable').css('width', '100%');
             var item02= data.item02
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -394,6 +447,7 @@ $("#item,#isdeletecheck").change(function() {
                tbody.append(row);
             })
          } else if (item === '2') {
+			$('#itemTable').css('width', '100%');
             var item03= data.item03
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >코드</th>';
@@ -422,59 +476,48 @@ $("#item,#isdeletecheck").change(function() {
 
 
 </script>
-
-
-
-
-<div class="modal fade" id="insertModal" tabindex="-1"
+<div class="modal fade" id="insertModal1" tabindex="-1"
    data-bs-backdrop="static" aria-labelledby="insertModalLabel"
    aria-hidden="true">
    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content" id="01">
          <jsp:include page="item01insert.jsp" />
       </div>
-      <div class="modal-content" style="display: none;" id="02">
+   </div>
+</div>
+
+<div class="modal fade" id="insertModal2" tabindex="-1"
+   data-bs-backdrop="static" aria-labelledby="insertModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content" id="02">
          <jsp:include page="item02insert.jsp" />
       </div>
-      <div class="modal-content" style="display: none;" id="03">
+   </div>
+</div>
+
+<div class="modal fade" id="insertModal3" tabindex="-1"
+   data-bs-backdrop="static" aria-labelledby="insertModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content" id="03">
          <jsp:include page="item03insert.jsp" />
       </div>
    </div>
 </div>
 
 <script>
-
-	/* 종목 반명 단계 등록 */
-    // select 요소 가져오기
-    var selectElement= 0;
     var selectedValue = 0;
-
-    selectElement = document.getElementById("item");
-    var div01 = document.getElementById("01");
-    if (selectedValue === "0") {
-         div01.style.display = "block";
-     }
-    var div02 = document.getElementById("02");
-    var div03 = document.getElementById("03");
-
-
-    // select 요소의 값이 변경될 때 실행할 함수 정의
-    selectElement.addEventListener("change", function () {
-        // 선택된 옵션의 값을 가져와서 alert 창에 표시
-        selectedValue = selectElement.value;
-        div01.style.display = "none";
-        div02.style.display = "none";
-        div03.style.display = "none";
-
+    $('#item').on('change', function() {
+    	selectedValue = $(this).val();
+    	var modal = $('#modal');
+        modal.removeAttr('data-bs-target');
         if (selectedValue === "0") {
-            div01.style.display = "block";
+        	modal.attr('data-bs-target','#insertModal1');
         } else if (selectedValue === "1") {
-            div02.style.display = "block";
+        	modal.attr('data-bs-target','#insertModal2');
         } else if (selectedValue === "2") {
-            div03.style.display = "block";
-        } 
+        	modal.attr('data-bs-target','#insertModal3');
+        }
     });
 </script>
-
-
-

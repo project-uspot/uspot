@@ -147,4 +147,8 @@ public class VtcUserServiceImpl extends EgovAbstractServiceImpl implements VtcUs
 	public List<TblAuthuserGroup> tblauthusergroupbyusergroup(TblAuthuserGroup tblAuthuserGroup) throws Exception {
 		return userDAO.tblauthusergroupbyusergroup(tblAuthuserGroup);
 	}
+	@Override
+	public TblAuthuserGroup tblauthusergroupBypgmIDAndUserGroupID(TblAuthuserGroup tblAuthuserGroup) throws Exception {
+		return userDAO.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+	}
 }

@@ -196,7 +196,7 @@
                       </c:if>
                       <c:if test="${value41 eq true}">
                       <li class="nav-item">
-                      	<a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
+                      	<a class="nav-link dropdown-indicator" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
                           <div class="d-flex align-items-center">
                             <div class="dropdown-indicator-icon"></div><span class="nav-link-text">강습반 정원관리</span>
                           </div>
@@ -205,7 +205,7 @@
                       </c:if>
                       <c:if test="${value39 eq true}">
                       <li class="nav-item">
-                      	<a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
+                      	<a class="nav-link dropdown-indicator" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
                           <div class="d-flex align-items-center">
                             <div class="dropdown-indicator-icon"></div><span class="nav-link-text">강사배정관리</span>
                           </div>
@@ -214,7 +214,7 @@
                       </c:if>
                       <c:if test="${value40 eq true}">
                       <li class="nav-item">
-                      	<a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
+                      	<a class="nav-link dropdown-indicator" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
                           <div class="d-flex align-items-center">
                             <div class="dropdown-indicator-icon"></div><span class="nav-link-text">강습반별 재등록 대상현황</span>
                           </div>
@@ -223,7 +223,7 @@
                       </c:if>
                       <c:if test="${value42 eq true}">
                       <li class="nav-item">
-                      	<a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
+                      	<a class="nav-link dropdown-indicator" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="true" aria-controls="lesson">
                           <div class="d-flex align-items-center">
                             <div class="dropdown-indicator-icon"></div><span class="nav-link-text">휴관일자 관리</span>
                           </div>
@@ -321,7 +321,7 @@
 	                      </li>
                       </c:if>
                       <c:if test="${value26 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">회원카드발급현황</span>
                           </div>
                         </a>
@@ -335,63 +335,63 @@
                       </li>
                       </c:if>
                       <c:if test="${value28 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강습반 일괄변경</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value30 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강습반 이월관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value29 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">회원상담현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value31 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">회원정보동의관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value131 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대기자관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value132 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대기자현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value133 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대기자강좌별현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value134 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대기자추첨기준정보</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value135 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대기자추첨</span>
                           </div>
                         </a>
@@ -495,7 +495,7 @@
                       </li>
                       </c:if>
                       <c:if test="${value33 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">입장현황</span>
                           </div>
                         </a>
@@ -544,14 +544,14 @@
                       </li>
                       </c:if>
                       <c:if test="${value35 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">일일입장 번호순출력</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value36 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">쿠폰 관리</span>
                           </div>
                         </a>
@@ -620,7 +620,7 @@
 
 	                   		<c:if test="${list.pgmPKID == 89}">
 	                   			<li class="nav-item">
-	                   				<a class="nav-link" href="documentation/customization/dark-mode.html" data-bs-toggle="" aria-expanded="false">
+	                   				<a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           				<div class="d-flex align-items-center">
                           					<span class="nav-link-text">사물함 이용현황</span>
                           				</div>
@@ -630,7 +630,7 @@
 
 	                   		<c:if test="${list.pgmPKID == 90}">
 	                   			<li class="nav-item">
-	                   				<a class="nav-link" href="documentation/customization/plugin.html" data-bs-toggle="" aria-expanded="false">
+	                   				<a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
 	                         			<div class="d-flex align-items-center">
 	                         				<span class="nav-link-text">사물함 보증금내역</span>
 	                         			</div>
@@ -640,7 +640,7 @@
 
 	                   		<c:if test="${list.pgmPKID == 91}">
 	                   			<li class="nav-item">
-	                   				<a class="nav-link" href="documentation/customization/plugin.html" data-bs-toggle="" aria-expanded="false">
+	                   				<a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
 			                          <div class="d-flex align-items-center">
 			                          	<span class="nav-link-text">사물함 이용내역</span>
 			                          </div>
@@ -701,133 +701,133 @@
                   <div class="parent-wrapper label-1">
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="rent">
                     <c:if test="${value95 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-accordion.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/rentF.do" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value92 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관코드관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value94 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관기간관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value93 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관-휴관관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value97 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관-공휴일관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value98 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관-기타금액관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value96 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관환불/취소·정지</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value110 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value99 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관매출현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value100 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관환불현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value101 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관미납현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value105 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관설비현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value106 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관불허가현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value102 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관추첨</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value103 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관추첨자현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value104 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관추첨현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value107 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관팀 관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value108 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">대관팀원 관리</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value109 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">미사용대관현황</span>
                           </div>
                         </a>
@@ -905,7 +905,7 @@
                       </li>
                       </c:if>
                       <c:if test="${value46 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강좌별 현회원명부</span>
                           </div>
                         </a>
@@ -926,70 +926,70 @@
                       </li>
                       </c:if>
                       <c:if test="${value49 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강사별출석부</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value50 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">수업일지</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value52 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">정기/반변경 상세내역</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value53 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">미방문회원현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value54 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">휴회관련회원현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value55 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">환불대기자현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value56 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">접수현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value51 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">실시간접수현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value57 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">종목별월별회원현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value58 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">재등록 제한 현황</span>
                           </div>
                         </a>
@@ -1056,154 +1056,154 @@
                       </li>
                       </c:if>
                       <c:if test="${value61 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">매출일보</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value63 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">일일마감</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value85 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강사료산정</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value64 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">미납자현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value79 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">환불현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value69 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">카드결제처리현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value68 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">강습매출조정</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value83 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">현금영수증승인현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value70 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">월별 종목별 가입통계</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value71 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">월별 종목별 가입금액통계</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value72 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">수납자별 입금현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value62 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">일일입장 판매내역</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value73 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">일일업장 수입금</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value65 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">일일입장 매출현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value74 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">품목별 매출분포현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value75 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">월별 일일운영현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value76 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">분기별 연간수입내역</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value77 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">연도별 수입내역</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value78 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">수강료 납입영수증</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value80 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">할인</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value82 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">기타비용 매출현황</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value86 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">제로페이 매출현황</span>
                           </div>
                         </a>
@@ -1253,14 +1253,14 @@
                   <div class="parent-wrapper label-1">
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="sms">
                     <c:if test="${value59 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-accordion.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" href="javascript:void(0);" data-bs-toggle="" aria-expanded="false" onclick="SendSMSF()">
                           <div class="d-flex align-items-center"><span class="nav-link-text">SMS보내기</span>
                           </div>
                         </a>
                       </li>
                       </c:if>
                       <c:if test="${value60 eq true}">
-                      <li class="nav-item"><a class="nav-link" href="pages/faq/faq-tab.html" data-bs-toggle="" aria-expanded="false">
+                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false">
                           <div class="d-flex align-items-center"><span class="nav-link-text">SMS전송내역</span>
                           </div>
                         </a>
@@ -1270,6 +1270,24 @@
                   </div>
                 </div>
               </li>
+              <script type="text/javascript">
+				
+              var myPopup2;
+              function SendSMSF() {
+	           	  var url = 'SendSMSF.do';
+	                 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1300,height=825";
+	                 if (myPopup2 === undefined || myPopup2.closed) {
+	                	 myPopup2 = window.open(url, "_blank", windowFeatures);
+	                 } else {
+	                	 myPopup2.focus();
+	                 }
+	                 document.addEventListener('click', function() {
+	                     if (myPopup2 && !myPopup2.closed) {
+	                    	 myPopup2.focus();
+	                     }
+	               	});
+			  }
+			</script>
               <!-- 기초관리 -->
               <c:choose>
 			  <c:when test="${empty sessiontblAuthuserGroups}">
@@ -1363,7 +1381,7 @@
                       	</c:if>
                       	<c:if test="${value3 eq true}">
 	                      <li class="nav-item">
-	                      	<a class="nav-link" href="${pageContext.request.contextPath}/selecSitecode.do" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
+	                      	<a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
 	                          <div class="d-flex align-items-center">
 	                          	<span class="nav-link-text">프로그램그룹관리</span>
 	                          </div>
@@ -1372,7 +1390,7 @@
                       	</c:if>
                       	<c:if test="${value4 eq true}">
 	                      <li class="nav-item">
-	                      	<a class="nav-link" href="${pageContext.request.contextPath}/selecSitecode.do" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
+	                      	<a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
 	                          <div class="d-flex align-items-center">
 	                          	<span class="nav-link-text">프로그램관리</span>
 	                          </div>
@@ -1434,7 +1452,7 @@
 	                      </li>
                       </c:if>
                       <c:if test="${value24 eq true}">
-	                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/selectBaseList.do" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
+	                      <li class="nav-item"><a class="nav-link" onclick="alert('준비중입니다.');" data-bs-toggle="" aria-expanded="false" aria-controls="basics">
 	                          <div class="d-flex align-items-center"><span class="nav-link-text">관리자 수정기능</span></div>
 	                        </a>
 	                      </li>
@@ -1469,7 +1487,7 @@
               </div>
             </a>
           </div>
-          <%-- <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
+           <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
             <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
               <input class="form-control search-input fuzzy-search rounded-pill form-control-sm" type="search" placeholder="Search..." aria-label="Search" data-bs-toggle="tooltip" data-bs-placement="right" title="검색" />
               <span class="fas fa-search search-box-icon"></span>
@@ -1578,7 +1596,7 @@
                 </div>
               </div>
             </div>
-          </div> --%>
+          </div> 
           <ul class="navbar-nav navbar-nav-icons flex-row">
             <li class="nav-item">
               <div class="theme-control-toggle fa-icon-wait px-2">

@@ -86,4 +86,6 @@ public interface VtcLockerService {
 	void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception;
 
 	List<Map<String, Object>> selectPlockerInfo(tblmember tblmember);
+	
+	void refundcashcheck(tbluselocker tbluselocker)throws Exception;
 }

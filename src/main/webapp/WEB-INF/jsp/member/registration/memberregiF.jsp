@@ -303,10 +303,32 @@
 					    			<button class="btn btn-secondary" type="button" onclick="location.href='membermove?MemberID='+${tblmember.memberID}+'&movetype=plus'"><span data-feather="chevron-right"></span></button>
 					    			<button class="btn btn-secondary" type="button" onclick="location.href='membermove?movetype=plus&move=end'"><span data-feather="chevrons-right"></span></button>
 				  				</div> --%>
-                                <button class="btn btn-info" type="button" onclick="location.href='memberinsert'">신규(F2)</button>
-                                <button class="btn btn-warning me-1 mb-1" type="button" id="updatebutton">수정(F3)</button>
+				  				<c:choose>
+				  					<c:when test="${authyn.ins == 'Y'}">
+										<button class="btn btn-info" type="button" onclick="location.href='memberinsert'">신규(F2)</button>					  				
+				  					</c:when>
+				  					<c:otherwise>
+				  						<button class="btn btn-info" type="button" onclick="location.href='memberinsert'" disabled="disabled">신규(F2)</button>
+				  					</c:otherwise>
+				  				</c:choose>
+				  				<c:choose>
+				  					<c:when test="${authyn.upd == 'Y'}">
+										<button class="btn btn-warning me-1 mb-1" type="button" id="updatebutton">수정(F3)</button>					  				
+				  					</c:when>
+				  					<c:otherwise>
+				  						<button class="btn btn-warning me-1 mb-1" type="button" id="updatebutton" disabled="disabled">수정(F3)</button>
+				  					</c:otherwise>
+				  				</c:choose>
                                 <button class="btn btn-success me-1 mb-1" type="submit" disabled="disabled" id="savebutton">저장(F4)</button>
-                                <button class="btn btn-danger me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="deletebutton"><span class="fa-solid fa-trash-can me-2"></span>탈회(F6)</button>
+                                <c:choose>
+				  					<c:when test="${authyn.del == 'Y'}">
+										<button class="btn btn-danger me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="deletebutton"><span class="fa-solid fa-trash-can me-2"></span>탈회(F6)</button>					  				
+				  					</c:when>
+				  					<c:otherwise>
+				  						<button class="btn btn-danger me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="deletebutton" disabled="disabled"><span class="fa-solid fa-trash-can me-2"></span>탈회(F6)</button>
+				  					</c:otherwise>
+				  				</c:choose>
+                                
                                 <button class="btn btn-secondary me-1 mb-1" type="button" onclick="membercard()"><span class="fa-solid far fa-address-card me-2"></span>카드발급(F7)</button>
                             </div>
                             <script type="text/javascript">
@@ -332,7 +354,7 @@
                                             <div class="avatar avatar-5xl ms-3" id="imagediv">
                                             	<c:choose>
                                             		<c:when test="${base64Image == null || base64Image == ''}">
-                                            			<img class="rounded-circle" id="memberimage" src="${pageContext.request.contextPath}/new_lib/assets/img/memberimage/uspot.jpg"/>
+                                            			<img class="rounded-circle" id="memberimage" src="${pageContext.request.contextPath}/files/member/uspot.jpg"/>
                                             		</c:when>
                                             		<c:otherwise>
                                             			<img class="rounded-circle" id="memberimage" src="data:image/jpeg;base64,${base64Image}" />
@@ -446,7 +468,7 @@
                                 	        		const newImage = $("<img>")
                                     				.addClass("rounded-circle")
                                     				.attr({
-                                    					src: '${pageContext.request.contextPath}/new_lib/assets/img/memberimage/uspot.jpg',
+                                    					src: '${pageContext.request.contextPath}/files/member/uspot.jpg',
                                     					id: "memberimage"
                                     				});
                                     			$("#memberimage").remove();
@@ -462,44 +484,44 @@
                                     
                                     $("#imageInput").change(function() {
                                     	const fileInput = this;
-                                    	if (fileInput.files && fileInput.files[0]) {
-                                    		const reader = new FileReader();
+                                    	
+                                   		const formData = new FormData();
+                                   		formData.append('imageInput', $('#imageInput').get(0).files[0]);
+                                   		formData.append('MemberID', $('#memberID').val());
+                                   		
+                                   		$.ajax({
+                                   	        type: "POST", 
+                                   	        url: "MemberImageChange", 
+                                   	        data: formData,
+                                   	        processData: false,
+                                   	        contentType: false,
+                                   	        success: function(data) {
+                                   	        	if(data == '0'){
+                                   	        		alert('세션이 만료되었습니다.로그인해주세요.');
+                                   	        		window.location.reload();
+                                   	        	}else{
+                                   	        		if (fileInput.files && fileInput.files[0]) {
+                                                		const reader = new FileReader();
 
-                                    		reader.onload = function(e) {
-                                    			const newImage = $("<img>")
-                                    				.addClass("rounded-circle")
-                                    				.attr({
-                                    					src: e.target.result,
-                                    					id: "memberimage"
-                                    				});
-                                    			$("#memberimage").remove();
-                                    			$("#imagediv").append(newImage);
-                                    		};
-                                    		reader.readAsDataURL(fileInput.files[0]);
-                                    		
-                                    		const formData = new FormData();
-                                    		formData.append('imageInput', $('#imageInput').get(0).files[0]);
-                                    		formData.append('MemberID', $('#memberID').val());
-                                    		
-                                    		$.ajax({
-                                    	        type: "POST", 
-                                    	        url: "MemberImageChange", 
-                                    	        data: formData,
-                                    	        processData: false,
-                                    	        contentType: false,
-                                    	        success: function(data) {
-                                    	        	if(data == '0'){
-                                    	        		alert('세션이 만료되었습니다.로그인해주세요.');
-                                    	        		window.location.reload();
-                                    	        	}
-                                    	        	
-                                    	        },
-                                    	        error: function(xhr, status, error) {
-                                    	       	 console.log("Status: " + status);
-                                    	         console.log("Error: " + error);
-                                    	        }
-                                    		});
-                                    	}
+                                                		reader.onload = function(e) {
+                                                			const newImage = $("<img>")
+                                                				.addClass("rounded-circle")
+                                                				.attr({
+                                                					src: e.target.result,
+                                                					id: "memberimage"
+                                                				});
+                                                			$("#memberimage").remove();
+                                                			$("#imagediv").append(newImage);
+                                                		};
+                                                		reader.readAsDataURL(fileInput.files[0]);
+                                                	}
+                                   	        	}
+                                   	        },
+                                   	        error: function(xhr, status, error) {
+                                   	       	 console.log("Status: " + status);
+                                   	         console.log("Error: " + error);
+                                   	        }
+                                   		});
                                     });
                                     </script>
                                     <div class="d-flex flex-between-center border-top border-dashed border-300 pt-4">
@@ -1029,10 +1051,18 @@
                     document.addEventListener('keydown', function(event) {
                     	if (event.keyCode === 113) {
                     		//f2
+                    		
+                    		if('${authyn.ins}' == 'N'){
+                    			return false;
+                    		}
+                    		
                     		location.href='memberinsert';
                         }
                     	if (event.keyCode === 114) {
                     		//f3
+                    		if('${authyn.upd}' == 'N'){
+                    			return false;
+                    		}
                     		$('#updatebutton').trigger('click');
                         }
                     	if (event.keyCode === 115) {
@@ -1040,6 +1070,10 @@
                     		$('#savebutton').trigger('click');
                         }
                     	if (event.keyCode === 117) {
+                    		
+                    		if('${authyn.del}' == 'N'){
+                    			return false;
+                    		}
                     		//f6
                     		$('#deletebutton').trigger('click');
                         }

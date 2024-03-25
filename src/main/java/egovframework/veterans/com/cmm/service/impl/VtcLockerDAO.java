@@ -173,4 +173,8 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	public List<Map<String, Object>> selectPlockerInfo(tblmember tblmember) {
 		return selectList("locker.selectPlockerInfo",tblmember);
 	}
+	
+	public void refundcashcheck(tbluselocker tbluselocker)throws Exception{
+		update("locker.refundcashcheck",tbluselocker);
+	}
 }

@@ -9,6 +9,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.PGM;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
 import egovframework.veterans.com.cmm.service.vo.tblCode;
+import egovframework.veterans.com.cmm.service.vo.tblsite_id;
 
 @Repository("VtcDAO")
 public class VtcDAO extends EgovComAbstractDAO{
@@ -51,5 +52,9 @@ public class VtcDAO extends EgovComAbstractDAO{
 
 	public Map<String, Object> selectSiteIdSet(String siteCode) {
 		return selectOne("frame.selectSiteIdSet",siteCode);
+	}
+	
+	public tblsite_id tblsite_idBySiteCode(String SiteCode)throws Exception{
+		return selectOne("frame.tblsite_idBySiteCode",SiteCode);
 	}
 }

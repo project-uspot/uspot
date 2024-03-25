@@ -76,7 +76,7 @@
 					<a class="btn btn-info px-5" href="javascript:Yremoveall()" style="position: absolute; margin-top: -41px;margin-left: 500px;">선택해제</a>
 					<a class="btn btn-info px-5" href="javascript:authYselectall()" style="position: absolute; margin-top: -41px;margin-left: 650px;">권한전체선택</a>
 					<a class="btn btn-info px-5" href="javascript:authYremoveall()" style="position: absolute; margin-top: -41px;margin-left: 830px;">권한선택해제</a>
-					<div style="height: 350px;overflow-y: auto;">
+					<div>
 						<table class="table table-sm fs--1 mb-1">
 							<thead>
 								<tr>
@@ -93,10 +93,25 @@
 									<th class="sort board border-github align-middle pe-1" scope="col">엑셀</th>
 									<th class="sort board border-github align-middle pe-1" scope="col">인쇄</th>
 								</tr>
-							</thead>					
+							</thead>
+						</table>	
+					</div>	
+					<div style="height: 350px;overflow-y: auto;">
+						<table class="table table-sm fs--1 mb-1">
+							<colgroup>
+        						<col style="width: 9%;">
+						        <col style="width: 15%;">
+						        <col style="width: 20%;">
+						        <col style="width: 8%;">
+						        <col style="width: 8%;">
+						        <col style="width: 8%;">
+						        <col style="width: 8%;">
+						        <col style="width: 8%;">
+						        <col style="width: 8%;">
+    						</colgroup>
 							<tbody class="authylist">
 							<c:forEach items="${arr_item4}" var="mItem4">
-								<tr>
+								<tr >
 									<td >
 										<input type="checkbox" class="form-check-input" id="Yauth" name="Yauth">
 										<input type="hidden" value="${mItem4.pkid}" class="pkid">
@@ -139,7 +154,7 @@
 					<a class="btn btn-info px-5" href="javascript:revauthority()" style="position: absolute; margin-top: -41px;margin-left: 500px;">권한회수</a>
 					<a class="btn btn-info px-5" href="javascript:Nselectall()" style="position: absolute; margin-top: -41px;margin-left: 650px;">전체선택</a>
 					<a class="btn btn-info px-5" href="javascript:Nremoveall()" style="position: absolute; margin-top: -41px;margin-left: 800px;">선택해제</a>
-					<div style="height: 184px;overflow-y: auto;">
+					<div>
 						<table class="table table-sm fs--1 mb-1">
 							<thead>
 								<tr>
@@ -148,10 +163,19 @@
 									<th rowspan="2" class="sort board border-github align-middle pe-1" scope="col">프로그램명</th>
 								</tr>
 							</thead>
+						</table>
+					</div>
+					<div style="height: 184px;overflow-y: auto;">
+						<table class="table table-sm fs--1 mb-1">
+							<colgroup>
+        						<col style="width: 19%;">
+						        <col style="width: 40%;">
+						        <col style="width: 50%;">
+    						</colgroup>
 							<tbody class="authnlist">
 							<c:forEach items="${arr_item3}" var="Item3">
 								<tr>
-									<td >
+									<td>
 										<input type="checkbox" class="form-check-input" id="authN">
 									</td>
 									<td>
@@ -673,7 +697,6 @@ function authYremoveall() {
 	for (var i = 0; i < checkboxes.length; i++) {
 		checkboxes[i].checked = false;
 	}
-	alert(rememberuserGroupID);
 	
     $.ajax({
         type: "POST", // 또는 "POST", 서버 설정에 따라 다름

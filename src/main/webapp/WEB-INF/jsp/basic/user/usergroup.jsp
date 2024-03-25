@@ -17,22 +17,34 @@
 				<div class="col-auto scrollbar overflow-hidden-y flex-grow-1">
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-info px-5" href="${pageContext.request.contextPath}/insertUserGroup.do" id="insert" title="신규">신규(F2)</a>
+					<button class="btn btn-info px-5" onclick="location.href='insertUserGroup.do'" id="insert" title="신규">신규(F2)</button>
+					<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사용자 그룹관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 					<script>
 						// 키보드 이벤트 감지
+						if('${authyn.excel}' == 'N'){
+							$('#excelButton').attr('disabled','disabled');
+						}
 						document.addEventListener('keydown', function(event) {
+							if('${authyn.ins}' == 'N'){
+								return false;
+							}
+							
 							if (event.key === 'F2') { // F2 키를 눌렀을 때
 								event.preventDefault(); // 기본 동작 방지
-								window.location.href = document.getElementById('insert').getAttribute('href'); // 링크 주소로 이동
+								location.href='insertUserGroup.do';
 							}
 						});
+						
+						if('${authyn.ins}' == 'N'){
+							$('#insert').attr('disabled','disabled');
+						}
 					</script>
 				</div>
 			</div>
         </div>
         <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1">
+				<table class="table table-sm fs--1 mb-1" id="myTable">
 					<colgroup>
 						<col style="width:50px">
 						<col style="width:50px">
@@ -44,10 +56,10 @@
 						</tr>
 					</thead>
 					<tbody class="list">
-						<c:forEach items="${list }" var="list">
+						<c:forEach items="${list}" var="list">
 							<tr class="hover-actions-trigger btn-reveal-trigger position-static text-center">
 								<td class="userGroupName align-middle py-2 ">
-									<form action="<c:url value='/UserGroupUpd.do'/>" method="post">
+									<form action="<c:if test="${authyn.upd eq 'Y'}"><c:url value='/UserGroupUpd.do'/></c:if>" method="post">
 										<input type="hidden" name="SiteCode" value="${list.siteCode }">
 										<input type="hidden" name="UserGroupID" value="${list.userGroupID }">
 										<input type="submit" class="fw-bold" value="<c:out value="${list.userGroupName }"/>" style="border: 0px solid #e0e0e0; backGround-color: white;"> 
@@ -59,8 +71,8 @@
 							</tr>
 						</c:forEach>
 					</tbody>
-					
 				</table>
+				
 				<%-- <div class="form-actions">
 					<a class="btn" href="${pageContext.request.contextPath}/main.do" style="float: right; margin: 0 0 0 3px;" title="목록">목록</a><!-- 목록 -->
 					<a class="btn btn-info" href="${pageContext.request.contextPath}/insertUserGroup.do" style="float: right; margin: 0 0 0 3px;" title="등록">등록</a><!-- 등록 -->

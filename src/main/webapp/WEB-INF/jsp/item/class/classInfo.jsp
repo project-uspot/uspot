@@ -19,24 +19,24 @@
 		<form name="selectForm" id="DocumentForm" action="${pageContext.request.contextPath}/classinfo.do">
 			<div class="mb-1">
 				<div class="row g-6">
-					<div class="card h-100 col-md-9">
+					<div class="card h-100">
 						<div class="card-body">
-							<div class="row g-3">
-								<div class="col-sm-3 col-md-2 mb-2">
+							<div class="row justify-content-between">
+								<div class="col-md-1">
 									<select class="form-select" id="IsUse" name="IsUse" >
 										<option value="1">사용</option>
 										<option value="2">사용안함</option>
 										<option value="3">삭제</option>
 									</select>
 								</div>
-								<div class="col-sm-3 col-md-2 mb-2">
+								<div class="col-md-1">
 									<select class="form-select" id="Type" name="Type" >
 										<option value="0">전체</option>
 										<option value="1">일반</option>
 										<option value="2">특강</option>
 									</select>
 								</div>
-								<div class="col-sm-3 col-md-2 mb-2">
+								<div class="col-md-1">
 									<select class="form-select" id="findcategory" name="findcategory" >
 										<option value="0" >종목</option>
 										<option value="1">강습반명</option>
@@ -55,9 +55,19 @@
 								<div class="col-auto">
 									<button class="btn btn-outline-info" type="button" id="findbutton" onclick="finditem()" >조회(F3)</button>
 								</div>
+								<div class="col-auto">
+									<button class="btn btn-primary" type="button"
+										data-bs-toggle="modal" id="modal" data-bs-target="#insertModal"
+										onclick="openModal()">등록(F2)</button>
+								</div>
+								<div class="col-auto">
+					            	<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','강습반 정보관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
+					            </div>
 								
 								<script type="text/javascript">
-									
+									if('${authyn.excel}' == 'N'){
+										$('#excelButton').attr('disabled','disabled');
+									}
 									/* $('#findbutton').click(function() { */
 										function finditem() {
 											IsUse = document.getElementById('IsUse').value;
@@ -196,15 +206,17 @@
 										
 								/* }); */
 							</script>
-								<div class="col-auto">
-									<button class="btn btn-primary" type="button"
-										data-bs-toggle="modal" id="modal" data-bs-target="#insertModal"
-										onclick="openModal()">등록(F2)</button>
-								</div>
+								
 								<script type="text/javascript">
+									if('${authyn.ins}' == 'N'){
+										$('#modal').attr('disabled','disabled');
+									}
 									document.addEventListener('keydown', function(event) {
 										if (event.key === 'F2') {
 										// F2 키를 눌렀을 때 버튼을 찾아 클릭 이벤트를 발생시킵니다.
+											if('${authyn.ins}' == 'N'){
+												return false;
+											}
 											var button = document.getElementById('modal');
 											if (button) {
 												button.click(); // 버튼 클릭
@@ -212,6 +224,7 @@
 										}
 									});
 								</script>
+								
 							</div>
 						</div>
 					</div>
@@ -228,7 +241,7 @@
 						</form>
 					</div> -->
 					<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-						<table class="table table-sm fs--1 mb-1 table-hover table-bordered">
+						<table class="table table-sm fs--1 mb-1 table-hover table-bordered" id="myTable">
 							<thead>
 								<tr>
 									<th class="white-space-nowrap sort fs--1 align-middle ps-0 text-center" data-sort="ItemCode" scope="col">코드</th>
@@ -422,13 +435,16 @@
 
 <script>
 function openModal() {
-	   var item = $("#item").val();
-	   if(item === '1') {
-	      $('#modal-content').load("insertClassInfo.do");
-	   }
-	}
+   var item = $("#item").val();
+   if(item === '1') {
+      $('#modal-content').load("insertClassInfo.do");
+   }
+}
 	
 function openpop(ItemCode) {
+	if('${authyn.upd}' == 'N'){
+		return false;
+	}
 	var url = "updateItem.do";
 	if(typeof ItemCode !== "undefined"){
 		var url = "updateItem.do?ItemCode="+ItemCode;
@@ -436,10 +452,6 @@ function openpop(ItemCode) {
 	 var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=600";
      window.open(url, "_blank", windowFeatures);
 }
-
-
-
-
 
 function goPage() {
 	var frm    = document.selectForm;
@@ -501,11 +513,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);
@@ -641,11 +653,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);
@@ -781,11 +793,11 @@ $("#IsUse,#Type").change(function() {
                      row += '<td class="WeekName align-middle white-space-nowrap ">' + list.weekName + '</td>';
                      row += '<td class="FromTime align-middle white-space-nowrap ">' + list.fromTime + '</td>';
                      row += '<td class="ToTime align-middle white-space-nowrap ">' + list.toTime + '</td>';
-                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + list.defPrice + '</td>';
-                     row += '<td class="Price1 align-middle white-space-nowrap ">' + list.price1 + '</td>';
-                     row += '<td class="Price2 align-middle white-space-nowrap ">' + list.price2 + '</td>';
-                     row += '<td class="Price3 align-middle white-space-nowrap ">' + list.price3 + '</td>';
-                     row += '<td class="Price4 align-middle white-space-nowrap ">' + list.price4 + '</td>';
+                     row += '<td class="DefPrice align-middle white-space-nowrap ">' + formatNumberWithCommas(list.defPrice) + '</td>';
+                     row += '<td class="Price1 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price1) + '</td>';
+                     row += '<td class="Price2 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price2) + '</td>';
+                     row += '<td class="Price3 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price3) + '</td>';
+                     row += '<td class="Price4 align-middle white-space-nowrap ">' + formatNumberWithCommas(list.price4) + '</td>';
                      row += '<td class="OffMax align-middle white-space-nowrap ">' + list.offMax + '</td>';
                      row += '<td class="OnMax align-middle white-space-nowrap ">' + list.onMax + '</td>';
                      var sum = parseInt(list.offMax) + parseInt(list.onMax);
