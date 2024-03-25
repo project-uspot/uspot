@@ -88,7 +88,7 @@ button {
 				<input type="number" name="pLockerNO" style="margin-top: 10px;" id="plockerno">
 			</div>
 			<div>
-				<label for="sortOrder" style="font-size: 16px;">순위</label> 
+				<label for="sortOrder" style="font-size: 16px;">순서</label> 
 				<input type="number" name="sortOrder" style="margin-top: 10px;" value="${sortorder}">
 			</div>
 			<div>

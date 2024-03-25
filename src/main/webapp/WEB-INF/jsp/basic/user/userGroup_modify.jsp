@@ -107,6 +107,14 @@ function fn_egov_delete_article(form) {
 						<input type="hidden" name="UserGroupID" value="${list.userGroupID }">
 					</form>
 				</div>
+				<script type="text/javascript">
+				if('${authyn.upd}' == 'N'){
+					$('#modify').attr('disabled','disabled');
+				}
+				if('${authyn.del}' == 'N'){
+					$('#delete').attr('disabled','disabled');
+				}
+				</script>
 			</div>
 		</div>
 	</div>

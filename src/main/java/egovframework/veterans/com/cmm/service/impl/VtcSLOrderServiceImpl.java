@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
@@ -67,9 +69,20 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 	public int getItemSortOrder(String SiteCode) throws Exception {
 		return slOrderDAO.getItemSortOrder(SiteCode);
 	}
+
 	@Override
 	public List<SLOrderItem> listGroupItem(Map<String, Object> pkid) throws Exception {
 		return slOrderDAO.listGroupItem(pkid);
+	}
+	@Override
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public int getOrderItemJungwon(Map<String, Object> setSql) {
+		return slOrderDAO.getOrderItemJungwon(setSql);
+	}
+	@Override
+	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	public Map<String, Object> getItemJungwon(Map<String, Object> setSql) {
+		return slOrderDAO.getItemJungwon(setSql);
 	}
 
 	

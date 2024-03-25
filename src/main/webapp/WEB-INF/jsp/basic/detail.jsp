@@ -137,7 +137,12 @@ function fn_egov_delete_article(form) {
 				</div>
 				<div class="col-auto">
 					<form action="siteModify.do?SiteCode=${sitecode.siteCode}" method="post">
-						<input type="submit" class="btn btn-info px-5" value="수정" /><!-- 수정 -->
+						<input type="submit" class="btn btn-info px-5" id="insertButton" value="수정"/><!-- 수정 -->
+						<script type="text/javascript">
+						if('${authyn.ins}' == 'N'){
+							$('#insertButton').attr('disabled','disabled');
+						}
+						</script>
 					</form>
 				</div>
 				<div class="col-auto">
@@ -146,6 +151,11 @@ function fn_egov_delete_article(form) {
 						<input type="hidden" name="SiteCode" value="${sitecode.siteCode }">
 					</form>
 				</div>
+				<script type="text/javascript">
+				if('${authyn.del}' == 'N'){
+					$('#delete').attr('disabled','disabled');
+				}
+				</script>
 			</div>
 		</div>
 	</div>

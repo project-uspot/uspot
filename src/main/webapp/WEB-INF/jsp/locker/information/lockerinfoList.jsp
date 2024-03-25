@@ -15,23 +15,37 @@
          	</c:forEach>
          	<div class="col-auto">
          		<button class="btn btn-outline-primary" type="button" onclick="location.href='lockerinfo.do'">조회</button>
-         		<button class="btn btn-info" type="button" onclick="create(${maxSort+10})">신규</button>
-				<button class="btn btn-warning" type="button" onclick="merge()">수정</button>
-				<button class="btn btn-danger" type="button" onclick="remove()">삭제</button>
-				<button class="btn btn-success" type="button">엑셀로 저장</button>
+         		<button class="btn btn-info" id="insertButton" type="button" onclick="create(${maxSort+10})">신규</button>
+				<button class="btn btn-warning" id="updateButton" type="button" onclick="merge()">수정</button>
+				<button class="btn btn-danger" id="removeButton" type="button" onclick="remove()">삭제</button>
+				<button class="btn btn-success" type="button" id="excelButton" onclick="fnExcelReport('myTable','사물함 분류정보 관리')"><span class="far fa-file-excel"></span>&emsp;엑셀로 저장</button>
 				<button class="btn btn-secondary" type="button" onclick="location.href='lockerDeleteinfo.do'">삭제데이터 보기</button>
        		</div>
    		</div>
    	</div>
 </div>
+<script type="text/javascript">
+if('${authyn.ins}' == 'N'){
+	$('#insertButton').attr('disabled','disabled');
+}
+if('${authyn.upd}' == 'N'){
+	$('#updateButton').attr('disabled','disabled');
+}
+if('${authyn.del}' == 'N'){
+	$('#removeButton').attr('disabled','disabled');
+}
+if('${authyn.excel}' == 'N'){
+	$('#excelButton').attr('disabled','disabled');
+}
+</script>
 <div class="bg-white border-top border-bottom w-75">
 	<div id="listtable" data-list='{"valueNames":["PLockerGroupName","PLockerLocation","PLockerDeposite","PLockerPrice","PLockerMonth"
 		,"jungsiNewDate","jungsiReDate","jungsiFromToDate","sortOrder","danCnt"]}'>
 		<div class="table-responsive">
-			<table class="table table-hover table-bordered fs--1 mb-0">
+			<table class="table table-hover table-bordered fs--1 mb-0" id="myTable">
 				<thead>
 			        <tr>
-						<th class="sort pe-1 text-center"  data-sort="PLockerGroupName" style="width:9%;">분류</th>
+						<th class="sort pe-1 white-space-nowrap align-middle text-center" scope="col" data-sort="PLockerGroupName" style="width:9%;">분류</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerLocation">위 치</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerDeposite">보증금</th>
 						<th class="sort pe-1 text-center"  data-sort="PLockerPrice">사용료</th>
@@ -45,8 +59,8 @@
       			</thead>
 		        <tbody class="list">
 					<c:forEach items="${list}" var="list">
-						<tr class="text-center" onclick="tbodyclick(this)" ondblclick="merge()" style="cursor:pointer;">
-							<td class="PLockerGroupID" style="display: none;">${list.PLockerGroupID}</td>
+						<tr class="text-center hover-actions-trigger btn-reveal-trigger position-static" onclick="tbodyclick(this)" ondblclick="merge()" style="cursor:pointer;">
+							<td class="PLockerGroupID white-space-nowrap" style="display: none;">${list.PLockerGroupID}</td>
 							<td class="PLockerGroupName">${list.PLockerGroupName}</td>
 							<td class="PLockerLocation">${list.PLockerLocation}</td>
 							<fmt:parseNumber var="PLockerDeposite" integerOnly="true" value="${list.PLockerDeposite}"/>
@@ -104,6 +118,11 @@
 		    modalcheck = true;
 		    return false;
 		}
+		
+		if('${authyn.upd}' == 'N'){
+			return false;
+		}
+		
 		var groupid = $(previousRow).find('.PLockerGroupID').text();
 		var url = "lockerdetail.do?lockergroupid="+groupid;
 		var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=750";

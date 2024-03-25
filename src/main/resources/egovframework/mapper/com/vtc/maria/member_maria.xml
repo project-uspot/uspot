@@ -83,9 +83,9 @@
 	<select id="membertblmembertalk" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmembertalk">
 		select UserName,TalkDate ,TalkText,
 		CASE
-			WHEN IsFllowUp = 'N' THEN '미조치'
-			WHEN IsFllowUp = 'Y' THEN FllowUpText 
-		END AS FllowUpText 
+			WHEN IsFollowUp = 'N' THEN '미조치'
+			WHEN IsFollowUp = 'Y' THEN FollowUpText 
+		END AS FollowUpText 
 		from tblmembertalk 
 		where 
 		 IsDelete = 'N'
@@ -209,6 +209,9 @@
 		</when>
 		<when test="findcategory == 2">
 		AND (CellPhone LIKE CONCAT('%', #{findvalue}, '%') OR RIGHT(CarNo, 4) IN (SELECT RIGHT(#{findvalue}, 4)))
+		</when>
+		<when test="findcategory == 4">
+		AND (Name LIKE CONCAT('%', #{findvalue}, '%') OR barCode = #{findvalue} or CellPhone LIKE CONCAT('%', #{findvalue}, '%'))
 		</when>
 	</choose>
 	</select>

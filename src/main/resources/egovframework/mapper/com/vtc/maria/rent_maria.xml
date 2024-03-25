@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rent">
+	<select id="rent_partBySiteCode" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblrent_part">
+		select * from tblrent_part
+		where
+			SiteCode = #{SiteCode}
+		and IsDelete = 'N'
+		order  by SortOrder
+	</select>
+	<select id="rent_placeByPartCD" parameterType="egovframework.veterans.com.cmm.service.vo.tblrent_place" resultType="egovframework.veterans.com.cmm.service.vo.tblrent_place">
+		select * from tblrent_place
+		where 
+			SiteCode = #{SiteCode}
+		and Part_CD = #{PartCD}
+		and IsDelete = 'N'
+		order by SortOrder
+	</select>
+</mapper>

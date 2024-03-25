@@ -18,11 +18,7 @@ function valueChk() {
 	} else {
 		return false;
 	}
-		
-	
-	
 }
-
 </script>
 <h2 class="mb-4">사용자별 권한그룹 지정</h2>
 <div class="row">
@@ -38,7 +34,7 @@ function valueChk() {
 					<div class="form-floating">
 					<select class="form-select" id="UserGroupID" name="UserGroupID">
 						<c:forEach items="${list}" var="list">
-							<option value="${list.userGroupID }" <c:if test ="${user.userGroupName eq list.userGroupName}">selected="selected"</c:if>>${list.userGroupName }</option>
+							<option value="${list.userGroupID }" <c:if test ="${user.userGroupName eq list.userGroupName}">selected="selected"</c:if>>${list.userGroupName}</option>
 						</c:forEach>
 					</select>
 					<label for="UserGroupID">권한그룹</label>
@@ -59,6 +55,9 @@ function valueChk() {
 	</div>
 </div>
 <script>
+	if('${authyn.upd}' == 'N'){
+		$('#modify').attr('disabled','disabled');
+	}
 	// 키보드 이벤트 감지
 	document.addEventListener('keydown', function(event) {
 		if (event.key === 'F2') { // F2 키를 눌렀을 때

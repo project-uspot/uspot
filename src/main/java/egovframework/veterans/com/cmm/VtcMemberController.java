@@ -1,5 +1,8 @@
 package egovframework.veterans.com.cmm;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -15,6 +18,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Marker;
@@ -33,8 +37,10 @@ import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcService;
+import egovframework.veterans.com.cmm.service.VtcUserService;
 import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.Sitecode;
+import egovframework.veterans.com.cmm.service.vo.TblAuthuserGroup;
 import egovframework.veterans.com.cmm.service.vo.TblItem_02;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.fmsc_s01;
@@ -71,6 +77,7 @@ public class VtcMemberController {
 	private final VtcLockerService vtcLockerService;
 	private final VtcService vtcService;
 	private final VtcPaidService vtcPaidService;
+	private final VtcUserService vtcUserService;
 	
 	public static Functions f = Functions.getInstance();
 
@@ -111,9 +118,27 @@ public class VtcMemberController {
 			@RequestParam(name = "findvalue",required = false) String findvalue, @RequestParam(name = "findcategory",required = false) String findcategory
 			,@RequestParam(name = "findtype",defaultValue = "0")String findtype) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
+		
 		if (users == null) {
 			return "redirect:login.do";
 		}
+		
+		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
+		
+		tblAuthuserGroup.setSiteCode(users.getSiteCode());
+		tblAuthuserGroup.setUserGroupID(users.getUserGroupID());
+		tblAuthuserGroup.setPgmPKID(25);
+		
+		tblAuthuserGroup = vtcUserService.tblauthusergroupBypgmIDAndUserGroupID(tblAuthuserGroup);
+		
+		if(tblAuthuserGroup.getIsDelete().equals("Y")) {
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("script", "back");
+
+			return "common/msg";
+		}
+		
+		model.addAttribute("authyn",tblAuthuserGroup);
 		
 		
 		if(findtype.equals("1")) {
@@ -1513,22 +1538,36 @@ public class VtcMemberController {
 		
 		if(MemberImage != null && !MemberImage.isEmpty()) {
 			
-			String MemberImagefilename = MemberImage.getOriginalFilename();
+			//사진 용량 확인 로직
+			long fileSize = MemberImage.getSize();
 			
-			String ImgName = "Mem"+tblmemberphoto.getMemberID()+"Img"+MemberImagefilename;
+			long maxFileSize = 1 * 1024 * 1024;
 			
-			byte[] imageBytes = MemberImage.getBytes();
-			
-			String image_path = session.getServletContext().getRealPath("new_lib/assets/img/memberimage/");
-			
-			try {
-				Files.write(Paths.get(image_path + ImgName), imageBytes);
-				
-				tblmemberphoto.setPhoto(imageBytes);
-				
-			}catch (Exception e) {
-				return "0";
-			}
+			byte[] imageBytes;
+	        if (maxFileSize < fileSize) {
+	            // 이미지 크기가 최대 크기를 초과하면 크기를 줄임
+	            BufferedImage originalImage = ImageIO.read(MemberImage.getInputStream());
+	            // 이미지 리사이징
+	    	    Image resultingImage = originalImage.getScaledInstance(600, 800, Image.SCALE_DEFAULT);
+	    	    BufferedImage outputImage = new BufferedImage(600, 800, BufferedImage.TYPE_INT_RGB);
+	    	    outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+	            
+	            BufferedImage resizedImage = outputImage; // 너비 800, 높이 600으로 조정
+	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	            ImageIO.write(resizedImage, "jpg", baos);
+	            imageBytes = baos.toByteArray();
+	        } else {
+	            imageBytes = MemberImage.getBytes();
+	        }
+	        String MemberImagefilename = MemberImage.getOriginalFilename();
+	        String ImgName = "Mem" + tblmemberphoto.getMemberID() + "Img" + MemberImagefilename;
+	        String image_path = session.getServletContext().getRealPath("files/member/");
+	        try {
+	            Files.write(Paths.get(image_path + ImgName), imageBytes);
+	            tblmemberphoto.setPhoto(imageBytes);
+	        } catch (Exception e) {
+	            return "0";
+	        }
 		}
 		tblmemberphoto.setSiteCode(users.getSiteCode());
 		vtcMemberService.MemberImageChange(tblmemberphoto);

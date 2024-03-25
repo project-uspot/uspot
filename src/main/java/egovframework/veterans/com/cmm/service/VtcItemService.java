@@ -11,6 +11,8 @@ import egovframework.veterans.com.cmm.service.vo.applicationlist;
 import egovframework.veterans.com.cmm.service.vo.maturitylist;
 import egovframework.veterans.com.cmm.service.vo.selectitem;
 import egovframework.veterans.com.cmm.service.vo.selectitembyitemcode;
+import egovframework.veterans.com.cmm.service.vo.tblitem_file;
+import egovframework.veterans.com.cmm.service.vo.tblitem_img;
 
 public interface VtcItemService {
 	
@@ -50,4 +52,13 @@ public interface VtcItemService {
 	List<maturitylist> maturitylist(Map<String, Object> map)throws Exception;
 	List<selectitem> findItem(Map<String, Object> find) throws Exception;
 	int itemmonthbyitemid(int itemid)throws Exception;
+	void ItemImageChange(tblitem_img tblitem_img)throws Exception;
+	void ItemImageRemove(tblitem_img tblitem_img)throws Exception;
+	void itemfileChange(tblitem_file tblitem_file)throws Exception;
+	tblitem_file item_fileByItemID(tblitem_file tblitem_file)throws Exception;
+	void itemfileRemove(tblitem_file tblitem_file)throws Exception;
+	TblItem tblItemByItemID(TblItem tblItem)throws Exception;
+	tblitem_img item_imgByItemID(tblitem_img tblitem_img)throws Exception;
+	tblitem_img item_imgBySubGroupID(tblitem_img tblitem_img)throws Exception;
+	tblitem_img item_imgByGroupID(tblitem_img tblitem_img)throws Exception;
 }
