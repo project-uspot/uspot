@@ -50,12 +50,16 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	public int getItemSortOrder(String siteCode) {
 		return selectOne("order.getItemSortOrder", siteCode);
 	}
+
 	public List<SLOrderItem> listGroupItem(Map<String, Object> pkid) {
 		return selectList("order.listGroupItem", pkid);
 	}
-	
-
-
-	
+	public int getOrderItemJungwon(Map<String, Object> setSql) {
+		return selectOne("order.getOrderItemJungwon",setSql);
+	}
+	public Map<String, Object> getItemJungwon(Map<String, Object> setSql) {
+		return selectOne("order.getItemJungwon",setSql);
+	}
+		
 
 }

@@ -11,6 +11,7 @@ import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 @Repository
@@ -167,6 +168,10 @@ public class VtcLockerDAO extends EgovComAbstractDAO{
 	
 	public void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception{
 		update("locker.RemoveLockerGroup",tblplockergroup);
+	}
+
+	public List<Map<String, Object>> selectPlockerInfo(tblmember tblmember) {
+		return selectList("locker.selectPlockerInfo",tblmember);
 	}
 	
 	public void refundcashcheck(tbluselocker tbluselocker)throws Exception{

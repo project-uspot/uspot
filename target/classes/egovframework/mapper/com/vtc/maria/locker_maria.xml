@@ -442,6 +442,16 @@ AND SiteCode=#{SiteCode}
 and IsDelete = 'N'
 </update>
 
+<select id="selectPlockerInfo" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember" resultType="Map">
+<![CDATA[
+	select * 
+	from selectPLockerInfo 
+	where SiteCode = #{SiteCode}
+	and isDelete = 'N'
+	and MemberID = #{MemberID}
+]]>
+</select>
+
 <update id="refundcashcheck" parameterType="egovframework.veterans.com.cmm.service.vo.tbluselocker">
 	update tbluselocker set
 	after_todate = '위약금결제완료'
@@ -450,4 +460,5 @@ and IsDelete = 'N'
 	and SiteCode = #{SiteCode}
 	and IsDelete = 'N'
 </update>
+
 </mapper>

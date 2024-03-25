@@ -136,6 +136,14 @@ function isToday(dateStr) {
     return inputDate.getTime() === today.getTime();
 }
 
+function beforeUnloadHandler(e) {
+    var confirmationMessage = '정말로 페이지를 떠나시겠습니까?';
+    e.returnValue = confirmationMessage; 
+    return confirmationMessage;
+}
+// 페이지 종료시 안내메세지 출력
+//window.addEventListener('beforeunload', beforeUnloadHandler);
+
 //진짜 숫자만 받게하는 함수
 function mustNumber(input) {
     // Remove non-numeric characters

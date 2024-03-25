@@ -290,6 +290,9 @@
                                 }
                             });
                         });
+                        function memInfo(findvalue,findcategory){
+                        	location.href = 'membership.do?findvalue='+findvalue+'&findcategory='+findcategory+ '&findtype=1';
+                        }
                     </script>
                     <div class="col-auto">
                         <div class="row g-3" style="margin-left: 249px;">

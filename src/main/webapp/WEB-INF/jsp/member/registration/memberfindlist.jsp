@@ -101,11 +101,11 @@
 					            	 findcategory : findcategory
 					             },
 					             success: function(data) {	
-					            	 if(data === '-1'){
-						            		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
-						            		$('#resultmessage').text('회원번호검색은 숫자6자리,전화번호검색은 끝에 4자리를 숫자형식으로 입력하십시오.');
-						                    $('body').append(buttonHTML);
-						                    $('#modalButton').click();
+					            	if(data === '-1'){
+					            		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
+					            		$('#resultmessage').text('회원번호검색은 숫자6자리,전화번호검색은 끝에 4자리를 숫자형식으로 입력하십시오.');
+					                    $('body').append(buttonHTML);
+					                    $('#modalButton').click();
 						            }
 					            	if(data === '0'){
 					            		var buttonHTML = '<button class="btn" id="modalButton" type="button" data-bs-toggle="modal" data-bs-target="#verticallyCentered" style="display: none;">Vertically centered modal</button>';
@@ -121,7 +121,8 @@
 					            	}
 					            	else if(data === '2'){
 					            		window.close();
-					            		window.opener.location.href = 'membership.do?findvalue='+findvalue+'&findcategory='+findcategory+ '&findtype=1';
+					            		//window.opener.location.href = 'membership.do?findvalue='+findvalue+'&findcategory='+findcategory+ '&findtype=1';
+					            		window.opener.memInfo(findvalue,findcategory);
 					            	}
 					            	else if(data === '3'){
 					            		window.location.href = "findlist?findvalue="+findvalue+"&findcategory="+findcategory;
@@ -215,7 +216,8 @@ function tronclick(row) {
     
     window.close();
     
-    window.opener.location.href='membership.do?MemberID='+memberID +'&findtype=2';
+    //window.opener.location.href='membership.do?MemberID='+memberID +'&findtype=2';
+    window.opener.memInfo(memberID,0);
 }
 </script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>

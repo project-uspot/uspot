@@ -10,11 +10,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -416,6 +417,39 @@ public class Functions {
 		}
 
 		return json;
+	}
+
+	public int getAge(String Birthday) {
+		String sBirthDay = "";
+		Birthday = Birthday.replace("-","");
+		if(Birthday.length() == 6) {
+			if(getNullToSpaceInt(getcurDate().substring(2, 4)) > getNullToSpaceInt(Birthday.substring(0, 2))){
+				Birthday = "20"+Birthday;
+			}else {
+				Birthday = "19"+Birthday;
+			}
+			sBirthDay = Birthday;
+		}else if(Birthday.length() == 8) {
+			sBirthDay = Birthday;
+		}else {
+			return 0;
+		}
+
+		return getNullToSpaceInt(getcurDate().substring(0, 4)) - getNullToSpaceInt(sBirthDay.substring(0, 4)); 
+	}
+
+	public int getNullToSpaceIntDate(Object param) {
+		return String.valueOf(param).equals("null") || String.valueOf(param).equals("") || Objects.isNull(param) ? 0: Integer.parseInt(String.valueOf(param).trim().replace("-", ""));
+	}
+
+	public int getNullToSpaceIntTime(Object param) {
+		return String.valueOf(param).equals("null") || String.valueOf(param).equals("") || Objects.isNull(param) ? 0: Integer.parseInt(String.valueOf(param).trim().replace(":", ""));
+	}
+	
+	public boolean CheckClassDay(String DayName) {
+		LocalDate date = LocalDate.now();
+		String toDay = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+		return DayName.contains(toDay);		
 	}
 
 }

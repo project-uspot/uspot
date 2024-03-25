@@ -8,6 +8,7 @@ import egovframework.veterans.com.cmm.service.vo.tbluselocker;
 import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 
 public interface VtcLockerService {
@@ -83,6 +84,8 @@ public interface VtcLockerService {
 	void UpdLockerGroup(tblplockergroup tblplockergroup)throws Exception;
 	
 	void RemoveLockerGroup(tblplockergroup tblplockergroup)throws Exception;
+
+	List<Map<String, Object>> selectPlockerInfo(tblmember tblmember);
 	
 	void refundcashcheck(tbluselocker tbluselocker)throws Exception;
 }

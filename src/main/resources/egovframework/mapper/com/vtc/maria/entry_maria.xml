@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="entry">
+	<select id="selectEntryClassInfo" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember" resultType="Map">
+	<![CDATA[
+		SELECT C.SaleNo, C.SaleDate, C.RegMonth, C.RFromDate, C.RToDate, C.ItemPKID
+			, C.CategoryName, C.JungName, C.FromTime, C.ToTime, C.DayName, C.LevelName, C.STATE, C.IsChangeItem
+			, C.MonIn, C.TuesIn, C.WednesIn, C.ThursIn, C.FriIn, C.SaturIn, C.SunIn, C.HolyIn, C.InCnt
+			, (SELECT COUNT(SALENO)   FROM tblENTRY  WHERE tblENTRY.SiteCode = C.SiteCode And tblENTRY.SALENO = C.SALENO AND tblENTRY.IsDelete = 'N' AND SUBSTRING(tblENTRY.EntryDate, 1, 10) = #{toDay}) AS CNT
+			, (SELECT ENTRYTIME FROM tblENTRY  WHERE tblENTRY.SiteCode = C.SiteCode And tblENTRY.SALENO = C.SALENO AND tblENTRY.IsDelete = 'N' AND SUBSTRING(tblENTRY.EntryDate, 1, 10) = #{toDay} ORDER BY ENTRYTIME desc limit 1) AS ENTRYTIME
+			, (SELECT INDATE    FROM tblENTRY  WHERE tblENTRY.SiteCode = C.SiteCode And tblENTRY.SALENO = C.SALENO AND tblENTRY.IsDelete = 'N' AND SUBSTRING(tblENTRY.EntryDate, 1, 10) = #{toDay} ORDER BY INDATE desc limit 1) AS INDATE 
+			, UpJang, UpjangName, LockerCondition, LockerManAddNum, LockerWomanAddNum
+			, InTime, InEndTime
+		FROM (	SELECT A.SiteCode, A.SaleNo, A.SaleDate, A.RegMonth, A.RFromDate, A.RToDate, A.ItemPKID
+					, B.CategoryName, B.JungName, B.FromTime, B.ToTime, B.DayName, B.LevelName, A.STATE, A.IsChangeItem
+					, B.MonIn, B.TuesIn, B.WednesIn, B.ThursIn, B.FriIn, B.SaturIn, B.SunIn, B.HolyIn, B.InCnt 
+			  		, B.UpJang, C.CodeName UpjangName, LockerCondition, lockermanaddnum, LockerWoManAddNum
+			  		, B.InTime, B.InEndTime
+		  		FROM FMSC_S01 A
+		  		LEFT OUTER JOIN SelectItemByItemCode B ON A.SiteCode = B.SiteCode 
+		  												AND A.ItemPKID = B.ItemID 
+		     	LEFT JOIN tblCode C ON  B.SiteCode     = C.SiteCode
+								     And Replace(B.UpJang, ';', '') Like concat(C.PKID, '%')
+								     And C.Isdelete     = 'N'
+								     And C.codegroupid  = 1
+			  	WHERE A.SiteCode      = #{SiteCode}
+			  	AND A.IsDelete        = 'N'
+			  	AND A.RTodate        >= #{toDay}
+			  	AND A.IsChangeItem    = 0
+			  	AND A.CUSTCODE        = #{MemberID}
+			  	and (a.state  like '%A%' OR a.state  like '%G%' OR a.state  like '%Y%')
+	]]>
+	<if test="entrySaleNo != null and entrySaleNo > 0">
+				and A.SaleNo = #{entrySaleNo}
+	</if>
+	<![CDATA[
+		) C ORDER BY case when C.DayName like concat('%',CASE WEEKDAY(Now())
+												        WHEN 0 THEN '월'
+												        WHEN 1 THEN '화'
+												        WHEN 2 THEN '수'
+												        WHEN 3 THEN '목'
+												        WHEN 4 THEN '금'
+												        WHEN 5 THEN '토'
+												        WHEN 6 THEN '일'
+												        ELSE '' END,'%') 
+							then 0 else 1 end, C.SALENO DESC
+	]]>
+	</select>
+
+	<select id="selectEntryInfo" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember" resultType="Map">
+	<![CDATA[
+		SELECT A.PKID, A.EntryDate, A.OutDate, A.BaejungType, B.PLockerGroupName, B.PLockerLocation, B.PLockerNo
+		FROM tblEntry A 
+		LEFT OUTER JOIN selectlockerinfo B ON A.SiteCode = B.SiteCode AND A.LockerPKID = B.PKID 
+		WHERE A.SiteCode = #{SiteCode}
+		and A.MemberID   = #{MemberID}
+		and A.IsDelete = 'N'
+		and left(A.EntryDate, 7)  >= left(#{toDay},7)
+		ORDER BY EntryDate DESC
+	]]>
+	</select>
+
+	<select id="selectTalkInfo" parameterType="egovframework.veterans.com.cmm.service.vo.tblmember" resultType="Map">
+	<![CDATA[
+		SELECT PKID, UserName, TalkDate, TalkText, IsFollowUp, FollowUpText
+		FROM   tblMemberTalk
+		WHERE  MemberID = #{MemberID}
+		AND    IsDelete = 'N'
+		ORDER  BY TalkDate		
+	]]>
+	</select>
+
+	<select id="selectConfigList" parameterType="Map" resultType="Map">
+	<![CDATA[
+		select * from tblConfig
+		where SiteCode = #{SiteCode}
+		and isDelete = 'N'
+		and CodeGroupID = #{CodeGroupID}
+	]]>
+	</select>
+	
+	<update id="outEntry" parameterType="Map" >
+		<!-- update tblEntry set `inout` = 'O', OutDate = DATE_FORMAT(NOW(), '%H:%i')
+		where PKID in ( select PKID from tblEntry
+						where SiteCode = #{SiteCode}
+						and isDelete = 'N'
+						and MemberID = #{MemberID}
+						and InDate = #{InDate}
+						and `InOut` = "l"
+						and SaleNo= #{SaleNo}
+						LIMIT 1 ) -->
+	<![CDATA[
+		UPDATE tblEntry 
+		JOIN (
+		    SELECT PKID FROM tblEntry
+		    WHERE SiteCode = #{SiteCode}
+		    AND isDelete = 'N'
+		    AND MemberID = #{MemberID}
+		    AND InDate = #{InDate}
+		    AND `InOut` = 'I'
+			and SaleNo= #{SaleNo}
+		    ORDER BY PKID -- 필요한 경우 적절한 정렬 조건 사용
+		    LIMIT 1
+		) AS subquery ON tblEntry.PKID = subquery.PKID
+		SET `inout` = 'O', OutDate = DATE_FORMAT(NOW(), '%H:%i');
+	]]>
+	</update>
+
+	<insert id="insertEntry" parameterType="Map">
+	<![CDATA[
+		insert into tblEntry (SiteCode, SaleNo, MemberID, InDate, EntryDate, EntryTime, LockerPKID, BaejungType,`InOut`,Gender, Upjang,PosGBN,KioskNo,AddDate,AddUserPKID)
+		values(#{SiteCode}, #{SaleNo}, #{CustCode}, DATE_FORMAT(Now(),'%Y%m%d'), DATE_FORMAT(Now(),'%Y-%m-%d %T'), DATE_FORMAT(NOW(), '%T'), #{LockerPKID}, #{BaejungType}, 'I', #{Gender}, '', #{PosGBN}, #{KioskNo}, DATE_FORMAT(Now(),'%Y-%m-%d %T'), #{UserPKID});
+	]]>	
+	</insert>
+</mapper>

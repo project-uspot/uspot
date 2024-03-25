@@ -15,6 +15,7 @@ import egovframework.veterans.com.cmm.service.vo.lockercodelist;
 import egovframework.veterans.com.cmm.service.vo.tblplocker;
 import egovframework.veterans.com.cmm.service.vo.memberuselocker;
 import egovframework.veterans.com.cmm.service.vo.tbldeposite;
+import egovframework.veterans.com.cmm.service.vo.tblmember;
 
 @Service
 @RequiredArgsConstructor
@@ -215,6 +216,10 @@ public class VtcLockerServiceImpl extends EgovAbstractServiceImpl implements Vtc
 	}
 
 	@Override
+	public List<Map<String, Object>> selectPlockerInfo(tblmember tblmember) {
+		return vtcLockerDAO.selectPlockerInfo(tblmember);
+	}
+	
 	public void refundcashcheck(tbluselocker tbluselocker) throws Exception {
 		vtcLockerDAO.refundcashcheck(tbluselocker);
 	}
