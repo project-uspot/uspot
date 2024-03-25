@@ -50,7 +50,7 @@ public class VtcLockerController{
 		Users users =  (Users) session.getAttribute("loginuserinfo");
 		
 		if(users ==null) {
-			model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
+			model.addAttribute("msg", "세션이 만료되었습니다.다시 로그인해 주세요.");
 			model.addAttribute("url", "login.do");
 			model.addAttribute("script", "redirect");
 

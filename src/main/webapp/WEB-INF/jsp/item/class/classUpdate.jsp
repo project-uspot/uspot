@@ -570,6 +570,14 @@
 
 								$("#imageInput").change(function() {
 									const fileInput = this;
+									
+									var fileSize = this.files[0].size; // 선택된 파일의 크기
+							        var maxSize = 2 * 1024 * 1024; // 2MB
+
+							        if (fileSize > maxSize) {
+							          alert('파일 크기가 2MB를 초과하였습니다.');
+							        }
+									
 									if (fileInput.files && fileInput.files[0]) {
 										const reader = new FileReader();
 
@@ -611,7 +619,7 @@
 								});
 								</script>
 								<div class="tab-pane fade" id="tab-consulting" role="tabpanel" aria-labelledby="consulting-tab">
-									※"hwp","gif","jpg","pdf","png","xls","ppt","zip","doc" 확장자 가능
+									※"hwp","gif","jpg","pdf","png","xls","ppt","zip","doc" 확장자 가능(최대 2MB)
 									<input type="file" name="itemfile"  id="itemfile" style="display:none;"/>
 									<div class="col-sm-6 col-md-10 mb-2">
 										<div class="dropzone dropzone-multiple p-0">
@@ -644,65 +652,99 @@
 										$("#itemfile").click(); 
 									});
 									
-									$("#itemfile").change(function() {
-									    var formData = new FormData();
-									    formData.append('file', $('#itemfile')[0].files[0]);
-									    formData.append('ItemID',$('#ItemID').val());
-									    
-									    $.ajax({
-									    	url: 'itemfileChange',
-											type: 'POST',
-											data: formData,
-											contentType: false,
-											processData: false,
-											success: function(data){
-												if(data == '0'){
-													alert('세션이 만료되었습니다.');
-													window.opener.location.reload();
-													window.close();
-												}else if(data == '-1'){
-													alert('파일 등록에 실패했습니다.');
-												}else if(data == '-2'){
-													alert('올바르지 않은 확장자입니다.');
-												}else{
-													var fileName = $('#itemfile').val().split('\\').pop(); // Extract file name
+									// 파일 선택(change) 이벤트 및 드래그 앤 드롭 이벤트 처리
+							        $("#itemfile").on('change', handleFileSelect);
+							        const dzMessage = document.querySelector('.dz-message');
 
-												    // Create HTML elements
-												    var fileDiv = $("<div>").addClass("d-flex pb-3 px-2");
-												    var imgDiv = $("<div>").addClass("border border-300 p-2 me-2").attr("id", "fileimgdiv");
-												    var img = $("<img>").addClass("rounded-2 dz-image").attr("src", "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png").attr("alt", "...");
-												    img.attr("data-dz-thumbnail", "data-dz-thumbnail");
+							        dzMessage.addEventListener('dragover', function(e) {
+							            e.preventDefault();
+							            dzMessage.classList.add('dragover');
+							        });
 
-												    imgDiv.append(img);
-												    
-												    var flexDiv = $("<div>").addClass("flex-1 d-flex flex-between-center");
-												    var contentDiv = $("<div>");
-												    var h6 = $("<h6>").attr("data-dz-name", "data-dz-name").text(fileName);
-												    var span = $("<span>").addClass("fs--2 text-danger").attr("data-dz-errormessage", "data-dz-errormessage");
+							        dzMessage.addEventListener('dragleave', function(e) {
+							            e.preventDefault();
+							            dzMessage.classList.remove('dragover');
+							        });
 
-												    contentDiv.append(h6, span);
-												    
-												    var button = $("<button>").addClass("btn btn-link text-600 btn-sm").attr({
-												      "type": "button",
-												      "data-bs-toggle": "dropdown",
-												      "aria-haspopup": "true",
-												      "aria-expanded": "false",
-												      "onclick": "removeFile()"
-												    }).text("삭제").prepend($("<span>").addClass("fas far fa-trash-alt"));
+							        dzMessage.addEventListener('drop', function(e) {
+							            e.preventDefault();
+							            dzMessage.classList.remove('dragover');
 
-												    flexDiv.append(contentDiv, button);
-												    fileDiv.append(imgDiv, flexDiv);
+							            const file = e.dataTransfer.files[0];
+							            if (file) {
+							                handleFileUpload(file);
+							            }
+							        });
 
-												    // Append elements to #fileinfo div
-												    $("#fileinfo").html(fileDiv);
-												}
-									        },
-									        error: function(error) {
-									         
-												console.log(error);
-									        }
-										});
-									});
+							        function handleFileSelect(event) {
+							            handleFileUpload(this.files[0]);
+							        }
+
+							        function handleFileUpload(file) {
+							        	
+							        	var fileSize = file.size;
+							        	
+							        	var maxSize = 2 * 1024 * 1024; // 2MB
+
+							            if (fileSize > maxSize) {
+							                alert('파일 크기가 2MB를 초과하였습니다.');
+							            }
+							        	
+							            var formData = new FormData();
+							            formData.append('file', file);
+							            formData.append('ItemID', $('#ItemID').val());
+
+							            $.ajax({
+							                url: 'itemfileChange',
+							                type: 'POST',
+							                data: formData,
+							                contentType: false,
+							                processData: false,
+							                success: function(data) {
+							                    if (data == '0') {
+							                        alert('세션이 만료되었습니다.');
+							                        window.opener.location.reload();
+							                        window.close();
+							                    } else if (data == '-1') {
+							                        alert('파일 등록에 실패했습니다.');
+							                    } else if (data == '-2') {
+							                        alert('올바르지 않은 확장자입니다.');
+							                    } else {
+							                        var fileName = $('#itemfile').val().split('\\').pop(); // Extract file name
+
+							                        // Create HTML elements
+							                        var fileDiv = $("<div>").addClass("d-flex pb-3 px-2");
+							                        var imgDiv = $("<div>").addClass("border border-300 p-2 me-2").attr("id", "fileimgdiv");
+							                        var img = $("<img>").addClass("rounded-2 dz-image").attr("src", "${pageContext.request.contextPath}/new_lib/assets/img/icons/file.png").attr("alt", "...");
+							                        img.attr("data-dz-thumbnail", "data-dz-thumbnail");
+
+							                        imgDiv.append(img);
+
+							                        var flexDiv = $("<div>").addClass("flex-1 d-flex flex-between-center");
+							                        var contentDiv = $("<div>");
+							                        var h6 = $("<h6>").attr("data-dz-name", "data-dz-name").text(file.name);
+							                        var span = $("<span>").addClass("fs--2 text-danger").attr("data-dz-errormessage", "data-dz-errormessage");
+							                        contentDiv.append(h6, span);
+							                        var button = $("<button>").addClass("btn btn-link text-600 btn-sm").attr({
+							                            "type": "button",
+							                            "data-bs-toggle": "dropdown",
+							                            "aria-haspopup": "true",
+							                            "aria-expanded": "false",
+							                            "onclick": "removeFile()"
+							                        }).text("삭제").prepend($("<span>").addClass("fas far fa-trash-alt"));
+
+							                        flexDiv.append(contentDiv, button);
+							                        fileDiv.append(imgDiv, flexDiv);
+
+							                        // Append elements to #fileinfo div
+							                        $("#fileinfo").html(fileDiv);
+							                    }
+							                },
+							                error: function(error) {
+							                    console.log(error);
+							                }
+							            });
+							        }
 									
 									function removeFile() {
 										

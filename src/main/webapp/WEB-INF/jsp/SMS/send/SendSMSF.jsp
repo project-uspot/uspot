@@ -42,7 +42,7 @@
 							</div>
 						</div>
 						<div class="ms-13 mt-2">
-							<button class="btn btn-info" type="button" onclick="balsong()">보내기</button>
+							<button class="btn btn-info" type="button" onclick="Beforebalsong()">보내기</button>
 							<button class="btn btn-soft-info" type="button" onclick="$('#content').val('');">삭제</button>
 						</div>
 					</div>
@@ -273,24 +273,23 @@ if('${param.sendTable}' == 'Y'){
 }
 
 function choiceChange(row) {
-	const choice = $(row).find(".choice").text();
-	
-	if(choice == ''){
-		$(row).find(".choice").text('▶');
+	const choice = $(row).find("#choice").is(':checked');
+	if(!choice){
+		$(row).find("#choice").prop('checked', true);
 	}else{
-		$(row).find(".choice").text('');
+		$(row).find("#choice").prop('checked', false);
 	}
 }
 
 function allChoice() {
 	$("#memberbody tr").each(function() {
-		$(this).find(".choice").text('▶');
+		$(this).find("#choice").prop('checked', true);
 	});
 }
 
 function notChoice() {
 	$("#memberbody tr").each(function() {
-		$(this).find(".choice").text('');
+		$(this).find("#choice").prop('checked', false);
 	});
 }
 
@@ -305,7 +304,7 @@ function ifcheckList() {
 		
 		if(RSMS == 'Y'){
 			var newRow = $('<tr onclick="memberbodyclick(this)" ondblclick="choiceChange(this)"></tr>');
-			newRow.append('<td class="choice text-center"></td>');
+			newRow.append('<td class="choice text-center"><input class="form-check-input" id="choice" type="checkbox"/></td>');
 			newRow.append('<td class="memberid text-center">'+$(this).find(".MemberID").text()+'</td>');
 			newRow.append('<td class="membername white-space-nowrap text-center">'+$(this).find(".Name").text()+'</td>');
 			newRow.append('<td class="gender text-center">'+$(this).find(".Gender").text()+'</td>');
@@ -326,7 +325,7 @@ function allList() {
 			RSMS = $(this).find(".RSMS").text();
 		}
 		var newRow = $('<tr onclick="memberbodyclick(this)" ondblclick="choiceChange(this)"></tr>');
-		newRow.append('<td class="choice text-center"></td>');
+		newRow.append('<td class="choice text-center"><input class="form-check-input" id="choice" type="checkbox"/></td>');
 		newRow.append('<td class="memberid text-center">'+$(this).find(".MemberID").text()+'</td>');
 		newRow.append('<td class="membername white-space-nowrap text-center">'+$(this).find(".Name").text()+'</td>');
 		newRow.append('<td class="gender text-center">'+$(this).find(".Gender").text()+'</td>');
@@ -353,10 +352,10 @@ function balsongAdd() {
 	
 	$('#memberbody tr').each(function() {
 		var membername = $(this).find('td.membername').text().trim();
-	    var choice = $(this).find('td.choice').text();
+	    var choice = $(this).find('#choice').is(':checked');
 	    var cellphone = $(this).find('td.cellphone').text();
 	    var celllength = cellphone.replace(/-/g, '');
-	    if (choice == '▶') {
+	    if (choice) {
 	    	trlength++;
 	    	if (cellphone != '' && celllength.length == 11) {
 	    		var newRow = $('<tr onclick="balsongbodyclick(this)"></tr>');
@@ -368,7 +367,9 @@ function balsongAdd() {
 	    }
 	});
 	var xlength = trlength-addlength;
-	$('#resultmessage').html('선택된 검색목록 총 '+trlength+'건 중에서 잘못된 휴대전화번호 '+xlength+'건을 제외한 총 '+addlength+'건을 목록에 추가하였습니다.');
+	$('#resultmessage').html('선택된 검색목록 총 <font style="font-weight:900;">'+trlength+'</font>'+
+	' 건 중에서 잘못된 휴대전화번호 <font style="font-weight:900;color: red;">'+xlength+'</font>건을 제외한 총 '+
+	'<font style="font-weight:900;color: blue;">'+addlength+'</font>건을 목록에 추가하였습니다.');
   	$('.modal-footer').empty();
   	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
   	$('.modal-footer').append(cancelbutton);
@@ -448,6 +449,15 @@ function sederPlus() {
 	newRow.append('<td class="balsongName text-center fw-bold">' + memberName + '</td>');
 	newRow.append('<td class="balsongPN fw-bold text-center">' + formatPhoneNumber(memberPN) + '</td>');
 	$('#balsongbody').append(newRow);
+}
+
+function Beforebalsong() {
+	var result = confirm("발송하시겠습니까?");
+	if(result){
+		balsong();
+	}else{
+	    return false;
+	}
 }
 
 function balsong() {

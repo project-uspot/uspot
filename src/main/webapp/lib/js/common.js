@@ -88,6 +88,7 @@ function getCurrentDateTime() {
 	return datestring;
 }
 
+//숫자만 받고 그 숫자를 금액, 찍어주는 함수
 function onlyNumber(input) {
     // Remove non-numeric characters
     let value = input.value.replace(/[^0-9]/g, '');
@@ -158,6 +159,7 @@ function formatPhoneNumber(number) {
     return formattedNumber;
 }
 
+// 액셀형식 다운로드
 function fnExcelReport(id, title) {
    var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
       tab_text = tab_text + '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
@@ -165,8 +167,11 @@ function fnExcelReport(id, title) {
       tab_text = tab_text + '<x:Name>Sheet1</x:Name>';
       tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
       tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
-      tab_text = tab_text + "<table border='1px'>";
-   
+      
+   tab_text = tab_text + "<div style='text-align:center;'><h2>" + title + "</h2></div>"; // 수정된 부분: 제목(title) 중앙 배치
+
+   tab_text = tab_text + "<table border='1px'>";
+
    var exportTable = $('#' + id).clone();
    console.log(exportTable);
       exportTable.find('input').each(function (index, elem) {
