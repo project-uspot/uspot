@@ -515,8 +515,8 @@
 	                        function OneDayOrderPopup() {
 	                        	var url = "${pageContext.request.contextPath}/OneDayOrder.do";
 	                            var windowName = "OneDayOrderPopup"; // 팝업 창의 이름
-	                            var windowWidth = 1500; // 팝업 창의 가로 크기
-	                            var windowHeight = 700; // 팝업 창의 세로 크기
+	                            var windowWidth = 1450; // 팝업 창의 가로 크기
+	                            var windowHeight = 755; // 팝업 창의 세로 크기
 
 	                            // 뷰포트의 가로, 세로 크기 가져오기
 	                            var screenWidth = window.innerWidth;

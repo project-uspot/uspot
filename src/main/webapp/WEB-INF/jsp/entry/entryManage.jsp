@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp">
@@ -105,7 +104,13 @@
 							</div>
 						</div>
 					</div>
+					<div class="marquee">
+						<div id="marquee-content" class="marquee-content">
+						</div>
+					</div>
 					<audio id="audioPlayer" controls style="display:none"></audio>
+				</div>
+				<div class="card-body">
 					<div id="learntable" data-list='{"valueNames":["State","SaleDate","CategoryName","JungName","WeekName","Time","LevelName","Date","Regmonth"],"page":6,"pagination":true}'>
 						<div class="table-responsive scrollbar">
 							<table class="table table-sm fs--1 mb-0">
@@ -152,8 +157,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="card-body">
 					<%-- <div id="lockertable" data-list='{"valueNames":["Locker","RegDate","FromDate","ToDate","RegMonth","RealPrice","PaidPrice","Misu","ReturnDate"],"page":6,"pagination":true}'>
 						<div class="table-responsive scrollbar">
 							<table class="table table-sm fs--1 mb-0">
@@ -547,14 +550,15 @@ function entryChk(MemberID){
 			}else{
 				str = "";
 				data.entryItemList.forEach(function(map){
-					str = str + map.ItemName + " " + map.resultMsg + "<br>";
+					str = str + map.ItemName + " " + map.resultMsg + " ";
 				});
-				$('#resultmessage').html(str);
+				/* $('#resultmessage').html(str);
 				$('.modal-footer').empty();
 				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 				$('.modal-footer').append(cancelbutton);
 				$('#modalButton').click();
-				modalcheck = true;
+				modalcheck = true; */
+				$('#marquee-content').text(str);
 				switch(data.msgType){
 				case 1:
 					break;
@@ -587,6 +591,7 @@ function entryChk(MemberID){
 			$('#modalButton').click();
 			modalcheck = true;
 			return false;
+			$('#marquee-content').text("출입체크 오류! 다시 시도해주시기 바랍니다.");
 		}
 	});
 }
@@ -616,6 +621,7 @@ function entryIn(memberID,saleNo){
 				$('#modalButton').click();
 				modalcheck = true;
 				return false;
+				$('#marquee-content').text(data.Msg+" "+data.lockerNo+" 입장");
 			}else{
 				$('#resultmessage').html(data.Msg);
 				$('.modal-footer').empty();
@@ -624,6 +630,7 @@ function entryIn(memberID,saleNo){
 				$('#modalButton').click();
 				modalcheck = true;
 				return false;
+				$('#marquee-content').text(data.Msg);
 			}
 		},
 		error:function(xhr, status, error){
@@ -636,6 +643,7 @@ function entryIn(memberID,saleNo){
 			$('#modalButton').click();
 			modalcheck = true;
 			return false;
+			$('#marquee-content').text("출입체크 오류! 다시 시도해주시기 바랍니다.");
 		}
 	});
 	
@@ -930,5 +938,26 @@ function playAudio(file){
     audioElement.load();
     audioElement.play();
 }
+
 </script>
+<style>
+
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.marquee-content {
+    display: inline-block;
+    min-width: 100%;
+    animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+}
+</style>
 </html>

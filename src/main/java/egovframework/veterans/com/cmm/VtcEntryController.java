@@ -1,5 +1,6 @@
 package egovframework.veterans.com.cmm;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcEntryService;
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.VtcService;
+import egovframework.veterans.com.cmm.service.vo.DC;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
 import egovframework.veterans.com.cmm.service.vo.Users;
@@ -52,58 +55,90 @@ public class VtcEntryController{
 	private final VtcService VtcService;
 
 	private final VtcItemService vtcItemService;
+	private final VtcDCService vtcDCService;
 
 	private final VtcSLOrderService orderService;
-   
-   // TODO 출입관리-일일입장관리
-   @GetMapping("OneDayOrder.do")
-   public String OneDayOrder(ModelMap model) throws Exception {
-	   Users users = (Users) session.getAttribute("loginuserinfo");
-	   if(users == null){
-		   model.addAttribute("msg", "로그인을 다시 해주세요.");
-	       model.addAttribute("script", "back");
-		   return "redirect:login.do";
-	   }
-	   
-	   List<SLOrderGroup> group = orderService.selectSLOrderGroup(users.getSiteCode());
-	   List<SLOrderItem> item = orderService.listSLOderItem(users.getSiteCode());
-	   
-	   System.out.println("item : " + item);
-	   
-	   model.addAttribute("group", group);
-	   model.addAttribute("item", item);
-	   
-	   return "entry/oneday/oneDayOrder";
-   }
-   
-   @PostMapping("/GroupValue")
-   @ResponseBody
-   public Map<String, Object> groupValue(ModelMap model,
-		   @RequestParam(name = "value") int value
-		   ) throws Exception{
-	   Users users = (Users) session.getAttribute("loginuserinfo");
-	   
-	   
-	   Map<String, Object> pkid = new HashMap<>();
-	   
-	   pkid.put("SiteCode", users.getSiteCode());
-	   pkid.put("value", value);
-	   
-	   
-	   List<SLOrderItem> groups = orderService.listGroupItem(pkid);
-	   
-	   
-	   
-	   Map<String, Object> map = new HashMap<>();
-	   
-	   map.put("size", groups.size());
-	   map.put("list", groups);
-	   
-	   return map;
-   }
 
+	// TODO 출입관리-일일입장관리
+	@GetMapping("OneDayOrder.do")
+	public String OneDayOrder(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			//model.addAttribute("script", "back");
+			//return "redirect:login.do";
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
+
+		List<SLOrderGroup> group = orderService.selectSLOrderGroup(users.getSiteCode());
+		List<SLOrderItem> item = orderService.listSLOderItem(users.getSiteCode());
+
+		log.debug("item : " + item);
+
+		model.addAttribute("group", group);
+		model.addAttribute("item", item);
+
+		return "entry/oneday/oneDayOrder";
+	}
+
+	@PostMapping("/GroupValue")
+	@ResponseBody
+	public Map<String, Object> groupValue(ModelMap model, @RequestParam(name = "value") int value) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return null;
+		}
+		Map<String, Object> pkid = new HashMap<>();
+
+		pkid.put("SiteCode", users.getSiteCode());
+		pkid.put("value", value);
+
+		List<SLOrderItem> groups = orderService.listGroupItem(pkid);
+	   
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("size", groups.size());
+		map.put("list", groups);
+
+		return map;
+	}
+	
+	@PostMapping("/Jungwon")
+	@ResponseBody
+	public Map<String,Object> jungwonChk(HttpServletRequest request) throws Exception{
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return null;
+		}
+		Map<String, Object> setSql = new HashMap<>();
+		setSql.put("SiteCode", users.getSiteCode());
+		setSql.put("SaleDate", f.formatDate(new Date(),"yMd"));
+		setSql.put("ItemPKID", f.getNullToSpaceInt(request.getParameter("pkid")));
+
+		int inwon = orderService.getOrderItemJungwon(setSql);
+		setSql = orderService.getItemJungwon(setSql);
+		setSql.put("inwon",inwon);
+
+		return setSql;
+	}
+
+	// 일일입장 - 할인 페이지
+	@GetMapping("/order/discount.do")
+	public String DiscountPage(ModelMap model) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return null;
+		}
+		DC dc = new DC();
+		dc.setSiteCode(users.getSiteCode());
+		List<DC> dcList = vtcDCService.dclist(dc);
+		model.addAttribute("dcList", dcList);
+		return "entry/oneday/discount";
+	}
+	
 	// TODO 출입관리- 출입관리 페이지
-	@GetMapping("entryManage.do")
+	@GetMapping("/entryManage.do")
 	public String memEntryManage(tblmember tblmember, ModelMap model) throws Exception {
 	   Users users = (Users) session.getAttribute("loginuserinfo");
 	   if(users == null){
@@ -351,7 +386,7 @@ public class VtcEntryController{
 					resultMsg = "기간이 유효한 강습정보가 존재하지 않습니다.";
 					msgType = 4;
 				}
-				entryItem.put("ItemName",entryClass.get("JungName"));
+				entryItem.put("ItemName",entryClass.get("JungName")+" "+entryClass.get("LevelName")+"("+ entryClass.get("DayName")+")"+" "+ entryClass.get("FromTime"));
 				entryItem.put("responseCode",bOK);
 				entryItem.put("resultMsg",resultMsg);
 				entryItemList.add(entryItem);

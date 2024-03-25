@@ -140,4 +140,5 @@ function beforeUnloadHandler(e) {
     e.returnValue = confirmationMessage; 
     return confirmationMessage;
 }
-window.addEventListener('beforeunload', beforeUnloadHandler);
+// 페이지 종료시 안내메세지 출력
+//window.addEventListener('beforeunload', beforeUnloadHandler);

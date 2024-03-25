@@ -23,5 +23,7 @@ public interface VtcSLOrderService {
 	int getItemSortOrder(String SiteCode) throws Exception;
 	
 	List<SLOrderItem> listGroupItem(Map<String, Object> pkid) throws Exception;
+	int getOrderItemJungwon(Map<String, Object> setSql);
+	Map<String, Object> getItemJungwon(Map<String, Object> setSql);
 	
 }

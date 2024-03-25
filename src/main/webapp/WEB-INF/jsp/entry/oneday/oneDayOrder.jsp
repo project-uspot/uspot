@@ -23,6 +23,7 @@
 <%-- <script src="${pageContext.request.contextPath}/new_lib/js/theme/flatpickr.js"></script> --%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
 <!-- ===============================================-->
 <!--    Stylesheets-->
 <!-- ===============================================-->
@@ -56,40 +57,65 @@
 <body>
 	<div class="card ">
 		<div class="card-header ">
-			<h1 id="date"></h1>
+			<div class="row">
+				<div class="col-6">
+					<h1 id="date"></h1>
+				</div>
+				<div class="col-sm-3">
+					<div class="input-group input-group-sm">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" id="autoLocker" name="autoLocker">
+							<label class="form-check-label" for="autoLocker">전자키사용</label>
+						</div>
+						<input type="hidden" id="Lng_Locker_Condition" name="Lng_Locker_Condition" value=""/>
+						<input type="hidden" id="Lng_Locker_ManAddNum" name="Lng_Locker_ManAddNum" value=""/>
+						<input type="hidden" id="Lng_Locker_WoManAddNum" name="Lng_Locker_WoManAddNum" value=""/>
+					</div>
+					<div class="wsLockerState">
+						<span class="form-check-label">서버접속:</span>
+						<span id="wsLockerStateIcon" class="fa fa-circle me-2 d-inline-block text-secondary" style="min-width:1rem" data-fa-transform="shrink-1 down-3"></span>
+						<span id="wsLockerStateText" class="badge badge-phoenix fs--2 badge-phoenix-secondary">사용불가</span>
+					</div>
+				</div>	
+				<div class="col-sm-3">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="JungwonChk" name="JungwonChk">
+						<label class="form-check-label" for="JungwonChk">분류별 정원</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="dcTypeAll" name="dcTypeAll">
+						<label class="form-check-label" for="dcTypeAll">전체할인</label>
+					</div>
+				</div>	
+			</div>
 		</div>
 		<div class="card-body pb-3">
-			<div class="col-12 col-xxl-8">
+			<div class="col-12">
 				<div class="mb-6">
 					<div class="row flex-row">
-						<div class="row">
-							<div class="col-auto">
+						<div class="card-group">
+							<div class="col-auto w-50">
 								<div class="card">
-									<div class="card-body">
+									<div class="card-header" style="text-align: center;">
 										<!-- <button class="btn btn-secondary btn-lg" type="button" disabled 
 										style="width: 114px; height: 100px;"><b>일일입장</b></button> -->
 										<div class="btn-group btn-group-lg" role="group" aria-label="First group">
-										    <button class="btn btn-secondary ms-2 fs-5" id="prevButton" type="button"><span data-feather="chevron-left"></span></button>
+										    <button class="btn btn-secondary ms-2 fs-5" id="prevButton" type="button">
+										    	<span data-feather="chevron-left"></span>
+										    </button>
 										    <c:forEach items="${group}" var="group" varStatus="loop">
 										        <button class="btn btn-secondary ms-1 groupButton" type="button" value="${group.pkid }">${group.groupName}</button>
 										    </c:forEach>
-										    <button class="btn btn-secondary ms-2" id="nextButton" ><span data-feather="chevron-right"></span></button>
+										    <button class="btn btn-secondary ms-2" id="nextButton" >
+										    	<span data-feather="chevron-right"></span>
+										    </button>
 										</div>
-										<div class="card mt-2">
-											<div class="card-body">
-												<div id="item">
-													<div class="row">
-												        <%-- <c:forEach items="${item}" var="item" varStatus="loop">
-												            <c:if test="${loop.index % 3 == 0}">
-												                </div><div class="row">
-												            </c:if>
-												            <div class="col-4">
-												                <button class="btn btn-secondary custom-btn btn-lg  mt-1 " type="button">${item.itemName}</button>
-												            </div>
-												        </c:forEach> --%>
-												    </div>
-												</div>
-											</div>
+									</div>
+									<div class="card-body" style="text-align: center;">
+										<div id="item" style="height: 375px;overflow-y: auto;">
+											<div class="row">
+
+										    </div>
 										</div>
 									</div>
 								</div>
@@ -104,47 +130,69 @@
 									</div>
 									<div class="card-body ">
 										<div class="row">
-											<div class="col-auto">
-												<button type="button" class="btn btn-soft-primary" id="clean" style="width: 74px;">CLS</button>
-												<button type="button" class="btn btn-soft-primary" id="plus" style="width: 66px;">+1</button>
-												<button type="button" class="btn btn-soft-primary" id="minus" style="width: 64px">-1</button>
-												<button type="button" class="btn btn-soft-primary" style="width: 59px"><span class="uil-backspace text-center" style="font-size: 20px"></span></button>
+											<div class="col-auto ps-1 w-25">
+												<button type="button" class="btn btn-soft-primary w-100 OrderNum" id="clean" data-num="C">C</button>
+											</div>
+											<div class="col-auto ps-1 w-25">
+												<button type="button" class="btn btn-soft-primary w-100 OrderNum" id="plus"  data-num="+1">+1</button>
+											</div>
+											<div class="col-auto ps-1 w-25">
+												<button type="button" class="btn btn-soft-primary w-100 OrderNum" id="minus" data-num="-1">-1</button>
+											</div>
+											<div class="col-auto ps-1 w-25">
+												<button type="button" class="btn btn-soft-primary w-100 OrderNum" id="del"  data-num="del">
+													<span class="fs-3" data-feather="delete"></span>
+												</button>
 											</div>
 										</div>
 										<div class="row mt-1">
-											<div class="col-auto">
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">1</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">2</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">3</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">4</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">5</button>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="1">1</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="2">2</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="3">3</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="4">4</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="5">5</button>
 											</div>
 										</div>
 										<div class="row mt-1">
-											<div class="col-auto ">
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">6</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">7</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">8</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">9</button>
-												<button type="button" class="btn btn-soft-primary btn-sm" style="width: 50px;">0</button>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="6">6</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="7">7</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="8">8</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="9">9</button>
+											</div>
+											<div class="col-auto ps-1 w-20">
+												<button type="button" class="btn btn-soft-primary btn-sm w-100 OrderNum" data-num="0">0</button>
 											</div>
 										</div>
-										<div class="card mt-2">
-											<div class="card-body">
-												<div class="col-auto">
-													<table class="table table-sm mb-1 table-hover ">
-														<thead>
-															<tr>
-																<th scope="col">입장구분</th>
-																<th scope="col">수량</th>
-																<th scope="col">가격</th>
-															</tr>
-														</thead>
-														<tbody id="tbody">
-														</tbody>
-													</table>
-												</div>
-											</div>
+									</div>
+									<div class="card-footer">
+										<div class="mt-2" style="height: 215px;overflow-y: auto;">
+											<table class="table table-sm mb-1 table-hover ">
+												<thead>
+													<tr>
+														<th scope="col">입장구분</th>
+														<th scope="col">수량</th>
+														<th scope="col">가격</th>
+													</tr>
+												</thead>
+												<tbody id="tbody">
+												</tbody>
+											</table>
 										</div>
 									</div>
 								</div>
@@ -153,79 +201,101 @@
 								<div class="card">
 									<div class="card-header">
 										<div class="input-group input-group-sm mb-1">
-											<span class="input-group-text" id="ZipCodespan">청구금액</span>
-											<input class="form-control" id="TotalPrice" name="TotalPrice" type="text" name="ZipCode" readonly />
+											<span class="input-group-text" id="TotalPriceSpan">청구금액</span>
+											<input class="form-control" id="TotalPrice" name="TotalPrice" type="text" readonly />
 										</div>
 										<div class="input-group input-group-sm mb-1">
-											<span class="input-group-text" id="ZipCodespan">할인금액</span>
-											<input class="form-control" id="DcPrice" name="DcPrice" type="text" name="ZipCode" readonly />
+											<span class="input-group-text" id="DcPriceSpan">할인금액</span>
+											<input class="form-control" id="DcPrice" name="DcPrice" type="text" readonly />
 										</div>
 										<div class="input-group input-group-sm mb-1">
-											<span class="input-group-text" id="ZipCodespan">결제금액</span>
-											<input class="form-control" id="RealPrice" name="RealPrice" type="text" name="ZipCode" readonly />
+											<span class="input-group-text" id="RealPriceSpan">결제금액</span>
+											<input class="form-control" id="RealPrice" name="RealPrice" type="text" readonly />
+										</div>
+										<!-- <div class="input-group input-group-sm mb-1">
+											<span class="input-group-text" id="DepositSpan">받은  돈</span>
+											<input class="form-control" id="Deposit" name="Deposit" type="text" readonly />
 										</div>
 										<div class="input-group input-group-sm mb-1">
-											<span class="input-group-text" id="ZipCodespan">받은  돈</span>
-											<input class="form-control" id="Deposit" name="Deposit" type="text" name="ZipCode" readonly />
-										</div>
-										<div class="input-group input-group-sm mb-1">
-											<span class="input-group-text" id="ZipCodespan">거스름 돈</span>
-											<input class="form-control" id="Change" name="Change" type="text" name="ZipCode" readonly />
-										</div>
+											<span class="input-group-text" id="ChangeSpan">거스름 돈</span>
+											<input class="form-control" id="Change" name="Change" type="text" readonly />
+										</div> -->
 									</div>
 									<div class="card-body">
-										<div class="row mt-1">
-											<div class="col-auto">
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">7</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">8</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">9</button>
-											</div>                                                                      
-										</div>                                                                          
-										<div class="row mt-1">                                                               
-											<div class="col-auto">                                                      
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">4</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">5</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">6</button>
-											</div>                                                                      
-										</div>                                                                          
-										<div class="row mt-1" >                                                               
-											<div class="col-auto">                                                      
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">1</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">2</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">3</button>
+										<div>
+											<div class="row mt-1 ms-0">
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="7">7</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="8">8</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="9">9</button>
+												</div>                                                                      
+											</div>                                                                          
+											<div class="row mt-1 ms-0">                                                               
+												<div class="col-auto ps-1 w-33">                                                      
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="4">4</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="5">5</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="6">6</button>
+												</div>                                                                      
+											</div>                                                                          
+											<div class="row mt-1 ms-0" >                                                               
+												<div class="col-auto ps-1 w-33">                                                      
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="1">1</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="2">2</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="3">3</button>
+												</div>
 											</div>
-										</div>
-										<div class="row mt-1" >                                                               
-											<div class="col-auto">                                                      
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">0</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">00</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">000</button>
+											<div class="row mt-1 ms-0" >                                                               
+												<div class="col-auto ps-1 w-33">                                                      
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="0">0</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="00">00</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="000">000</button>
+												</div>
 											</div>
-										</div>
-										<div class="row mt-1 " >                                                               
-											<div class="col-auto">                                                      
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">-</button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;"><span class="uil-backspace"></span></button>
-												<button type="button" class="btn btn-soft-primary btn-lg" style="width: 88px;">CLS</button>
+											<div class="row mt-1 ms-0" >                                                               
+												<div class="col-auto ps-1 w-33">                                                      
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="-">-</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="del">
+														<span class="fs-3" data-feather="delete"></span>
+													</button>
+												</div>
+												<div class="col-auto ps-1 w-33">
+													<button type="button" class="btn btn-soft-primary btn-lg w-100 PriceNum" data-num="cls">CLS</button>
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="card">
-										<div class="card-body">
-											<div class="row">
-												<div class="col-auto">
-													<button type="button" class="btn btn-phoenix-primary" >할인</button>
-													<button type="button" class="btn btn-phoenix-primary " >현금</button>
-													<button type="button" class="btn btn-phoenix-primary " >현금영수증</button>
-												</div>
-												<div class="col-auto mt-1">
-													<button type="button" class="btn btn-phoenix-primary " >신용카드</button>
-													<button type="button" class="btn btn-phoenix-primary" disabled >-</button>
-													<button type="button" class="btn btn-phoenix-primary " >제로페이</button>
-												</div>
+									<div class="card-footer">
+										<div class="row">
+											<div class="col-auto ps-1 w-33">
+												<button type="button" class="btn btn-phoenix-secondary w-100" onclick="payDiscount()" >할인</button>
+											</div>
+											<div class="col-auto ps-1 w-33">
+												<button type="button" class="btn btn-phoenix-primary w-100"  onclick="paycash()">현금</button>
+											</div>
+											<div class="col-auto ps-1 w-33">
+												<button type="button" class="btn btn-soft-primary w-100" onclick="paycredit()">신용카드</button>
 											</div>
 										</div>
 									</div>
+									<div id="paidbody" style="display:none"></div>
 								</div>
 							</div>
 						</div>
@@ -234,6 +304,7 @@
 			</div>
 		</div>
 	</div>
+	<jsp:include page="/WEB-INF/jsp/include/foot.jsp"></jsp:include>
 </body>
 <script type="text/javascript">
 	document.addEventListener('keydown', function(event) {
@@ -262,6 +333,7 @@
 	let nextButton = document.getElementById('nextButton');
 	let currentIndex = 0;
 	const groupsPerPage = 4; // 한 페이지에 보여질 그룹 개수
+	let inwonChk = false;
 
 	// 초기 상태에서 처음 3개 그룹만 보이도록 설정
 	showGroups();
@@ -290,11 +362,11 @@
 	    }
 	});
 	/* 일일입장 그룹 버튼 끝 */
-	
+	var selectedRow = null;
 	/* 일일입장 버튼 */
 	$(document).ready(function() {
 	    let selectedItems = {}; // 선택된 아이템을 저장할 객체 (아이템명을 키로 사용)
-	    let selectedRow = null;
+	    //let selectedRow = null;
 	
 	    $('.groupButton').on('click', function() {
 	        const valueToSend = $(this).val();
@@ -309,7 +381,14 @@
 	                    if (i % 3 === 0 && i !== 0) {
 	                        itemsHTML += '</div><div class="row">';
 	                    }
-	                    itemsHTML += '<div class="col-4"><button class="btn btn-secondary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
+	                    if(item.gender == "여자"){
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-warning custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
+	                    }else if(item.gender == "남자"){
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-primary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';	
+	                    }else{
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-secondary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
+	                    }
+	                    
 	                }
 	                itemsHTML += '</div></div>';
 	                $('#item').html(itemsHTML);
@@ -322,46 +401,59 @@
 	    
 	    $('#item').on('click', 'button', function(event) {
 	        const target = $(event.currentTarget);
+	        const pkid = target.data('pkid');
 	        const itemName = target.data('name');
 	        const price = parseFloat(target.data('price'));
+	        const jungwon = parseInt(target.data('jungwon'));
+	        const group = parseInt(target.data('group'));
 
 	        let existingItem = null;
 	        $('#tbody tr').each(function() {
-	            const existingName = $(this).find('td:eq(0)').text();
-	            if (existingName === itemName) {
+	            const existingPKID = $(this).data('pkid');
+	            if (existingPKID === pkid) {
 	                existingItem = $(this);
+	                if (selectedRow !== null) {
+			            selectedRow.removeClass('selected');
+			        }
+	                selectedRow = existingItem;
+			        selectedRow.addClass('selected');
+			        inwonChk = false;
 	                return false; // 중복 아이템을 찾으면 반복문 종료
 	            }
 	        });
 
 	        if (existingItem) {
-	            updateQuantityAndTable('add', existingItem);
+	            //updateQuantityAndTable('add', existingItem);
+	            updateNumberOfQuantityAndTable("+1",existingItem);
 	        } else {
-	            const row = $('<tr>');
+	        	if (selectedRow !== null) {
+		            selectedRow.removeClass('selected');
+		        }
+	            const row = $('<tr data-price="' + price + '" data-jungwon="'+jungwon+'" data-group="'+group+'" data-pkid="'+pkid+'" data-name="'+itemName+'" data-dcid="0" data-dcprice="0" data-amount="1" data-tprice="' + price + '">');
 	            row.append($('<td>').text(itemName)); // 아이템 이름
 	            row.append($('<td>').text('1')); // 기본 수량 1로 추가
 	            row.append($('<td>').text(price.toLocaleString())); // 가격
 	            $('#tbody').append(row);
+	            selectedRow = row;
+		        selectedRow.addClass('selected');
+		        inwonChk = false;
 	        }
 	        updateTotalCountAndPrice();
-	    });
+	    }); 
 
-	    $('#clean').on('click', function() {
-	        selectedItems = {};
-	        $('#tbody').empty(); // 아이템 내용 삭제
-	        updateTotalCountAndPrice();
-	    });
-	    
-	    $('#plus').on('click', function() {
-	        if (selectedRow) {
-	            updateQuantityAndTable('increase', selectedRow);
-	        }
-	    });
-	    
-	    $('#minus').on('click', function() {
-	        if (selectedRow) {
-	            updateQuantityAndTable('decrease', selectedRow);
-	        }
+
+	    $(".OrderNum").on('click',function(){
+	    	var chk = $(this).data('num');
+	    	switch(chk){
+	    	case "C":
+	    		selectedItems = {};
+		        $('#tbody').empty(); // 아이템 내용 삭제
+		        updateTotalCountAndPrice();
+	    		break;
+	    	default:
+	    		updateNumberOfQuantityAndTable(chk,selectedRow);
+	    		break;
+	    	}
 	    });
 		
 	    $('#tbody').on('click', 'tr', function() {
@@ -370,66 +462,250 @@
 	        }
 	        selectedRow = $(this);
 	        selectedRow.addClass('selected');
+	        inwonChk = false;
 	    });
-	    
-	    function updateQuantityAndTable(action, item) {
+
+	    function updateNumberOfQuantityAndTable(action, item) {
 	        const itemName = item.data('name');
 	        const pkid = item.data('pkid');
+	        let jungwon = item.data('jungwon');
 	        const quantityCell = item.closest('tr').find('td:eq(1)');
 	        const priceCell = item.closest('tr').find('td:eq(2)');
 	        let quantity = parseInt(quantityCell.text());
 	        let totalPrice = parseFloat(priceCell.text().replace(/,/g, ''));
-	        let price = totalPrice / quantity;
-			
-	        if (action === 'increase') { /* +1 눌렀을때 */
-	        	console.log("action : " + action);      
-	        	quantity++;
-	            totalPrice += price;
-	        } else if (action === 'add') { /* 일일입장 버튼 눌렀을때 */
-	            if (selectedItems[itemName]) {
-	                selectedItems[itemName].quantity += 1;
-	            } else {
-	                const newPrice = parseFloat(item.data('price'));
-	                selectedItems[itemName] = { price: newPrice, quantity: 1, pkid: pkid };
-	            }
+	        let price = item.data('price');
+	        let dcprice = item.data('dcprice');
+	        let inwon = 0;
+	        let toCount = parseInt($('.total-count').text());
 
-	            quantity = selectedItems[itemName].quantity;
-	            totalPrice = selectedItems[itemName].price * quantity;
-	        } else if (action === 'decrease') {
-	        	if (quantity > 1) { // 수량이 1 이상인 경우에만 감소하도록 조건 추가
-	                quantity--;
-	                totalPrice -= price;
+	        $.ajax({
+	        	url:"Jungwon",
+	        	method: 'POST',
+	            data: { "pkid": pkid },
+	            async : false,
+	            success: function(data) {
+	            	inwon = data.inwon;
+	            	jungwon = data.GroupJungwon;
+	            },
+	            error: function(e){
+	            	console.log(e);
 	            }
-	        }
+	        });
+
+			if(action == "del"){
+				if (quantity >= 10) {
+					toCount = toCount - quantity;
+					quantity = parseInt(quantityCell.text().substring(0,quantityCell.text().length-1));
+					totalPrice = price * quantity;
+	            }
+			}else if (action.toString() === "0"){
+				toCount = toCount - quantity;
+				quantity = parseInt(quantityCell.text()+action);
+				totalPrice = price * quantity;
+			}else if (action.toString() === "+1"){
+				toCount = toCount - quantity;
+				quantity = parseInt(quantityCell.text())+1;
+				totalPrice = price * quantity;
+			}else if (action.toString() === "-1"){
+				if (quantity > 1) {
+					toCount = toCount - quantity;
+					quantity = parseInt(quantityCell.text())-1;
+					totalPrice = price * quantity;
+	            }
+			}else{
+				toCount = toCount - quantity;
+				if(inwonChk){
+					quantity = parseInt(quantityCell.text()+action);
+				}else{
+					quantity = parseInt(action);
+					inwonChk = true;
+				}
+				totalPrice = price * quantity;
+			}
+			totalPrice = totalPrice-dcprice;
+			toCount = toCount + quantity;
+
+			console.log(jungwon,inwon,toCount);
+			if(jungwon != 0 && jungwon - inwon < toCount){
+				$('#resultmessage').html(itemName+"의 하루정원은 "+jungwon+"명 입니다.<br>현재 판매량 : "+ inwon+"<br>그래도 판매하시겠습니까?");
+				$('.modal-footer').empty();
+				var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="save()">확인</button>';
+				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+				$('.modal-footer').append(okaybutton);
+				$('.modal-footer').append(cancelbutton);
+			    $('#modalButton').click();
+			    modalcheck = true;
+			}
+
+			item.data('amount',quantity);
+			item.data('tprice',totalPrice);
+
 	        quantityCell.text(quantity);
 	        priceCell.text(totalPrice.toLocaleString());
 	        updateTotalCountAndPrice();
 	    }
-
-	    function updateTotalCountAndPrice() {
-	        
-	        var totalCount = 0;
-	        var totalPrice = 0;
-
-	        $('#tbody tr').each(function() {
-	            const quantity = parseInt($(this).find('td:eq(1)').text());
-	            totalCount += quantity;
-
-	            console.log("parseFloat($(this).find('td:eq(2)').text().replace(/,/g, '')) : " +parseFloat($(this).find('td:eq(2)').text().replace(/,/g, '')));
-	            const price = parseFloat($(this).find('td:eq(2)').text().replace(/,/g, ''));
-	            
-	            totalPrice += price;
-	        });
-
-	        $('.total-count').text(totalCount);
-	        $('.total-price').text(totalPrice.toLocaleString());
-	    }
-	    
 	    
 	});
 	/* 일일입장 버튼 끝 */
 
+	
+	    function updateTotalCountAndPrice() {
+	        var totalCount = 0;
+	        var totalPrice = 0;
+	        let tDcPrice = 0;
+
+	        $('#tbody tr').each(function(index, row) {
+	            const quantityText = $(this).find('td:eq(1)').text();
+	            const price = $(this).data('price');
+				const tprice = $(this).data('tprice');
+				const quantity = $(this).data('amount');
+	            //const quantity = parseInt(quantityText, 10);
+	            const DcPrice = parseInt($(this).data('dcprice'));
+
+	            //console.log('Row:', index, 'Quantity:', $(this).data('amount'), 'Price:', $(this).data('price'), 'totPrice:', $(this).data('tprice'), 'DcPrice:', $(this).data('dcprice'));
+
+	            if (!isNaN(quantity) && !isNaN(price)) {
+	                totalCount += quantity;
+	                totalPrice += price * quantity;
+	                tDcPrice += DcPrice;
+	            } else {
+	                console.error('Invalid quantity or price in row ' + index);
+	            }
+	        });
+
+	        //console.log('Total count:', totalCount, 'Total price:', totalPrice);
+
+	        $('.total-count').text(totalCount);
+	        $('.total-price').text(totalPrice.toLocaleString('en-US'));
+	        $("#TotalPrice").val(totalPrice.toLocaleString('en-US'));
+	        $("#DcPrice").val(tDcPrice.toLocaleString('en-US'));
+	        $("#RealPrice").val((totalPrice-tDcPrice).toLocaleString('en-US'));
+	    }
+
+		let myPopup;
+
+		function payDiscount(){
+			var url = "${pageContext.request.contextPath}/order/discount.do";
+	    	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=750";
+	        if (myPopup === undefined || myPopup.closed) {
+	            myPopup = window.open(url, "_blank", windowFeatures);
+	        } else {
+	        	myPopup.focus();
+	        }
+	        document.addEventListener('click', function() {
+	            if (myPopup && !myPopup.closed) {
+	                myPopup.focus();
+	            }
+	      	});
+		}
+
+		function payDiscountSet(DCID, DCRate, DCPrice){
+			let price = selectedRow.data("price");
+			let tprice = selectedRow.data("tprice");
+	        let priceCell = selectedRow.find('td:eq(2)');
+	        let dcTypeAll = $("#dcTypeAll").is(":checked");
+
+	        if(dcTypeAll){
+	        	$('#tbody tr').each(function(index, row) {
+	        		price = $(this).data("price");
+	    			tprice = $(this).data("tprice");
+	    	        priceCell = $(this).find('td:eq(2)');
+		        	if( DCID == "0"){
+					}else{
+						DCPrice = parseFloat(price) * (parseFloat(DCRate)/100);	
+					}
+					priceCell.text((tprice - parseInt(DCPrice)).toLocaleString());
+					$(this).data("dcid", DCID);
+					$(this).data("dcprice", DCPrice);
+					$(this).data("tprice", tprice - parseInt(DCPrice));
+	        	});
+	        }else{
+	        	if( DCID == "0"){
+				}else{
+					DCPrice = parseFloat(price) * (parseFloat(DCRate)/100);	
+				}
+				priceCell.text((tprice - parseInt(DCPrice)).toLocaleString());
+				selectedRow.data("dcid", DCID);
+				selectedRow.data("dcprice", DCPrice);
+				selectedRow.data("tprice", tprice - parseInt(DCPrice));
+	        }
+			updateTotalCountAndPrice();
+		}
+
+		function payDiscountOff(){
+			let price = selectedRow.data("price");
+			let amount = selectedRow.data("amount");
+			let priceCell = selectedRow.find('td:eq(2)');
+	        let dcTypeAll = $("#dcTypeAll").is(":checked");
+
+	        if(dcTypeAll){
+	        	$('#tbody tr').each(function(index, row) {
+	    			let price = $(this).data("price");
+	    			let amount = $(this).data("amount");
+	    			let priceCell = $(this).find('td:eq(2)');
+
+	    			$(this).data("dcid", 0);
+	    			$(this).data("dcprice", 0);
+	    			$(this).data("tprice", price*amount);
+					priceCell.text((price*amount).toLocaleString());
+	        	});
+	        }else{
+				selectedRow.data("dcid", 0);
+				selectedRow.data("dcprice", 0);
+				selectedRow.data("tprice", price*amount);
+				priceCell.text((price*amount).toLocaleString());
+	        	
+	        }
+			updateTotalCountAndPrice();
+		}
+		
+		<%-- 신용카드 결제 --%>
+		function paycredit(){
+			if(removeCommasFromNumber($('#RealPrice').val()) < 1 || $('#RealPrice').val() == ''){
+				$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+				$('.modal-footer').empty();
+				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+				$('.modal-footer').append(cancelbutton);
+				$('#modalButton').click();
+				modalcheck = true;
+				return false;
+			}
+			
+			var dataList = [];
+			$('#tbody tr').each(function() {
+				var data = {
+						pkid: $(this).data('pkid'),
+						name: $(this).data('name'),
+						group: $(this).data('group'),
+						price: $(this).data('price'),
+						dcid: $(this).data('dcid'),
+						dcprice: $(this).data('dcprice'),
+						amount: $(this).data('amount'),
+						tprice: $(this).data('tprice'),
+				};
+				dataList.push(data);
+			});
+			console.log(dataList);
+			
+			var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#RealPrice").val() +"&MemberID=&tempSaleNo=&Insert=&InType=일일입장";
+			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
+		    if (myPopup === undefined || myPopup.closed) {
+		        myPopup = window.open(url, "_blank", windowFeatures);
+		    } else {
+		    	myPopup.focus();
+		    }
+		    document.addEventListener('click', function() {
+		        if (myPopup && !myPopup.closed) {
+		            myPopup.focus();
+		        }
+		  	});
+		}
+		<%-- 결제 후 처리 --%>
+		function totalchange(){
+			$("#paidbody").empty();
+		}
 </script>
+<script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/anchorjs/anchor.min.js"></script>
 <script src="${pageContext.request.contextPath}/new_lib/vendors/is/is.min.js"></script>
