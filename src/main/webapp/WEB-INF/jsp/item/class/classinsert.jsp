@@ -498,8 +498,15 @@
 								</div>
 							</div>
 							<div class="tab-pane fade" id="tab-propose" role="tabpanel" aria-labelledby="propose-tab">
-								<div class="col-sm-6 col-md-10 mb-2">
-									<h4 class="mb-3">이미지</h4>
+								<div class="col-sm-6 col-md-3 mb-2">
+									<div class="row">
+										<div class="col me-n15">
+											<h4 class="mb-3">이미지</h4>
+										</div>
+										<div class="col ms-n8">
+											<p>(최대 2MB)</p>
+										</div>
+									</div>
 									 <div class="card" style="width: 460px;">
 								        <div class="card-body mb-n10 mt-n3 me-3 mx-n4" style="height: 440px;">
 								        	<div class="card text-white overflow-hidden" id="imagecard" style="max-width:30rem;height: 260px;">

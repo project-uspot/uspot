@@ -42,7 +42,7 @@
         </div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1" style="overflow-x:scroll; ">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-				<table class="table table-sm fs--1 mb-1" id="myTable">
+				<table class="table table-bordered table-sm fs--1 mb-1" id="myTable">
 				<colgroup>
 					<col style="width:140px;" >
 					<col style="width:80px;" >

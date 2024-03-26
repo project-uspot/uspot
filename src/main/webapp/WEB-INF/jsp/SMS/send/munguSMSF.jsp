@@ -23,6 +23,10 @@
 		<div class="text-end me-15" id="CountMungu">
 			SMS:0/90Bytes
 		</div>
+		<div class="input-group mb-3">
+  			<span class="input-group-text" id="basic-addon1">문구검색</span>
+			<input class="form-control" type="text" placeholder="검색어를 입력해주세요." oninput="munguSearch(this)"/>
+		</div>
 		<div class="border-top border-bottom border-200" id="customerOrdersTable">
 			<div class="table-responsive scrollbar">
 				<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
@@ -222,10 +226,43 @@ function munguRemove() {
 		});
 	}
 }
+var isProcessing = false; // 처리 중인지 여부를 나타내는 변수
+<!--문구 검색결과 함수-->
+function munguSearch(mungu){
+	if (isProcessing) return;
+    
+    isProcessing = true; 
+	$('#mungubody').empty();
+	
+	$.ajax({
+        type: "POST", 
+        url: "sms_munguSearch", 
+        dataType : 'json',
+        data: { 
+        	mungu : $(mungu).val()
+        },
+        success: function(data) {				
+			$.each(data, function (index, item) {
+                var newRow = '<tr onclick="Mungubodyclick(this)">' +
+                    '<td class="Code" style="display:none;">' + item.code + '</td>' +
+                    '<td class="text-center fw-bold">' + (index + 1) + '</td>' +
+                    '<td class="fw-bold white-space-nowrap mungu" style="max-width: 200px;">' + item.mungu + '</td>' +
+                    '</tr>';
+                $('#mungubody').append(newRow);
+            });
+			isProcessing = false; // 처리 완료로 표시
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+         isProcessing = false; // 처리 완료로 표시
+        }
+	});
+}
 
 <!--문구 작업시 부모창 문구리스트 반영 함수-->
 function mungubodyRefact() {
-	$('.mungubody').empty();
+	
 	$.ajax({
         type: "POST", 
         url: "sms_munguList", 

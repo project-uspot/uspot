@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="row">
-	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 673px;">
+	    <div class="card h-100 mb-1 ms-3 me-1" style="width: 673px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 525px;">
 	        	<div class="col-auto mt-2">
 					<div class="card border border-primary mt-2">
@@ -299,7 +299,7 @@
 				</div>
 	        </div>
 		</div>
-	    <div class="card h-100 mb-1 w-20 me-1" style="width: 622px;">
+	    <div class="card h-100 mb-1 me-1" style="width: 622px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 525px;">
 	        	<ul class="nav nav-underline" id="myTab" role="tablist">
 	        		<c:forEach var="lockergroup" items="${lockergrouplist}">
@@ -392,7 +392,7 @@
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 515px; ">
+	    <div class="card w-35 h-100 mb-1 me-1" style="width: 515px; ">
 	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 300px;">
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
@@ -1655,12 +1655,7 @@ function payCancel() {
             		window.opener.location.reload();
                     window.close();
             	}else if(data == '-1'){
-            		$('#resultmessage').html('이미 취소된 건입니다.');
-            	  	$('.modal-footer').empty();
-            	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
-            	  	$('.modal-footer').append(cancelbutton);
-            	    $('#modalButton').click();
-            	    modalcheck = true;
+            	  	alert('이미 취소된 건입니다.');
             	    return false;
             	}else{
             		switch (paidcategory) {

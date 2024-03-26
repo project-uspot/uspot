@@ -9,4 +9,5 @@ public interface VtcSMSService {
 	void sms_munguInsert(sms_mungu sms_mungu)throws Exception;
 	void sms_munguUpdate(sms_mungu sms_mungu)throws Exception;
 	void sms_munguRemove(sms_mungu sms_mungu)throws Exception;
+	List<sms_mungu> sms_munguSearch(sms_mungu sms_mungu)throws Exception;
 }

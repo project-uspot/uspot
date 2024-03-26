@@ -48,9 +48,9 @@
             		</div>
             		<div class="col-auto">
 						<button class="btn btn-success" type="button" onclick="save()">저장</button>
-						<c:if test="${fmsc_s01.state eq 'D'}">
+						<%-- <c:if test="${fmscs01.state eq 'D'}">
 							<button class="btn btn-danger" type="button" onclick="deleteAll()">삭제</button>
-						</c:if>
+						</c:if> --%>
             		</div>
         		</div>
         	</div>

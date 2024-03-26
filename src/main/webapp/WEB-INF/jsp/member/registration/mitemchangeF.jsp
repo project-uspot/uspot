@@ -135,7 +135,7 @@
 		</div>
 	</div>
     <div class="row">
-	    <div class="card h-100 mb-1 w-20 ms-3 me-1" style="width: 240px;">
+	    <div class="card h-100 mb-1 ms-3 me-1" style="width: 240px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 330px;">
 	            <div class="col-auto">
 					<div class="input-group input-group-sm">
@@ -182,7 +182,7 @@
 				</div>
 	        </div>
 	    </div>
-	    <div class="card h-100 mb-1 w-20 me-1" style="width: 465px;">
+	    <div class="card h-100 mb-1 me-1" style="width: 465px;">
 	        <div class="card-body mb-n5 mt-n3 mx-n4" style="height: 330px; width: 510px;">
 	            <div class="col-md-10">
 					<div class="input-group input-group-sm">
@@ -265,7 +265,7 @@
 				</div>
 	        </div>
 	    </div>
-	    <div class="card h-100 mb-1 w-20 me-1" style="width: 562px;">
+	    <div class="card h-100 mb-1 me-1" style="width: 562px;">
 	        <div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 330px;">
 	            <div class="col-md-10">
 					<div class="input-group input-group-sm">
@@ -438,7 +438,7 @@
             	</div>
 	    	</div>
 	    </div>
-	    <div class="card w-35 h-100 mb-1 w-20 me-1" style="width: 497px; ">
+	    <div class="card w-35 h-100 mb-1 me-1" style="width: 497px; ">
 	    	<div class="card-body mb-n5 mt-n3 me-3 mx-n4" style="height: 275px;">
 	    		<div class="col-auto">
 	    			<div class="row">

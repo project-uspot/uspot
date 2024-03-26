@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SMS</title>
+    <title>알림톡</title>
 </head>
 <body style="overflow: hidden;">
     <div class="card h-100 mb-1">
@@ -13,20 +13,55 @@
             <div class="col-auto">
         		<div class="row justify-content-between">
         			<div class="col-auto">
-						<h3 class="mb-3 pt-2">SMS 관리</h3>
+						<h3 class="mb-3 pt-2">알림톡 관리</h3>
             		</div>
             		<div class="col-auto">
-            			<button class="btn btn-outline-warning" type="button" onclick="location.href='SendTalkF.do?sendTable=${param.sendTable}';">알림톡</button>
+            			<button class="btn btn-outline-warning" type="button" onclick="location.href='SendSMSF.do';">SMS</button>
             			<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="munguButton" data-bs-target="#insertModal">자주쓰는 문구관리</button>
-						<button class="btn btn-danger" type="button" onclick="location.href='SendSMSF.do';">작업 초기화</button>
+						<button class="btn btn-danger" type="button" onclick="location.href='SendTalkF.do';">작업 초기화</button>
             		</div>
         		</div>
         	</div>
         </div>
     </div>
+    <script type="text/javascript">
+    $(window).on('load', function() {
+    	if('${param.sendTable}' == 'Y'){
+    		var oldPageMemberBody = $(window.opener.document).find('#listbody');
+        	// 기존 페이지의 각 행을 순회하면서 새로운 행 생성
+        	oldPageMemberBody.find("tr").each(function() {
+        	    let RSMS = '';
+
+        	    // RSMS 값 가져오기
+        	    if ($(this).find(".RSMS").text() == '') {
+        	        RSMS = 'Y';
+        	    } else {
+        	        RSMS = $(this).find(".RSMS").text();
+        	    }
+
+        	    // RSMS가 'Y'인 경우에만 새로운 행 추가
+        	    if (RSMS == 'Y') {
+        	        var newRow = $('<tr onclick="memberbodyclick(this)" ondblclick="choiceChange(this)"></tr>');
+
+        	        // 각 셀의 내용을 가져와서 새로운 행에 추가
+        	        newRow.append('<td class="choice text-center"><input class="form-check-input" id="choice" type="checkbox"/></td>');
+        	        newRow.append('<td class="memberid text-center">' + $(this).find(".MemberID").text() + '</td>');
+        	        newRow.append('<td class="membername white-space-nowrap text-center">' + $(this).find(".Name").text() + '</td>');
+        	        newRow.append('<td class="gender text-center">' + $(this).find(".Gender").text() + '</td>');
+        	        newRow.append('<td class="homephone text-center">' + $(this).find(".HomePhone").text() + '</td>');
+        	        newRow.append('<td class="cellphone text-center">' + $(this).find(".CellPhone").text() + '</td>');
+        	        newRow.append('<td class="send text-center">' + RSMS + '</td>');
+
+        	        // 새로운 행을 목표 테이블에 추가
+        	        $('#memberbody').append(newRow);
+        	    }
+        	});
+    	}
+    });
+    </script>
     <div class="row g-0 g-md-4 g-xl-6">
     	<div class="me-n5" style="width: 478px;">
-    		<div class="card bg-1100 h-100 mb-1 ms-3 me-1 rounded-5">
+    		<div class="card bg-warning-300 h-100 mb-1 ms-3 me-1 rounded-5">
 		        <div class="card-body mb-n5 mt-n3 me-3 mx-n3" style="height: 800px;">
 		        	<div class="col-auto mt-2">
 						<div class="card border border-secondary">
@@ -535,12 +570,5 @@ function balsong() {
 	});
 }
 </script>
-<div class="modal fade" id="insertModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="insertModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
-		<div class="modal-content" id="01">
-			<jsp:include page="munguSMSF.jsp"/>
-		</div>
-	</div>
-</div>
 </html>
 <%@ include file="../../include/foot.jsp" %>

@@ -27,4 +27,11 @@
 			Code=#{Code}
 		and SiteCode=#{SiteCode}
 	</update>
+	<select id="sms_munguSearch" parameterType="egovframework.veterans.com.cmm.service.vo.sms_mungu" resultType="egovframework.veterans.com.cmm.service.vo.sms_mungu">
+	select * from sms_mungu
+	where 
+		SiteCode = #{SiteCode}
+	and IsDelete = 'N'
+	and mungu like CONCAT('%', #{mungu}, '%')
+	</select>
 </mapper>

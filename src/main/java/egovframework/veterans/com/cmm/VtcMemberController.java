@@ -1249,11 +1249,14 @@ public class VtcMemberController {
 		
 		List<fmsc_s01> fmsc_s01_1 = vtcMemberService.fmsc_s01bysaleno(fmsc_s01);
 		
+		fmsc_s01 = fmsc_s01_1.get(0);
+		
 		fmsc_s03.setSiteCode(users.getSiteCode());
+		fmsc_s03.setSaleNo(fmsc_s01.getSaleNo());
 		
 		List<fmsc_s03> fmsc_s03_list = vtcMemberService.fmsc_s03BySaleNo(fmsc_s03);
 		
-		model.addAttribute("fmsc_s01",fmsc_s01_1);
+		model.addAttribute("fmsc_s01",fmsc_s01);
 		model.addAttribute("restlist",fmsc_s03_list);
 		
 		return "member/registration/mitemrestF";

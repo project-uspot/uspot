@@ -33,24 +33,24 @@
 	        </div>
 		<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top  border-200 position-relative top-1">
 			<div class="table-responsive scrollbar-overlay mx-n1 px-1">
-	  			<table class="table table-sm table-hover fs--1 mb-1" id="myTable">
+	  			<table class="table table-sm table-bordered table-hover fs--1 mb-1" id="myTable">
 		  			<colgroup>
-		  				<col style="width:50px">
-		  				<col style="width:140px">
-		  				<col style="width:120px">
-		  				<col style="width:60px">
-		  				<col style="width:60px">
-		  				<col style="width:100px">
-		  				<col style="width:180px">
-		  				<col style="width:230px">
-		  				<col style="width:320px">
-		  				<col style="width:120px">
-		  				<col style="width:120px">
-		  				<col style="width:120px">
-		  				<col style="width:100px">
-		  				<col style="width:50px">
-		  				<col style="width:120px">
-		  				<col style="width:100px">
+		  				<col style="width:5%;">
+		  				<col style="width:9%;">
+		  				<col style="width:8%;">
+		  				<col style="width:4%;">
+		  				<col style="width:4%;">
+		  				<col style="width:4%;">
+		  				<col style="width:5%;">
+		  				<col style="width:13%;">
+		  				<col style="width:9%;">
+		  				<col style="width:6%;">
+		  				<col style="width:6%;">
+		  				<col style="width:7%;">
+		  				<col style="width:8%;">
+		  				<col style="width:4%;">
+		  				<col style="width:4%;">
+		  				<col style="width:5%;">
 		  			</colgroup>
 		  			<thead>
 		  				<tr>

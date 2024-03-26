@@ -483,6 +483,7 @@ public class OfflinePayController {
 						//returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
 						if(insertYN.equals("Y")) {
 							returnMap.put("tempSaleNo",tempSaleNo);
+							returnMap.put("Group_SaleNo",tempSaleNo);
 						}else {
 							returnMap.put("SaleType",InType);
 							returnMap = OfflinePayService.insertFMSC_S01(returnMap);
@@ -498,6 +499,9 @@ public class OfflinePayController {
 						returnMap = OfflinePayService.insertPaidLocker(returnMap);
 						returnMap.put("tempSaleNo",returnMap.get("Group_SaleNo"));
 						returnMap.put("SaleNo",returnMap.get("Group_SaleNo"));
+						if(refundcashcheck == null) {
+							refundcashcheck = "Y";
+						}
 						if(refundcashcheck.equals("N")) {
 							int pkid = Integer.parseInt(request.getParameter("pkid"));
 							returnMap.put("tempSaleNo",pkid);
@@ -517,7 +521,6 @@ public class OfflinePayController {
 					default:
 						break;
 					}
-
 					returnMap = OfflinePayService.insertPaid(returnMap);
 					//영수증 저장
 					switch (saleType) {
@@ -534,6 +537,7 @@ public class OfflinePayController {
 				}
 			}catch (Exception e) {
 				log.error(OfflinePay,"ElecAssignData 저장오류:"+e.getMessage());
+				e.printStackTrace();
 			}
 
 			returnStr = f.MapToJson(returnMap);

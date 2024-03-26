@@ -175,4 +175,57 @@ public class VtcSMSController {
         	return "발송되었습니다.";
         }
 	}
+	
+	@ResponseBody
+	@PostMapping("/sms_munguSearch")
+	public List<sms_mungu> sms_munguSearch(sms_mungu sms_mungu)throws Exception{
+		
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		
+		sms_mungu.setSiteCode(users.getSiteCode());
+		
+		List<sms_mungu> mungulist = vtcSMSService.sms_munguSearch(sms_mungu);
+		
+		return mungulist;
+	}
+	
+	@GetMapping("/SendTalkF.do")
+	public String SendTalkF(Model model) throws Exception {
+
+		Users users = (Users) session.getAttribute("loginuserinfo");
+
+		if (users == null) {
+			model.addAttribute("msg", "입력하신 아이디로 검색된 사용자가 존재하지 않습니다.");
+			model.addAttribute("script", "reload");
+
+			return "common/msg";
+		}
+
+		List<sms_mungu> munguList = vtcSMSService.munguBySitecode(users.getSiteCode());
+		List<Sitecode> sitecode = vtcService.selectSiteCode(users.getSiteCode());
+
+		model.addAttribute("mungulist", munguList);
+		model.addAttribute("sitecode", sitecode.get(0));
+
+		return "SMS/talk/SendTalkF";
+	}
+	
+	@ResponseBody
+	@PostMapping("/TemplateList")
+	public void TemplateList() {
+//		Users users = (Users) session.getAttribute("loginuserinfo");
+//		
+//		tblsite_id tblsite_id = vtcService.tblsite_idBySiteCode(users.getSiteCode());
+//		Map<String, String> headers = new HashMap<String, String>();
+//		HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
+//
+//		multipart.addFormField("UserID",tblsite_id.getBalsongID());								// 사용자 계정
+//		multipart.addFormField("UserPW",tblsite_id.getBalsongPW());								// 사용자 암호
+//		multipart.addFormField("Service",(String) map.get("BalsongType"));						// SMS:단문, LMS:장문
+//		multipart.addFormField("Type", "Send");													// Send 기입
+//		multipart.addFormField("Send_Date", "");												// 발송시각 - 미입력 시 즉시발송, 예약 날짜형식) YYYY-MM-DD HH:NN
+//		multipart.addFormField("Callback",((String)map.get("SenderPN")).replace("-", ""));		// 발신번호
+//		multipart.addFormField("Subject",(String) map.get("Title"));							// 발송 제목
+//		multipart.addFormField("Main_Text",(String) map.get("Content"));						// 기본 문자내용
+	}
 }

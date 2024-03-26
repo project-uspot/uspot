@@ -737,7 +737,7 @@
                                             <div class="col-12">
                                                 <h3 class="mb-4">비고</h3>
                                                 <textarea class="form-control mb-3" rows="4" readonly="readonly" name="note" id="note">${tblmember.note}</textarea>
-                                                <button class="btn btn-phoenix-primary w-100 mb-4">비고저장</button>
+                                                <!-- <button class="btn btn-phoenix-primary w-100 mb-4">비고저장</button> -->
                                             </div>
                                         </div>
                                     </div>
@@ -971,7 +971,7 @@
                             return false;
                     	}
                     	
-                    	var url = 'mitemrestF.do?SaleNo='+remembersaleno;
+                    	var url = 'mitemrestF.do?GroupSaleNo='+remembersaleno;
                         var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=530";
                         if (myPopup === undefined || myPopup.closed) {
                             myPopup = window.open(url, "_blank", windowFeatures);
