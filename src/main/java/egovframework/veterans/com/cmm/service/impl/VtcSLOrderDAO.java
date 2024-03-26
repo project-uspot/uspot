@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import egovframework.veterans.com.cmm.service.vo.SLOrders;
 
 @Repository("VtcSLOrderDAO")
 public class VtcSLOrderDAO extends EgovComAbstractDAO {
@@ -59,6 +60,12 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	}
 	public Map<String, Object> getItemJungwon(Map<String, Object> setSql) {
 		return selectOne("order.getItemJungwon",setSql);
+	}
+	public void insertSLOrdersTemp(SLOrders orders) {
+		insert("order.insertOrderTemp",orders);
+	}
+	public void insertSLOrdersDetailTemp(SLOrders orders) {
+		insert("order.insertOrderDetailTemp",orders);
 	}
 		
 
