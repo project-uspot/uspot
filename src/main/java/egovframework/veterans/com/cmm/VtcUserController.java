@@ -520,12 +520,13 @@ public class VtcUserController{
 						tblAuthuserGroup.setUserGroupID(logincheck.getUserGroupID());
 
 						List<TblAuthuserGroup> tblAuthuserGroups = VtcUserService.tblauthusergroupbyusergroup(tblAuthuserGroup);
-						System.out.println(tblAuthuserGroups);
 						session.setAttribute("sessiontblAuthuserGroups", tblAuthuserGroups);
 						
 						logVO.setResult_CD(24);
 						logF.LogInsert(logVO, VtcLogService);
 
+						
+						
 						return "redirect:membership.do";
 					} else {
 

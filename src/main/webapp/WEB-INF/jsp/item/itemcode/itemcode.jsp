@@ -60,12 +60,12 @@
 			</div>
 		</div>
       
-		<div class="mx-n4 px-1 mx-lg-n6 bg-white border-top border-bottom border-200 position-relative top-1" >
+		<div class="mx-n4 px-1 mx-lg-n6 bg-white border-top border-bottom border-200 position-relative top-1" id="tablediv">
 			<div id="tableotherlearn" data-list='{"valueNames":["GroupName","jsType","fromDate","jungSi1","jungSi2","jungSi3","jungSi1Inlive","sortOrder", "againMonth","webYN","itemRejectCnt","monthSelNo",
 			"jungSiLotteryFromDate", "jungSiLotteryDate", "jungSiLotteryPayFromDate", "jungSiLotteryAddFromDate"]}'>
 				<div class="table-responsive mx-n1 px-1">
 					<table class="table table-sm fs--1 mb-1 table-hover table-bordered scrollbar" id="itemTable" style="width: 160%;">
-						<colgroup>
+						<colgroup id="colgroup">
 							<col style="width: 3%;"><!-- 강습종목 -->
 							<col style="width: 3%;"><!-- 접수구분 -->
 							<col style="width: 7%;"><!-- 접수기간 -->
@@ -258,7 +258,9 @@ $("#item,#isdeletecheck").change(function() {
       },
       success: function(data) {
          if(item === '0') {
+        	 $('#colgroup').css('display', '');
         	 $('#itemTable').css('width', '160%');
+        	 $('#tablediv').css('width', '');
             var item01 = data.item01
             var head = '<tr>'
                head += '<th rowspan="2" class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -424,7 +426,9 @@ $("#item,#isdeletecheck").change(function() {
                
             }) 
          } else if(item === '1') {
+        	 $('#colgroup').css('display', 'none');
 			$('#itemTable').css('width', '100%');
+			$('#tablediv').css('width', '50%');
             var item02= data.item02
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >강습종목</th>';
@@ -447,7 +451,9 @@ $("#item,#isdeletecheck").change(function() {
                tbody.append(row);
             })
          } else if (item === '2') {
+        	 $('#colgroup').css('display', 'none');
 			$('#itemTable').css('width', '100%');
+			$('#tablediv').css('width', '50%');
             var item03= data.item03
             var head = '<tr>'
                head += '<th class="sort align-middle pe-1 text-center" scope="col" >코드</th>';

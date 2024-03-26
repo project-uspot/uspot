@@ -36,4 +36,9 @@ public class VtcSMSServiceImpl implements VtcSMSService{
 		vtcSMSDAO.sms_munguRemove(sms_mungu);
 	}
 
+	@Override
+	public List<sms_mungu> sms_munguSearch(sms_mungu sms_mungu) throws Exception {
+		return vtcSMSDAO.sms_munguSearch(sms_mungu);
+	}
+
 }

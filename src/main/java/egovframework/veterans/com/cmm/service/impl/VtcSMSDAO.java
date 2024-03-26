@@ -24,4 +24,8 @@ public class VtcSMSDAO extends EgovComAbstractDAO{
 	public void sms_munguRemove(sms_mungu sms_mungu)throws Exception{
 		update("sms.sms_munguRemove",sms_mungu);
 	}
+	
+	public List<sms_mungu> sms_munguSearch(sms_mungu sms_mungu)throws Exception{
+		return selectList("sms.sms_munguSearch",sms_mungu);
+	}
 }
