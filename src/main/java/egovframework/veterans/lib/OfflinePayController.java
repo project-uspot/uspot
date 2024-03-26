@@ -522,6 +522,7 @@ public class OfflinePayController {
 						break;
 					}
 					returnMap = OfflinePayService.insertPaid(returnMap);
+					System.out.println(returnMap);
 					//영수증 저장
 					switch (saleType) {
 					case "강습":
