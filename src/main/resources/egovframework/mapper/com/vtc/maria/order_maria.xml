@@ -164,7 +164,7 @@
 	<select id="getOrderItemJungwon" parameterType="Map" resultType="Integer">
 	<![CDATA[
 		select ifNull(sum(ifNull(Amount,0)),0) as TotalAmount 
-		from sl_order_details a
+		from sl_orders_details a
 		left join sl_orders b on a.sitecode = b.sitecode and a.orderID = b.OrderID
 		where a.sitecode = #{SiteCode}
 		and a.itemPKID = #{ItemPKID}
@@ -183,4 +183,18 @@
 		and a.PKID = #{ItemPKID}
 	]]>
 	</select>
+	
+	<insert id="insertOrderTemp" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrders" useGeneratedKeys="true" keyProperty="OrderID">
+	<![CDATA[
+		insert into sl_orders_temp(SiteCode, OrderNo, SaleDate, RealSaleDate, TotalPrice, DCCode, DCPrice, RealPrice, OriginOrderID, IsCancel, MemberID, AddDate, AddUserPKID)
+		values(#{SiteCode}, '', now(), now(), #{TotalPrice}, #{DCCode}, #{DCPrice}, #{RealPrice}, #{OriginOrderID}, #{IsCancel}, #{MemberID},now(), #{AddUserPKID})
+	]]>
+	</insert>
+	
+	<insert id="insertOrderDetailTemp" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderDetail">
+		<foreach collection="details" item="detail" index="index" separator=";">
+			insert into sl_orderdetail_temp(SiteCode, OrderID, ItemName, FromTime, ToTime, AdultGbn, Gender, UnitPrice, Amount, TotalPrice, DCCode, DcPrice, RealPrice, ItemPKID, BarCode)
+			values(#{detail.SiteCode}, #{orderID}, #{detail.ItemName}, #{detail.FromTime}, #{detail.ToTime}, #{detail.AdultGbn}, #{detail.Gender}, #{detail.UnitPrice}, #{detail.Amount}, #{detail.TotalPrice}, #{detail.DCCode}, #{detail.DCPrice}, #{detail.RealPrice}, #{detail.ItemPKID}, '')
+		</foreach>
+	</insert>
 </mapper>

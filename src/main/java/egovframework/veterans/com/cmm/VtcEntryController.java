@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,8 +30,10 @@ import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
+import egovframework.veterans.com.cmm.service.vo.SLOrderDetail;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import egovframework.veterans.com.cmm.service.vo.SLOrders;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
@@ -200,6 +203,33 @@ public class VtcEntryController{
 			getMap.put("code","1111");
 		}
 		return getMap;
+	}
+	
+	//
+	@PostMapping("orderTemp.do")
+	@ResponseBody
+	public int orderTemp(@RequestBody SLOrders orders) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return 0;
+		}
+		orders.setSiteCode(users.getSiteCode());
+		for(SLOrderDetail details: orders.getDetails()) {
+			details.setSiteCode(users.getSiteCode());
+			details.setTotalPrice(details.getAmount()*details.getUnitPrice());
+			SLOrderItem item = new SLOrderItem();
+			item.setSiteCode(users.getSiteCode());
+			item.setPkid(details.getItemPKID());
+			item = orderService.getOrderItemDetail(item);
+			details.setAdultGbn(f.getNullToSpaceInt(item.getAdultGBN()));
+			details.setFromTime(item.getFromTime());
+			details.setToTime(item.getToTime());
+			details.setGender(f.getNullToSpaceInt(item.getGender()));
+			orders.setTotalPrice(orders.getTotalPrice()+details.getTotalPrice());
+			orders.setTotalPrice(orders.getDCPrice()+details.getDCPrice());
+		}
+		log.debug(orders.toString());
+		return 0;
 	}
 	
 	//TODO 출입관리 입장가능강좌 체크

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import egovframework.veterans.com.cmm.service.vo.SLOrders;
 
 public interface VtcSLOrderService {
 
@@ -26,4 +27,5 @@ public interface VtcSLOrderService {
 	int getOrderItemJungwon(Map<String, Object> setSql);
 	Map<String, Object> getItemJungwon(Map<String, Object> setSql);
 	
+	int insertSLOrdersTemp(SLOrders orders) throws Exception;
 }

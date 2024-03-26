@@ -406,7 +406,7 @@ public class OfflinePayController {
 			String RS05 = resultMap.get("RS05");// 매입사코드
 			String RS06 = resultMap.get("RS06");// 매입 일련번호
 			String RS07 = resultMap.get("RS07");// 승인일시
-			String RS08 = resultMap.get("RS08");// 겨래 고유번호
+			String RS08 = resultMap.get("RS08");// 거래 고유번호
 			String RS09 = resultMap.get("RS09");// 승인번호
 			String RS10 = resultMap.get("RS10");// 체크카드 유무 or 밴코드
 			String RS11 = resultMap.get("RS11");// 발급사코드
@@ -461,7 +461,8 @@ public class OfflinePayController {
 			returnMap.put("MemberName",tblMemberVO.getName());
 			returnMap.put("SaleType",saleType);
 			returnMap.put("userPKID",users.getUserPKID());
-			returnMap.put("OID",RS08);
+			returnMap.put("OID","");
+			returnMap.put("DSC",RS08);
 			returnMap.put("TID",RQ02);
 			returnMap.put("tempSaleNo",tempSaleNo);
 			returnMap.put("SaleNo",0);

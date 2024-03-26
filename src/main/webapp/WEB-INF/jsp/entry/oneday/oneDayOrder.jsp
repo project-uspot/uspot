@@ -381,12 +381,13 @@
 	                    if (i % 3 === 0 && i !== 0) {
 	                        itemsHTML += '</div><div class="row">';
 	                    }
+	                    //console.log(item);
 	                    if(item.gender == "여자"){
-	                    	itemsHTML += '<div class="col-4"><button class="btn btn-warning custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-warning custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'" >' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
 	                    }else if(item.gender == "남자"){
-	                    	itemsHTML += '<div class="col-4"><button class="btn btn-primary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';	
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-primary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'" >' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';	
 	                    }else{
-	                    	itemsHTML += '<div class="col-4"><button class="btn btn-secondary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'">' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
+	                    	itemsHTML += '<div class="col-4"><button class="btn btn-secondary custom-btn btn-lg mt-1" type="button" data-pkid="'+ item.pkid + '" data-name="' + item.itemName + '" data-price="' + item.price + '" data-jungwon="'+item.jungwon+'" data-group="'+item.groupCode+'" data-name="'+item.itemName+'" >' + item.itemName + '<br>' + parseInt(item.price).toLocaleString() + '</button></div>';
 	                    }
 	                    
 	                }
@@ -525,7 +526,7 @@
 			totalPrice = totalPrice-dcprice;
 			toCount = toCount + quantity;
 
-			console.log(jungwon,inwon,toCount);
+			//console.log(jungwon,inwon,toCount);
 			if(jungwon != 0 && jungwon - inwon < toCount){
 				$('#resultmessage').html(itemName+"의 하루정원은 "+jungwon+"명 입니다.<br>현재 판매량 : "+ inwon+"<br>그래도 판매하시겠습니까?");
 				$('.modal-footer').empty();
@@ -670,24 +671,43 @@
 				modalcheck = true;
 				return false;
 			}
-			
+			var saleNo = 0;
 			var dataList = [];
 			$('#tbody tr').each(function() {
 				var data = {
-						pkid: $(this).data('pkid'),
-						name: $(this).data('name'),
-						group: $(this).data('group'),
-						price: $(this).data('price'),
-						dcid: $(this).data('dcid'),
-						dcprice: $(this).data('dcprice'),
+						itemPKID: $(this).data('pkid'),
+						itemName: $(this).data('name'),
+						unitPrice: $(this).data('price'),
+						DCCode: $(this).data('dcid'),
+						DCPrice: $(this).data('dcprice'),
 						amount: $(this).data('amount'),
-						tprice: $(this).data('tprice'),
+						realPrice: $(this).data('tprice'),
 				};
 				dataList.push(data);
 			});
-			console.log(dataList);
+
+			$.ajax({
+				url:"${pageContext.request.contextPath}/orderTemp.do",
+				type: "POST",
+				dataType : 'json',
+				contentType: 'application/json',
+				async : false,
+				data : JSON.stringify({
+						"realPrice":removeCommasFromNumber($("#RealPrice").val()),
+						"DCPrice":removeCommasFromNumber($("#DcPrice").val()),
+						"details":dataList,
+					}),
+				success:function(data){
+						saleNo = data;
+						return false;
+					},
+				error:function(e){
+					console.log(e);
+					return false;
+				}
+			});
 			
-			var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#RealPrice").val() +"&MemberID=&tempSaleNo=&Insert=&InType=일일입장";
+			var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#RealPrice").val() +"&MemberID=&tempSaleNo="+saleNo+"&Insert=&InType=일일입장";
 			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 		    if (myPopup === undefined || myPopup.closed) {
 		        myPopup = window.open(url, "_blank", windowFeatures);

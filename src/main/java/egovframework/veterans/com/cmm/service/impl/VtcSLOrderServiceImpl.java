@@ -13,6 +13,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.vo.SLOrderGroup;
 import egovframework.veterans.com.cmm.service.vo.SLOrderItem;
+import egovframework.veterans.com.cmm.service.vo.SLOrders;
 
 @Service("VtcSLOrderService")
 public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements VtcSLOrderService {
@@ -83,6 +84,13 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public Map<String, Object> getItemJungwon(Map<String, Object> setSql) {
 		return slOrderDAO.getItemJungwon(setSql);
+	}
+	@Override
+	@Transactional
+	public int insertSLOrdersTemp(SLOrders orders) throws Exception {
+		slOrderDAO.insertSLOrdersTemp(orders);
+		slOrderDAO.insertSLOrdersDetailTemp(orders);
+		return orders.getOrderID();
 	}
 
 	
