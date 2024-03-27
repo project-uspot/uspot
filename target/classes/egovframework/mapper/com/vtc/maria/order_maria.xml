@@ -13,6 +13,7 @@
 				when '60' then '1시간' when '120' then '2시간' when '180' then '3시간' when '240' then '4시간'
 				when '300' then '5시간' when '360' then '6시간' when '420' then '7시간' 
 			end as 'ParkingTimeWeekend' 
+			, DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s') as svrTime
 		 from fs_dsgroup 
 		 where SiteCode = #{SiteCode}
 		 and IsDelete = 'N'
