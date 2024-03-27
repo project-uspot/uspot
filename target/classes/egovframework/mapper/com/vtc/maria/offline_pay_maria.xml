@@ -106,4 +106,10 @@
 			{call SP_InsertExpensesale(#{SiteCode},#{MemberID},#{tempSaleNo},#{userPKID},#{pkid})}
 		]]>
 	</select>
+	
+	<select id="insertSLOrders" parameterType="Map" resultType="Map">
+		<![CDATA[
+			{call SP_InsertSLOrders(#{SiteCode},#{SaleType},#{tempSaleNo},#{userPKID})}
+		]]>
+	</select>
 </mapper>

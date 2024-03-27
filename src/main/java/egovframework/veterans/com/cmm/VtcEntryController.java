@@ -27,6 +27,7 @@ import egovframework.veterans.com.cmm.service.VtcEntryService;
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
+import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
@@ -37,9 +38,11 @@ import egovframework.veterans.com.cmm.service.vo.SLOrders;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.lib.Functions;
 import egovframework.veterans.lib.UNILockerController;
 import egovframework.veterans.lib.service.CommonService;
+import egovframework.veterans.lib.service.OfflinePayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +59,9 @@ public class VtcEntryController{
 	private final VtcEntryService vtcEntryService;
 	private final CommonService commonService;
 	private final VtcService VtcService;
+	
+	private final VtcPaidService VtcPaidService;
+	private final OfflinePayService OfflinePayService;
 
 	private final VtcItemService vtcItemService;
 	private final VtcDCService vtcDCService;
@@ -229,7 +235,45 @@ public class VtcEntryController{
 			orders.setTotalPrice(orders.getDCPrice()+details.getDCPrice());
 		}
 		log.debug(orders.toString());
-		return 0;
+		return orderService.insertSLOrdersTemp(orders);
+	}
+	
+	//
+	@PostMapping("orderinsert")
+	@ResponseBody
+	public int orderinsert(tblpaid tblpaid) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return 0;
+		}
+		
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		returnMap.put("SiteCode",users.getSiteCode());
+		returnMap.put("SaleType",tblpaid.getSaleType());
+		returnMap.put("tempSaleNo",tblpaid.getFPKID());
+		returnMap.put("userPKID",users.getUserPKID());
+		returnMap = OfflinePayService.insertSLOrders(returnMap);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("saleDate", tblpaid.getSaleDate());
+	    map.put("outputOrderNo", 0);
+	    
+	    tblpaid.setSiteCode(users.getSiteCode());
+	    tblpaid.setFPKID(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+	    tblpaid.setPaidGroupSaleNo(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+	    VtcPaidService.callSelectReceiptNo(map);
+	    tblpaid.setReceiptNo(String.valueOf(map.get("outputOrderNo")));
+
+	    tblpaid.setAddUserPKID(users.getUserPKID());
+	    tblpaid.setUpdUserPKID(users.getUserPKID());
+
+	    VtcPaidService.tblpaidinsert(tblpaid);
+	    if(!tblpaid.getPayType().equals("현금")
+	    &&!tblpaid.getPayType().equals("계좌이체")) {
+	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);
+	    }
+		
+		return tblpaid.getPKID();
 	}
 	
 	//TODO 출입관리 입장가능강좌 체크

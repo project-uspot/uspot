@@ -295,7 +295,9 @@
 											</div>
 										</div>
 									</div>
-									<div id="paidbody" style="display:none"></div>
+									<table style="display:none">
+										<tbody id="paidbody"></tbody>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -549,7 +551,8 @@
 	});
 	/* 일일입장 버튼 끝 */
 
-	
+	var GroupNo = 0;
+
 	    function updateTotalCountAndPrice() {
 	        var totalCount = 0;
 	        var totalPrice = 0;
@@ -659,7 +662,77 @@
 	        }
 			updateTotalCountAndPrice();
 		}
-		
+		<%-- 현금 결제 --%>
+		function paycash(){
+			if(removeCommasFromNumber($('#RealPrice').val()) < 1 || $('#RealPrice').val() == ''){
+				$('#resultmessage').html('받을 금액이 0원입니다.<br>확인 후 결제해 주세요.');
+				$('.modal-footer').empty();
+				var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+				$('.modal-footer').append(cancelbutton);
+				$('#modalButton').click();
+				modalcheck = true;
+				return false;
+			}
+			var saleNo = 0;
+			var dataList = [];
+			$('#tbody tr').each(function() {
+				var data = {
+						itemPKID: $(this).data('pkid'),
+						itemName: $(this).data('name'),
+						unitPrice: $(this).data('price'),
+						DCCode: $(this).data('dcid'),
+						DCPrice: $(this).data('dcprice'),
+						amount: $(this).data('amount'),
+						realPrice: $(this).data('tprice'),
+				};
+				dataList.push(data);
+			});
+
+			$.ajax({
+				url:"${pageContext.request.contextPath}/orderTemp.do",
+				type: "POST",
+				dataType : 'json',
+				contentType: 'application/json',
+				async : false,
+				data : JSON.stringify({
+						"realPrice":removeCommasFromNumber($("#RealPrice").val()),
+						"DCPrice":removeCommasFromNumber($("#DcPrice").val()),
+						"details":dataList,
+					}),
+				success:function(data){
+						saleNo = data;
+						GroupNo = saleNo;
+					},
+				error:function(e){
+					console.log(e);
+					GroupNo = 0;
+					return false;
+				}
+			});
+			
+			var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
+			newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+			newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
+			newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + removeCommasFromNumber($("#RealPrice").val()) + '</td>');
+			newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
+			newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+			newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+			newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+			newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+			newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+			newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+			newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+			newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+			newRow.append('<td class="Halbu py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
+			newRow.append('<td class="SaleTime py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
+			newRow.append('<td class="TID py-2 align-middle white-space-nowrap" style="display:none">' + '</td>');
+
+			<%--// Get the tbody element with ID 'paidbody' and append the new row--%>
+			var tableBody = $('#paidbody');
+			tableBody.append(newRow);
+			
+			totalchange();
+		}
 		<%-- 신용카드 결제 --%>
 		function paycredit(){
 			if(removeCommasFromNumber($('#RealPrice').val()) < 1 || $('#RealPrice').val() == ''){
@@ -699,15 +772,16 @@
 					}),
 				success:function(data){
 						saleNo = data;
-						return false;
+						GroupNo = saleNo;
 					},
 				error:function(e){
 					console.log(e);
+					GroupNo = 0;
 					return false;
 				}
 			});
 			
-			var url = "${pageContext.request.contextPath}/lecture/CreditCard.do?payprice=" + $("#RealPrice").val() +"&MemberID=&tempSaleNo="+saleNo+"&Insert=&InType=일일입장";
+			var url = "${pageContext.request.contextPath}/order/CreditCard.do?payprice=" + $("#RealPrice").val() +"&MemberID=&tempSaleNo="+saleNo+"&Insert=&InType=일일입장";
 			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 		    if (myPopup === undefined || myPopup.closed) {
 		        myPopup = window.open(url, "_blank", windowFeatures);
@@ -722,7 +796,50 @@
 		}
 		<%-- 결제 후 처리 --%>
 		function totalchange(){
+			console.log(GroupNo);
+			$('#paidbody tr').each(function() {
+				var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
+				var paiddate = $(this).find('.paiddate').text();
+				var paidPkid = $(this).find('.PKID').text();
+				if(paidprice != '' && paidPkid == ''){<%-- 결제금액이 존재하고 tblpaid 저장 안 했을 경우만 --%>
+					$.ajax({
+						type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
+						url: "orderinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
+						dataType : 'json',
+						async : false,
+						data: { 
+							FPKID: GroupNo,
+							SaleDate : paiddate.substr(0,10),
+							RealSaleDate : paiddate,
+							SaleType : '일일입장',
+							PayType : $(this).find('.paidcategory').text(),
+							Price : paidprice,
+							AssignType : $(this).find('.paidassignType').text(),
+							Maeipsa : $(this).find('.paidmapsa').text(),
+							CardName : $(this).find('.paidcardtype').text(),
+							AssignNo : $(this).find('.paidassignN').text(),
+							Pos : $(this).find('.POS').text(),
+							SignPad : $(this).find('.signpad').text(),
+							Halbu : $(this).find('.Halbu').text(),
+							SaleTime : $(this).find('.SaleTime').text(),
+							PaidGroupSaleNo : GroupNo,
+							OID : $(this).find('.OID').text(),
+							TID : $(this).find('.TID').text(),
+						},
+						success: function(Data){
+							console.log(Data);
+							paidPkid=Data;
+						},
+						error:function(xhr, status, error){
+							console.log("Status: " + status);
+							console.log("Error: " + error);
+							return false;
+						}
+					});
+				}
+			});
 			$("#paidbody").empty();
+			$("#clean").click();
 		}
 </script>
 <script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
