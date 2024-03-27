@@ -991,7 +991,7 @@ function fmsc_01save() {
 	});
 	
 	var numberOfTR = $('#paidbody tr#new').length;
-	if(numberOfTR>0){
+	if(numberOfTR>0 && $('#Insert').val() != 'Y'){
 		$('#paidbody tr#new').each(function() {
     		$.ajax({
     	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름

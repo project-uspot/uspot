@@ -77,7 +77,26 @@
 		where CustCode = #{CustCode}
 		and fmsc_s01.isDelete = 'N'
 		and fmsc_s01.SiteCode = #{SiteCode}
-		order by fmsc_s01.State ,SaleDate desc
+		order by
+		CASE
+	        WHEN fmsc_s01.RToDate >= curdate() THEN '1'
+	        ELSE '2'
+		 end,
+		CASE
+	        WHEN fmsc_s01.State = 'A' THEN '1'
+	        WHEN fmsc_s01.State = 'A+' THEN '1'
+	        WHEN fmsc_s01.State = 'B' THEN '2'
+	        WHEN fmsc_s01.State = 'C' THEN '2'
+	        WHEN fmsc_s01.State = 'D' THEN '2'
+	        WHEN fmsc_s01.State = 'E' THEN '3'
+	        WHEN fmsc_s01.State = 'F0' THEN '3'
+	        WHEN fmsc_s01.State = 'G' THEN '1'
+	        WHEN fmsc_s01.State = 'G+' THEN '1'
+	        WHEN fmsc_s01.State = 'H-' THEN '2'
+	        WHEN fmsc_s01.State = 'Y' THEN '1'
+	        ELSE ''
+		 end,
+		 SaleDate desc
 	</select>
 
 	<select id="membertblmembertalk" parameterType="String" resultType="egovframework.veterans.com.cmm.service.vo.tblmembertalk">
@@ -778,4 +797,10 @@
 		and a.isDelete = 'N'
 	]]>
 	</select>
+	
+	<update id="ChangeState" parameterType="egovframework.veterans.com.cmm.service.vo.fmsc_s01">
+		<![CDATA[
+			{call SP_ChangeState(#{CustCode},#{UpdUserPKID})}	
+		]]>
+	</update>
 </mapper>

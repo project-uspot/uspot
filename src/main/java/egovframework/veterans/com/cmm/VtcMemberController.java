@@ -87,9 +87,12 @@ public class VtcMemberController {
 	@GetMapping("/memberlist.do")
 	private String membershipF(Model model, tblmember tblmember) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if (users == null) {
+		if(users ==null) {
+			model.addAttribute("msg", "세션이 만료되었습니다.다시 로그인해 주세요.");
+			model.addAttribute("url", "login.do");
+			model.addAttribute("script", "redirect");
 
-			return "redirect:login.do";
+			return "common/msg";
 		}
 
 		List<tblmember> memberlist = vtcMemberService.memberlist();
@@ -117,10 +120,15 @@ public class VtcMemberController {
 	private String memberregiF(Model model, DC dc,tblmember tblmember,
 			@RequestParam(name = "findvalue",required = false) String findvalue, @RequestParam(name = "findcategory",required = false) String findcategory
 			,@RequestParam(name = "findtype",defaultValue = "0")String findtype) throws Exception {
+		
 		Users users = (Users) session.getAttribute("loginuserinfo");
 		
-		if (users == null) {
-			return "redirect:login.do";
+		if(users ==null) {
+			model.addAttribute("msg", "세션이 만료되었습니다.다시 로그인해 주세요.");
+			model.addAttribute("url", "login.do");
+			model.addAttribute("script", "redirect");
+
+			return "common/msg";
 		}
 		
 		TblAuthuserGroup tblAuthuserGroup = new TblAuthuserGroup();
@@ -155,6 +163,14 @@ public class VtcMemberController {
 		}else {
 			tblmember = vtcMemberService.maxidtblmember();
 		}
+		
+		fmsc_s01 stateChange = new fmsc_s01();
+		
+		stateChange.setCustCode(tblmember.getMemberID());
+		stateChange.setUpdUserPKID(users.getUserPKID());
+		
+		vtcMemberService.ChangeState(stateChange);
+		
 		
 		fmsc_s01 fmsc_s01 = new fmsc_s01();
 		fmsc_s01.setCustCode(tblmember.getMemberID());

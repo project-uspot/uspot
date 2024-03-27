@@ -206,4 +206,8 @@ public class VtcMemberDAO extends EgovComAbstractDAO{
 	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
 		return selectList("member.selectFmsc_s04",setSql);
 	}
+	
+	public void ChangeState(fmsc_s01 fmsc_s01)throws Exception{
+		update("member.ChangeState",fmsc_s01);
+	}
 }

@@ -145,7 +145,19 @@ END AS IsFlagText,
 		tblUseLocker.MemberID = #{MemberID}
 	and tblUseLocker.IsDelete = 'N'
 	and tblUseLocker.SiteCode = #{SiteCode}
-	order by IsFlag,RegDate desc
+	order by 
+	CASE
+        WHEN ReturnDate = '' or ReturnDate is null THEN '1'
+        else '2'
+	end,
+	case
+		WHEN IsFlag = 0 and IsReturn ='N' THEN '0'
+        WHEN IsFlag = 0 and IsReturn ='Y' THEN '1'
+        WHEN IsFlag = 1 THEN '2'
+        WHEN IsFlag = 2 THEN '3'
+	end,
+	ToDate desc,
+	RegDate desc
 </select>
 <select id="plockerByGroupID" parameterType="egovframework.veterans.com.cmm.service.vo.tblplockergroup" resultType="map">
 	select * from tblplocker a
