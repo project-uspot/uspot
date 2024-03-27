@@ -267,4 +267,9 @@ public class VtcMemberServiceImpl implements VtcMemberService{
 	public List<Map<String, Object>> selectFmsc_s04(Map<String, Object> setSql) {
 		return vtcMemberDAO.selectFmsc_s04(setSql);
 	}
+
+	@Override
+	public void ChangeState(fmsc_s01 fmsc_s01) throws Exception {
+		vtcMemberDAO.ChangeState(fmsc_s01);
+	}
 }

@@ -97,7 +97,7 @@ function CountMungu() {
     	byteText = 'LMS:'+byteCount+'/3900Bytes';
     }else{
     	alert('3900Byte을 초과하여 문자를 작성할 수 없습니다.');
-    	textarea.value = previousInput;
+    	$('#munguText').val(previousInput);
     	return false;
     }
     
@@ -114,7 +114,7 @@ function munguSave() {
 	const mungu = $('#munguText').val();
 	
 	if(mungu == ''){
-		alert('내용을 입력주세요.');
+		alert('내용을 입력해주세요.');
 		$('#munguText').focus();
 		return false;
 	}else{

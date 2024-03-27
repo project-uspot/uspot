@@ -17,14 +17,14 @@
             		</div>
             		<div class="col-auto">
             			<button class="btn btn-outline-warning" type="button" onclick="location.href='SendSMSF.do';">SMS</button>
-            			<button class="btn btn-primary" type="button" data-bs-toggle="modal" id="munguButton" data-bs-target="#insertModal">자주쓰는 문구관리</button>
+            			<button class="btn btn-primary" type="button" onclick="templateManage()">템플릿 관리</button>
 						<button class="btn btn-danger" type="button" onclick="location.href='SendTalkF.do';">작업 초기화</button>
             		</div>
         		</div>
         	</div>
         </div>
     </div>
-    <script type="text/javascript">
+    <script type="text/javascript">    
     $(window).on('load', function() {
     	if('${param.sendTable}' == 'Y'){
     		var oldPageMemberBody = $(window.opener.document).find('#listbody');
@@ -67,19 +67,44 @@
 						<div class="card border border-secondary">
 							<div class="card-body" style="height: 670px;">
 								<h4 class="card-title">▶제목</h4>
-								<input class="form-control" id="title" name="title" type="text"/>
-								<h4 class="card-title mt-3">▶문자내용</h4>
-								<textarea class="form-control" id="content" name="content" rows="20" oninput="Countcontent()"></textarea>
-								<div class="text-end" id="smsCount">
-								SMS:0/90Bytes
+								<input class="form-control" id="title" name="title" type="text" readonly="readonly"/>
+								<h4 class="card-title mt-3">▶알림톡내용</h4>
+								<textarea class="form-control" id="content" name="content" rows="18" readonly="readonly"></textarea>
+								<input class="form-control" id="senderPN" name="senderPN" type="hidden" value="${sitecode.phone1}" readonly="readonly"/>
+								<h4 class="card-title mt-2">▶치환어</h4>
+								<div class="row">
+									<div class="col-md-6 mb-2">
+										<div class="input-group">
+  											<span class="input-group-text" id="basic-addon1">#기타1</span>
+  											<input class="form-control" type="text" id="etc1" name="etc1"/>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="input-group">
+  											<span class="input-group-text" id="basic-addon1">#기타2</span>
+  											<input class="form-control" type="text" id="etc2" name="etc2"/>
+										</div>
+									</div>
 								</div>
-								<h4 class="card-title mt-3">▶보내는 사람 번호</h4>
-								<input class="form-control" id="senderPN" name="senderPN" type="text" value="${sitecode.phone1}" readonly="readonly"/>
+								<div class="row">
+									<div class="col-md-6 mb-2">
+										<div class="input-group">
+  											<span class="input-group-text" id="basic-addon1">#기타3</span>
+  											<input class="form-control" type="text" id="etc3" name="etc3"/>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="input-group">
+  											<span class="input-group-text" id="basic-addon1">#기타4</span>
+  											<input class="form-control" type="text" id="etc4" name="etc4"/>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="ms-13 mt-2">
 							<button class="btn btn-info" type="button" onclick="Beforebalsong()">보내기</button>
-							<button class="btn btn-soft-info" type="button" onclick="$('#content').val('');">삭제</button>
+							<button class="btn btn-soft-info" type="button" onclick="$('#content').val('');$('#title').val('');">삭제</button>
 						</div>
 					</div>
 				</div>
@@ -233,11 +258,12 @@
 				                        <div style="height: 196px;overflow-y: auto;">
 				                        	<table class="table table-sm fs--1 mb-0 table-hover table-bordered">
 					                        	<tbody class="mungubody">
-					                        		<c:forEach items="${mungulist}" var="vo" varStatus="status">
+					                        		<c:forEach items="${templatelist}" var="template" varStatus="status">
 							                   			<tr onclick="openermungubodyclick(this)">
-							                   				<td class="code" style="display:none;">${vo.code}</td>
+							                   				<td class="Template_NM" style="display:none;">${template.Template_NM}</td>
+							                   				<td class="Template_Seq" style="display:none;">${template.Template_Seq}</td>
 															<td class="index text-center fw-bold">${status.index+1}</td>
-															<td class="mungu fw-bold white-space-nowrap" style="max-width: 200px;">${vo.mungu}</td>
+															<td class="Template_Text fw-bold white-space-nowrap" style="max-width: 200px;">${template.Template_Text}</td>
 														</tr>
 							                   		</c:forEach>
 					                        	</tbody>
@@ -254,7 +280,7 @@
 	</div>
 </body>
 <script type="text/javascript">
-
+var myPopup;
 <!--esc를 눌러서 창을 닫는 함수-->
 var modalcheck = false;
 document.addEventListener('keydown', function(event) {
@@ -286,8 +312,8 @@ function openermungubodyclick(munguclickedRow){
     }
 	$(munguclickedRow).css('background-color', 'lightblue');
 	mungupreRow = munguclickedRow;
-	$('#content').val($(mungupreRow).find('.mungu').text());
-	Countcontent();
+	$('#content').val($(mungupreRow).find('.Template_Text').text());
+	$('#title').val($(mungupreRow).find('.Template_NM').text());
 }
 
 <!--전송자리스트선택하는 함수-->
@@ -300,10 +326,22 @@ function balsongbodyclick(balsongclickedRow){
 	balsongpreRow = balsongclickedRow;
 }
 
-$('#munguButton').on('click', function() {
-	modalcheck = true;
-});
+function templateManage() {
+    var url = 'TemplateSMSF.do';
+    var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=710";
+    if (myPopup === undefined || myPopup.closed) {
+        myPopup = window.open(url, "_blank", windowFeatures);
+    } else {
+    	myPopup.focus();
+    }
+    document.addEventListener('click', function() {
+        if (myPopup && !myPopup.closed) {
+            myPopup.focus();
+        }
+  	});
+}
 
+<!--기본 문자인지 가져오는 회원 리스트가 있는지 판단-->
 if('${param.sendTable}' == 'Y'){
 	ifcheckList();
 }
@@ -414,38 +452,6 @@ function balsongAdd() {
     return false;
 }
 
-<!--문구 길이 제한하는 함수-->
-let preInput = '';
-var BalsongType = '';
-function Countcontent() {
-    let inputText = $('#content').val();
-    let byteCount = 0;
-    
-    for (let i = 0; i < inputText.length; i++) {
-        if (inputText.charCodeAt(i) <= 0x7F) {
-            byteCount += 1;
-        } else {
-            byteCount += 2;
-        }
-    }
-    let byteText = '';
-    if(byteCount<90){
-    	byteText = 'SMS:'+byteCount+'/90Bytes';	
-    	BalsongType = 'SMS';
-    }else if(byteCount<3900){
-    	byteText = 'LMS:'+byteCount+'/3900Bytes';
-    	BalsongType = 'LMS';
-    }else{
-    	alert('3900Byte을 초과하여 문자를 작성할 수 없습니다.');
-    	$('#content').val(preInput);
-    	return false;
-    }
-    preInput = inputText;
-    
-    $('#smsCount').empty();
-    $('#smsCount').html(byteText);
-}
-
 <!--전송자 추가해주는 함수-->
 function sederPlus() {
 	const memberName = $('#memberName').val();
@@ -501,7 +507,7 @@ function balsong() {
 	const content = $('#content').val();
 	
 	if($('#balsongbody').find('tr').length === 0){
-		$('#resultmessage').html('회원검색목록에서 SMS 전송대상회원을 추가하세요.');
+		$('#resultmessage').html('회원검색목록에서 알림톡 전송대상회원을 추가하세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -511,7 +517,7 @@ function balsong() {
 	}
 	
  	if(title == ''){
-		$('#resultmessage').html('전송할 메세지의 제목을 작성하세요.');
+		$('#resultmessage').html('전송할 알림톡의 제목을 작성하세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -521,7 +527,7 @@ function balsong() {
 	}
 	
 	if(content == ''){
-		$('#resultmessage').html('전송할 메세지를 작성하세요.');
+		$('#resultmessage').html('전송할 알림톡을 선택하세요.');
 	  	$('.modal-footer').empty();
 	  	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 	  	$('.modal-footer').append(cancelbutton);
@@ -548,20 +554,49 @@ function balsong() {
 	var formData = new FormData();
 
 	// 기본 데이터 추가
-	formData.append('Title', title);
-	formData.append('Content', content);
-	formData.append('SenderPN', $('#senderPN').val());
-	formData.append('BalsongType', BalsongType);
+	formData.append('Template_Seq', $(mungupreRow).find('.Template_Seq').text());
+	formData.append('Subject', title);
+	formData.append('Main_Text', content);
 	formData.append('contactArray', JSON.stringify(contactArray));
+	formData.append('SenderPN', $('#senderPN').val());
+	formData.append('etc1', $('#etc1').val());
+	formData.append('etc2', $('#etc2').val());
+	formData.append('etc3', $('#etc3').val());
+	formData.append('etc4', $('#etc4').val());
 	
 	$.ajax({
         type: "POST", 
-        url: "smsBalsong", 
+        url: "TalkBalsong", 
         processData: false,
         contentType: false,
         data: formData,
         success: function(data) {	
        	 	alert(data);
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
+}
+
+function mungubodyRefact() {
+	
+	$.ajax({
+        type: "POST", 
+        url: "TemplateList", 
+        dataType : 'json',
+        success: function(data) {			
+        	$('.mungubody').empty();
+			$.each(data, function (index, item) {
+                var newRow = '<tr onclick="openermungubodyclick(this)">' +
+                    '<td class="Template_NM" style="display:none;">' + item.Template_NM + '</td>' +
+                    '<td class="Template_Seq" style="display:none;">' + item.Template_Seq + '</td>' +
+                    '<td class="index text-center fw-bold">' + (index + 1) + '</td>' +
+                    '<td class="Template_Text fw-bold white-space-nowrap" style="max-width: 200px;">' + item.Template_Text + '</td>' +
+                    '</tr>';
+                $('.mungubody').append(newRow);
+            });
         },
         error: function(xhr, status, error) {
        	 console.log("Status: " + status);
