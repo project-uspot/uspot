@@ -13,6 +13,7 @@
 				when '60' then '1시간' when '120' then '2시간' when '180' then '3시간' when '240' then '4시간'
 				when '300' then '5시간' when '360' then '6시간' when '420' then '7시간' 
 			end as 'ParkingTimeWeekend' 
+			, DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s') as svrTime
 		 from fs_dsgroup 
 		 where SiteCode = #{SiteCode}
 		 and IsDelete = 'N'
@@ -187,14 +188,15 @@
 	<insert id="insertOrderTemp" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrders" useGeneratedKeys="true" keyProperty="OrderID">
 	<![CDATA[
 		insert into sl_orders_temp(SiteCode, OrderNo, SaleDate, RealSaleDate, TotalPrice, DCCode, DCPrice, RealPrice, OriginOrderID, IsCancel, MemberID, AddDate, AddUserPKID)
-		values(#{SiteCode}, '', now(), now(), #{TotalPrice}, #{DCCode}, #{DCPrice}, #{RealPrice}, #{OriginOrderID}, #{IsCancel}, #{MemberID},now(), #{AddUserPKID})
+		values(#{SiteCode}, '', DATE_FORMAT(now(), '%Y-%m-%d'), now(), #{TotalPrice}, #{DCCode}, #{DCPrice}, #{RealPrice}, #{OriginOrderID}, #{isCancel}, #{MemberID},now(), #{AddUserPKID})
 	]]>
 	</insert>
 	
 	<insert id="insertOrderDetailTemp" parameterType="egovframework.veterans.com.cmm.service.vo.SLOrderDetail">
-		<foreach collection="details" item="detail" index="index" separator=";">
-			insert into sl_orderdetail_temp(SiteCode, OrderID, ItemName, FromTime, ToTime, AdultGbn, Gender, UnitPrice, Amount, TotalPrice, DCCode, DcPrice, RealPrice, ItemPKID, BarCode)
-			values(#{detail.SiteCode}, #{orderID}, #{detail.ItemName}, #{detail.FromTime}, #{detail.ToTime}, #{detail.AdultGbn}, #{detail.Gender}, #{detail.UnitPrice}, #{detail.Amount}, #{detail.TotalPrice}, #{detail.DCCode}, #{detail.DCPrice}, #{detail.RealPrice}, #{detail.ItemPKID}, '')
+			insert into sl_orders_temp_details(SiteCode, OrderID, ItemName, FromTime, ToTime, AdultGBN, Gender, UnitPrice, Amount, TotalPrice, DCCode, DcPrice, RealPrice, ItemPKID, BarCode)
+			values
+		<foreach collection="details" item="detail" index="index" separator=",">
+			(#{detail.SiteCode}, #{orderID}, #{detail.ItemName}, #{detail.FromTime}, #{detail.ToTime}, #{detail.AdultGbn}, #{detail.Gender}, #{detail.UnitPrice}, #{detail.Amount}, #{detail.TotalPrice}, #{detail.DCCode}, #{detail.DCPrice}, #{detail.RealPrice}, #{detail.ItemPKID}, '')
 		</foreach>
 	</insert>
 </mapper>

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -170,6 +171,12 @@ public class OfflinePayController {
 		tblmember tblMemberVO = new tblmember();
 		tblMemberVO.setMemberID(MemberID);
 		tblMemberVO = vtcMemberService.tblmemberBymemberId(tblMemberVO);
+		if(Objects.isNull(tblMemberVO)) {
+			tblMemberVO = new tblmember();
+			tblMemberVO.setMemberID("100000");
+			tblMemberVO.setName("회원아님");
+			tblMemberVO.setCellPhone("01000000000");
+		}
 		String dateTime = f.formatDate(new Date(), "yMdHmsR");
 		String addField = "";
 		addField = "POS" + dateTime + tblMemberVO.getMemberID() + tblMemberVO.getName() + tblMemberVO.getCellPhone();
@@ -189,6 +196,9 @@ public class OfflinePayController {
 			break;
 		case "etc":
 			saleType = "기타비용";
+			break;
+		case "order":
+			saleType = "일일입장";
 			break;
 		default:
 			break;
@@ -477,7 +487,8 @@ public class OfflinePayController {
 				    map.put("saleDate", f.formatDate(new Date(),"yMd"));
 				    map.put("outputOrderNo", 0);
 
-				    returnMap.put("ReceiptNo",String.valueOf(VtcPaidService.callSelectReceiptNo(map)));
+				    VtcPaidService.callSelectReceiptNo(map);
+				    returnMap.put("ReceiptNo",String.valueOf(map.get("outputOrderNo")));
 					switch (saleType) {
 					case "강습":
 						//returnMap = OfflinePayService.insertPaidFmsc_s01(returnMap);
@@ -518,6 +529,9 @@ public class OfflinePayController {
 					case "대관":
 						returnMap = OfflinePayService.insertPaidRent(returnMap);
 						break;
+					case "일일입장":
+						returnMap = OfflinePayService.insertSLOrders(returnMap);
+						break;
 					default:
 						break;
 					}
@@ -533,6 +547,8 @@ public class OfflinePayController {
 					case "기타비용":
 						break;
 					case "대관":
+						break;
+					case "일일입장":
 						break;
 					}
 				}
@@ -662,6 +678,9 @@ public class OfflinePayController {
 			break;
 		case "rent":
 			saleType = "대관";
+			break;
+		case "order":
+			saleType = "일일입장";
 			break;
 		default:
 			break;
@@ -951,6 +970,8 @@ public class OfflinePayController {
 					case "대관":
 						OfflinePayService.insertPaidCancelRent(returnMap);
 						break;
+					case "일일입장":
+						break;
 					default:
 						break;
 					}
@@ -963,6 +984,8 @@ public class OfflinePayController {
 					case "사물함":
 						break;
 					case "대관":
+						break;
+					case "일일입장":
 						break;
 					}
 				}

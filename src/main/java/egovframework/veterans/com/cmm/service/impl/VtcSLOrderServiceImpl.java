@@ -92,6 +92,5 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 		slOrderDAO.insertSLOrdersDetailTemp(orders);
 		return orders.getOrderID();
 	}
-
 	
 }

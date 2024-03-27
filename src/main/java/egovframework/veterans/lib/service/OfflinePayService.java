@@ -28,4 +28,6 @@ public interface OfflinePayService {
 	public Map<String, Object> insertFMSC_S01(Map<String, Object> returnMap);
 	
 	Map<String, Object> insertExpensesale(Map<String, Object> sqlMap);
+
+	public Map<String, Object> insertSLOrders(Map<String, Object> returnMap);
 }

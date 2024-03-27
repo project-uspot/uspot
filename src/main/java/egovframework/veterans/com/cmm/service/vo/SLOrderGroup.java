@@ -46,5 +46,6 @@ public class SLOrderGroup implements Serializable{
 	/* 수정자 */
 	private int UpdDatePKID;
 	
+	private String svrTime;
 	
 }

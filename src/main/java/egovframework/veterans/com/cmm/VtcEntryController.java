@@ -27,6 +27,7 @@ import egovframework.veterans.com.cmm.service.VtcEntryService;
 import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
+import egovframework.veterans.com.cmm.service.VtcPaidService;
 import egovframework.veterans.com.cmm.service.VtcSLOrderService;
 import egovframework.veterans.com.cmm.service.VtcService;
 import egovframework.veterans.com.cmm.service.vo.DC;
@@ -37,9 +38,11 @@ import egovframework.veterans.com.cmm.service.vo.SLOrders;
 import egovframework.veterans.com.cmm.service.vo.Users;
 import egovframework.veterans.com.cmm.service.vo.tblmember;
 import egovframework.veterans.com.cmm.service.vo.tblmemberphoto;
+import egovframework.veterans.com.cmm.service.vo.tblpaid;
 import egovframework.veterans.lib.Functions;
 import egovframework.veterans.lib.UNILockerController;
 import egovframework.veterans.lib.service.CommonService;
+import egovframework.veterans.lib.service.OfflinePayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,13 +59,16 @@ public class VtcEntryController{
 	private final VtcEntryService vtcEntryService;
 	private final CommonService commonService;
 	private final VtcService VtcService;
+	
+	private final VtcPaidService VtcPaidService;
+	private final OfflinePayService OfflinePayService;
 
 	private final VtcItemService vtcItemService;
 	private final VtcDCService vtcDCService;
 
 	private final VtcSLOrderService orderService;
 
-	// TODO 출입관리-일일입장관리
+	//TODO 출입관리-일일입장관리
 	@GetMapping("OneDayOrder.do")
 	public String OneDayOrder(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -81,10 +87,11 @@ public class VtcEntryController{
 
 		model.addAttribute("group", group);
 		model.addAttribute("item", item);
-
+		model.addAttribute("svrTime", group.get(0).getSvrTime());
+		
 		return "entry/oneday/oneDayOrder";
 	}
-
+	//
 	@PostMapping("/GroupValue")
 	@ResponseBody
 	public Map<String, Object> groupValue(ModelMap model, @RequestParam(name = "value") int value) throws Exception{
@@ -106,7 +113,7 @@ public class VtcEntryController{
 
 		return map;
 	}
-	
+	// 정원 체크
 	@PostMapping("/Jungwon")
 	@ResponseBody
 	public Map<String,Object> jungwonChk(HttpServletRequest request) throws Exception{
@@ -126,7 +133,7 @@ public class VtcEntryController{
 		return setSql;
 	}
 
-	// 일일입장 - 할인 페이지
+	//TODO 일일입장 - 할인 페이지
 	@GetMapping("/order/discount.do")
 	public String DiscountPage(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
@@ -139,7 +146,218 @@ public class VtcEntryController{
 		model.addAttribute("dcList", dcList);
 		return "entry/oneday/discount";
 	}
-	
+
+	//TODO 일일입장 임시정보
+	@PostMapping("orderTemp.do")
+	@ResponseBody
+	public int orderTemp(@RequestBody SLOrders orders) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return 0;
+		}
+		orders.setSiteCode(users.getSiteCode());
+		for(SLOrderDetail details: orders.getDetails()) {
+			details.setSiteCode(users.getSiteCode());
+			details.setTotalPrice(details.getAmount()*details.getUnitPrice());
+			SLOrderItem item = new SLOrderItem();
+			item.setSiteCode(users.getSiteCode());
+			item.setPkid(details.getItemPKID());
+			item = orderService.getOrderItemDetail(item);
+			details.setAdultGbn(f.getNullToSpaceInt(item.getAdultGBN()));
+			details.setFromTime(item.getFromTime());
+			details.setToTime(item.getToTime());
+			details.setGender(f.getNullToSpaceInt(item.getGender()));
+			orders.setTotalPrice(orders.getTotalPrice()+details.getTotalPrice());
+			orders.setTotalPrice(orders.getDCPrice()+details.getDCPrice());
+		}
+		//log.debug(orders.toString());
+		return orderService.insertSLOrdersTemp(orders);
+	}
+
+	//TODO 일일입장 결제처리
+	@PostMapping("orderinsert")
+	@ResponseBody
+	public int orderinsert(tblpaid tblpaid) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return 0;
+		}
+		
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		returnMap.put("SiteCode",users.getSiteCode());
+		returnMap.put("SaleType",tblpaid.getSaleType());
+		returnMap.put("tempSaleNo",tblpaid.getFPKID());
+		returnMap.put("userPKID",users.getUserPKID());
+		returnMap = OfflinePayService.insertSLOrders(returnMap);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("saleDate", tblpaid.getSaleDate());
+	    map.put("outputOrderNo", 0);
+	    
+	    tblpaid.setSiteCode(users.getSiteCode());
+	    tblpaid.setFPKID(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+	    tblpaid.setPaidGroupSaleNo(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+	    VtcPaidService.callSelectReceiptNo(map);
+	    tblpaid.setReceiptNo(String.valueOf(map.get("outputOrderNo")));
+
+	    tblpaid.setAddUserPKID(users.getUserPKID());
+	    tblpaid.setUpdUserPKID(users.getUserPKID());
+
+	    VtcPaidService.tblpaidinsert(tblpaid);
+	    if(!tblpaid.getPayType().equals("현금")
+	    &&!tblpaid.getPayType().equals("계좌이체")) {
+	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);
+	    }
+		
+		return tblpaid.getPKID();
+	}
+
+	//TODO 일일입장 전자키배정입장
+	@PostMapping("orderentry.do")
+	@ResponseBody
+	public Map<String,Object> orderEntry(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if(users == null){
+			return null;
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+
+		String MemberID = f.getNullToSpaceStrValue(request.getParameter("MemberID"));
+		int SaleNo 		= f.getNullToSpaceInt(request.getParameter("SaleNo"));
+		boolean uniLock = Boolean.parseBoolean(request.getParameter("autoLockerUse"));
+		String PosGBN	= f.getNullToSpaceStrValue(request.getParameter("PosGBN"));
+
+		tblmember tblmember = new tblmember();
+		tblmember.setMemberID(MemberID);
+		tblmember.setSiteCode(users.getSiteCode());
+		tblmember = vtcMemberService.tblmemberBymemberId(tblmember);
+
+		tblmember.setSiteCode(users.getSiteCode());
+		tblmember.setEntrySaleNo(SaleNo);
+		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
+		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
+		Map<String,Object> entryClass = entryClassList.get(0);
+
+		if(uniLock) {
+			int iAge = f.getAge(tblmember.getBirthDay());
+			String sDaeSo = "";
+
+			if(iAge == 0) {
+				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
+				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
+					sDaeSo = "소인";
+				}else{
+					sDaeSo = "대인";
+				}
+			}else {
+				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
+				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
+					sDaeSo = "소인";
+				}else{
+					if(iAge >= 60) {
+						sDaeSo = "소인";	
+					}else {
+						sDaeSo = "대인";
+					}
+				}
+			}
+			
+			int iUpjang = f.getNullToSpaceInt(entryClass.get("LockerCondition"));
+			String strLockerCondition = f.getNullToSpaceStrValue(entryClass.get("UpjangName"));
+			if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("수영") >= 0) {
+				strLockerCondition = "수영장";
+			}else if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("헬스") >= 0) {
+				strLockerCondition = "헬스장";
+			}
+			int LngLockerManAddNum = f.getNullToSpaceInt(entryClass.get("LockerManAddNum"));
+			int LngLockerWoManAddNum= f.getNullToSpaceInt(entryClass.get("LockerWoManAddNum"));
+
+			/*if(!f.getNullToSpaceStrValue(request.getParameter("strLockerCondition")).equals("")) {
+				strLockerCondition = f.getNullToSpaceStrValue(request.getParameter("strLockerCondition"));
+				LngLockerManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerManAddNum"));
+				LngLockerWoManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerWoManAddNum"));
+			}*/
+			
+			int LockerType = 0;
+			if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("대인")) {
+				LockerType = 0;
+			}else if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("소인")) {
+				LockerType = 1;
+			}else if(tblmember.getGenderText().equals("여자") && sDaeSo.equals("대인")) {
+				LockerType = 2;
+			}else {
+				LockerType = 3;
+			}
+			Map<String,Object> siteIdSet = VtcService.selectSiteIdSet(users.getSiteCode());
+
+			String IP = f.getNullToSpaceStrValue(siteIdSet.get("Locker_Svr_IP"));
+			int Port = f.getNullToSpaceInt(siteIdSet.get("Locker_Svr_Port"));
+			
+			String result = UNILockerController.UniLockAutoB(users.getSiteCode(), MemberID, iUpjang, LockerType, IP, Port, strLockerCondition, LngLockerManAddNum, LngLockerWoManAddNum);
+			if(result.equals("false")) {
+				resultMap.put("Code","9999");
+				resultMap.put("Msg","발권 실패!<br>락카확인 및 수동발권을 하십시요!");
+				return resultMap;
+			}else {
+				Map<String,Object> setSql = new HashMap<String,Object>();
+				setSql.put("SiteCode",users.getSiteCode());
+				setSql.put("SaleNo",SaleNo);
+				setSql.put("LockerPKID",result);
+
+				if(MemberID.equals("")) {
+					setSql.put("CustCode",MemberID);
+					setSql.put("BaejungType","일일입장");
+				}else {
+					setSql.put("CustCode",MemberID);
+					setSql.put("BaejungType","회원입장");
+					setSql.put("KioskNo","");
+				}
+				/*if(tblmember.getGender() == 0) {
+					setSql.put("Gender","F");
+				}else {
+					setSql.put("Gender","M");	
+				}*/
+				setSql.put("Gender",tblmember.getGender());
+				setSql.put("PosGBN",PosGBN);
+				setSql.put("UserPKID",users.getUserPKID());
+
+				vtcEntryService.insertEntry(setSql);
+				resultMap.put("lockerNo",result);
+			}
+		}else {
+			Map<String,Object> setSql = new HashMap<String,Object>();
+			setSql.put("SiteCode",users.getSiteCode());
+			setSql.put("SaleNo",SaleNo);
+			setSql.put("LockerPKID",-5000);
+
+			if(MemberID.equals("")) {
+				setSql.put("CustCode",MemberID);
+				setSql.put("BaejungType","일일입장");
+			}else {
+				setSql.put("CustCode",MemberID);
+				setSql.put("BaejungType","회원입장");
+				setSql.put("KioskNo","");
+			}
+			/*if(tblmember.getGender() == 0) {
+				setSql.put("Gender","F");
+			}else {
+				setSql.put("Gender","M");	
+			}*/
+			setSql.put("Gender",tblmember.getGender());
+			setSql.put("PosGBN",PosGBN);
+			setSql.put("UserPKID",users.getUserPKID());
+			
+			vtcEntryService.insertEntry(setSql);
+			resultMap.put("lockerNo",0);
+			
+		}
+		resultMap.put("Code","0000");
+		resultMap.put("Msg",entryClass.get("CategoryName")+ " "+entryClass.get("JungName") +" "+ entryClass.get("DayName"));
+		
+		//fc.playAudio("/file/Sound/E.wav", response);
+		return resultMap;
+	}
+
 	// TODO 출입관리- 출입관리 페이지
 	@GetMapping("/entryManage.do")
 	public String memEntryManage(tblmember tblmember, ModelMap model) throws Exception {
@@ -205,32 +423,6 @@ public class VtcEntryController{
 		return getMap;
 	}
 	
-	//
-	@PostMapping("orderTemp.do")
-	@ResponseBody
-	public int orderTemp(@RequestBody SLOrders orders) throws Exception {
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
-			return 0;
-		}
-		orders.setSiteCode(users.getSiteCode());
-		for(SLOrderDetail details: orders.getDetails()) {
-			details.setSiteCode(users.getSiteCode());
-			details.setTotalPrice(details.getAmount()*details.getUnitPrice());
-			SLOrderItem item = new SLOrderItem();
-			item.setSiteCode(users.getSiteCode());
-			item.setPkid(details.getItemPKID());
-			item = orderService.getOrderItemDetail(item);
-			details.setAdultGbn(f.getNullToSpaceInt(item.getAdultGBN()));
-			details.setFromTime(item.getFromTime());
-			details.setToTime(item.getToTime());
-			details.setGender(f.getNullToSpaceInt(item.getGender()));
-			orders.setTotalPrice(orders.getTotalPrice()+details.getTotalPrice());
-			orders.setTotalPrice(orders.getDCPrice()+details.getDCPrice());
-		}
-		log.debug(orders.toString());
-		return 0;
-	}
 	
 	//TODO 출입관리 입장가능강좌 체크
 	@PostMapping("memEntryChk.do")
