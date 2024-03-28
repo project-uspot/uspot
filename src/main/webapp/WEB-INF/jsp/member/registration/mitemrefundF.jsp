@@ -699,7 +699,7 @@
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">공제금</span>  
-						<input class="form-control" type="text" id="tgongjeprice" name="tgongjeprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" id="tgongjeprice" name="tgongjeprice" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
 	    		<div class="col-auto">
@@ -716,14 +716,14 @@
 						<button class="btn btn-phoenix-secondary" type="button" onclick="processRefund(true)">전액환불</button>
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-auto">
 						<button class="btn btn-soft-primary" type="button">영수증재발행</button>
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-soft-success" type="button">행삭제</button>
 					</div>
-				</div>
+				</div> -->
 	    	</div>
 	    </div>
 	    <form action="" name="payFrm">
@@ -937,15 +937,26 @@ $('#usecnt').on('change', function() {
 	currentvusepricechange()
 	DuesCheck();
 	GongjeSum();
-	SetReturnrice();
 	$('tbody#refundtbody tr.'+$(previousRow).find('#SaleNo').val()).each(function(){
 		$(this).find('.totalCnt').text($("#totalcnt").val());
 		$(this).find('.useCnt').text($("#usecnt").val());
 		$(this).find('.wiyakPrice').text($("#wiyakprice").val());
 		$(this).find('.usePrice').text($("#currentuseprice").val());
 		$(this).find('.gongjePrice').text($("#gongjesum").val());
-		$(this).find('.returnPrice').text('-'+$("#returnprice").val());
+		$(this).find('.returnPrice').text("-"+formatNumberWithCommas(parseInt($(this).find('.paidPrice').text())-parseInt(removeCommasFromNumber($("#gongjesum").val()))));
 	});
+	SetReturnrice();
+});
+
+$("#tgongjeprice").on('change',function(){
+	var nGongje = $(this).val();
+	$('tbody#refundtbody tr.'+$(previousRow).find('#SaleNo').val()).each(function(){
+		$(this).find('.usePrice').text(formatNumberWithCommas(nGongje - parseInt(removeCommasFromNumber($(this).find('.wiyakPrice').text()))));
+		$(this).find('.gongjePrice').text(nGongje);
+		$(this).find('.returnPrice').text("-"+formatNumberWithCommas(parseInt($(this).find('.paidPrice').text())-parseInt(removeCommasFromNumber($(this).find('.gongjePrice').text()))));
+	});
+	GongjeSum();
+	SetReturnrice();
 });
 
 //총일수 값 설정
@@ -1123,10 +1134,15 @@ function SetReturnrice() {
 	$('tbody#paidbody tr#new').each(function(){
 		npaidprice = npaidprice + parseInt(removeCommasFromNumber($(this).find(".paidprice").text()));
 	});
+	
+	var rpaidprice = 0;
+	$('tbody#paidbody tr').each(function(){
+		rpaidprice = rpaidprice + parseInt(removeCommasFromNumber($(this).find(".paidprice").text()));
+	});
 
 	$('#tgongjeprice').val(formatNumberWithCommas(tgongjeprice).replaceAll('-',''));
 	$('#refundprice').attr("color","red");
-	$('#refundprice').val(formatNumberWithCommas(refundPrice-npaidprice));	
+	$('#refundprice').val(formatNumberWithCommas(tgongjeprice-rpaidprice));	
 
 }
 
@@ -1654,7 +1670,7 @@ function processRefund(isAllReturn) {
 				var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id = "new"></tr>');
 				newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 				newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-				newRow.append('<td class="paidprice align-middle white-space-nowrap fw-bold text-700 text-end">-' + paidprice + '</td>');
+				newRow.append('<td class="paidprice align-middle white-space-nowrap fw-bold text-700 text-end">-' + $("#refundprice").val().replaceAll('-','') + '</td>');
 				newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 				newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 				newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
@@ -1703,7 +1719,8 @@ function processRefund(isAllReturn) {
 						newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 						var tableBody = $('#paidbody');
 						tableBody.append(newRow);
-						$('#refundprice').val(formatNumberWithCommas(parseInt(removeCommasFromNumber($("#refundprice").val())) + parseInt(removeCommasFromNumber(frm.paidPrice.value)) ));
+						//$('#refundprice').val(formatNumberWithCommas(parseInt(removeCommasFromNumber($("#refundprice").val())) + parseInt(removeCommasFromNumber(frm.paidPrice.value)) ));
+						SetReturnrice();
 					}else if(frm.paidCategory.value == "계좌이체" ){
 						var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +frm.paidPrice.value +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType=환불";
 						var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
@@ -1748,7 +1765,8 @@ function processRefund(isAllReturn) {
 						newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
 						var tableBody = $('#paidbody');
 						tableBody.append(newRow);
-						$('#refundprice').val(formatNumberWithCommas(parseInt(removeCommasFromNumber($("#refundprice").val())) + parseInt(removeCommasFromNumber(frm.paidPrice.value)) ));
+						//$('#refundprice').val(formatNumberWithCommas(parseInt(removeCommasFromNumber($("#refundprice").val())) + parseInt(removeCommasFromNumber(frm.paidPrice.value)) ));
+						SetReturnrice()
 					}else if(frm.paidCategory.value == "계좌이체" ){
 						var url = "${pageContext.request.contextPath}/lecture/AccountCancel.do?payprice=" +$('#refundprice').val() +"&CardName="+frm.CardName.value+"&Maeipsa="+frm.Maeipsa.value+"&AssignNo=" +frm.paidAssignNo.value +"&paidCategory=" +frm.paidCategory.value +"&SaleTime=" +frm.SaleTime.value +"&OID=" +frm.OID.value +"&TID=" +frm.TID.value +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+GroupSaleNo+"&Insert=Y&InType=환불";
 						var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";

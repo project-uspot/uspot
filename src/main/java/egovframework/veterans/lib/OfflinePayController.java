@@ -471,7 +471,7 @@ public class OfflinePayController {
 			returnMap.put("MemberName",tblMemberVO.getName());
 			returnMap.put("SaleType",saleType);
 			returnMap.put("userPKID",users.getUserPKID());
-			returnMap.put("OID","");
+			returnMap.put("OID",RS08);
 			returnMap.put("DSC",RS08);
 			returnMap.put("TID",RQ02);
 			returnMap.put("tempSaleNo",tempSaleNo);
@@ -950,6 +950,7 @@ public class OfflinePayController {
 			returnMap.put("SaleType",saleType);
 			returnMap.put("userPKID",users.getUserPKID());
 			returnMap.put("OID",RS08);
+			returnMap.put("DSC",RS08);
 			returnMap.put("TID",RQ02);
 			returnMap.put("tempSaleNo",tempSaleNo);
 			try {
