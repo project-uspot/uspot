@@ -426,7 +426,7 @@ public class VtcSMSController {
 	        
 	        // 기타 정보 추가
 	        JSONObject extra3Object = new JSONObject();
-	        extra3Object.put("Key", "#{기타2}");
+	        extra3Object.put("Key", "#{기타3}");
 	        extra3Object.put("Value",(String) map.get("etc3"));
 	        replaceDatas.add(extra3Object);
 	        
@@ -451,7 +451,7 @@ public class VtcSMSController {
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
         
-        System.out.println(ObjToJson);
+        log.info(sms,"관리자 pkid : "+users.getUserPKID()+", 알림톡 발송정보 "+ObjToJson);
         
         if(!ObjToJson.get("Result").equals("OK")){
         	return "문자 발송에 실패하였습니다.";

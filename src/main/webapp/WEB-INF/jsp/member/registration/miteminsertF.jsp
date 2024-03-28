@@ -18,6 +18,7 @@
     <script src="${pageContext.request.contextPath}/new_lib/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/vendors/simplebar/simplebar.min.js"></script>
     <script src="${pageContext.request.contextPath}/new_lib/assets/js/config.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/js/common.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- ===============================================-->
     <!--    Stylesheets-->
@@ -372,7 +373,7 @@
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">받을금액</span>
-						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" id="payprice" name="payprice" oninput="onlyNumber(this)" style="text-align: right;font-weight: 900;"/>
 					</div>
 				</div>
 				<div class="row mb-1 w-100 ms-1">
@@ -1201,7 +1202,7 @@ function paycash() {
 	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">현금</td>');
-	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(tremainprice) + '</td>');
+	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + $('#payprice').val() + '</td>');
 	newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + '</td>');
 	newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
 	newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');

@@ -147,6 +147,7 @@
 	</select>
 	
 	<select id="listGroupItem" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+	<![CDATA[
 		select 
 			a.SiteCode, a.pkid, a.GroupCode, b.GroupName, ItemName, FromTime, ToTime, ShortName, c.CodeName as 'Upjang', c.PKID 
 			, case AdultGBN when 0 then '어른' when 1 then '청소년'	when 2 then '어린이' when 3 then '경로' end as 'AdultGBN'
@@ -160,6 +161,18 @@
 			a.SiteCode = #{SiteCode}
 		and a.IsDelete = 'N'
 		and b.PKID = #{value}
+	    AND a.FromTime <= DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -5 MINUTE), '%H:%i')
+	    AND a.ToTime >= DATE_FORMAT(NOW(), '%H:%i')
+	    AND CASE DAYOFWEEK(NOW()) 
+	        WHEN 2 THEN a.Mon 
+	        WHEN 3 THEN a.Tue
+	        WHEN 4 THEN a.Wed
+	        WHEN 5 THEN a.Thu
+	        WHEN 6 THEN a.Fri
+	        WHEN 7 THEN a.Sat
+	        WHEN 1 THEN a.Sun
+	    END = 1
+	]]>
 	</select>
 	
 	<select id="getOrderItemJungwon" parameterType="Map" resultType="Integer">

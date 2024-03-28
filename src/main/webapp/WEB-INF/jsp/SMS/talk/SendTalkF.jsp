@@ -219,7 +219,7 @@
 								<div class="col">
 									<div class="row justify-content-between">
 										<div class="col-auto">
-											<h4 class="card-title mt-3">▶전송자목록</h4>	
+											<h4 class="card-title mt-3">▶전송자추가</h4>	
 										</div>
 										<div class="col-auto">
 											<div class="form-check form-check-inline mt-2">
@@ -251,7 +251,7 @@
 				                        	<thead>
 					                        	<tr>
 						                        	<th class="sort align-middle text-center" scope="col" data-sort="paiddate"></th>
-						                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">자주쓰는문구</th>
+						                           	<th class="sort align-middle text-center" scope="col" data-sort="paidcategory">템플릿</th>
 					                            </tr>
 				                        	</thead>
 				                        </table>

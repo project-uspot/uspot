@@ -459,7 +459,7 @@
 	    		<div class="col-auto">
 					<div class="input-group mb-3 input-group-sm">
 						<span class="input-group-text">금액</span>
-						<input class="form-control" type="text" id="payprice" name="payprice" readonly="readonly" style="text-align: right;font-weight: 900;"/>
+						<input class="form-control" type="text" id="payprice" name="payprice" style="text-align: right;font-weight: 900;" oninput="onlyNumber(this)"/>
 					</div>
 				</div>
 				<div class="row mb-1 w-100 ms-1">
@@ -933,41 +933,43 @@ function fmsc_01save() {
 	var numberOfTR = $('#paidbody tr#new').length;
 	if(numberOfTR>0){
 		$('#paidbody tr#new').each(function() {
-    		$.ajax({
-    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-    	        dataType : 'json',
-				async : false,
-    	        data: { 
-    	        	SiteCode : "${loginuserinfo.siteCode}",
-    	        	FPKID: $("#GroupSaleNo").val(),
-    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-    	        	RealSaleDate : $(this).find('.paiddate').text(),
-    	        	SaleType : "반변경",
-    	        	PayType : $(this).find('.paidcategory').text(),
-    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-					AssignType : $(this).find('.paidassignType').text(),
-					Maeipsa : $(this).find('.paidmapsa').text(),
-					CardName : $(this).find('.paidcardtype').text(),
-					AssignNo : $(this).find('.paidassignN').text(),
-					Pos : $(this).find('.POS').text(),
-					SignPad : $(this).find('.signpad').text(),
-					Halbu : $(this).find('.Halbu').text(),
-					SaleTime : $(this).find('.SaleTime').text(),
-					PaidGroupSaleNo : $("#GroupSaleNo").val(),
-					OID : $(this).find('.OID').text(),
-					TID : $(this).find('.TID').text(),
-    	        },
-    	        success: function(data){
-					console.log(data);
-					paidPkid=data;
-    	        },
-    	        error:function(xhr, status, error){
-					console.log("Status: " + status);
-					console.log("Error: " + error);
-					return false;
-				}
-    		});
+			if($(this).attr('itemid') != 'off'){
+	    		$.ajax({
+	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+	    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+	    	        dataType : 'json',
+					async : false,
+	    	        data: { 
+	    	        	SiteCode : "${loginuserinfo.siteCode}",
+	    	        	FPKID: $("#GroupSaleNo").val(),
+	    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+	    	        	RealSaleDate : $(this).find('.paiddate').text(),
+	    	        	SaleType : "반변경",
+	    	        	PayType : $(this).find('.paidcategory').text(),
+	    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+						AssignType : $(this).find('.paidassignType').text(),
+						Maeipsa : $(this).find('.paidmapsa').text(),
+						CardName : $(this).find('.paidcardtype').text(),
+						AssignNo : $(this).find('.paidassignN').text(),
+						Pos : $(this).find('.POS').text(),
+						SignPad : $(this).find('.signpad').text(),
+						Halbu : $(this).find('.Halbu').text(),
+						SaleTime : $(this).find('.SaleTime').text(),
+						PaidGroupSaleNo : $("#GroupSaleNo").val(),
+						OID : $(this).find('.OID').text(),
+						TID : $(this).find('.TID').text(),
+	    	        },
+	    	        success: function(data){
+						console.log(data);
+						paidPkid=data;
+	    	        },
+	    	        error:function(xhr, status, error){
+						console.log("Status: " + status);
+						console.log("Error: " + error);
+						return false;
+					}
+	    		});
+			}
 
     		//var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
     		var inlineRadioOptions = 0;

@@ -1256,7 +1256,8 @@ function totalchange(){
 				if($('#paidbody tr#new').find('.paidassignType').text() == '현금취소'){
 					CancelInsert();
 				}else{
-					ReceiptInsert();
+					//ReceiptInsert();
+					UpduseLocker();	
 				}
 			}else{
 				accountChange();
@@ -1267,7 +1268,8 @@ function totalchange(){
 			if($('#paidbody tr#new').find('.paidassignType').text() == '현금취소'){
 				CancelInsert();
 			}else{
-				ReceiptInsert();	
+				//ReceiptInsert();
+				UpduseLocker();	
 			}
 		}else{
 			UpduseLocker();	
@@ -1489,7 +1491,7 @@ $("button").click(function() {
     prevbuttonText = buttonText;
 });
 
-function ReceiptInsert() {
+/* function ReceiptInsert() {
 	if(prevbuttonText == '현.영발행'){
 		$.ajax({
 	        type: "POST", 
@@ -1509,6 +1511,73 @@ function ReceiptInsert() {
 	}else{
 		UpduseLocker();
 	}
+} */
+
+function ReceiptInsert() {
+	
+	var PKID = $(previousRow).find('.PKID').text();
+	var paidcategory = $(previousRow).find('.paidcategory').text(); 
+    var paidPriceText = removeCommasFromNumber($(previousRow).find('.paidprice').text());
+    var paidassignType = '현금취소';
+    var paidcardtype = $(previousRow).find('.paidcardtype').text();
+    var paidmapsa = $(previousRow).find('.paidmapsa').text();
+    var paidassignN = $(previousRow).find('.paidassignN').text();
+    var SaleTime = $(previousRow).find('.SaleTime').text();
+    var OID = $(previousRow).find('.OID').text();
+    var TID = $(previousRow).find('.TID').text();
+    
+    if (paidPriceText > 0) {
+        paidPriceText = -paidPriceText;
+    } else if (paidPriceText < 0) {
+        paidPriceText = Math.abs(paidPriceText);
+    }
+    
+	var paidPrice = formatNumberWithCommas(paidPriceText);
+	
+	$.ajax({
+        type: "POST", 
+        url: "tblpaidinsert", 
+        dataType : 'json',
+        data: { 
+        	FPKID : $('#DBPKID').val(),
+        	SiteCode : $('#sitecode').val(),
+        	SaleDate : getCurrentDate(),
+        	RealSaleDate : getCurrentDateTime(),
+        	SaleType : '사물함',
+        	PayType : paidcategory,
+        	Price : paidPriceText,
+        	PaidGroupSaleNo : $('#DBPKID').val(),
+        	AssignType : paidassignType,
+        	OriginPKID : PKID
+        },
+        success: function(data) {	
+        	
+        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice"></tr>');
+        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
+    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
+    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
+    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
+    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+    		
+    		var tableBody = $('#paidbody');
+    		tableBody.append(newRow);
+    		PLockerPriceChange();
+    		PLockerDepositeChange();
+    		UpduseLocker();
+        },
+        error: function(xhr, status, error) {
+       	 console.log("Status: " + status);
+         console.log("Error: " + error);
+        }
+	});
 }
 
 
@@ -1596,7 +1665,7 @@ function deleteRow() {
 function Cancel() {
 	$('#resultmessage').html('결제 취소하시겠습니까?');
   	$('.modal-footer').empty();
-  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="payCancel()">예</button>';
+  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="paidCancel()">예</button>';
   	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">아니오</button>';
   	$('.modal-footer').append(okaybutton);
   	$('.modal-footer').append(cancelbutton);
@@ -1604,7 +1673,7 @@ function Cancel() {
     modalcheck = true;
 }
 
-function payCancel() {
+function paidCancel() {
     if (previousRow !== null) {
     	
     	var PKID = $(previousRow).find('.PKID').text();
@@ -1668,7 +1737,11 @@ function payCancel() {
             		default:
             			break;
             		}
-                    
+            		if(prevbuttonText == '현.영발행'){
+            			ReceiptInsert();
+            			return false;
+            		};
+            		
             		if(paidcategory == "계좌이체"){
             			var url = "${pageContext.request.contextPath}/locker/AccountCancel.do?payprice=" +formatNumberWithCommas(paidPriceText)+"&CardName="+paidcardtype+"&Maeipsa="+paidmapsa+"&AssignNo="+paidassignN+"&paidCategory="+paidcategory+"&SaleTime=" +SaleTime+"&OID="+OID+"&TID="+TID+"&MemberID="+$('#memberid').val()+"&pkid="+PKID;
             			var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
@@ -1709,71 +1782,71 @@ function payCancel() {
                     
             		var paidPrice = formatNumberWithCommas(paidPriceText);
             		
-            		$.ajax({
-                        type: "POST", 
-                        url: "tblpaidinsert", 
-                        dataType : 'json',
-                        data: { 
-                        	FPKID : $('#DBPKID').val(),
-                        	SiteCode : $('#sitecode').val(),
-                        	SaleDate : getCurrentDate(),
-                        	RealSaleDate : getCurrentDateTime(),
-                        	SaleType : '사물함',
-                        	PayType : paidcategory,
-                        	Price : paidPriceText,
-                        	PaidGroupSaleNo : $('#DBPKID').val(),
-                        	AssignType : paidassignType,
-                        	OriginPKID : PKID
-                        },
-                        success: function(data) {	
-                        	
-                        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice"></tr>');
-                        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
-                    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
-                    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
-                    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
-                    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
-                    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
-                    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
-                    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
-                    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
-                    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
-                    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
-                    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
-                    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
-                    		
-                    		var tableBody = $('#paidbody');
-                    		tableBody.append(newRow);
-                    		PLockerPriceChange();
-                    		PLockerDepositeChange();
-                    		
-                    		$.ajax({
-                                type: "POST", 
-                                url: "useLockerCancel", 
-                                dataType : 'json',
-                                data: { 
-                                	PKID : $('#DBPKID').val(),
-                                	LockerID : $('#DBPLockerID').val(),
-                                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
-                                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
-                                	Misu : removeCommasFromNumber($('#Misu').val()),
-                                	ReturnDate : getCurrentDate(),
-                                	IsFlag : 1
-                                },
-                                success: function(success) {
-                             		window.opener.location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                	console.log("Status: " + status);
-                                    console.log("Error: " + error);
-                                }
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                       	 console.log("Status: " + status);
-                         console.log("Error: " + error);
-                        }
-                	});
+		            		$.ajax({
+		                        type: "POST", 
+		                        url: "tblpaidinsert", 
+		                        dataType : 'json',
+		                        data: { 
+		                        	FPKID : $('#DBPKID').val(),
+		                        	SiteCode : $('#sitecode').val(),
+		                        	SaleDate : getCurrentDate(),
+		                        	RealSaleDate : getCurrentDateTime(),
+		                        	SaleType : '사물함',
+		                        	PayType : paidcategory,
+		                        	Price : paidPriceText,
+		                        	PaidGroupSaleNo : $('#DBPKID').val(),
+		                        	AssignType : paidassignType,
+		                        	OriginPKID : PKID
+		                        },
+		                        success: function(data) {	
+		                        	
+		                        	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="PLockerPrice"></tr>');
+		                        	newRow.append('<td class="PKID" style="display: none;">' + data + '</td>');
+		                    		newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + getCurrentDateTime() + '</td>');
+		                    		newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">'+paidcategory+'</td>');
+		                    		newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + paidPrice + '</td>');
+		                    		newRow.append('<td class="paidassignType align-middle white-space-nowrap text-900 fs--1 text-start">' + paidassignType + '</td>');
+		                    		newRow.append('<td class="paidmapsa align-middle white-space-nowrap text-center">' + '</td>');
+		                    		newRow.append('<td class="paidcardtype align-middle white-space-nowrap text-start">' +  '</td>');
+		                    		newRow.append('<td class="paidassignN align-middle white-space-nowrap text-start">' + '</td>');
+		                    		newRow.append('<td class="paidcardN align-middle white-space-nowrap text-start">' +'</td>');
+		                    		newRow.append('<td class="POS align-middle white-space-nowrap text-start">' + '</td>');
+		                    		newRow.append('<td class="signpad py-2 align-middle white-space-nowrap">' + '</td>');
+		                    		newRow.append('<td class="OID py-2 align-middle white-space-nowrap">' +  '</td>');
+		                    		newRow.append('<td class="PayKind py-2 align-middle white-space-nowrap">' + '</td>');
+		                    		
+		                    		var tableBody = $('#paidbody');
+		                    		tableBody.append(newRow);
+		                    		PLockerPriceChange();
+		                    		PLockerDepositeChange();
+		                    		
+		                    		$.ajax({
+		                                type: "POST", 
+		                                url: "useLockerCancel", 
+		                                dataType : 'json',
+		                                data: { 
+		                                	PKID : $('#DBPKID').val(),
+		                                	LockerID : $('#DBPLockerID').val(),
+		                                	RealPrice : removeCommasFromNumber($('#RealPrice').val()),
+		                                	PaidPrice : removeCommasFromNumber($('#PaidPrice').val()),
+		                                	Misu : removeCommasFromNumber($('#Misu').val()),
+		                                	ReturnDate : getCurrentDate(),
+		                                	IsFlag : 1
+		                                },
+		                                success: function(success) {
+		                             		window.opener.location.reload();
+		                                },
+		                                error: function(xhr, status, error) {
+		                                	console.log("Status: " + status);
+		                                    console.log("Error: " + error);
+		                                }
+		                            });
+		                        },
+		                        error: function(xhr, status, error) {
+		                       	 console.log("Status: " + status);
+		                         console.log("Error: " + error);
+		                        }
+		                	});
             	}
             },
             error: function(xhr, status, error) {

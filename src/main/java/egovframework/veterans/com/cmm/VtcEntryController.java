@@ -1,6 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -63,7 +62,6 @@ public class VtcEntryController{
 	private final VtcPaidService VtcPaidService;
 	private final OfflinePayService OfflinePayService;
 
-	private final VtcItemService vtcItemService;
 	private final VtcDCService vtcDCService;
 
 	private final VtcSLOrderService orderService;
