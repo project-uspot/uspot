@@ -86,6 +86,7 @@
 	</c:if>
 </c:forEach>
 <c:forEach items="${receiptList }" var="receiptMap" varStatus="status">
+	<c:if test="${receiptMap.LockerNo > 0 }">
 	<h3 style='text-align:center;'>[락커배정표]</h3>
 	<div><span>성별: ${receiptMap.Gender }</span></div>
 	<div><span>업장: ${receiptMap.Upjang }</span></div>
@@ -93,6 +94,7 @@
 	<div><span>배정일시: ${receiptMap.RealSaleDate }</span></div>
 	<div>-----------------------------------------------</div>
 	<div><span>10분 이내에 입장 바랍니다.</span></div>
+	</c:if>
 </c:forEach>
 </div>
 </body>

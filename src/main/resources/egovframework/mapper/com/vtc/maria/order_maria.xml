@@ -176,15 +176,39 @@
 	</select>
 	
 	<select id="getOrderItemJungwon" parameterType="Map" resultType="Integer">
-	<![CDATA[
-		select ifNull(sum(ifNull(Amount,0)),0) as TotalAmount 
-		from sl_orders_details a
-		left join sl_orders b on a.sitecode = b.sitecode and a.orderID = b.OrderID
-		where a.sitecode = #{SiteCode}
-		and a.itemPKID = #{ItemPKID}
-		and b.isDelete = 'N'
-		and b.saledate = #{SaleDate}
-	]]>
+	<choose>
+		<when test="JungwonChk == 'false'">
+		<![CDATA[
+			select ifNull(sum(ifNull(Amount,0)),0) as TotalAmount 
+			from sl_orders_details a
+			join sl_orders b on a.sitecode = b.sitecode and a.orderID = b.OrderID
+			JOIN fs_dsitem c ON a.sitecode = c.Sitecode AND a.itemPKID = c.PKID
+			where a.sitecode = #{SiteCode}
+			and a.itemPKID = #{ItemPKID}
+			and b.isDelete = 'N'
+			and b.saledate = #{SaleDate}
+		]]>
+		</when>
+		<otherwise>
+		<![CDATA[
+			select ifNull(sum(ifNull(Amount,0)),0) as TotalAmount 
+			from sl_orders_details a
+			join sl_orders b on a.sitecode = b.sitecode and a.orderID = b.OrderID
+			JOIN fs_dsitem c ON a.sitecode = c.Sitecode AND a.itemPKID = c.PKID
+			where a.sitecode = #{SiteCode}
+			and c.GroupCode = (
+					SELECT GroupCode 
+			        FROM fs_dsitem 
+			        WHERE SiteCode  = #{SiteCode}
+			        AND IsDelete = 'N'
+			        AND PKID = #{ItemPKID}
+				)
+			and c.isDelete = 'N'
+			and b.isDelete = 'N'
+			and b.saledate = #{SaleDate}
+		]]>
+		</otherwise>
+	</choose>
 	</select>
 
 	<select id="getItemJungwon" parameterType="Map" resultType="Map">

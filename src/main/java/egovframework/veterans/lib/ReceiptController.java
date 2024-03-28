@@ -57,7 +57,7 @@ public class ReceiptController {
 			return "/receipt/receiptEtc";
 		case "order":
 			List<Map<String,Object>> receiptOrderList = receiptService.getReceiptOrder(request.getParameter("PKID"));
-			//insertReceiptOrder(request.getParameter("PKID"),receiptService);
+			insertReceiptOrder(request.getParameter("PKID"),receiptService);
 			model.addAttribute("receiptList", receiptOrderList);
 			return "/receipt/receiptOrder";
 		default:
@@ -466,7 +466,19 @@ public class ReceiptController {
 			}
 			state++;
 		}
+		for(Map<String,Object> receiptMap : receiptList) {
+			if(f.getNullToSpaceInt(receiptMap.get("LockerNo")) > 0) {
+				receiptText = receiptText + "<h3 style='text-align:center;'>[락커배정표]</h3>";
+				receiptText = receiptText + "<div><span>성별: "+receiptMap.get("Gender")+"</span></div>";
+				receiptText = receiptText + "<div><span>업장: "+receiptMap.get("Upjang")+"</span></div>";
+				receiptText = receiptText + "<div><span>락커번호: "+receiptMap.get("LockerNo")+"</span></div>";
+				receiptText = receiptText + "<div><span>배정일시: "+receiptMap.get("RealSaleDate")+"</span></div>";
+				receiptText = receiptText + "<div>-----------------------------------------------</div>";
+				receiptText = receiptText + "<div><span>10분 이내에 입장 바랍니다.</span></div>";
+			}
+		}
 		receiptText = receiptText + "</div>";
+		
 		//log.debug(receiptText);
 		Map<String,Object> sqlMap = new HashMap<String,Object>();
 		sqlMap.put("FPKID",receiptList.get(0).get("PKID"));

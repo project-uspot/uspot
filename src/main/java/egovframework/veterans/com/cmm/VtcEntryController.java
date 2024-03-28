@@ -1,6 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcEntryService;
-import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
@@ -63,7 +61,6 @@ public class VtcEntryController {
 	private final VtcPaidService VtcPaidService;
 	private final OfflinePayService OfflinePayService;
 
-	private final VtcItemService vtcItemService;
 	private final VtcDCService vtcDCService;
 
 	private final VtcSLOrderService orderService;
@@ -127,6 +124,7 @@ public class VtcEntryController {
 		setSql.put("SiteCode", users.getSiteCode());
 		setSql.put("SaleDate", f.formatDate(new Date(), "yMd"));
 		setSql.put("ItemPKID", f.getNullToSpaceInt(request.getParameter("pkid")));
+		setSql.put("JungwonChk", request.getParameter("JungwonChk"));
 
 		int inwon = orderService.getOrderItemJungwon(setSql);
 		setSql = orderService.getItemJungwon(setSql);
