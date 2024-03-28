@@ -38,7 +38,7 @@
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/new_lib/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
 </head>
-<body style="overflow: hidden;">
+<body style="overflow:scroll;">
     <div class="card h-100 mb-1" style="width: 1595px;">
         <div class="card-body mb-n4 mt-n3">
             <div class="col-12">
@@ -1321,48 +1321,49 @@ function fmsc_04save() {
 	var numberOfTR = $('#paidbody tr#new').length;
 	
 	if(numberOfTR>0){
-		$('#paidbody tr#new').each(function() {
-			var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
-			var paiddate = $(this).find('.paiddate').text();
-			var paidPkid = $(this).find('.PKID').text();
-			if(paidprice != '' && paidPkid == ''){
-	    		$.ajax({
-	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-	    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-	    	        dataType : 'text',
-	    			async : false,
-	    	        data: { 
-	    	        	SiteCode : "${loginuserinfo.siteCode}",
-	    	        	FPKID: $("#GroupSaleNo").val(),
-	    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-	    	        	RealSaleDate : $(this).find('.paiddate').text(),
-	    	        	SaleType : "환불",
-	    	        	PayType : $(this).find('.paidcategory').text(),
-	    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-						AssignType : $(this).find('.paidassignType').text(),
-						Maeipsa : $(this).find('.paidmapsa').text(),
-						CardName : $(this).find('.paidcardtype').text(),
-						AssignNo : $(this).find('.paidassignN').text(),
-						Pos : $(this).find('.POS').text(),
-						SignPad : $(this).find('.signpad').text(),
-						Halbu : $(this).find('.Halbu').text(),
-						SaleTime : $(this).find('.SaleTime').text(),
-						PaidGroupSaleNo : $("#GroupSaleNo").val(),
-						OID : $(this).find('.OID').text(),
-						TID : $(this).find('.TID').text(),
-	    	        },
-	    	        success: function(data){
-						paidPkid=data;
-	    	        },
-					error:function(xhr, status, error){
-						console.log("Status: " + status);
-						console.log("Error: " + error);
-						return false;
-					}
-	    		});
-			}
-    	});
-		
+		if($(this).attr('itemid') != 'off'){
+			$('#paidbody tr#new').each(function() {
+				var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
+				var paiddate = $(this).find('.paiddate').text();
+				var paidPkid = $(this).find('.PKID').text();
+				if(paidprice != '' && paidPkid == ''){
+		    		$.ajax({
+		    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+		    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+		    	        dataType : 'text',
+		    			async : false,
+		    	        data: { 
+		    	        	SiteCode : "${loginuserinfo.siteCode}",
+		    	        	FPKID: $("#GroupSaleNo").val(),
+		    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+		    	        	RealSaleDate : $(this).find('.paiddate').text(),
+		    	        	SaleType : "환불",
+		    	        	PayType : $(this).find('.paidcategory').text(),
+		    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+							AssignType : $(this).find('.paidassignType').text(),
+							Maeipsa : $(this).find('.paidmapsa').text(),
+							CardName : $(this).find('.paidcardtype').text(),
+							AssignNo : $(this).find('.paidassignN').text(),
+							Pos : $(this).find('.POS').text(),
+							SignPad : $(this).find('.signpad').text(),
+							Halbu : $(this).find('.Halbu').text(),
+							SaleTime : $(this).find('.SaleTime').text(),
+							PaidGroupSaleNo : $("#GroupSaleNo").val(),
+							OID : $(this).find('.OID').text(),
+							TID : $(this).find('.TID').text(),
+		    	        },
+		    	        success: function(data){
+							paidPkid=data;
+		    	        },
+						error:function(xhr, status, error){
+							console.log("Status: " + status);
+							console.log("Error: " + error);
+							return false;
+						}
+		    		});
+				}
+	    	});
+		}
 		var inlineRadioOptions = 0;//parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
 		
 		if(inlineRadioOptions >= 1){

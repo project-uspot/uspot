@@ -248,7 +248,7 @@ function manualPay(){
 
 <%-- 결제 완료 --%>
 function save(){
-	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new"></tr>');
+	var newRow = $('<tr class="hover-actions-trigger btn-reveal-trigger position-static" id="new" itemid="off"></tr>');
 	newRow.append('<td class="paiddate align-middle white-space-nowrap text-center fw-bold">' + $("#RealSaleDate").val() + '</td>');
 	newRow.append('<td class="paidcategory align-middle white-space-nowrap text-center">' + $("#PayType").val() + '</td>');
 	newRow.append('<td class="paidprice align-middle white-space-nowrap text-start fw-bold text-end">' + formatNumberWithCommas(parseInt(removeCommasFromNumber($("#Price").val()))) + '</td>');
@@ -269,7 +269,7 @@ function save(){
 	$(opener.document).find("#paidbody .hover-actions-trigger").each(function() {
 		var bgColor = $(this).css("background-color");
         if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
-            $(this).remove();
+            //$(this).remove();
         }
     });
 	
@@ -281,7 +281,7 @@ function save(){
 	<%-- $(opener.document).find('#itemtbody tr').each(function() {
 		$(this).find('.sort').attr('id','Y');
 	}); --%>
-
+	opener.paidCancel();
 	opener.totalchange();
 	self.close();
 }
@@ -376,7 +376,8 @@ function paid(){
 			saleType : "${uparam}",
 			tempSaleNo : "${param.tempSaleNo}",
 			insert : $("#InsertYN").val(),
-			recheck : recheck
+			recheck : recheck,
+			pkid : pkid
 		},
 		success: function(data){
 			console.log(data);

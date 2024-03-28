@@ -584,6 +584,21 @@ function payAccount(){
 }
 
 function accountChange(option) {
+	if(option == 'account'){
+		/* $.ajax({
+	        type: "POST", 
+	        url: "ReceiptInsert", 
+	        dataType : 'json',
+	        data: { 
+	        	PKID : $(previousRow).find('.PKID').text()
+	        },
+	        error: function(xhr, status, error) {
+	       	 console.log("Status: " + status);
+	         console.log("Error: " + error);
+	        }
+		}); */
+		return false;
+	}
 	$.ajax({
         type: "POST", 
         url: "tblpaidinsert", 
@@ -609,21 +624,6 @@ function accountChange(option) {
 			TID : $('#paidbody tr#new').find('.TID').text()
         },
         success: function(success) {	
-        	
-        	if(option == 'account'){
-        		$.ajax({
-        	        type: "POST", 
-        	        url: "ReceiptInsert", 
-        	        dataType : 'json',
-        	        data: { 
-        	        	PKID : $(previousRow).find('.PKID').text()
-        	        },
-        	        error: function(xhr, status, error) {
-        	       	 console.log("Status: " + status);
-        	         console.log("Error: " + error);
-        	        }
-        		});
-        	}
         	
         	$('#paidbody tr#new').attr('id','etcprice');
         	sortChange();
@@ -663,6 +663,13 @@ function accountChange(option) {
 }
 
 function CancelInsert() {
+	$('#paidbody tr#new').each(function() {
+		if(prevbuttonText != '결제취소'){
+			if ($(this).attr('itemid') === "off") {
+		        $(this).attr('id', 'etcprice');
+		    }
+		}
+	});
 	$.ajax({
         type: "POST", 
         url: "tblpaidinsert", 
@@ -804,7 +811,7 @@ function deleteRow() {
 function Cancel() {
 	$('#resultmessage').html('결제 취소하시겠습니까?');
   	$('.modal-footer').empty();
-  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="payCancel()">예</button>';
+  	var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="paidCancel()">예</button>';
   	var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">아니오</button>';
   	$('.modal-footer').append(okaybutton);
   	$('.modal-footer').append(cancelbutton);
@@ -812,7 +819,7 @@ function Cancel() {
     modalcheck = true;
 }
 
-function payCancel() {
+function paidCancel() {
     if (previousRow !== null) {
     	
     	var PKID = $(previousRow).find('.PKID').text();

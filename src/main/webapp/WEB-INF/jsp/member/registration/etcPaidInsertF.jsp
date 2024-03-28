@@ -304,11 +304,11 @@ function expenseidChange() {
 		$('#defprice').val('');
 	}
 	if(expenseid.attr('expensetype') == 'I'){
-		$('#expensetype2').removeAttr('checked');
-		$('#expensetype1').attr('checked','checked');	
-	}else{
-		$('#expensetype1').removeAttr('checked');
-		$('#expensetype2').attr('checked','checked');	
+		$("#expensetype1").prop("checked", true);
+		$("#expensetype2").prop("checked", false);
+	}else if(expenseid.attr('expensetype') == 'O'){
+		$("#expensetype2").prop("checked", true);
+		$("#expensetype1").prop("checked", false);
 	}
 	
 	sortChange();

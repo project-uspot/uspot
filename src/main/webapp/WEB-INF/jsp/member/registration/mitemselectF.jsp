@@ -991,39 +991,40 @@ function fmsc_01save() {
 	});
 	
 	var numberOfTR = $('#paidbody tr#new').length;
-	if(numberOfTR>0 && $('#Insert').val() != 'Y'){
+	if(numberOfTR>0){
 		$('#paidbody tr#new').each(function() {
-    		$.ajax({
-    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
-    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
-    	        dataType : 'json',
-				async : false,
-    	        data: { 
-    	        	SiteCode : "${loginuserinfo.siteCode}",
-    	        	FPKID: GroupSaleNo,
-    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
-    	        	RealSaleDate : $(this).find('.paiddate').text(),
-    	        	SaleType : $("#InType").val(),
-    	        	PayType : $(this).find('.paidcategory').text(),
-    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
-					AssignType : $(this).find('.paidassignType').text(),
-					Maeipsa : $(this).find('.paidmapsa').text(),
-					CardName : $(this).find('.paidcardtype').text(),
-					AssignNo : $(this).find('.paidassignN').text(),
-					Pos : $(this).find('.POS').text(),
-					SignPad : $(this).find('.signpad').text(),
-					Halbu : $(this).find('.Halbu').text(),
-					SaleTime : $(this).find('.SaleTime').text(),
-					PaidGroupSaleNo : GroupSaleNo,
-					OID : $(this).find('.OID').text(),
-					TID : $(this).find('.TID').text(),
-    	        },
-    	        success: function(data){
-					console.log(Data);
-					paidPkid=Data;
-    	        }
-    		});
-    		
+			if($(this).attr('itemid') != 'off'){
+				$.ajax({
+	    	        type: "POST", // 또는 "POST", 서버 설정에 따라 다름
+	    	        url: "tblpaidinsert", // 실제 엔드포인트로 교체해야 합니다
+	    	        dataType : 'json',
+					async : false,
+	    	        data: { 
+	    	        	SiteCode : "${loginuserinfo.siteCode}",
+	    	        	FPKID: GroupSaleNo,
+	    	        	SaleDate : $(this).find('.paiddate').text().substr(0,10),
+	    	        	RealSaleDate : $(this).find('.paiddate').text(),
+	    	        	SaleType : $("#InType").val(),
+	    	        	PayType : $(this).find('.paidcategory').text(),
+	    	        	Price : removeCommasFromNumber($(this).find('.paidprice').text()),
+						AssignType : $(this).find('.paidassignType').text(),
+						Maeipsa : $(this).find('.paidmapsa').text(),
+						CardName : $(this).find('.paidcardtype').text(),
+						AssignNo : $(this).find('.paidassignN').text(),
+						Pos : $(this).find('.POS').text(),
+						SignPad : $(this).find('.signpad').text(),
+						Halbu : $(this).find('.Halbu').text(),
+						SaleTime : $(this).find('.SaleTime').text(),
+						PaidGroupSaleNo : GroupSaleNo,
+						OID : $(this).find('.OID').text(),
+						TID : $(this).find('.TID').text(),
+	    	        },
+	    	        success: function(data){
+						console.log(Data);
+						paidPkid=Data;
+	    	        }
+	    		});
+			}
     		var inlineRadioOptions = parseInt(document.querySelector('input[name="inlineRadioOptions"]:checked').value);
     		
     		if(inlineRadioOptions >= 1){
@@ -1237,7 +1238,7 @@ function cashReceiptChange(){
 			var bgColor = $(this).css("background-color");
 	        if (bgColor === "rgb(173, 216, 230)" || bgColor === "lightblue") {
 	        	console.log($(this).find(".paidprice"));
-	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&tempSaleNo="+$("#tempSaleNo").val();
+	        	var url = "${pageContext.request.contextPath}/lecture/ChangeReceipt.do?payprice=" + removeCommasFromNumber($(this).find(".paidprice").text()) +"&MemberID="+$('#memberid').val()+"&Insert=Y&tempSaleNo="+$("#SaleNo").val();
 	        	var windowFeatures = "status=no,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=900,height=600";
 	            if (myPopup === undefined || myPopup.closed) {
 	                myPopup = window.open(url, "_blank", windowFeatures);
