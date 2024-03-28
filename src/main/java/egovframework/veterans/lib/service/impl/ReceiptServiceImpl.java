@@ -38,4 +38,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 	public Map<String, Object> getReReceipt(Map<String, Object> setSql) {
 		return receiptDAO.getReReceipt(setSql);
 	}
+
+	@Override
+	public List<Map<String, Object>> getReceiptOrder(String pkid) {
+		return receiptDAO.getReceiptOrder(pkid);
+	}
 }

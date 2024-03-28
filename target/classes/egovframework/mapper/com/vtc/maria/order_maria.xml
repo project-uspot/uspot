@@ -147,6 +147,7 @@
 	</select>
 	
 	<select id="listGroupItem" parameterType="map" resultType="egovframework.veterans.com.cmm.service.vo.SLOrderItem">
+	<![CDATA[
 		select 
 			a.SiteCode, a.pkid, a.GroupCode, b.GroupName, ItemName, FromTime, ToTime, ShortName, c.CodeName as 'Upjang', c.PKID 
 			, case AdultGBN when 0 then '어른' when 1 then '청소년'	when 2 then '어린이' when 3 then '경로' end as 'AdultGBN'
@@ -160,6 +161,18 @@
 			a.SiteCode = #{SiteCode}
 		and a.IsDelete = 'N'
 		and b.PKID = #{value}
+	    AND a.FromTime <= DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -5 MINUTE), '%H:%i')
+	    AND a.ToTime >= DATE_FORMAT(NOW(), '%H:%i')
+	    AND CASE DAYOFWEEK(NOW()) 
+	        WHEN 2 THEN a.Mon 
+	        WHEN 3 THEN a.Tue
+	        WHEN 4 THEN a.Wed
+	        WHEN 5 THEN a.Thu
+	        WHEN 6 THEN a.Fri
+	        WHEN 7 THEN a.Sat
+	        WHEN 1 THEN a.Sun
+	    END = 1
+	]]>
 	</select>
 	
 	<select id="getOrderItemJungwon" parameterType="Map" resultType="Integer">
@@ -199,4 +212,26 @@
 			(#{detail.SiteCode}, #{orderID}, #{detail.ItemName}, #{detail.FromTime}, #{detail.ToTime}, #{detail.AdultGbn}, #{detail.Gender}, #{detail.UnitPrice}, #{detail.Amount}, #{detail.TotalPrice}, #{detail.DCCode}, #{detail.DCPrice}, #{detail.RealPrice}, #{detail.ItemPKID}, '')
 		</foreach>
 	</insert>
+	
+	<select id="selectOrderBarCode" parameterType="Map" resultType="Map">
+		<![CDATA[
+			select a.*,b.ItemName ,b.AdultGBN ,b.Gender ,b.Amount
+			, case AdultGBN when 0 then '어른' when 1 then '청소년' when 2 then '어린이' when 3 then '경로' end as AdultGbnText
+			, case Gender when 1 then '남자' else '여자' end as GenderText
+			from sl_orders_barcode a 
+			left join sl_orders_details b on a.SiteCode = b.SiteCode and a.OrderDetailID = b.OrderDetailID and a.OrderID = b.OrderID 
+			left join sl_orders c on a.SiteCode = c.SiteCode and a.OrderID = c.OrderID 
+			where a.IsDelete = 'N'
+			and c.IsDelete = 'N'
+			and a.SiteCode = #{SiteCode}
+			and c.OrderID = #{SaleNo}
+		]]>
+	</select>
+	
+	<update id="updateBarCode" parameterType="Map">
+	<![CDATA[
+		update sl_orders_barcode set lockerNo = #{LockerPKID}
+		where PKID = #{BarCodePKID}
+	]]>
+	</update>
 </mapper>

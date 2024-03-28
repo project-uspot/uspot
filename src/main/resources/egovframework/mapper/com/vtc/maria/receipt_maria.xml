@@ -8,7 +8,7 @@
 		, e.MemberID , e.Name , e.CellPhone
 		, c.CategoryName , c.JungName , c.LevelName , c.DayName , c.FromTime , c.ToTime , c.NVAT
 		, b.RFromDate , b.RToDate , b.RegMonth, b.dcPrice, b.ItemPrice , b.RealPrice , b.PaidPrice , b.Misu , b.SaleDate
-		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.RealPrice * 10/11) else 0 end as gonggub
+		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.RealPrice * 10/11) else b.RealPrice end as gonggub
 		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.RealPrice- (b.RealPrice * 10/11)) else 0 end as vat
 		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
 		, f.SawonName , f.SawonNo 
@@ -30,7 +30,7 @@
 		, e.MemberID , e.Name , e.CellPhone
 		, g.PLockerGroupName , g.PLockerLocation , c.PLockerNo
 		, b.FromDate , b.ToDate , b.RegMonth , IFNULL (b.DCPrice,0) as DCPrice, b.UsePrice , b.Misu , b.RegDate 
-		, case when ifnull(g.NVAT,'N') = 'Y' then ROUND(b.UsePrice * 10/11) else 0 end as gonggub
+		, case when ifnull(g.NVAT,'N') = 'Y' then ROUND(b.UsePrice * 10/11) else b.UsePrice end as gonggub
 		, case when ifnull(g.NVAT,'N') = 'Y' then ROUND(b.UsePrice- (b.UsePrice * 10/11)) else 0 end as vat
 		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
 		, f.SawonName , f.SawonNo 
@@ -53,7 +53,7 @@
 		, e.MemberID , e.Name , e.CellPhone
 		, g.ExpenseGroupName  , c.ExpenseName ,b.ExpCnt 
 		, b.PaidPrice , b.Misu , b.SaleDate , b.Price*b.ExpCnt as RealPrice
-		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.Price*b.ExpCnt * 10/11) else 0 end as gonggub
+		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.Price*b.ExpCnt * 10/11) else b.Price*b.ExpCnt end as gonggub
 		, case when ifnull(c.NVAT,'N') = 'Y' then ROUND(b.Price*b.ExpCnt - (b.Price*b.ExpCnt * 10/11)) else 0 end as vat
 		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
 		, f.SawonName , f.SawonNo 
@@ -69,6 +69,30 @@
 	]]>
 	</select>
 	
+	<select id="getReceiptOrder" parameterType="String" resultType="Map">
+	<![CDATA[
+		select a.PKID, e.SiteCode, e.SiteName , e.SiteBNo , e.PName , e.Address , e.SubAddress , e.Phone1 
+		, f.MemberID , f.Name , f.CellPhone 
+		, d.BarCode , d.LockerNo , s.ItemName , s.GroupName , s.NVAT , case when s.Gender = 1 then '남자' else '여자' end as Gender , h.codename as Upjang
+		, c.Amount , c.TotalPrice , c.DcPrice , c.RealPrice
+		, case when ifNull(s.NVAT,'N') = 'Y' then ROUND(c.RealPrice * 10/11) else c.RealPrice end as gonggub
+		, case when ifNull(s.NVAT,'N') = 'Y' then ROUND(c.RealPrice - (c.RealPrice * 10/11)) else 0 end as vat
+		, a.Price , a.saletype, a.paytype, a.AssignNo, a.saleTime, a.AssignType, a.CardName, a.RealSaleDate 
+		, g.SawonName , g.SawonNo
+		from tblPaid a
+		left join sl_orders b on a.SiteCode = b.SiteCode and a.PaidGroupSaleNo = b.OrderID 
+		left join sl_orders_details c on a.SiteCode = b.SiteCode and b.OrderID = c.OrderID 
+		left join sl_orders_barcode d on a.SiteCode = d.SiteCode and b.OrderID = d.OrderID and c.OrderDetailID = d.OrderDetailID 
+		left join selectfsitem s on c.SiteCode = s.SiteCode and c.ItemPKID = s.PKID 
+		left join tblSite e on a.SiteCode = e.SiteCode 
+		left join tblMember f on b.MemberID = f.MemberID 
+		left join tblUser g on a.AddUserPKID = g.UserPKID 
+		left join tblcode h on a.SiteCode = h.SiteCode and h.CodeGroupID = 1 and s.Upjang = h.PKID 
+		where a.IsDelete = 'N'
+		and a.PKID = #{value}
+	]]>
+	</select>
+
 	<insert id="insertReceipt" parameterType="Map">
 	<!-- <![CDATA[
 	INSERT INTO tbl_receipt (SiteCode, FPKID, SiteBNo, SaleDate, ReceiptText, MemberID, CellPhone, IsDelete)

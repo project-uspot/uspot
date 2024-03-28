@@ -67,6 +67,12 @@ public class VtcSLOrderDAO extends EgovComAbstractDAO {
 	public void insertSLOrdersDetailTemp(SLOrders orders) {
 		insert("order.insertOrderDetailTemp",orders);
 	}
+	public List<Map<String, Object>> selectOrderBarCode(Map<String, Object> setSql) {
+		return selectList("order.selectOrderBarCode", setSql);
+	}
+	public void updateBarCode(Map<String, Object> setSql) {
+		update("order.updateBarCode",setSql);
+	}
 		
 
 }

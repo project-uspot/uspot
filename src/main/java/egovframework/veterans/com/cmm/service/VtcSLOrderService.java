@@ -28,4 +28,6 @@ public interface VtcSLOrderService {
 	Map<String, Object> getItemJungwon(Map<String, Object> setSql);
 	
 	int insertSLOrdersTemp(SLOrders orders) throws Exception;
+	List<Map<String, Object>> selectOrderBarCode(Map<String, Object> setSql);
+	void updateBarCode(Map<String, Object> setSql);
 }

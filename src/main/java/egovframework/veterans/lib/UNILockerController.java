@@ -1,6 +1,5 @@
 package egovframework.veterans.lib;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,7 @@ public class UNILockerController {
 
 	public static Marker uni = MarkerFactory.getMarker("uni");
 
+	// TODO 소켓연결 확인
 	@GetMapping("/unilock/check.do")
 	@ResponseBody
 	public String checkWebSocketAvailability() throws Exception {
@@ -62,7 +62,7 @@ public class UNILockerController {
 		return null;
 	}
 	
-	//자동발권
+	//TODO 자동발권
 	public static String UniLockAutoB(String SiteCode, String MemberID, int iUpjang, int lockerType, String IP, int Port, String strLockerCondition, int lngLockerManAddNum, int lngLockerWoManAddNum) throws InterruptedException {
 		WebSocketService socket = new WebSocketService();
 		String UPJANG = "1";
@@ -131,7 +131,7 @@ public class UNILockerController {
 			sMsg1 = sMsg1 + lens;
 			sendmsg = sMsg1 + sMsg2 + sMsg3;
 
-			Thread.sleep(1000);//1초 텀주기
+			Thread.sleep(100);//0.1초 텀주기
 			log.info(uni,"업장: "+SiteCode+" 회원번호:" + MemberID + ", svrIp:" +IP +", svrPort:" + Port+", "+ sendmsg);
 			String msg2 = socket.setSocket(2000,IP, Port, sendmsg);//리얼
 			//String msg2 = socket.setSocket(2000,testip, 31000, sendmsg);//테스트

@@ -15,4 +15,6 @@ public interface ReceiptService {
 
 	public Map<String, Object> getReReceipt(Map<String, Object> setSql);
 
+	public List<Map<String, Object>> getReceiptOrder(String parameter);
+
 }

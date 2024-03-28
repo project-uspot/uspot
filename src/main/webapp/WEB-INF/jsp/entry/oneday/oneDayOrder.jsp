@@ -505,7 +505,11 @@ $(document).ready(function() {
             async : false,
             success: function(data) {
             	inwon = data.inwon;
-            	jungwon = data.GroupJungwon;
+            	if($("#JungwonChk").is(":clicked")){
+            		jungwon = data.GroupJungwon;	
+            	}else{
+            		jungwon = data.Jungwon;
+            	}
             },
             error: function(e){
             	console.log(e);
@@ -816,11 +820,11 @@ function paycredit(){
 
 <%-- 결제 후 처리 --%>
 function totalchange(){
-	console.log(GroupNo);
+	var paidPkid = "";
 	$('#paidbody tr').each(function() {
 		var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
 		var paiddate = $(this).find('.paiddate').text();
-		var paidPkid = $(this).find('.PKID').text();
+		paidPkid = $(this).find('.PKID').text();
 		if(paidprice != '' && paidPkid == ''){<%-- 결제금액이 존재하고 tblpaid 저장 안 했을 경우만 --%>
 			$.ajax({
 				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
@@ -848,7 +852,8 @@ function totalchange(){
 				},
 				success: function(Data){
 					console.log(Data);
-					paidPkid=Data;
+					GroupNo = Data.order;
+					paidPkid = Data.paid;
 				},
 				error:function(xhr, status, error){
 					console.log("Status: " + status);
@@ -858,22 +863,40 @@ function totalchange(){
 			});
 		}
 	});
-	$("#paidbody").empty();
-	$("#clean").click();
 	
 	$.ajax({
 		type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
-		url: "orderinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
+		url: "orderentry.do", <%--// 실제 엔드포인트로 교체해야 합니다--%>
 		dataType : 'json',
 		async : false,
 		data: { 
-			"MemberID":memberID,
 			"SaleNo":GroupNo,
 			"autoLockerUse" : $("#autoLocker").is(":checked"),
 			"PosGBN" : "POS",
 		},
 		success: function(Data){
 			console.log(Data);
+			if(Data.code == "0000"){
+				if($("#autoLocker").is(":checked")){
+					$('#resultmessage').html('전자키 배정 완료.');
+					$('.modal-footer').empty();
+					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+					$('.modal-footer').append(cancelbutton);
+					$('#modalButton').click();
+					modalcheck = true;
+					return false;
+				}
+			}else{
+				if($("#autoLocker").is(":checked")){
+					$('#resultmessage').html('전자키 배정 '+Data.msg+'건 실패!\n수동 배정해주시기 바랍니다.');
+					$('.modal-footer').empty();
+					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+					$('.modal-footer').append(cancelbutton);
+					$('#modalButton').click();
+					modalcheck = true;
+					return false;
+				}
+			}
 		},
 		error:function(xhr, status, error){
 			console.log("Status: " + status);
@@ -890,6 +913,11 @@ function totalchange(){
 			return false;
 		}
 	});
+	$("#paidbody").empty();
+	$("#clean").click();
+
+	var myWindow = window.open("${pageContext.request.contextPath}/order/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+    myWindow.print();
 }
 
 function connectWebSocket() {
