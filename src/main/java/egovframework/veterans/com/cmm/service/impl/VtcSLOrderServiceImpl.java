@@ -92,5 +92,13 @@ public class VtcSLOrderServiceImpl extends EgovAbstractServiceImpl implements Vt
 		slOrderDAO.insertSLOrdersDetailTemp(orders);
 		return orders.getOrderID();
 	}
+	@Override
+	public List<Map<String, Object>> selectOrderBarCode(Map<String, Object> setSql) {
+		return slOrderDAO.selectOrderBarCode(setSql);
+	}
+	@Override
+	public void updateBarCode(Map<String, Object> setSql) {
+		slOrderDAO.updateBarCode(setSql);
+	}
 	
 }

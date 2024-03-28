@@ -618,7 +618,7 @@
 				</div> -->
 	        </div>
 	    </div>
-	    <div class="card border border-primary" style="width: 308px;height: 425px;">
+	    <div class="card border border-primary" style="width: 308px;height: 378px;">
 	    	<div class="card-body my-n3 mx-n5">
 	      		<div class="col-auto">
 	      			<div class="form-check">
@@ -632,7 +632,7 @@
 	      		</div>
 	      		<div class="col-auto">
 		      		1.기본개월 2개월 이상 강좌 등록시 총금액에 10% 위약금<br>
-		      		2.1개월강좌 다개월 등록시 당월만 10% 위약금(다개월 할인 불가)<br><br>
+		      		2.1개월강좌 다개월 등록시 당월만 10% 위약금(다개월 할인 불가)<br>
 		      		3.1개월 종목 2개월이상 등록시 환불계산<br>
 		      		1= ((A-(B/F)*a))*(-1)<br>
 		      		2= A*10% / 100<br>

@@ -137,25 +137,25 @@
 									<c:out value="${list.jungwon }"/>
 								</td>
 								<td class="sun align-middle white-space-nowrap ">
-									<input type="checkbox" name="Sun" value="1" <c:if test="${list.sun eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Sun" value="1" onClick="return false" <c:if test="${list.sun eq '1' }">checked</c:if>>
 								</td>
 								<td class="mon align-middle white-space-nowrap ">
-									<input type="checkbox" name="Mon" value="1" <c:if test="${list.mon eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Mon" value="1" onClick="return false" <c:if test="${list.mon eq '1' }">checked</c:if>>
 								</td>
 								<td class="tue align-middle white-space-nowrap ">
-									<input type="checkbox" name="Tue" value="1" <c:if test="${list.tue eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Tue" value="1" onClick="return false" <c:if test="${list.tue eq '1' }">checked</c:if>>
 								</td>
 								<td class="wed align-middle white-space-nowrap ">
-									<input type="checkbox" name="Wed" value="1" <c:if test="${list.wed eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Wed" value="1" onClick="return false" <c:if test="${list.wed eq '1' }">checked</c:if>>
 								</td>
 								<td class="thu align-middle white-space-nowrap ">
-									<input type="checkbox" name="Thu" value="1" <c:if test="${list.thu eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Thu" value="1" onClick="return false" <c:if test="${list.thu eq '1' }">checked</c:if>>
 								</td>
 								<td class="fri align-middle white-space-nowrap ">
-									<input type="checkbox" name="Fri" value="1" <c:if test="${list.fri eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Fri" value="1" onClick="return false" <c:if test="${list.fri eq '1' }">checked</c:if>>
 								</td>
 								<td class="sat align-middle white-space-nowrap ">
-									<input type="checkbox" name="Sat" value="1" <c:if test="${list.sat eq '1' }">checked</c:if>>
+									<input type="checkbox" name="Sat" value="1" onClick="return false" <c:if test="${list.sat eq '1' }">checked</c:if>>
 								</td>
 								<td class="sortOrder align-middle white-space-nowrap ">
 									<c:out value="${list.sortOrder }"/>

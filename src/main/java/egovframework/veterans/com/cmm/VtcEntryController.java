@@ -1,6 +1,5 @@
 package egovframework.veterans.com.cmm;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.veterans.com.cmm.service.VtcDCService;
 import egovframework.veterans.com.cmm.service.VtcEntryService;
-import egovframework.veterans.com.cmm.service.VtcItemService;
 import egovframework.veterans.com.cmm.service.VtcLockerService;
 import egovframework.veterans.com.cmm.service.VtcMemberService;
 import egovframework.veterans.com.cmm.service.VtcPaidService;
@@ -49,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class VtcEntryController{
+public class VtcEntryController {
 
 	Functions f = Functions.getInstance();
 
@@ -59,23 +57,22 @@ public class VtcEntryController{
 	private final VtcEntryService vtcEntryService;
 	private final CommonService commonService;
 	private final VtcService VtcService;
-	
+
 	private final VtcPaidService VtcPaidService;
 	private final OfflinePayService OfflinePayService;
 
-	private final VtcItemService vtcItemService;
 	private final VtcDCService vtcDCService;
 
 	private final VtcSLOrderService orderService;
 
-	//TODO 출입관리-일일입장관리
+	// TODO 출입관리-일일입장관리
 	@GetMapping("OneDayOrder.do")
 	public String OneDayOrder(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
-			//model.addAttribute("script", "back");
-			//return "redirect:login.do";
+			// model.addAttribute("script", "back");
+			// return "redirect:login.do";
 			model.addAttribute("script", "reload");
 			return "common/msg";
 		}
@@ -88,15 +85,16 @@ public class VtcEntryController{
 		model.addAttribute("group", group);
 		model.addAttribute("item", item);
 		model.addAttribute("svrTime", group.get(0).getSvrTime());
-		
+
 		return "entry/oneday/oneDayOrder";
 	}
+
 	//
 	@PostMapping("/GroupValue")
 	@ResponseBody
-	public Map<String, Object> groupValue(ModelMap model, @RequestParam(name = "value") int value) throws Exception{
+	public Map<String, Object> groupValue(ModelMap model, @RequestParam(name = "value") int value) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return null;
 		}
 		Map<String, Object> pkid = new HashMap<>();
@@ -105,7 +103,7 @@ public class VtcEntryController{
 		pkid.put("value", value);
 
 		List<SLOrderItem> groups = orderService.listGroupItem(pkid);
-	   
+
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("size", groups.size());
@@ -113,31 +111,33 @@ public class VtcEntryController{
 
 		return map;
 	}
+
 	// 정원 체크
 	@PostMapping("/Jungwon")
 	@ResponseBody
-	public Map<String,Object> jungwonChk(HttpServletRequest request) throws Exception{
+	public Map<String, Object> jungwonChk(HttpServletRequest request) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return null;
 		}
 		Map<String, Object> setSql = new HashMap<>();
 		setSql.put("SiteCode", users.getSiteCode());
-		setSql.put("SaleDate", f.formatDate(new Date(),"yMd"));
+		setSql.put("SaleDate", f.formatDate(new Date(), "yMd"));
 		setSql.put("ItemPKID", f.getNullToSpaceInt(request.getParameter("pkid")));
+		setSql.put("JungwonChk", request.getParameter("JungwonChk"));
 
 		int inwon = orderService.getOrderItemJungwon(setSql);
 		setSql = orderService.getItemJungwon(setSql);
-		setSql.put("inwon",inwon);
+		setSql.put("inwon", inwon);
 
 		return setSql;
 	}
 
-	//TODO 일일입장 - 할인 페이지
+	// TODO 일일입장 - 할인 페이지
 	@GetMapping("/order/discount.do")
 	public String DiscountPage(ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return null;
 		}
 		DC dc = new DC();
@@ -147,18 +147,18 @@ public class VtcEntryController{
 		return "entry/oneday/discount";
 	}
 
-	//TODO 일일입장 임시정보
+	// TODO 일일입장 임시정보
 	@PostMapping("orderTemp.do")
 	@ResponseBody
 	public int orderTemp(@RequestBody SLOrders orders) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return 0;
 		}
 		orders.setSiteCode(users.getSiteCode());
-		for(SLOrderDetail details: orders.getDetails()) {
+		for (SLOrderDetail details : orders.getDetails()) {
 			details.setSiteCode(users.getSiteCode());
-			details.setTotalPrice(details.getAmount()*details.getUnitPrice());
+			details.setTotalPrice(details.getAmount() * details.getUnitPrice());
 			SLOrderItem item = new SLOrderItem();
 			item.setSiteCode(users.getSiteCode());
 			item.setPkid(details.getItemPKID());
@@ -167,221 +167,182 @@ public class VtcEntryController{
 			details.setFromTime(item.getFromTime());
 			details.setToTime(item.getToTime());
 			details.setGender(f.getNullToSpaceInt(item.getGender()));
-			orders.setTotalPrice(orders.getTotalPrice()+details.getTotalPrice());
-			orders.setTotalPrice(orders.getDCPrice()+details.getDCPrice());
+			orders.setTotalPrice(orders.getTotalPrice() + details.getTotalPrice());
+			orders.setTotalPrice(orders.getDCPrice() + details.getDCPrice());
 		}
-		//log.debug(orders.toString());
+		// log.debug(orders.toString());
 		return orderService.insertSLOrdersTemp(orders);
 	}
 
-	//TODO 일일입장 결제처리
+	// TODO 일일입장 결제처리
 	@PostMapping("orderinsert")
 	@ResponseBody
-	public int orderinsert(tblpaid tblpaid) throws Exception {
+	public Map<String,Object> orderinsert(tblpaid tblpaid) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
-			return 0;
-		}
-		
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		returnMap.put("SiteCode",users.getSiteCode());
-		returnMap.put("SaleType",tblpaid.getSaleType());
-		returnMap.put("tempSaleNo",tblpaid.getFPKID());
-		returnMap.put("userPKID",users.getUserPKID());
-		returnMap = OfflinePayService.insertSLOrders(returnMap);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-	    map.put("saleDate", tblpaid.getSaleDate());
-	    map.put("outputOrderNo", 0);
-	    
-	    tblpaid.setSiteCode(users.getSiteCode());
-	    tblpaid.setFPKID(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
-	    tblpaid.setPaidGroupSaleNo(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
-	    VtcPaidService.callSelectReceiptNo(map);
-	    tblpaid.setReceiptNo(String.valueOf(map.get("outputOrderNo")));
-
-	    tblpaid.setAddUserPKID(users.getUserPKID());
-	    tblpaid.setUpdUserPKID(users.getUserPKID());
-
-	    VtcPaidService.tblpaidinsert(tblpaid);
-	    if(!tblpaid.getPayType().equals("현금")
-	    &&!tblpaid.getPayType().equals("계좌이체")) {
-	    	VtcPaidService.tblElecAssignDataInsert(tblpaid);
-	    }
-		
-		return tblpaid.getPKID();
-	}
-
-	//TODO 일일입장 전자키배정입장
-	@PostMapping("orderentry.do")
-	@ResponseBody
-	public Map<String,Object> orderEntry(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return null;
 		}
-		Map<String,Object> resultMap = new HashMap<String,Object>();
+
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("SiteCode", users.getSiteCode());
+		returnMap.put("SaleType", tblpaid.getSaleType());
+		returnMap.put("tempSaleNo", tblpaid.getFPKID());
+		returnMap.put("userPKID", users.getUserPKID());
+		returnMap = OfflinePayService.insertSLOrders(returnMap);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("saleDate", tblpaid.getSaleDate());
+		map.put("outputOrderNo", 0);
+
+		tblpaid.setSiteCode(users.getSiteCode());
+		tblpaid.setFPKID(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+		tblpaid.setPaidGroupSaleNo(f.getNullToSpaceInt(returnMap.get("Group_SaleNo")));
+		VtcPaidService.callSelectReceiptNo(map);
+		tblpaid.setReceiptNo(String.valueOf(map.get("outputOrderNo")));
+
+		tblpaid.setAddUserPKID(users.getUserPKID());
+		tblpaid.setUpdUserPKID(users.getUserPKID());
+
+		VtcPaidService.tblpaidinsert(tblpaid);
+		if (!tblpaid.getPayType().equals("현금") && !tblpaid.getPayType().equals("계좌이체")) {
+			VtcPaidService.tblElecAssignDataInsert(tblpaid);
+		}
+		returnMap = new HashMap<String, Object>();
+		returnMap.put("paid",tblpaid.getPKID());
+		returnMap.put("order",tblpaid.getFPKID());
+		return returnMap;
+	}
+
+	// TODO 일일입장 전자키배정입장
+	@PostMapping("orderentry.do")
+	@ResponseBody
+	public Map<String, Object> orderEntry(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			return null;
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		String MemberID = f.getNullToSpaceStrValue(request.getParameter("MemberID"));
-		int SaleNo 		= f.getNullToSpaceInt(request.getParameter("SaleNo"));
+		int SaleNo = f.getNullToSpaceInt(request.getParameter("SaleNo"));
 		boolean uniLock = Boolean.parseBoolean(request.getParameter("autoLockerUse"));
-		String PosGBN	= f.getNullToSpaceStrValue(request.getParameter("PosGBN"));
+		String PosGBN = f.getNullToSpaceStrValue(request.getParameter("PosGBN"));
 
-		tblmember tblmember = new tblmember();
-		tblmember.setMemberID(MemberID);
-		tblmember.setSiteCode(users.getSiteCode());
-		tblmember = vtcMemberService.tblmemberBymemberId(tblmember);
-
-		tblmember.setSiteCode(users.getSiteCode());
-		tblmember.setEntrySaleNo(SaleNo);
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
-		Map<String,Object> entryClass = entryClassList.get(0);
+		Map<String, Object> setSql = new HashMap<String, Object>();
+		setSql.put("SiteCode", users.getSiteCode());
+		setSql.put("SaleNo", SaleNo);
+		List<Map<String, Object>> orderBarCodeList = orderService.selectOrderBarCode(setSql);
+		List<String> resultList = new ArrayList<String>();
 
 		if(uniLock) {
-			int iAge = f.getAge(tblmember.getBirthDay());
 			String sDaeSo = "";
-
-			if(iAge == 0) {
-				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
-				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
+			
+			for(Map<String,Object> orderBarCode : orderBarCodeList) {
+				if(f.getNullToSpaceStrValue(orderBarCode.get("AdultGbnText")).indexOf("어린이") >= 0
+				&& f.getNullToSpaceStrValue(orderBarCode.get("AdultGbnText")).indexOf("경로") >= 0) {
 					sDaeSo = "소인";
 				}else{
 					sDaeSo = "대인";
 				}
-			}else {
-				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
-				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
-					sDaeSo = "소인";
-				}else{
-					if(iAge >= 60) {
-						sDaeSo = "소인";	
-					}else {
-						sDaeSo = "대인";
-					}
+
+				int iUpjang = 0;
+				String strLockerCondition = "";
+				int LngLockerManAddNum = 0;
+				int LngLockerWoManAddNum= 0;
+				if(f.getNullToSpaceStrValue(orderBarCode.get("ItemName")).indexOf("수영") >= 0) {
+					strLockerCondition = "수영장";
+					LngLockerManAddNum = 0;
+					LngLockerWoManAddNum= 5000;
+				}else if(f.getNullToSpaceStrValue(orderBarCode.get("ItemName")).indexOf("헬스") >= 0) {
+					strLockerCondition = "헬스장";
+					LngLockerManAddNum = 1000;
+					LngLockerWoManAddNum= 6000;
 				}
-			}
+				
+				int LockerType = 0;
+				if(f.getNullToSpaceStrValue(orderBarCode.get("GenderText")).equals("남자") && sDaeSo.equals("대인")) {
+					LockerType = 0;
+				}else if(f.getNullToSpaceStrValue(orderBarCode.get("GenderText")).equals("남자") && sDaeSo.equals("소인")) {
+					LockerType = 1;
+				}else if(f.getNullToSpaceStrValue(orderBarCode.get("GenderText")).equals("여자") && sDaeSo.equals("대인")) {
+					LockerType = 2;
+				}else {
+					LockerType = 3;
+				}
+				
+				Map<String,Object> siteIdSet = VtcService.selectSiteIdSet(users.getSiteCode());
+				
+				String IP = f.getNullToSpaceStrValue(siteIdSet.get("Locker_Svr_IP"));
+				int Port = f.getNullToSpaceInt(siteIdSet.get("Locker_Svr_Port"));
+				
+				String result = UNILockerController.UniLockAutoB(users.getSiteCode(), MemberID, iUpjang, LockerType, IP, Port, strLockerCondition, LngLockerManAddNum, LngLockerWoManAddNum);
 			
-			int iUpjang = f.getNullToSpaceInt(entryClass.get("LockerCondition"));
-			String strLockerCondition = f.getNullToSpaceStrValue(entryClass.get("UpjangName"));
-			if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("수영") >= 0) {
-				strLockerCondition = "수영장";
-			}else if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("헬스") >= 0) {
-				strLockerCondition = "헬스장";
-			}
-			int LngLockerManAddNum = f.getNullToSpaceInt(entryClass.get("LockerManAddNum"));
-			int LngLockerWoManAddNum= f.getNullToSpaceInt(entryClass.get("LockerWoManAddNum"));
-
-			/*if(!f.getNullToSpaceStrValue(request.getParameter("strLockerCondition")).equals("")) {
-				strLockerCondition = f.getNullToSpaceStrValue(request.getParameter("strLockerCondition"));
-				LngLockerManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerManAddNum"));
-				LngLockerWoManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerWoManAddNum"));
-			}*/
-			
-			int LockerType = 0;
-			if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("대인")) {
-				LockerType = 0;
-			}else if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("소인")) {
-				LockerType = 1;
-			}else if(tblmember.getGenderText().equals("여자") && sDaeSo.equals("대인")) {
-				LockerType = 2;
-			}else {
-				LockerType = 3;
-			}
-			Map<String,Object> siteIdSet = VtcService.selectSiteIdSet(users.getSiteCode());
-
-			String IP = f.getNullToSpaceStrValue(siteIdSet.get("Locker_Svr_IP"));
-			int Port = f.getNullToSpaceInt(siteIdSet.get("Locker_Svr_Port"));
-			
-			String result = UNILockerController.UniLockAutoB(users.getSiteCode(), MemberID, iUpjang, LockerType, IP, Port, strLockerCondition, LngLockerManAddNum, LngLockerWoManAddNum);
-			if(result.equals("false")) {
-				resultMap.put("Code","9999");
-				resultMap.put("Msg","발권 실패!<br>락카확인 및 수동발권을 하십시요!");
-				return resultMap;
-			}else {
-				Map<String,Object> setSql = new HashMap<String,Object>();
-				setSql.put("SiteCode",users.getSiteCode());
-				setSql.put("SaleNo",SaleNo);
-				setSql.put("LockerPKID",result);
-
-				if(MemberID.equals("")) {
-					setSql.put("CustCode",MemberID);
+				if(result.equals("false")) {
+					resultList.add("false");
+				}else {
+					setSql.put("SiteCode",users.getSiteCode());
+					setSql.put("SaleNo",SaleNo);
+					setSql.put("LockerPKID",result);
+					setSql.put("CustCode",orderBarCode.get("BarCode"));
 					setSql.put("BaejungType","일일입장");
-				}else {
-					setSql.put("CustCode",MemberID);
-					setSql.put("BaejungType","회원입장");
-					setSql.put("KioskNo","");
+					setSql.put("Gender",orderBarCode.get("Gender"));
+					setSql.put("PosGBN",PosGBN);
+					setSql.put("UserPKID",users.getUserPKID());
+					
+					setSql.put("BarCodePKID",orderBarCode.get("PKID"));
+					orderService.updateBarCode(setSql);
+					vtcEntryService.insertEntry(setSql);
 				}
-				/*if(tblmember.getGender() == 0) {
-					setSql.put("Gender","F");
-				}else {
-					setSql.put("Gender","M");	
-				}*/
-				setSql.put("Gender",tblmember.getGender());
-				setSql.put("PosGBN",PosGBN);
-				setSql.put("UserPKID",users.getUserPKID());
-
-				vtcEntryService.insertEntry(setSql);
-				resultMap.put("lockerNo",result);
 			}
 		}else {
-			Map<String,Object> setSql = new HashMap<String,Object>();
+			setSql = new HashMap<String,Object>();
 			setSql.put("SiteCode",users.getSiteCode());
 			setSql.put("SaleNo",SaleNo);
 			setSql.put("LockerPKID",-5000);
-
-			if(MemberID.equals("")) {
-				setSql.put("CustCode",MemberID);
+			for(Map<String,Object> orderBarCode : orderBarCodeList) {
+				setSql.put("CustCode",orderBarCode.get("BarCode"));
 				setSql.put("BaejungType","일일입장");
-			}else {
-				setSql.put("CustCode",MemberID);
-				setSql.put("BaejungType","회원입장");
-				setSql.put("KioskNo","");
+				setSql.put("Gender",orderBarCode.get("Gender"));
+				setSql.put("PosGBN",PosGBN);
+				setSql.put("UserPKID",users.getUserPKID());
+				vtcEntryService.insertEntry(setSql);
 			}
-			/*if(tblmember.getGender() == 0) {
-				setSql.put("Gender","F");
-			}else {
-				setSql.put("Gender","M");	
-			}*/
-			setSql.put("Gender",tblmember.getGender());
-			setSql.put("PosGBN",PosGBN);
-			setSql.put("UserPKID",users.getUserPKID());
-			
-			vtcEntryService.insertEntry(setSql);
-			resultMap.put("lockerNo",0);
-			
 		}
-		resultMap.put("Code","0000");
-		resultMap.put("Msg",entryClass.get("CategoryName")+ " "+entryClass.get("JungName") +" "+ entryClass.get("DayName"));
-		
-		//fc.playAudio("/file/Sound/E.wav", response);
+		if(resultList.size()==0) {
+			resultMap.put("code","0000");
+			
+		}else {
+			resultMap.put("code","0099");
+			resultMap.put("msg",resultList.size());
+		}
 		return resultMap;
 	}
 
 	// TODO 출입관리- 출입관리 페이지
 	@GetMapping("/entryManage.do")
 	public String memEntryManage(tblmember tblmember, ModelMap model) throws Exception {
-	   Users users = (Users) session.getAttribute("loginuserinfo");
-	   if(users == null){
-		   model.addAttribute("msg", "로그인을 다시 해주세요.");
-		   model.addAttribute("script", "reload");
-	       return "common/msg";
-	   }
+		Users users = (Users) session.getAttribute("loginuserinfo");
+		if (users == null) {
+			model.addAttribute("msg", "로그인을 다시 해주세요.");
+			model.addAttribute("script", "reload");
+			return "common/msg";
+		}
 
-	   Map<String,Object> setSql = new HashMap<String,Object>();
-	   setSql.put("SiteCode",users.getSiteCode());
-	   setSql.put("CodeGroupID",1);
-	   List<Map<String,Object>> configList = commonService.selectCodeList(setSql);
-	   model.addAttribute("configList", configList);
-	   return "entry/entryManage";
+		Map<String, Object> setSql = new HashMap<String, Object>();
+		setSql.put("SiteCode", users.getSiteCode());
+		setSql.put("CodeGroupID", 1);
+		List<Map<String, Object>> configList = commonService.selectCodeList(setSql);
+		model.addAttribute("configList", configList);
+		return "entry/entryManage";
 	}
 
-	//입장회원 조회
+	// 입장회원 조회
 	@PostMapping("entryChk.do")
 	@ResponseBody
-	public Map<String,Object> memEntryChk(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception{
+	public Map<String, Object> memEntryChk(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+			throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
@@ -394,49 +355,49 @@ public class VtcEntryController{
 		find.put("findcategory", findcategory);
 		List<tblmember> findlist = vtcMemberService.findmember(find);
 
-		Map<String,Object> getMap = new HashMap<String,Object>();
+		Map<String, Object> getMap = new HashMap<String, Object>();
 		if (findlist.size() == 0) {
-			getMap.put("code","9999");
+			getMap.put("code", "9999");
 		} else if (findlist.size() == 1) {
-			if(Objects.isNull(findlist.get(0).getBarCode())||findlist.get(0).getBarCode().equals("")) {
-				getMap.put("code","9998");
-			}else {
-				getMap.put("code","0000");
-				getMap.put("member",findlist.get(0));
+			if (Objects.isNull(findlist.get(0).getBarCode()) || findlist.get(0).getBarCode().equals("")) {
+				getMap.put("code", "9998");
+			} else {
+				getMap.put("code", "0000");
+				getMap.put("member", findlist.get(0));
 				tblmemberphoto tblmemberphoto = vtcMemberService.MemebrPhotoByMemberID(findlist.get(0).getMemberID());
 				String base64Image = "";
-				if(tblmemberphoto == null) {
+				if (tblmemberphoto == null) {
 					base64Image = null;
-				}else {
+				} else {
 					byte[] imageBytes = tblmemberphoto.getPhoto();
-					if(imageBytes == null) {
+					if (imageBytes == null) {
 						base64Image = null;
-					}else {
+					} else {
 						base64Image = Base64.getEncoder().encodeToString(imageBytes);
-					}	
+					}
 				}
-				getMap.put("base64Image",base64Image);
+				getMap.put("base64Image", base64Image);
 			}
 		} else {
-			getMap.put("code","1111");
+			getMap.put("code", "1111");
 		}
 		return getMap;
 	}
-	
-	
-	//TODO 출입관리 입장가능강좌 체크
+
+	// TODO 출입관리 입장가능강좌 체크
 	@PostMapping("memEntryChk.do")
-	@ResponseBody 
-	public Map<String,Object> memEntryChk(tblmember tblmember, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception{
+	@ResponseBody
+	public Map<String, Object> memEntryChk(tblmember tblmember, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
 		}
 
 		int msgType = 0;
-		
+
 		String chkWeekenInoutTime = f.getNullToSpaceStrValue(request.getParameter("chkWeekenInoutTime"));
 		String chkOutYN = f.getNullToSpaceStrValue(request.getParameter("chkOutYN"));
 		boolean bOK = false;
@@ -448,59 +409,62 @@ public class VtcEntryController{
 
 		int validCnt = 0;
 		tblmember.setSiteCode(users.getSiteCode());
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
+		tblmember.setToDay(f.formatDate(new Date(), "yMd"));
+		List<Map<String, Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
 
-		if(entryClassList.size() == 0) {
+		if (entryClassList.size() == 0) {
 			resultMsg = "등록한 강습정보가 존재하지 않습니다.";
 			msgType = 6;
 		}
 
-		List<Map<String,Object>> entryItemList = new ArrayList<>();
+		List<Map<String, Object>> entryItemList = new ArrayList<>();
 
-		for(Map<String,Object> entryClass:entryClassList) {
-			Map<String,Object> entryItem = new HashMap<String,Object>();
+		for (Map<String, Object> entryClass : entryClassList) {
+			Map<String, Object> entryItem = new HashMap<String, Object>();
 
-			if((bOK == false && outState == false) || validCnt > 0 ) {
-				if(f.getNullToSpaceIntDate(f.getcurDate().substring(0,8)) >= f.getNullToSpaceIntDate(entryClass.get("RFromDate"))
-				&& f.getNullToSpaceIntDate(f.getcurDate().substring(0,8)) <= f.getNullToSpaceIntDate(entryClass.get("RToDate"))) {
-					if(chkWeekenInoutTime.equals("true")) {//주말입장시간 제한없음(~23:00)
-						switch(LocalDate.now().getDayOfWeek().getValue()) {
+			if ((bOK == false && outState == false) || validCnt > 0) {
+				if (f.getNullToSpaceIntDate(f.getcurDate().substring(0, 8)) >= f
+						.getNullToSpaceIntDate(entryClass.get("RFromDate"))
+						&& f.getNullToSpaceIntDate(f.getcurDate().substring(0, 8)) <= f
+								.getNullToSpaceIntDate(entryClass.get("RToDate"))) {
+					if (chkWeekenInoutTime.equals("true")) {// 주말입장시간 제한없음(~23:00)
+						switch (LocalDate.now().getDayOfWeek().getValue()) {
 						case 6:
 						case 7:
-							entryClass.put("ToTime","23:00");
+							entryClass.put("ToTime", "23:00");
 							break;
 						}
 					}
-					Map<String,Object> setSql = new HashMap<String,Object>();
-					setSql.put("SiteCode",users.getSiteCode());
-					setSql.put("MemberID",tblmember.getMemberID());
-					setSql.put("InDate",entryClass.get("INDATE"));
-					setSql.put("SaleNo",entryClass.get("SaleNo"));
+					Map<String, Object> setSql = new HashMap<String, Object>();
+					setSql.put("SiteCode", users.getSiteCode());
+					setSql.put("MemberID", tblmember.getMemberID());
+					setSql.put("InDate", entryClass.get("INDATE"));
+					setSql.put("SaleNo", entryClass.get("SaleNo"));
 
-					if(chkOutYN.equals("true") && vtcEntryService.outEntry(setSql) > 0) {
-						//퇴장처리
+					if (chkOutYN.equals("true") && vtcEntryService.outEntry(setSql) > 0) {
+						// 퇴장처리
 						outState = true;
 						bOK = false;
 						resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 퇴장";
-					}else {
-						if(f.getNullToSpaceInt(entryClass.get("CNT")) > 0 
-						&& f.getNullToSpaceInt(entryClass.get("CNT")) < f.getNullToSpaceInt(entryClass.get("InCnt"))) {
-							if(!f.CheckClassDay(f.getNullToSpaceStrValue(entryClass.get("DayName")))) {
-								//강습요일이 아닐경우
+					} else {
+						if (f.getNullToSpaceInt(entryClass.get("CNT")) > 0
+								&& f.getNullToSpaceInt(entryClass.get("CNT")) < f
+										.getNullToSpaceInt(entryClass.get("InCnt"))) {
+							if (!f.CheckClassDay(f.getNullToSpaceStrValue(entryClass.get("DayName")))) {
+								// 강습요일이 아닐경우
 								bOK = false;
 								resultMsg = "주중 강습회원 - 입장불가";
 								msgType = 3;
-							}else {
-								//강습요일인 경우
-								if(f.getNullToSpaceStrValue(entryClass.get("FromTime")).equals("")) {
-									//입장시간 없음
+							} else {
+								// 강습요일인 경우
+								if (f.getNullToSpaceStrValue(entryClass.get("FromTime")).equals("")) {
+									// 입장시간 없음
 									bOK = true;
 									resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 입장";
-								}else {
+								} else {
 									int iWeek = LocalDate.now().getDayOfWeek().getValue();
 									String sInTime = "";
-									switch(iWeek) {
+									switch (iWeek) {
 									case 1:
 										sInTime = f.getNullToSpaceStrValue(entryClass.get("MonIn"));
 										break;
@@ -524,39 +488,44 @@ public class VtcEntryController{
 										break;
 									}
 
-									if(f.getNullToSpaceIntTime(f.getcurDate().substring(8,12)) >= f.getNullToSpaceIntTime(sInTime)
-									&& f.getNullToSpaceIntTime(f.getcurDate().substring(8,12)) <= f.getNullToSpaceIntTime(entryClass.get("ToTime"))) {
+									if (f.getNullToSpaceIntTime(f.getcurDate().substring(8, 12)) >= f
+											.getNullToSpaceIntTime(sInTime)
+											&& f.getNullToSpaceIntTime(f.getcurDate().substring(8, 12)) <= f
+													.getNullToSpaceIntTime(entryClass.get("ToTime"))) {
 										bOK = true;
-										resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) +" 일일 "
-												+ (f.getNullToSpaceInt(entryClass.get("CNT"))+1) + " 입장";
+										resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 일일 "
+												+ (f.getNullToSpaceInt(entryClass.get("CNT")) + 1) + " 입장";
 										validCnt++;
-										entryItem.put("resultMsg",resultMsg);
-										entryItem.put("SaleNo",entryClass.get("SaleNo"));
-									}else {
-										//입장 불가
+										entryItem.put("resultMsg", resultMsg);
+										entryItem.put("SaleNo", entryClass.get("SaleNo"));
+									} else {
+										// 입장 불가
 										bOK = false;
-										if(sInTime.equals(""))sInTime="00:00";
-										resultMsg = "입장불가[입장가능 시간:"+sInTime+"] 현재시간: "+f.getcurDate().substring(8,10)+":"+f.getcurDate().substring(10,12);
+										if (sInTime.equals(""))
+											sInTime = "00:00";
+										resultMsg = "입장불가[입장가능 시간:" + sInTime + "] 현재시간: "
+												+ f.getcurDate().substring(8, 10) + ":"
+												+ f.getcurDate().substring(10, 12);
 										msgType = 3;
 									}
 								}
 							}
-						}else if(f.getNullToSpaceInt(entryClass.get("CNT")) == 0){
-							if(!f.CheckClassDay(f.getNullToSpaceStrValue(entryClass.get("DayName")))) {
-								//강습요일이 아닐경우
+						} else if (f.getNullToSpaceInt(entryClass.get("CNT")) == 0) {
+							if (!f.CheckClassDay(f.getNullToSpaceStrValue(entryClass.get("DayName")))) {
+								// 강습요일이 아닐경우
 								bOK = false;
 								resultMsg = "주중 강습회원 - 입장불가";
 								msgType = 3;
-							}else {
-								//강습요일인 경우
-								if(f.getNullToSpaceStrValue(entryClass.get("FromTime")).equals("")) {
-									//입장시간 없음
+							} else {
+								// 강습요일인 경우
+								if (f.getNullToSpaceStrValue(entryClass.get("FromTime")).equals("")) {
+									// 입장시간 없음
 									bOK = true;
 									resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 입장";
-								}else {
+								} else {
 									int iWeek = LocalDate.now().getDayOfWeek().getValue();
 									String sInTime = "";
-									switch(iWeek) {
+									switch (iWeek) {
 									case 1:
 										sInTime = f.getNullToSpaceStrValue(entryClass.get("MonIn"));
 										break;
@@ -580,48 +549,55 @@ public class VtcEntryController{
 										break;
 									}
 
-									if(f.getNullToSpaceIntTime(f.getcurDate().substring(8,12)) >= f.getNullToSpaceIntTime(sInTime)
-									&& f.getNullToSpaceIntTime(f.getcurDate().substring(8,12)) <= f.getNullToSpaceIntTime(entryClass.get("ToTime"))) {
+									if (f.getNullToSpaceIntTime(f.getcurDate().substring(8, 12)) >= f
+											.getNullToSpaceIntTime(sInTime)
+											&& f.getNullToSpaceIntTime(f.getcurDate().substring(8, 12)) <= f
+													.getNullToSpaceIntTime(entryClass.get("ToTime"))) {
 										bOK = true;
 										resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 입장";
 										validCnt++;
-										entryItem.put("SaleNo",entryClass.get("SaleNo"));
-									}else {
-										//입장 불가
+										entryItem.put("SaleNo", entryClass.get("SaleNo"));
+									} else {
+										// 입장 불가
 										bOK = false;
-										if(sInTime.equals(""))sInTime="00:00";
-										resultMsg = "입장불가[입장가능 시간:"+sInTime+"] 현재시간: "+f.getcurDate().substring(8,10)+":"+f.getcurDate().substring(10,12);
+										if (sInTime.equals(""))
+											sInTime = "00:00";
+										resultMsg = "입장불가[입장가능 시간:" + sInTime + "] 현재시간: "
+												+ f.getcurDate().substring(8, 10) + ":"
+												+ f.getcurDate().substring(10, 12);
 										msgType = 3;
 									}
 								}
 							}
-						}else if(f.getNullToSpaceInt(entryClass.get("CNT")) >= f.getNullToSpaceInt(entryClass.get("InCnt"))) {
-							//입장 횟수 초과
+						} else if (f.getNullToSpaceInt(entryClass.get("CNT")) >= f
+								.getNullToSpaceInt(entryClass.get("InCnt"))) {
+							// 입장 횟수 초과
 							bOK = false;
 							resultMsg = f.getNullToSpaceStrValue(entryClass.get("JungName")) + " 출입제한 : 하루 "
-									+ f.getNullToSpaceInt(entryClass.get("CNT"))+"회 이상 입장 불가능";
+									+ f.getNullToSpaceInt(entryClass.get("CNT")) + "회 이상 입장 불가능";
 							msgType = 2;
 						}
 					}
-				}else{
+				} else {
 					bOK = false;
 					resultMsg = "기간이 유효한 강습정보가 존재하지 않습니다.";
 					msgType = 4;
 				}
-				entryItem.put("ItemName",entryClass.get("JungName")+" "+entryClass.get("LevelName")+"("+ entryClass.get("DayName")+")"+" "+ entryClass.get("FromTime"));
-				entryItem.put("responseCode",bOK);
-				entryItem.put("resultMsg",resultMsg);
+				entryItem.put("ItemName", entryClass.get("JungName") + " " + entryClass.get("LevelName") + "("
+						+ entryClass.get("DayName") + ")" + " " + entryClass.get("FromTime"));
+				entryItem.put("responseCode", bOK);
+				entryItem.put("resultMsg", resultMsg);
 				entryItemList.add(entryItem);
-			}else {
-				
+			} else {
+
 			}
 		}
 
-		Map<String,Object> resultCode = new HashMap<String,Object>();
-		resultCode.put("validCnt",validCnt);
-		resultCode.put("msgType",msgType);
-		resultCode.put("entryItemList",entryItemList);
-		
+		Map<String, Object> resultCode = new HashMap<String, Object>();
+		resultCode.put("validCnt", validCnt);
+		resultCode.put("msgType", msgType);
+		resultCode.put("entryItemList", entryItemList);
+
 		/*if(validCnt==1) {
 		}else if(validCnt > 1) {
 		}else {
@@ -650,20 +626,20 @@ public class VtcEntryController{
 		return resultCode;
 	}
 
-	//TODO 출입관리 강좌입장
+	// TODO 출입관리 강좌입장
 	@PostMapping("entry.do")
 	@ResponseBody
-	public Map<String,Object> memEntry(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Map<String, Object> memEntry(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			return null;
 		}
-		Map<String,Object> resultMap = new HashMap<String,Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		String MemberID = f.getNullToSpaceStrValue(request.getParameter("MemberID"));
-		int SaleNo 		= f.getNullToSpaceInt(request.getParameter("SaleNo"));
+		int SaleNo = f.getNullToSpaceInt(request.getParameter("SaleNo"));
 		boolean uniLock = Boolean.parseBoolean(request.getParameter("autoLockerUse"));
-		String PosGBN	= f.getNullToSpaceStrValue(request.getParameter("PosGBN"));
+		String PosGBN = f.getNullToSpaceStrValue(request.getParameter("PosGBN"));
 
 		tblmember tblmember = new tblmember();
 		tblmember.setMemberID(MemberID);
@@ -672,191 +648,193 @@ public class VtcEntryController{
 
 		tblmember.setSiteCode(users.getSiteCode());
 		tblmember.setEntrySaleNo(SaleNo);
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
-		Map<String,Object> entryClass = entryClassList.get(0);
+		tblmember.setToDay(f.formatDate(new Date(), "yMd"));
+		List<Map<String, Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
+		Map<String, Object> entryClass = entryClassList.get(0);
 
-		if(uniLock) {
+		if (uniLock) {
 			int iAge = f.getAge(tblmember.getBirthDay());
 			String sDaeSo = "";
 
-			if(iAge == 0) {
-				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
-				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
+			if (iAge == 0) {
+				if (f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
+						&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
 					sDaeSo = "소인";
-				}else{
+				} else {
 					sDaeSo = "대인";
 				}
-			}else {
-				if(f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
-				&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
+			} else {
+				if (f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("어린이") >= 0
+						&& f.getNullToSpaceStrValue(tblmember.getTypeText()).indexOf("경로") >= 0) {
 					sDaeSo = "소인";
-				}else{
-					if(iAge >= 60) {
-						sDaeSo = "소인";	
-					}else {
+				} else {
+					if (iAge >= 60) {
+						sDaeSo = "소인";
+					} else {
 						sDaeSo = "대인";
 					}
 				}
 			}
-			
+
 			int iUpjang = f.getNullToSpaceInt(entryClass.get("LockerCondition"));
 			String strLockerCondition = f.getNullToSpaceStrValue(entryClass.get("UpjangName"));
-			if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("수영") >= 0) {
+			if (f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("수영") >= 0) {
 				strLockerCondition = "수영장";
-			}else if(f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("헬스") >= 0) {
+			} else if (f.getNullToSpaceStrValue(entryClass.get("CategoryName")).indexOf("헬스") >= 0) {
 				strLockerCondition = "헬스장";
 			}
 			int LngLockerManAddNum = f.getNullToSpaceInt(entryClass.get("LockerManAddNum"));
-			int LngLockerWoManAddNum= f.getNullToSpaceInt(entryClass.get("LockerWoManAddNum"));
+			int LngLockerWoManAddNum = f.getNullToSpaceInt(entryClass.get("LockerWoManAddNum"));
 
 			/*if(!f.getNullToSpaceStrValue(request.getParameter("strLockerCondition")).equals("")) {
 				strLockerCondition = f.getNullToSpaceStrValue(request.getParameter("strLockerCondition"));
 				LngLockerManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerManAddNum"));
 				LngLockerWoManAddNum = f.getNullToSpaceInt(request.getParameter("LngLockerWoManAddNum"));
 			}*/
-			
+
 			int LockerType = 0;
-			if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("대인")) {
+			if (tblmember.getGenderText().equals("남자") && sDaeSo.equals("대인")) {
 				LockerType = 0;
-			}else if(tblmember.getGenderText().equals("남자") && sDaeSo.equals("소인")) {
+			} else if (tblmember.getGenderText().equals("남자") && sDaeSo.equals("소인")) {
 				LockerType = 1;
-			}else if(tblmember.getGenderText().equals("여자") && sDaeSo.equals("대인")) {
+			} else if (tblmember.getGenderText().equals("여자") && sDaeSo.equals("대인")) {
 				LockerType = 2;
-			}else {
+			} else {
 				LockerType = 3;
 			}
-			Map<String,Object> siteIdSet = VtcService.selectSiteIdSet(users.getSiteCode());
+			Map<String, Object> siteIdSet = VtcService.selectSiteIdSet(users.getSiteCode());
 
 			String IP = f.getNullToSpaceStrValue(siteIdSet.get("Locker_Svr_IP"));
 			int Port = f.getNullToSpaceInt(siteIdSet.get("Locker_Svr_Port"));
-			
-			String result = UNILockerController.UniLockAutoB(users.getSiteCode(), MemberID, iUpjang, LockerType, IP, Port, strLockerCondition, LngLockerManAddNum, LngLockerWoManAddNum);
-			if(result.equals("false")) {
-				resultMap.put("Code","9999");
-				resultMap.put("Msg","발권 실패!<br>락카확인 및 수동발권을 하십시요!");
-				return resultMap;
-			}else {
-				Map<String,Object> setSql = new HashMap<String,Object>();
-				setSql.put("SiteCode",users.getSiteCode());
-				setSql.put("SaleNo",SaleNo);
-				setSql.put("LockerPKID",result);
 
-				if(MemberID.equals("")) {
-					setSql.put("CustCode",MemberID);
-					setSql.put("BaejungType","일일입장");
-				}else {
-					setSql.put("CustCode",MemberID);
-					setSql.put("BaejungType","회원입장");
-					setSql.put("KioskNo","");
+			String result = UNILockerController.UniLockAutoB(users.getSiteCode(), MemberID, iUpjang, LockerType, IP,
+					Port, strLockerCondition, LngLockerManAddNum, LngLockerWoManAddNum);
+			if (result.equals("false")) {
+				resultMap.put("Code", "9999");
+				resultMap.put("Msg", "발권 실패!<br>락카확인 및 수동발권을 하십시요!");
+				return resultMap;
+			} else {
+				Map<String, Object> setSql = new HashMap<String, Object>();
+				setSql.put("SiteCode", users.getSiteCode());
+				setSql.put("SaleNo", SaleNo);
+				setSql.put("LockerPKID", result);
+
+				if (MemberID.equals("")) {
+					setSql.put("CustCode", MemberID);
+					setSql.put("BaejungType", "일일입장");
+				} else {
+					setSql.put("CustCode", MemberID);
+					setSql.put("BaejungType", "회원입장");
+					setSql.put("KioskNo", "");
 				}
 				/*if(tblmember.getGender() == 0) {
 					setSql.put("Gender","F");
 				}else {
 					setSql.put("Gender","M");	
 				}*/
-				setSql.put("Gender",tblmember.getGender());
-				setSql.put("PosGBN",PosGBN);
-				setSql.put("UserPKID",users.getUserPKID());
+				setSql.put("Gender", tblmember.getGender());
+				setSql.put("PosGBN", PosGBN);
+				setSql.put("UserPKID", users.getUserPKID());
 
 				vtcEntryService.insertEntry(setSql);
-				resultMap.put("lockerNo",result);
+				resultMap.put("lockerNo", result);
 			}
-		}else {
-			Map<String,Object> setSql = new HashMap<String,Object>();
-			setSql.put("SiteCode",users.getSiteCode());
-			setSql.put("SaleNo",SaleNo);
-			setSql.put("LockerPKID",-5000);
+		} else {
+			Map<String, Object> setSql = new HashMap<String, Object>();
+			setSql.put("SiteCode", users.getSiteCode());
+			setSql.put("SaleNo", SaleNo);
+			setSql.put("LockerPKID", -5000);
 
-			if(MemberID.equals("")) {
-				setSql.put("CustCode",MemberID);
-				setSql.put("BaejungType","일일입장");
-			}else {
-				setSql.put("CustCode",MemberID);
-				setSql.put("BaejungType","회원입장");
-				setSql.put("KioskNo","");
+			if (MemberID.equals("")) {
+				setSql.put("CustCode", MemberID);
+				setSql.put("BaejungType", "일일입장");
+			} else {
+				setSql.put("CustCode", MemberID);
+				setSql.put("BaejungType", "회원입장");
+				setSql.put("KioskNo", "");
 			}
 			/*if(tblmember.getGender() == 0) {
 				setSql.put("Gender","F");
 			}else {
 				setSql.put("Gender","M");	
 			}*/
-			setSql.put("Gender",tblmember.getGender());
-			setSql.put("PosGBN",PosGBN);
-			setSql.put("UserPKID",users.getUserPKID());
-			
+			setSql.put("Gender", tblmember.getGender());
+			setSql.put("PosGBN", PosGBN);
+			setSql.put("UserPKID", users.getUserPKID());
+
 			vtcEntryService.insertEntry(setSql);
-			resultMap.put("lockerNo",0);
-			
+			resultMap.put("lockerNo", 0);
+
 		}
-		resultMap.put("Code","0000");
-		resultMap.put("Msg",entryClass.get("CategoryName")+ " "+entryClass.get("JungName") +" "+ entryClass.get("DayName"));
-		
-		//fc.playAudio("/file/Sound/E.wav", response);
+		resultMap.put("Code", "0000");
+		resultMap.put("Msg",
+				entryClass.get("CategoryName") + " " + entryClass.get("JungName") + " " + entryClass.get("DayName"));
+
+		// fc.playAudio("/file/Sound/E.wav", response);
 		return resultMap;
 	}
-	
-	//TODO 출입관리 - 사물함조회, 강좌조회, 입장조회, 상담조회 
+
+	// TODO 출입관리 - 사물함조회, 강좌조회, 입장조회, 상담조회
 	@PostMapping("memLockerInfo.do")
 	@ResponseBody
-	public List<Map<String,Object>> memLockerInfo(tblmember tblmember, ModelMap model) throws Exception{
+	public List<Map<String, Object>> memLockerInfo(tblmember tblmember, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
 		}
 		tblmember.setSiteCode(users.getSiteCode());
-		List<Map<String,Object>> lockerList = vtcLockerService.selectPlockerInfo(tblmember);
-		
+		List<Map<String, Object>> lockerList = vtcLockerService.selectPlockerInfo(tblmember);
+
 		return lockerList;
 	}
 
 	@PostMapping("memClassInfo.do")
 	@ResponseBody
-	public List<Map<String,Object>> memClassInfo(tblmember tblmember, ModelMap model) throws Exception{
+	public List<Map<String, Object>> memClassInfo(tblmember tblmember, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
 		}
 		tblmember.setSiteCode(users.getSiteCode());
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
-		
+		tblmember.setToDay(f.formatDate(new Date(), "yMd"));
+		List<Map<String, Object>> entryClassList = vtcEntryService.selectEntryClassInfo(tblmember);
+
 		return entryClassList;
 	}
-	
+
 	@PostMapping("memEntryInfo.do")
 	@ResponseBody
-	public List<Map<String,Object>> memEntryInfo(tblmember tblmember, ModelMap model) throws Exception{
+	public List<Map<String, Object>> memEntryInfo(tblmember tblmember, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
 		}
 		tblmember.setSiteCode(users.getSiteCode());
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectEntryInfo(tblmember);
-		
+		tblmember.setToDay(f.formatDate(new Date(), "yMd"));
+		List<Map<String, Object>> entryClassList = vtcEntryService.selectEntryInfo(tblmember);
+
 		return entryClassList;
 	}
-	
+
 	@PostMapping("memTalkInfo.do")
 	@ResponseBody
-	public List<Map<String,Object>> memTalkInfo(tblmember tblmember, ModelMap model) throws Exception{
+	public List<Map<String, Object>> memTalkInfo(tblmember tblmember, ModelMap model) throws Exception {
 		Users users = (Users) session.getAttribute("loginuserinfo");
-		if(users == null){
+		if (users == null) {
 			model.addAttribute("msg", "로그인을 다시 해주세요.");
 			model.addAttribute("script", "back");
 			return null;
 		}
 		tblmember.setSiteCode(users.getSiteCode());
-		tblmember.setToDay(f.formatDate(new Date(),"yMd"));
-		List<Map<String,Object>> entryClassList = vtcEntryService.selectTalkInfo(tblmember);
-		
+		tblmember.setToDay(f.formatDate(new Date(), "yMd"));
+		List<Map<String, Object>> entryClassList = vtcEntryService.selectTalkInfo(tblmember);
+
 		return entryClassList;
 	}
 }

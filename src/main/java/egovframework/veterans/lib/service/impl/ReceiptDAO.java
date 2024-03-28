@@ -30,4 +30,8 @@ public class ReceiptDAO extends EgovComAbstractDAO {
 		return selectOne("receipt.getReReceipt",setSql);
 	}
 
+	public List<Map<String, Object>> getReceiptOrder(String pkid) {
+		return selectList("receipt.getReceiptOrder",pkid);
+	}
+
 }

@@ -382,6 +382,7 @@ nextButton.addEventListener('click', function() {
 });
 /* 일일입장 그룹 버튼 끝 */
 var selectedRow = null;
+var alertChk = true;
 /* 일일입장 버튼 */
 $(document).ready(function() {
     let selectedItems = {}; // 선택된 아이템을 저장할 객체 (아이템명을 키로 사용)
@@ -483,6 +484,7 @@ $(document).ready(function() {
         selectedRow = $(this);
         selectedRow.addClass('selected');
         inwonChk = false;
+        alertChk = true;
     });
 
     function updateNumberOfQuantityAndTable(action, item) {
@@ -497,15 +499,31 @@ $(document).ready(function() {
         let dcprice = item.data('dcprice');
         let inwon = 0;
         let toCount = parseInt($('.total-count').text());
+        let chkcount = 0;
+        if($("#JungwonChk").is(":checked")){
+        	let group = parseInt(item.data("group"));
+        	chkcount = 0;
+        	$('#tbody tr').each(function(index, row) {
+        		if(group == $(this).data("group")){
+        			chkcount += $(this).data("amount");	
+        		}
+        	});
+        }else{
+        	chkcount = parseInt(item.data("amount"));
+        }
 
         $.ajax({
         	url:"Jungwon",
         	method: 'POST',
-            data: { "pkid": pkid },
+            data: { "pkid": pkid ,"JungwonChk":$("#JungwonChk").is(":checked")},
             async : false,
             success: function(data) {
             	inwon = data.inwon;
-            	jungwon = data.GroupJungwon;
+            	if($("#JungwonChk").is(":checked")){
+            		jungwon = data.GroupJungwon;	
+            	}else{
+            		jungwon = data.Jungwon;
+            	}
             },
             error: function(e){
             	console.log(e);
@@ -515,25 +533,30 @@ $(document).ready(function() {
 		if(action == "del"){
 			if (quantity >= 10) {
 				toCount = toCount - quantity;
+				chkcount = chkcount - quantity; 
 				quantity = parseInt(quantityCell.text().substring(0,quantityCell.text().length-1));
 				totalPrice = price * quantity;
             }
 		}else if (action.toString() === "0"){
 			toCount = toCount - quantity;
+			chkcount = chkcount - quantity;
 			quantity = parseInt(quantityCell.text()+action);
 			totalPrice = price * quantity;
 		}else if (action.toString() === "+1"){
 			toCount = toCount - quantity;
+			chkcount = chkcount - quantity;
 			quantity = parseInt(quantityCell.text())+1;
 			totalPrice = price * quantity;
 		}else if (action.toString() === "-1"){
 			if (quantity > 1) {
 				toCount = toCount - quantity;
+				chkcount = chkcount - quantity;
 				quantity = parseInt(quantityCell.text())-1;
 				totalPrice = price * quantity;
             }
 		}else{
 			toCount = toCount - quantity;
+			chkcount = chkcount - quantity;
 			if(inwonChk){
 				quantity = parseInt(quantityCell.text()+action);
 			}else{
@@ -544,29 +567,45 @@ $(document).ready(function() {
 		}
 		totalPrice = totalPrice-dcprice;
 		toCount = toCount + quantity;
+		chkcount = chkcount + quantity;
 
 		//console.log(jungwon,inwon,toCount);
-		if(jungwon != 0 && jungwon - inwon < toCount){
+		if(jungwon != 0 && jungwon - inwon < chkcount && alertChk == true){
 			$('#resultmessage').html(itemName+"의 하루정원은 "+jungwon+"명 입니다.<br>현재 판매량 : "+ inwon+"<br>그래도 판매하시겠습니까?");
 			$('.modal-footer').empty();
-			var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="save()">확인</button>';
+			var okaybutton = '<button class="btn btn-primary" type="button" data-bs-dismiss="modal" onclick="save('+quantity+','+totalPrice+')">확인</button>';
 			var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
 			$('.modal-footer').append(okaybutton);
 			$('.modal-footer').append(cancelbutton);
 		    $('#modalButton').click();
 		    modalcheck = true;
+		    return false;
+		}else{
+
+			item.data('amount',quantity);
+			item.data('tprice',totalPrice);
+
+	        quantityCell.text(quantity);
+	        priceCell.text(totalPrice.toLocaleString());
+	        updateTotalCountAndPrice();
 		}
 
-		item.data('amount',quantity);
-		item.data('tprice',totalPrice);
-
-        quantityCell.text(quantity);
-        priceCell.text(totalPrice.toLocaleString());
-        updateTotalCountAndPrice();
     }
-    
 });
 /* 일일입장 버튼 끝 */
+function save(quantity,totalPrice){
+    const quantityCell = selectedRow.closest('tr').find('td:eq(1)');
+    const priceCell = selectedRow.closest('tr').find('td:eq(2)');
+    
+	selectedRow.data('amount',quantity);
+	selectedRow.data('tprice',totalPrice);
+
+    quantityCell.text(quantity);
+    priceCell.text(totalPrice.toLocaleString());
+    updateTotalCountAndPrice();
+    alertChk = false;
+}
+
 
 var GroupNo = 0;
 
@@ -623,25 +662,34 @@ function payDiscount(){
 function payDiscountSet(DCID, DCRate, DCPrice){
 	let price = selectedRow.data("price");
 	let tprice = selectedRow.data("tprice");
-       let priceCell = selectedRow.find('td:eq(2)');
-       let dcTypeAll = $("#dcTypeAll").is(":checked");
+	let priceCell = selectedRow.find('td:eq(2)');
+	let dcTypeAll = $("#dcTypeAll").is(":checked");
 
-       if(dcTypeAll){
-       	$('#tbody tr').each(function(index, row) {
-       		price = $(this).data("price");
-   			tprice = $(this).data("tprice");
-   	        priceCell = $(this).find('td:eq(2)');
-        	if( DCID == "0"){
+	if(dcTypeAll){
+		payDiscountOff();
+		$('#tbody tr').each(function(index, row) {
+			price = $(this).data("price");
+			tprice = $(this).data("tprice");
+			priceCell = $(this).find('td:eq(2)');
+			let dcp = 0;
+			if( DCID == "0"){
+				let total = 0;
+				let amount = 0;
+				$('#tbody tr').each(function(index, row) {
+					total += $(this).data("tprice");
+					amount += $(this).data("amount");
+				});
+				dcp = Math.round(parseFloat(DCPrice/amount)) * parseInt($(this).data("amount"));
 			}else{
-				DCPrice = parseFloat(price) * (parseFloat(DCRate)/100);	
+				dcp = parseFloat(tprice) * (parseFloat(DCRate)/100);	
 			}
-			priceCell.text((tprice - parseInt(DCPrice)).toLocaleString());
+			priceCell.text((tprice - parseInt(dcp)).toLocaleString());
 			$(this).data("dcid", DCID);
-			$(this).data("dcprice", DCPrice);
-			$(this).data("tprice", tprice - parseInt(DCPrice));
-       	});
-       }else{
-       	if( DCID == "0"){
+			$(this).data("dcprice", dcp);
+			$(this).data("tprice", tprice - parseInt(dcp));
+		});
+	}else{
+		if( DCID == "0"){
 		}else{
 			DCPrice = parseFloat(price) * (parseFloat(DCRate)/100);	
 		}
@@ -649,7 +697,7 @@ function payDiscountSet(DCID, DCRate, DCPrice){
 		selectedRow.data("dcid", DCID);
 		selectedRow.data("dcprice", DCPrice);
 		selectedRow.data("tprice", tprice - parseInt(DCPrice));
-       }
+	}
 	updateTotalCountAndPrice();
 }
 
@@ -657,26 +705,25 @@ function payDiscountOff(){
 	let price = selectedRow.data("price");
 	let amount = selectedRow.data("amount");
 	let priceCell = selectedRow.find('td:eq(2)');
-       let dcTypeAll = $("#dcTypeAll").is(":checked");
+	let dcTypeAll = $("#dcTypeAll").is(":checked");
 
-       if(dcTypeAll){
-       	$('#tbody tr').each(function(index, row) {
-   			let price = $(this).data("price");
-   			let amount = $(this).data("amount");
-   			let priceCell = $(this).find('td:eq(2)');
+	if(dcTypeAll){
+		$('#tbody tr').each(function(index, row) {
+			let price = $(this).data("price");
+			let amount = $(this).data("amount");
+			let priceCell = $(this).find('td:eq(2)');
 
-   			$(this).data("dcid", 0);
-   			$(this).data("dcprice", 0);
-   			$(this).data("tprice", price*amount);
+			$(this).data("dcid", 0);
+			$(this).data("dcprice", 0);
+			$(this).data("tprice", price*amount);
 			priceCell.text((price*amount).toLocaleString());
-       	});
-       }else{
+		});
+	}else{
 		selectedRow.data("dcid", 0);
 		selectedRow.data("dcprice", 0);
 		selectedRow.data("tprice", price*amount);
 		priceCell.text((price*amount).toLocaleString());
-       	
-       }
+	}
 	updateTotalCountAndPrice();
 }
 
@@ -816,11 +863,11 @@ function paycredit(){
 
 <%-- 결제 후 처리 --%>
 function totalchange(){
-	console.log(GroupNo);
+	var paidPkid = "";
 	$('#paidbody tr').each(function() {
 		var paidprice = removeCommasFromNumber($(this).find('.paidprice').text());
 		var paiddate = $(this).find('.paiddate').text();
-		var paidPkid = $(this).find('.PKID').text();
+		paidPkid = $(this).find('.PKID').text();
 		if(paidprice != '' && paidPkid == ''){<%-- 결제금액이 존재하고 tblpaid 저장 안 했을 경우만 --%>
 			$.ajax({
 				type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
@@ -848,7 +895,8 @@ function totalchange(){
 				},
 				success: function(Data){
 					console.log(Data);
-					paidPkid=Data;
+					GroupNo = Data.order;
+					paidPkid = Data.paid;
 				},
 				error:function(xhr, status, error){
 					console.log("Status: " + status);
@@ -858,22 +906,40 @@ function totalchange(){
 			});
 		}
 	});
-	$("#paidbody").empty();
-	$("#clean").click();
 	
 	$.ajax({
 		type: "POST", <%--// 또는 "POST", 서버 설정에 따라 다름--%>
-		url: "orderinsert", <%--// 실제 엔드포인트로 교체해야 합니다--%>
+		url: "orderentry.do", <%--// 실제 엔드포인트로 교체해야 합니다--%>
 		dataType : 'json',
 		async : false,
 		data: { 
-			"MemberID":memberID,
 			"SaleNo":GroupNo,
 			"autoLockerUse" : $("#autoLocker").is(":checked"),
 			"PosGBN" : "POS",
 		},
 		success: function(Data){
 			console.log(Data);
+			if(Data.code == "0000"){
+				if($("#autoLocker").is(":checked")){
+					$('#resultmessage').html('전자키 배정 완료.');
+					$('.modal-footer').empty();
+					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+					$('.modal-footer').append(cancelbutton);
+					$('#modalButton').click();
+					modalcheck = true;
+					return false;
+				}
+			}else{
+				if($("#autoLocker").is(":checked")){
+					$('#resultmessage').html('전자키 배정 '+Data.msg+'건 실패!\n수동 배정해주시기 바랍니다.');
+					$('.modal-footer').empty();
+					var cancelbutton = '<button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">나가기</button>';
+					$('.modal-footer').append(cancelbutton);
+					$('#modalButton').click();
+					modalcheck = true;
+					return false;
+				}
+			}
 		},
 		error:function(xhr, status, error){
 			console.log("Status: " + status);
@@ -890,6 +956,11 @@ function totalchange(){
 			return false;
 		}
 	});
+	$("#paidbody").empty();
+	$("#clean").click();
+
+	var myWindow = window.open("${pageContext.request.contextPath}/order/Receipt.do?PKID="+paidPkid, "MsgWindow", "width=320,height=800");
+    myWindow.print();
 }
 
 function connectWebSocket() {

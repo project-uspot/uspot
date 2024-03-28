@@ -45,6 +45,17 @@
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
+		<RollingFile name="uni" fileName="${FILENAME}/uni.log"
+				filePattern="${FILENAME}/daily/%d{yyyyMM}/uni_%d{yyyyMMddHH}.log" >
+			<MarkerFilter marker="uni" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout>
+				<pattern>${defaultPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- interval(default 1)이므로 1초 간격으로 rolling 수행 --> 
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
     </Appenders>
     
     
@@ -66,6 +77,7 @@
 	    <Logger name="egovframework.veterans" level="DEBUG" additivity="true">
 			<AppenderRef ref="Test" />
 			<AppenderRef ref="OfflinePay" />
+			<AppenderRef ref="uni" />
 		</Logger>
 		
         <Root level="DEBUG">
